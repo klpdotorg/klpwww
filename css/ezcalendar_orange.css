@@ -1,0 +1,96 @@
+/*==============================================================================
+	EZCalendar v1.1 Created by Stewart Orr Feb 2007. 
+
+	Usage:
+		- Expects dates in the UK format DD/MM/YYYY.
+		- Uses JS and CSS file to determine appearance
+		- CSS File should have all necessary styles to ensure it appears
+		correctly in YOUR page.
+		
+	To Do:
+		- Position the calendar differently if it spills over the viewable space.
+		- Improve Code
+	
+==============================================================================*/
+
+#EZcalendar {
+	display: none;
+	position: absolute;
+	margin: 0;
+	z-index: 99;
+	background: #C6470E;
+	color: #fff;
+	/* safer to use fixed font sizes */
+	font: 11px Arial, Helvetica, sans-serif;
+	border: 4px solid #C6470E;
+}
+#EZcalendar form {
+	margin: 0;
+	padding: 0;
+}
+#EZcalendar table {
+	border: 1px solid #eee;
+	border-collapse: collapse;
+	font-size: 100%;
+	margin: 0;
+	padding: 0;
+}
+#EZcalendar table td, #EZcalendar table th {
+	width: 16px;
+	height: 16px;
+	line-height: 16px;
+	text-align: center;
+}
+/*tds*/
+#EZcalendar table td a.outsideMonth {
+	background: #E86A11;
+	color: #fff;
+}
+#EZcalendar table td a.today{
+	background: #F9812D;
+	color: #fff;
+}
+#EZcalendar table td a {
+	background: #F29917;
+	color: #333;
+	display: block;
+	color: #333;
+	margin: 0;
+	padding: 0;
+	width: 16px;
+	height: 16px;
+	line-height: 16px;
+	text-decoration: none;
+}
+#EZcalendar table td a:hover {
+	color: #333;
+	background: #FFFF99;
+}
+
+#EZcalendar table td#EZcalendar_text {
+	background: #F29917;
+	text-align: center;
+	width: 64px;
+	height: 16px;
+}
+
+#EZcalendar input {
+	border: none;
+	background: #E86A11;
+	color: #fff;
+	cursor: pointer;
+	width: 16px;
+	height: 16px;
+	padding: 0;
+	margin: 0;
+	text-align: center;
+}
+#EZcalendar input.left {
+	float: left;
+}
+#EZcalendar input.right {
+	float: right;
+}
+#EZcalendar_table {
+	clear: both;
+}

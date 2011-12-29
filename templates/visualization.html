@@ -1,0 +1,98 @@
+$var title: KLP: Visualization
+$var cssfiles: /yui/build/cssfonts/fonts-min.css /css/style.css /css/map.css /css/grid.css
+$var jsfiles: /yui/build/yui/yui-min.js http://maps.google.com/maps/api/js?sensor=false /js/klp.js js/distancewidget.js
+$var btags: class="yui-skin-sam" onload=initialiseSchool();
+
+<style type="text/css">
+</style>
+<!--script type="text/javascript" src="http://maps.googleapis.com/maps/api/js?sensor=false">
+</script-->
+<script type="text/javascript"
+        src="http://www.google.com/jsapi?autoload={'modules':[{name:'maps',version:3,other_params:'sensor=false'}]}">
+</script>
+<div class="container container_12">
+<div class="grid_12" id="contentfiller">
+<div id="legend">
+<div class="grid_2">
+</div>
+<div class="grid_10">
+      <ul>
+        <li><img src="/images/district.png" alt="District" />District</li>
+        <li><img src="/images/block.png" alt="Block" />Block</li>
+        <li><img src="/images/cluster.png" alt="Cluster" />Cluster</li>
+        <li><img src="/images/school.png" alt="School" />School</li>
+        <li><img src="/images/project.png" alt="Project" />Project</li>
+        <li><img src="/images/circle.png" alt="Circle" />Circle</li>
+        <li><img src="/images/preschool.png" alt="PreSchool" />PreSchool</li>
+      </ul>
+</div>
+</div>
+<div class="grid_12" id="circleinfo" style="display:none"></div>
+<div class="grid_12" id="map">
+      <br>
+    <div id="map_canvas" style="width:100%;height:500px;"></div>
+    <div class="grid_5" id="panel">
+       <label>Search for a school in your neighbourhood:</label>
+      <input type="text" value="e.g.: Indiranagar, Bangalore" id="address">
+      <a class="button" style='float:right;margin-right:-10px;' href="javascript:eToggle('more','moreoptions');" id="toggle1"><span>More...</span></a>
+      <a class="button" style='float:right;' href="#" onclick="geocode()"><span>Find Schools</span></a> 
+      <div id="moreoptions" style="display: none">
+<!--43YY-->
+<dl>
+ <dt>Select Search Type</dt>
+ <dd><select id="selection" onChange="changeSelection();">
+   <option value="">Select</option>
+   <option value="school">Primary School</option>
+   <option value="preschool">Pre School</option>
+ </select></dd>
+</dl>
+<div id="schooldiv">
+<dl>
+ <dt>District</dt>
+ <dd><select id="district" onChange="changeFocus('district','block');">
+    <option value="">Select</option>
+  </select></dd>
+  <dt>Block</dt>
+  <dd><select id="block" onChange="changeFocus('block','cluster');">
+    <option value="">Select</option>
+  </select></dd>
+  <dt>Cluster</dt>
+  <dd><select style="width:200px" id="cluster" onChange="changeFocus('cluster','school');">
+    <option value="">Select</option>
+  </select></dd>
+  <dt>School</dt>
+  <dd><select style="width:200px" id="school" onChange="changeFocus('school','');">
+    <option value="">Select</option>
+  </select></dd>
+</dl>
+</div>
+<div id="preschooldiv">
+<dl>
+  <dt>District</dt>
+  <dd><select id="preschooldistrict" onChange="changeFocus('preschooldistrict','project');">
+    <option value="">Select</option>
+  </select></dd>
+  <dt>Project</dt>
+  <dd><select style="width:200px" id="project" onChange="changeFocus('project','circle');">
+   <option value="">Select</option>
+  </select></dd>
+  <dt>Circle</dt>
+  <dd><select style="width:200px" id="circle" onChange="changeFocus('circle','preschool');">
+   <option value="">Select</option>
+  </select></dd>
+  <dt>Pre School</dt>
+  <dd><select style="width:200px" id="preschool" onChange="changeFocus('preschool','');">
+   <option value="">Select</option>
+  </select></dd>
+</dl>
+</div>
+  <a class="button" style='float:right;margin-top:-130px;margin-right:-10px;' href="javascript:eToggle('less','moreoptions');" id="toggle2"><span>Less...</span></a>
+  <a class="button" style='float:left;margin-top:5px;margin-left:-5px;' href="visualization"><span>Reset Map</span></a> 
+
+      </div>
+    </div>
+
+
+</div>
+</div><!--end of grid contentfiller-->
+</div><!--end of Container-->

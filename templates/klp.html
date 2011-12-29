@@ -1,0 +1,77 @@
+$var title: Karnataka Learning Partnership
+$var cssfiles: /css/grid.css /css/style.css /css/home.css
+$var jsfiles: /yui/build/yui/yui-min.js js/klp.js /js/feedreader.js /js/libs/modernizr-2.0.6.min.js /js/flickrshow-7.2.min.js
+$var btags:
+<script src="http://platform.twitter.com/widgets.js" type="text/javascript"></script>
+<script>
+YUI({base: 'yui/build/',timeout: 50000}).use('gallery-yui-slideshow', function(Y){
+// Slideshow 1:
+var slideshow1 = new Y.Slideshow({ 
+                srcNode: '#slideshow1',
+                transition: Y.Slideshow.PRESETS.fade,
+                duration: 1,
+                interval: 8,
+                nextButton: '#slideshow1'
+                 });
+slideshow1.render();
+});
+</script>
+
+
+<div id="content" class="container container_12">
+  <div class="grid_12" id="contentfiller">
+  <!--div class="grid_4 push_point_75"-->
+    <div class="grid_4">
+      <div id="general">Karnataka Learning Partnership is a public space where all citizens can contribute to the cause of ensuring better schools and schooling for our children. Better education will ensure better human development and prosperity for our citizens. <a href="/text/aboutus">Know more ...</a>
+     </div>
+     <div id="blog">
+      <script>
+        function processReq(root)
+        {
+          var feed= root.feed;
+          processRequest(feed);
+        }
+      </script>
+      <script src=http://blog.klp.org.in/feeds/posts/default?alt=json-in-script&callback=processReq></script>   
+     </div> 
+     <!--div class="flickr">
+        <div id="flickr" style="height:231px;postion:absolute">
+          <p> Loading Photos ... </p>
+        </div>
+        <script>
+          var flickr= new flickrshow('flickr', {
+            autoplay:true,
+            interval:5000,
+            license:null,
+            tags:'children',
+            user:'35026043@N03'
+          });
+        </script>
+       </div-->
+      </div>
+      <div class="grid_8">
+      <div id="slideshow1" class="slideshow yui3-slideshow-content">
+        <img src="/images/ss/1.jpg" alt="" />
+        <img src="/images/ss/2.jpg" alt="" />
+        <img src="/images/ss/3.jpg" alt="" />
+        <img src="/images/ss/4.jpg" alt="" />
+        <img src="/images/ss/5.jpg" alt="" />
+        <img src="/images/ss/6.jpg" alt="" />
+        <img src="/images/ss/7.jpg" alt="" />
+        <img src="/images/ss/8.jpg" alt="" />
+     </div>
+
+    </div> 
+    </div>
+  <div class="clearfix"></div>
+  <div class="grid_12"i id="lowercontent">
+    <a href="" onclick="javascript:popwindow('listFiles/1')" style='float:left'>KLP Reports for MPs & MLAs<img src="/images/new.png" height="30px"/></a>
+    <a href="" onclick="javascript:popwindow('rawdata.html')" style='float:left'>Raw Data downloads<img src="/images/new.png" height="30px"/></a>
+    <a href="mailto:team@klp.org.in"><img src="/images/c_icon.png" height="30px"/></a>
+    <a href="http://www.facebook.com/aksharadotorg" target="_blank"><img src="/images/fb_icon.png" height="30px"/></a>
+    <a href="https://twitter.com/share?url=" + document.location.href + "\'" target='_blank'><img src="/images/t_icon.png" height="28px"/></a>
+    <a href="http://blog.klp.org.in/feeds/posts/default" target="_blank"><img src="/images/rf_icon.png" height="30px"/></a>
+    <a href="http://www.youtube.com/user/AksharaFoundation" target="_blank"><img src="/images/ut_icon.png" height="25px"/></a>
+  </div>
+  <div class="clearfix"></div>
+</div>

@@ -1,0 +1,88 @@
+div.top{
+height:300px;
+width:700px;
+border:1px solid #666;
+padding: 3px;
+float: top;
+background-color: #9cf;
+color: #000;
+margin-top:auto;
+margin-left:auto;
+margin-right:auto;
+}
+
+div.body{
+  background-image:url('../images/background.png');
+}
+
+div.heading{
+  height:20%;
+  width:100%;
+  float:top;
+  background-color:#000000;
+  background-image:url('../images/klp.png');
+  background-repeat:no-repeat;
+}
+
+
+div.footer{
+  height:10%;
+  width:100%;
+  background-color:#000000;
+  font-color:#111111;
+}  
+
+div.left{
+height: 500px;
+width: 300px;
+overflow: auto;
+border: 1px solid #666;
+padding: 5px;
+float: left;
+background-color: #9cf;
+color: #000;
+}
+div.right {
+   float: right;
+   margin: 1% 1% 1% 0;
+}
+
+ol#toc {
+    height: 2em;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+ol#toc li {
+    float: left;
+    margin: 0 1px 0 0;
+    padding-left: 10px;
+}
+
+ol#toc a {
+    color: #008;
+    display: block;
+    float: left;
+    height: 2em;
+    line-height: 2em;
+    padding-right: 10px;
+    text-decoration: none;
+}
+
+ol#toc li.current {
+    background-color: #48f;
+    background-position: 0 -60px;
+}
+
+ol#toc li.current a {
+    background-position: 100% -60px;
+    color: #fff;
+    font-weight: bold;
+}
+
+div.content {
+    border: #48f solid 3px;
+    clear: left;
+    padding: 1em;
+}

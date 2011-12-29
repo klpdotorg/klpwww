@@ -1,0 +1,89 @@
+$var title: Karnataka Learning Partnership
+$var cssfiles: /css/grid.css /css/style.css /css/home.css
+$var jsfiles: /yui/build/yui/yui-min.js js/klp.js /js/feedreader.js /js/libs/modernizr-2.0.6.min.js /js/flickrshow-7.2.min.js
+$var btags:
+
+<div id="anothertopbar" class="container container_12">
+  <div class="grid_12">
+      <!--div id="header">
+        <div class="grid_2">
+          <img src="../images/KLP_logo_100_border.png"/>
+        </div>
+        <div class="grid_8">
+          <div id="general">Karnataka Learning Partnership is a public space where all citizens can contribute to the cause of ensuring better schools and schooling for our children. Better education will ensure better human development and prosperity for our citizens. <a href="/text/aboutus" class="footerlink">Know more ...</a>
+          </div>
+        </div>
+        <div class="grid_2">
+          <div id="sidenavbar">
+            <ul class="top-level">
+              <li><a href="#">Programmes</a>
+              <ul class="sub-level">
+                 <li><a href="/text/reading" target="_blank">Reading</a></li>
+                 <li><a href="/text/maths" target="_blank">Maths</a></li>
+                 <li><a href="/text/library" target="_blank">Library</a></li>
+                 <li><a href="/text/preschool" target="_blank">Preschools</a></li>
+              </ul>
+              </li>
+            <li><a href="#">Reports</a></li>
+            <li><a href="#">Downloads</a></li>
+            </ul>
+        </div>
+      </div>
+  </div>
+  <div class="clearfix"></div>
+</divi-->
+
+<div id="content" class="container container_12">
+  <div class="grid_12" id="contentfiller">
+    <div id="duk" class="grid_8">
+      <div id="col1">
+          <img src="../images/KLP_logo_200_border.png" style="width:150px"/>
+        <!--ul>
+         <li>Eight in ten children in <a href="visualization?type=school">school</a> cannot divide while seven in ten children cannot do simple subtraction.</li>
+         <li>One out of two <a href="visualization?type=preschool">preschool</a> children cannot recognize numbers.</li>
+         <li>Six out of ten children in <a href="visualization?type=school">school</a> cannot read simple text in their medium of instruction.</li>
+         <li>Nearly eight in ten <a href="visualization?type=school">schools</a> have a water provision that is usable.</li>
+        </ul-->
+      </div>
+      <div id="col2">
+          <div id="general">Karnataka Learning Partnership is a public space where all citizens can contribute to the cause of ensuring better schools and schooling for our children. Better education will ensure better human development and prosperity for our citizens. <a href="/text/aboutus" class="footerlink">Know more ...</a>
+          </div>
+        <!--ul>
+          <li>One out of three <a href="visualization?type=preschool">preschool</a> children cannot recognize alphabets.</li>
+          <li>Eight in ten children in <a href="visualization?type=school">school</a> cannot read simple sentences in English.</li>
+          <li>Close to one in two <a href="visualization?type=school">schools</a> have a toilet provision but are not usable.</li>
+          <li>Every tenth <a href="visualization?type=school">school</a> does not serve mid-day meals.</li>
+        </ul-->
+      </div>
+    </div>
+
+  <!--div class="grid_4 push_point_75"-->
+    <div class="grid_4">
+     <div id="blog">
+      <script>
+        function processReq(root)
+        {
+          var feed= root.feed;
+          processRequest(feed);
+        }
+      </script>
+      <script src=http://blog.klp.org.in/feeds/posts/default?alt=json-in-script&callback=processReq></script>   
+     </div> 
+     <div class="flickr">
+        <div id="flickr" style="height:231px;postion:absolute">
+          <p> Loading Photos ... </p>
+        </div>
+        <script>
+          var flickr= new flickrshow('flickr', {
+            autoplay:true,
+            interval:5000,
+            license:null,
+            tags:'children',
+            user:'35026043@N03'
+          });
+        </script>
+      </div> 
+    </div>
+  </div>
+  <div class="clearfix"></div>
+</div>

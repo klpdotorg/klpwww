@@ -1,0 +1,32 @@
+#filetype {
+  margin-top:10px;
+  margin-left:5px;
+}
+
+.div-table
+{
+  display:table; 
+  /*border:1px solid #43AD2F;*/
+  margin-top:10px;
+  margin-left:5px;
+}
+.div-table-caption{
+  display:table-caption; 
+  background:#43AD2F;
+  color:white;
+  font-weight:bold;
+}
+.div-table-row{display:table-row;}
+.div-table-col{
+  display:table-cell; 
+  padding-left: 5px; 
+  /*border: 1px solid #43AD2F;*/
+}
+body
+    {
+      background-image: url("../images/parchment-tile.png");
+      font-size: 13px;
+      line-height: 1.231;
+      margin: 0;
+      min-width: 960px;
+    }

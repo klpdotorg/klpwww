@@ -1,0 +1,132 @@
+$def with (questions)
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <title>Share Your Story</title>
+    <link type="text/css" rel="stylesheet" href="/css/sys.css"/>
+    <link type="text/css" rel="stylesheet" href="/css/printsys.css" media="print"/>
+    <link type="text/css" rel="stylesheet" href="/yui/build/cssfonts/fonts-min.css"/>
+    <script type="text/javascript" src="/yui/build/yui/yui-min.js"></script>
+    <script type="text/javascript" src="/js/shareyourstory.js"></script>
+    <style type="text/css" id="styleoverrides">
+#cal1Cont {
+    width: 128px;
+}
+
+#cal1Cont div.calheader {
+    background-color:#004C6D;
+    cursor: move;
+}
+
+#cal1Cont .yui3-calendar {
+    width:auto;
+    background-color:transparent;
+}
+
+#cal1Cont .yui3-calendar tr, #cal1Cont .yui3-calendar th {
+    background-color:transparent;
+    vertical-align:middle;
+    text-transform:none;
+    color:#fff;
+}
+
+#cal1Cont .yui3-calendar a:hover {
+    text-decoration:none;
+}
+#results {
+    background-color:#8DD5E7;
+    border:1px solid black;
+    position: absolute;
+    top: 15px;
+    right: 5px;
+    width: 300px;
+}
+</style>
+<script type="text/javascript">
+
+ var _gaq = _gaq || [];
+ _gaq.push(['_setAccount', 'UA-3982320-11']);
+ _gaq.push(['_trackPageview']);
+
+ (function() {
+   var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+   ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+   var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+ })();
+
+</script>
+  </head>
+  <body onload="initialise()" class="yui3-skin-sam  yui-skin-sam">
+    <h1>Share Your Story</h1>
+    <div id="toppara">
+    </div>
+    <br>
+  <form id="schoolform" name="schoolform" action="/postSYS/school" onsubmit="return submitData()" method="post" enctype="multipart/form-data" style="display:inline">
+    <div id="formtoppara">
+    </div>
+    <br/>
+    <div id="forminfoheading">
+    </div>
+    <div id="schoolInfo">
+    </div>
+    <br/>
+    <input type="hidden" name="schoolid" id="schoolid">
+    <input type="hidden" name="schooltype" id="schooltype">
+    <p><i>It is not mandatory to give us your name or telephone number. However, we require the date of your visit and a valid email address to be able to verify what you have submitted and to contact you, if necessary.</i></p>
+    <table id="contactInfo" border=1 class="inputTable" width="80%">
+    <tr><b>Your Contact Information</b></tr>
+    <tr><td>Name <i>[Please enter your name]</i></td><td><input type="text" name="name" id="name"/></td></tr>
+    <tr><td>E-Mail <i>[Mandatory. Please give us your email address so that we can contact you]</i></td><td><input type="text" name="email" id="email"/></td></tr>
+    <tr><td>Telephone <i>[Please give us your telephone number, if we may contact you.]</i></td><td><input type="text" name="telephone" id="telephone"/></td></tr>
+    <tr><td>Date of Visit <div id="dateofvisittext"></div></td><td><input type="text" name="dateofvisit" id="dateofvisit"/><div id="cal1Cont" name="cal1Cont" align="right"></div>
+</td></tr>
+       </table>
+       <br/>
+       <br/>
+     <div id="feedbackheading"></div>
+      <br/>
+      <table id="feedback" border=1 width="80%">
+      $for q in questions:
+        <tr><td width=75%>$q["text"]</td>
+        <td width=25%>
+        $if q["type"] == "text":
+          <input type="text" name=$q["id"] id=$q["field"]/>
+        $if q["type"] =="numeric":
+          <input type="text" name=$q["id"] id=$q["field"] onchange='isNumeric(this)'/>
+        $if q["type"]=="radio":
+          $for opt in q["options"]:
+            <input type="radio" name=$q["id"] id=$q["field"] value='$opt'/>$opt<br>
+        </td>
+        </tr>
+      </table>
+      <br/>
+      <br/>
+    <div id="commentheading"></div>
+    <b>Comments:</b><br/>
+    <textarea name="comments" id="comments" style="width:80%" rows="5"
+    onKeyDown="textCounter(document.schoolform.comments,document.schoolform.remLen2,500)"
+    onKeyUp="textCounter(document.schoolform.comments,document.schoolform.remLen2,500)"></textarea>
+    <br/>
+    <input readonly type="text" name="remLen2" size="3" maxlength="3" value="500">
+    characters left
+
+    <br/>
+    <br/>
+    <div id="photos">
+      <b>Upload Photos:-</b>
+      <br/>
+      <div id="image-inputs">
+        <p><input type="file" name="file1"></p>
+        <p><input type="file" name="file2"></p>
+        <p><input type="file" name="file3"></p>
+        <p><input type="file" name="file4"></p>
+       <p><input type="file" name="file5"></p>
+      </div>
+    </div>
+    <br/>
+    <br/>
+    <div id="submit" align="left">
+      <input type="submit" value="Submit" class="btn1" style="width:200px;" />
+    </div>
+  </form>
+ </body>
+</html> 

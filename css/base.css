@@ -1,0 +1,226 @@
+body { /*background-image: url(../images/parchment-tile.png);*/}
+
+#wrapper {
+  margin-right: auto;
+	margin-left: auto;
+  background-color: #fff;
+}
+
+	
+#header {
+	height: 10px;
+	border: 0px;
+	padding-top: 40px;
+	padding-right: 0px;
+	padding-bottom: 0px;
+	/*padding-left: 561px;*/
+	padding-left: 0px;
+	margin-top: 0px;
+	margin-right: 0px;
+	margin-bottom: 0px;
+	margin-left: 0px;
+	/*background-image: url(../images/header.png);*/
+	/*background-repeat: repeat-x;*/
+
+	}
+
+/* NAV BAR style */
+ol, ul          {list-style: none;}
+ul.topnav       {
+  padding:0 5px;
+  font-size:13px;
+  font-color:#000;
+  overflow:hidden;
+  background:#F89400;
+  font-family:Arial, Helvetica, sans-serif;
+  border-top:solid 3px #43ad2f;
+  text-decoration:none;
+}
+ul.topnav li  {
+  float:left;
+  padding:7px 8px;
+  border-top:solid 2px #ffc000;
+}
+ul.topnav li.active{
+  /*border-top: solid 1px #ffc000;*/
+  color:#444;
+  font-weight:bold;
+  text-decoration:none;
+}
+ul.topnav li:hover  {
+  background:#ffc000;
+  cursor:pointer;
+  text-decoration:none;
+}
+/* end of NAV BAR style */
+
+/* Footer style */	
+#footer {
+	clear: left;
+	
+	width: 920px;
+	height: 100px;
+	
+	border: 0px;
+
+	padding-top: 0px;
+	padding-right: 0px;
+	padding-bottom: 0px;
+	padding-left: 0px;
+
+	margin-top: 0px;
+	margin-right: 0px;
+	margin-bottom: 0px;
+	margin-left: 0px;
+
+	background-image: url(../images/footer.png);
+	background-repeat: repeat;
+	
+	color:black;
+	font-family: "Arial", Sans-serif;
+	font-style: normal;
+	font-size: 8pt;
+	}
+	
+#footer ul {list-style-type: none;}
+
+#footer a{text-decoration: none;}
+
+#footer a:link{
+	color: black;
+	font-family: "Arial", Sans-serif;
+	font-style: normal;
+	font-weight: bold;
+	font-size: 9px;
+	}
+	
+#footer a:visited{
+	color: black;
+	font-family: "Arial", Sans-serif;
+	font-style: normal;
+	font-weight: bold;
+	font-size: 9px;
+	}
+	
+#footer a:hover{
+	color: black;
+	font-family: "Arial", Sans-serif;
+	font-style: normal;
+	font-weight: bold;
+	font-size: 9px;
+	}
+	
+#footer a:active{
+	color: black;
+	font-family: "Arial", Sans-serif;
+	font-style: normal;
+	font-weight: bold;
+	font-size: 9px;
+	}
+	
+
+#mapSet1{
+	float: left;
+	
+	width: 120px;
+	height: 100px;
+	
+	border: 0px;
+
+	padding-top: 0px;
+	padding-right: 0px;
+	padding-bottom: 0px;
+	padding-left: 0px;
+
+	margin-top: 0px;
+	margin-right: 0px;
+	margin-bottom: 0px;
+	margin-left: 0px;
+	}
+
+#mapSet2{
+	float: left;
+	
+	width: 120px;
+	height: 100px;
+	
+	border: 0px;
+
+	padding-top: 0px;
+	padding-right: 0px;
+	padding-bottom: 0px;
+	padding-left: 0px;
+
+	margin-top: 0px;
+	margin-right: 0px;
+	margin-bottom: 0px;
+	margin-left: 0px;
+	}
+
+#mapSet3{
+	float: left;
+	
+	width: 120px;
+	height: 100px;
+	
+	border: 0px;
+
+	padding-top: 0px;
+	padding-right: 0px;
+	padding-bottom: 0px;
+	padding-left: 0px;
+
+	margin-top: 0px;
+	margin-right: 0px;
+	margin-bottom: 0px;
+	margin-left: 0px;
+	}
+	
+#mapSet4{
+	float: right;
+	
+	height: 100px;
+	
+	border: 0px;
+	font-weight: bold;
+	font-size:  1.1em;
+
+	padding-top: 70px;
+	padding-right: 15px;
+	padding-bottom: 0px;
+	padding-left: 0px;
+
+	margin-top: 0px;
+	margin-right: 0px;
+	margin-bottom: 0px;
+	margin-left: 0px;
+	}
+
+div.mapSet5{
+	float: left;
+	
+	width: 100px;
+	height: 100px;
+	
+	border: 0px;
+
+	padding-top: 0px;
+	padding-right: 0px;
+	padding-bottom: 0px;
+	padding-left: 0px;
+
+	margin-top: 0px;
+	margin-right: 0px;
+	margin-bottom: 0px;
+	margin-left: 0px;
+	}
+
+a.footerlink{
+	color: black;
+	font-family: "Arial", Sans-serif;
+	font-style: normal;
+	font-weight: bold;
+	font-size: 8pt ! important
+	}
+	
+/* End of Footer Style */

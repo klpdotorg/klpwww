@@ -1,0 +1,23 @@
+/* Image placement */
+.align-right { 
+    float:right; 
+    margin: 0 0 15px 15px; 
+}
+.align-left { 
+    float:left; 
+    margin: 0 15px 15px 0; 
+}
+.frame { 
+    padding: 5px; 
+    border: 1px solid #aaa; 
+}
+
+div.textpage{
+  /*height:500px;
+  width:900px;*/
+  padding-left:10px;
+  padding-top:75px;
+  padding-bottom: 20px;
+  padding-right: 10px;
+  text-align: justify;
+}

@@ -1,0 +1,115 @@
+$def with (questions)
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <title>Share Your Story</title>
+    <script type="text/javascript" src="/js/shareyourstory.js"></script>
+    <script type="text/javascript" src="/yui/build/yui/yui-min.js"></script>
+    <script type="text/javascript" src="/js/ezcalendar_orange.js"></script>
+    <link type="text/css" rel="stylesheet" href="/css/sys.css"/>
+    <link type="text/css" rel="stylesheet" href="/css/grid.css"/>
+    <link type="text/css" rel="stylesheet" href="/css/style.css"/>
+    <link type="text/css" rel="stylesheet" href="/css/printsys.css" media="print"/>
+    <link rel="stylesheet" type="text/css" href="/css/ezcalendar_orange.css" />
+
+
+<script type="text/javascript">
+ var _gaq = _gaq || [];
+ _gaq.push(['_setAccount', 'UA-3982320-11']);
+ _gaq.push(['_trackPageview']);
+
+ (function() {
+   var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+   ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+   var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+ })();
+</script>
+  </head>
+<body onload="initialise()" class="yui3-skin-sam  yui-skin-sam">
+<div class="container container_12">
+<div class="grid_12">
+  <div class="container container_12">
+    <div id="header" class="grid_12">
+      <div id="title"></div>
+      <div id="schoolInfo"></div>
+    </div>
+
+    <div class="grid_12" id="formfiller">
+      <form id="schoolform" name="schoolform" action="/postSYS/school" onsubmit="return submitData()" method="post" enctype="multipart/form-data" style="display:inline">
+     <div class="grid_4">
+      
+      <input type="hidden" name="schoolid" id="schoolid">
+      <input type="hidden" name="schooltype" id="schooltype">
+      <input type="hidden" name="chkboxes" id="chkboxes">
+    
+      <div class='div-table'>
+      <div class='div-table-caption' >Your Contact Information</div>
+        <div class='div-table-row'>
+          <div class='div-table-col' style='width:110px'>Name</div><div class='div-table-col'><input type="text" name="name" id="name"/></div>
+        </div>
+        <div class='div-table-row'>
+          <div class='div-table-col' style='width:110px'>E-Mail <img src="images/mandatory.gif" height="10" style='vertical-align:top'/></div><div class='div-table-col'><input type="text" name="email" id="email" onchange='verifyEmail(this.value,"btn1");'/></div>
+        </div>
+          <div class='div-table-row'>
+            <div class='div-table-col' style='width:110px'>Telephone </div><div class='div-table-col'><input type="text" name="telephone" id="telephone"/></div>
+          </div>     
+        <div class='div-table-row'>
+          <div class='div-table-col' style='width:110px'>Date of Visit <img src="images/mandatory.gif" height="10" style='vertical-align:top'/></div>
+          <div class='div-table-col'><input readonly name="dateofvisit" id="dateofvisit" type="text" size="10" maxlength="10" value="" /> 
+            <a href="javascript: showCalendar('dateofvisit')"><img src="images/calbtn.gif" width="18" height="18" alt="Calendar" style='vertical-align:middle'/></a>
+          </div>
+        </div>
+      </div>
+      <div id="note"><img src="images/mandatory.gif" height="10" style='vertical-align:top'/>We require the date of your visit and a valid email address to be able to verify what you have submitted this information and to contact you, if necessary.</div>
+      <div id="photos">
+      <label>Upload Photos:-<label>
+        <div id="image-inputs">
+    <input type="file" name="file1" onchange='check_extension(this.value,"btn1");'>
+    <input type="file" name="file2" onchange='check_extension(this.value,"btn1");'>
+    <input type="file" name="file3" onchange='check_extension(this.value,"btn1");'>
+    <input type="file" name="file4" onchange='check_extension(this.value,"btn1");'>
+    <input type="file" name="file5" onchange='check_extension(this.value,"btn1");'>
+        </div>
+      </div>
+    </div> <!--closing grid_6-->
+    <div class="grid_8">
+      <div class='div-table'>
+      <div class='div-table-caption'>Please answer these questions based on your visit:</div>
+      $for q in questions:
+        <div class='div-table-row'>
+          <div class='div-table-col' style="width:250px">$q["text"]</div>
+          <div class='div-table-col'>
+          $if q["type"] == "text":
+            <input type="text" name=$q["field"] id=$q["field"]/>
+          $if q["type"] =="numeric":
+            <input type="text" name=$q["field"] id=$q["field"] onchange='isNumeric(this)'/>
+          $if q["type"]=="radio":
+            $for opt in q["options"]:
+              <input type="radio" name=$q["field"] id=$q["field"] value='$opt'/>&nbsp;$opt<br>
+          $if q["type"]=="checkbox":
+            $for opt in q["options"]:
+              <input type="checkbox" name=$opt[0] id=$opt[0] value='$opt[1]'/>&nbsp;$opt[1]<br>
+          </div>
+        </div>
+      </div>
+    </div> <!-- close of the other grid 6 -->
+    <div class="clearfix"></div>
+    <div id="formclose" class="grid_12">
+      <label>For additional comments/observations/notes, please use this space below:</label>
+      <textarea name="comments" id="comments" style="width:100%" rows="5"
+           onKeyDown="textCounter(document.schoolform.comments,document.schoolform.remLen2,500)"
+           onKeyUp="textCounter(document.schoolform.comments,document.schoolform.remLen2,500)"></textarea>
+      <input readonly type="text" name="remLen2" size="3" maxlength="3" value="500"> characters left
+
+      <div id="submit" align="left">
+        <input id="btn1" name="btn1" type="submit" value="Submit" class="btn1" style="width:150px;horizontal-align:middle" />
+      </div>
+    </form>
+   </div> <!-- closing last grid_12-->
+  </div> <!--grid 12-->
+  </div> <!-- container 12-->
+</div> <!--grid 12-->
+</div> <!-- container 12-->
+
+</body>
+
+</html>

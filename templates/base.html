@@ -1,0 +1,71 @@
+$def with (content)
+<!doctype html>
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title></title>
+  <meta name="description" content="Main Page">
+  <meta name="author" content="Alok,Shivangi,Megha">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <!--link rel="stylesheet" href="css/style.css"-->
+  <link rel="stylesheet" href="css/grid.css">
+  $if content.cssfiles:
+    $for f in content.cssfiles.split():
+      <link rel="stylesheet" href="$f" type="text/css" media="screen" charset="utf-8"/>
+
+  $if content.jsfiles:
+    $for f in content.jsfiles.split():
+      <script type="text/javascript" src="$f"></script>
+
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-3982320-11']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+</head>
+
+<body $content.btags>
+<div id="topbar" class="container container_12">
+  <div class="grid_12">
+    <div id="header">
+      <div id="navigation">
+        <ul>
+          <li><a href="/">Home</a></li>
+          <li><a href="/visualization?type=school">Map</a></li>
+          <!--li><a href="/visualization?type=preschool">Map (Preschools)</a></li-->
+          <li><a href="/text/partners">Partners</a></li>
+          <li><a href="#">Programmes</a>
+            <ul>
+              <li><a href="/text/reading" target="_blank">Reading</a></li>
+              <li><a href="/text/maths" target="_blank">Maths</a></li>
+              <li><a href="/text/library" target="_blank">Library</a></li>
+              <li><a href="/text/preschool" target="_blank">Preschools</a></li>
+            </ul>
+          </li>
+        <!--div id="textheader"><img src="../images/klp_txt.png"/></div-->
+      </ul>
+    </div>
+  </div>
+  <div class="clearfix"></div>
+</div>
+
+  $:content
+
+<div id="bottombar" class="container container_12">
+  <div class="grid_12">
+    <div id="footer">
+           <ul class="bottomnav">
+              <li><a href="/text/aboutus" class="footerlink">About Us</a></li>
+              <li><a href="/text/credits" class="footerlink">Credits</a></li>
+           </ul>
+    </div>
+  </div>
+</div>
+</body>
+</html> 

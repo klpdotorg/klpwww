@@ -1,0 +1,35 @@
+div.leftside{
+  float: left;
+}
+
+div.rightside{
+  float: right;
+  /*border: 1px solid black; */
+}
+
+
+#boundary{
+  margin-right:auto;
+  margin-left:auto;
+}
+
+div.leftContent{ float: left;height:500px;width:520px;padding:2px;}
+div.rightContent{ float: right; height:500px;width:520px;padding:2px;}
+div.centerContent{ float: left; height:500px;width:900px;padding:5px;}
+
+
+div.legend{
+  width:100px;
+}
+
+div.centerLegend{
+  width:200px;
+}
+
+
+
+div.midcontent{
+  float: left;
+  width: 1100px;
+  text-align: center;
+}

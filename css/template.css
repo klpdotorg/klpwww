@@ -1,0 +1,315 @@
+body { background-image: url(images/parchment-tile.png);}
+
+#wrapper {
+    margin-right: auto;
+	margin-left: auto;
+	width: 920px;
+	}
+
+	
+#header {
+	width: 920px;
+	height: 19px;
+	
+	border: 0px;
+
+	padding-top: 40px;
+	padding-right: 0px;
+	padding-bottom: 0px;
+	padding-left: 561px;
+
+	margin-top: 0px;
+	margin-right: 0px;
+	margin-bottom: 0px;
+	margin-left: 0px;
+
+	background-image: url(images/header.png);
+	background-repeat: no-repeat;
+	}
+
+/* NAV BAR style */
+
+#nav, #nav ul {
+	padding: 0;
+	margin: 0;
+	list-style: none;
+	color: white;
+	font-family: "Arial", Sans-serif;
+	font-style: normal;
+	font-weight: bold;
+	font-size:  .8em;
+}
+
+#nav a {
+	display: block;
+	width: 10em;
+	text-decoration: none;
+}
+
+#nav a:link{color: white;}
+#nav a:visited{color: white;}
+#nav a:hover {color: yellow;}
+
+#nav li {
+	float: left;
+	width: 10em;
+	
+	
+}
+
+#nav li ul {
+	position: absolute;
+	width: 8em;
+	left: -999em;
+	color: white;
+	font-family: "Arial", Sans-serif;
+	font-style: normal;
+	font-weight: bold;
+	font-size:  1em;
+	background-color: #336666;
+}
+
+#nav li:hover ul {
+	left: auto;
+}
+/* end of NAV BAR style */
+
+
+#main h1{
+    margin-left: 10px;
+	color: #330000;
+	font-family: "Arial", Sans-serif;
+	font-style: normal;
+	font-weight: 500;
+	font-size: 24px;
+	}
+	
+#col1 {
+    float: left;
+	width: 255px;
+	margin-left: 10px;
+	
+	padding-top: 0px;
+	padding-right: 10px;
+	padding-bottom: 0px;
+	padding-left: 10px;
+	background-color: #336666;
+	color: white;
+	font-family: "Arial", Sans-serif;
+	font-style: normal;
+	font-weight: 100;
+	font-size: 14px;
+	}
+		
+#col1 img {
+
+	background-color: #336666;
+	max-width: 250px;
+	padding-top: 5px; }
+	
+#col2 {
+    float: left;
+	width: 290px;
+	margin: 0px;
+	
+	padding-top: 0px;
+	padding-right: 10px;
+	padding-bottom: 0px;
+	padding-left: 10px;
+	color: black;
+	font-family: "Arial", Sans-serif;
+	font-style: normal;
+	font-weight: 300;
+	font-size: 12px;
+	text-align: justify;
+	}
+	
+#col2 img {
+	background-color: #336666;
+	max-width: 280px;
+	padding: 5px; }
+	
+p.first:first-line{
+	color: #330000;
+	font-weight: bold;}
+
+#col3 {
+    float: left;
+	width: 290px;
+	margin: 0px;
+	
+	padding-top: 0px;
+	padding-right: 10px;
+	padding-bottom: 0px;
+	padding-left: 10px;
+	color: black;
+	font-family: "Arial", Sans-serif;
+	font-style: normal;
+	font-weight: 300;
+	font-size: 12px;
+	text-align: justify;
+	}
+
+#col3 img {
+	background-color: #336666;
+	max-width: 280px;
+	padding: 5px; }
+	
+#spacer {
+	clear:both;
+	height:10px;
+	}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	
+/* Footer style */	
+#footer {
+	clear: left;
+	
+	width: 920px;
+	height: 100px;
+	
+	border: 0px;
+
+	padding-top: 0px;
+	padding-right: 0px;
+	padding-bottom: 0px;
+	padding-left: 0px;
+
+	margin-top: 0px;
+	margin-right: 0px;
+	margin-bottom: 0px;
+	margin-left: 0px;
+
+	background-image: url(images/footer.png);
+	background-repeat: repeat;
+	
+	color:black;
+	font-family: "Arial", Sans-serif;
+	font-style: normal;
+	font-size: 8pt;
+	}
+	
+#footer ul {list-style-type: none;}
+
+#footer a{text-decoration: none;}
+
+#footer a:link{
+	color: black;
+	font-family: "Arial", Sans-serif;
+	font-style: normal;
+	font-weight: bold;
+	font-size: 9px;
+	}
+	
+#footer a:visited{
+	color: black;
+	font-family: "Arial", Sans-serif;
+	font-style: normal;
+	font-weight: bold;
+	font-size: 9px;
+	}
+	
+#footer a:hover{
+	color: black;
+	font-family: "Arial", Sans-serif;
+	font-style: normal;
+	font-weight: bold;
+	font-size: 9px;
+	}
+	
+#footer a:active{
+	color: black;
+	font-family: "Arial", Sans-serif;
+	font-style: normal;
+	font-weight: bold;
+	font-size: 9px;
+	}
+	
+
+#mapSet1{
+	float: left;
+	
+	width: 120px;
+	height: 100px;
+	
+	border: 0px;
+
+	padding-top: 0px;
+	padding-right: 0px;
+	padding-bottom: 0px;
+	padding-left: 0px;
+
+	margin-top: 0px;
+	margin-right: 0px;
+	margin-bottom: 0px;
+	margin-left: 0px;
+	}
+
+#mapSet2{
+	float: left;
+	
+	width: 120px;
+	height: 100px;
+	
+	border: 0px;
+
+	padding-top: 0px;
+	padding-right: 0px;
+	padding-bottom: 0px;
+	padding-left: 0px;
+
+	margin-top: 0px;
+	margin-right: 0px;
+	margin-bottom: 0px;
+	margin-left: 0px;
+	}
+
+#mapSet3{
+	float: left;
+	
+	width: 120px;
+	height: 100px;
+	
+	border: 0px;
+
+	padding-top: 0px;
+	padding-right: 0px;
+	padding-bottom: 0px;
+	padding-left: 0px;
+
+	margin-top: 0px;
+	margin-right: 0px;
+	margin-bottom: 0px;
+	margin-left: 0px;
+	}
+	
+/* End of Footer Style */

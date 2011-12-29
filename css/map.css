@@ -1,0 +1,163 @@
+#map {
+	width: 100%;
+	min-height: 500px;
+  color:black;
+  font-family: "Arial", Sans-serif;
+  font-style: normal;
+  font-weight: bold;
+  font-size:  1em;
+	border: 1px solids;
+  margin-top:-16px;
+}
+
+
+#top_panel a:link{color: white;}
+#top_panel a:visited{color: white;}
+#top_panel a:hover {color: white;}
+
+
+	
+#map top_panel{
+	color: white;
+	font-family: "Arial", Sans-serif;
+	font-style: normal;
+	font-weight: bold;
+	font-size:  1em;
+}
+
+ol, ul {
+    list-style: none outside none;
+}
+
+#legend {
+    background-image: url("../images/trans_green_tile.png");
+    background-repeat: repeat;
+    font-family: Arial,Helvetica,sans-serif;
+    font-size: 13px;
+    height: 55px;
+    padding-top:10px;
+    padding-left:30%;
+}
+
+#legend ul li {
+    /*background-image: url("../images/trans_green_tile.png");
+    background-repeat: repeat;*/
+    display: inline;
+    float: left;
+    height: 55px;
+    list-style: none outside none;
+}
+#legend img {
+    height: 60%;
+    vertical-align:bottom;
+    padding-left: 5px;
+    padding-right: 5px;
+    border:  none;
+}
+
+#panel {
+    left: 57%;
+    position: absolute;
+    top: 50px;
+    z-index: 2;
+    color: white;
+    padding-left: 10px;
+    padding-right: 10px;
+    padding-top: 10px;
+    background-color: black;
+    opacity: 0.75;
+    height: 65px;
+}
+
+#moreoptions {
+    background-color: black;
+    color: white;
+    height: 170px;
+    opacity: 1;
+    padding-left: 10px;
+    padding-right: 10px;
+    padding-top: 20px;
+    margin-left: -10px;
+    margin-right: -10px;
+    /*margin-top:20px;*/
+    z-index: 99;
+}
+
+#circleinfo {
+    background-image: url("../images/trans_green_tile.png");
+    color: black;
+    height: 20px;
+    opacity: 1;
+    padding-left: 19px;
+    padding-right: 0px;
+    padding-top: 5px;
+    z-index: 99;
+    background-repeat: repeat;
+    border-top: 1px solid white;
+    text-align: center;
+    font-weight: bold;
+}
+
+#address {
+    background-color: #FFFFFF;
+    opacity: 1;
+    padding-left: 5px;
+    padding-right: 5px;
+    height:26px;
+    width: 54%;
+    color:#333;
+}
+
+#search-button {
+    background-image: url("../images/search.png");
+    background-repeat: no-repeat;
+    opacity: 1;
+    /*width: 30%;*/
+}
+
+a.button {
+    /* Sliding right image */
+    background: transparent url('../images/button_right.png') no-repeat scroll top right; 
+    display: block;
+    /*float: right;*/
+    height: 32px; /* CHANGE THIS VALUE ACCORDING TO IMAGE HEIGHT */
+    padding-right: 10px; /* CHENGE THIS VALUE ACCORDING TO RIGHT IMAGE WIDTH 20px */
+    /* FONT PROPERTIES */
+    text-decoration: none;
+    color: #000000;
+    font-family: Arial, Helvetica, sans-serif;
+    font-size:12px;
+    font-weight:bold;
+}
+a.button span {
+    /* Background left image */ 
+    background: transparent url('../images/button_left.png') no-repeat; 
+    display: block;
+    line-height: 22px; /* CHANGE THIS VALUE ACCORDING TO BUTTONG HEIGHT */
+    padding: 7px 0 5px 10px; /*18px*/
+} 
+a.button:hover span{
+    text-decoration:underline;
+}
+dl {
+    overflow: hidden;
+    width: 100%;
+    padding: 0;
+    margin: 0;
+}
+dt {
+    float: left;
+    width: 35%;
+    margin: 0;
+    padding-top: 5px;
+}
+dd {
+    float: left;
+    width: 50%;
+    padding-top: 5px;
+    margin: 0;
+}
+
+.putitle {
+  font-color: green;
+}

@@ -1,0 +1,132 @@
+$def with (content)
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <title>$content.title</title>
+    <meta http-equiv="X-UA-Compatible" content="IE=8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=7" />
+    $if content.cssfiles:
+        $for f in content.cssfiles.split():
+            <link rel="stylesheet" href="$f" type="text/css" media="screen" charset="utf-8"/>
+
+
+<!--[if IE ]>
+<style type="text/css" media="screen">
+body {
+behavior: url("/css/csshover3.htc");
+}
+#nav ul li {float: left; width: 100%;}
+#nav ul li a {height: 1%;} 
+#nav a {
+font: bold 1em arial, sans-serif;
+}
+#general{
+  width: 100%;
+}
+#blog{
+  width: 100%;
+  margin-right: 0px;
+}
+#col1,#col2{
+  padding-top: 245px;
+}
+</style>
+<![endif]--> 
+    $if content.jsfiles:
+        $for f in content.jsfiles.split():
+            <script type="text/javascript" src="$f"></script>
+
+<script type="text/javascript">
+
+ var _gaq = _gaq || [];
+ _gaq.push(['_setAccount', 'UA-3982320-11']);
+ _gaq.push(['_trackPageview']);
+
+ (function() {
+   var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+   ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+   var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+ })();
+
+</script>
+  </head>
+  <body $content.btags>
+    <div id="wrapper">
+
+      <div id="header">
+ 	<ul id="nav">
+          <li><a href="/">HOME</a></li>
+          <li>VISUALIZATION
+            <ul>
+              <li><a href="/visualization?type=school">Schools/<br>Preschools</a></li>
+            </ul>
+          </li>
+          <li>PROGRAMMES
+            <ul>
+              <li><a href="/text/reading">Reading</a></li>
+              <li><a href="/text/maths">Maths</a></li>
+              <li><a href="/text/library">Library</a></li>
+              <li><a href="/text/preschool">Preschools</a></li>
+            </ul>
+          </li>
+
+          <li>PARTNERS
+            <ul>
+              <li><a href="/text/partners">Partners</a></li>
+              <!--<li><a href="/text/reports">Reports</a></li>-->
+            </ul>
+          </li>
+        </ul>
+
+      </div>
+
+      $:content
+
+      <div id="footer">
+
+        <div id="mapSet1">
+          <ul>
+            Visualization
+            <li><a href="/visualization?type=school">Schools/Preschools</a></li>
+          </ul>
+        </div>
+
+        <div id="mapSet2">
+
+          <ul>
+            Programmes
+            <li><a href="/text/reading">Reading</a></li>
+            <li><a href="/text/maths">Maths</a></li>
+            <li><a href="/text/library">Library</a></li>
+            <li><a href="/text/preschool">Preschools</a></li>
+          </ul>
+
+        </div>
+
+        <div id="mapSet3">
+          <ul>
+            Partners
+            <li><a href="/text/partners">Partners</a></li>
+            <!--<li><a href="/text/reports">Reports</a></li>-->
+          </ul>
+        </div>
+
+        <div id="mapSet4">
+           This site should be viewed using Firefox, Chrome or Safari.
+        </div>
+
+        <div class="mapSet5">
+           <ul><a href="/text/aboutus" class="footerlink">About Us</a></ul>
+        </div>
+
+        <div class="mapSet5">
+           <ul><a href="/text/credits" class="footerlink">Credits</a></ul>
+        </div>
+
+
+
+      </div>
+    </div>
+
+  </body>
+
+</html> 

@@ -19,3 +19,6 @@ sudo -u postgres psql -d ${DBNAME} -f sysload/load.sql
 echo "Cleaning the db"
 python checksysimages.py
 sudo -u postgres psql -d ${DBNAME} -f updatesysdb.sql
+
+echo Reset tb_sys_data seq into ${DBNAME}
+sudo -u postgres psql -d ${DBNAME} -f sysload/counter.sql

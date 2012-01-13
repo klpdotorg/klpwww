@@ -16,6 +16,7 @@ queries=[{'tb_sys_data': 'select * from tb_sys_data'},
 
 
 loadfile=open('sysload/load.sql','w',0)
+countfile=open('sysload/counter.sql','w',0)
 
 def getRow(row):
   line=str(row).strip('(')
@@ -66,6 +67,11 @@ for query in queries:
     print tbname
     sys.stdout.flush()
     make_csv(tbname,query[tbname])
-
+cursor.execute('select last_value from tb_sys_data_id_seq')
+result = cursor.fetchall()
+for row in result:
+  lastvalue = row[0]
+  countfile.write('ALTER SEQUENCE tb_sys_data_id_seq restart with ' + str(lastvalue + 1) + ';');
+  countfile.close();
 
 connection.close()

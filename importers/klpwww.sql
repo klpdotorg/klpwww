@@ -106,6 +106,15 @@ CREATE TABLE "tb_student_class" (
   "status" integer NOT NULL
 );
 
+DROP TABLE IF EXISTS "tb_partner" cascade;
+CREATE TABLE "tb_partner" (
+  "id" serial unique, -- 'Programme id'
+  "name" varchar(300) NOT NULL,
+  "status" integer NOT NULL,
+  "info" varchar(500),
+  PRIMARY KEY ("id")
+);
+
 DROP TABLE IF EXISTS "tb_programme" cascade;
 CREATE TABLE "tb_programme" (
   "id" serial unique, -- 'Programme id'
@@ -186,44 +195,6 @@ CREATE OR REPLACE VIEW vw_inst_coord as
        select * from dblink('host=localhost dbname=klp-coord user=klp password=1q2w3e4r', 'select * from inst_coord') 
        as t2 (instid integer,
               coord geometry);
-
-CREATE OR REPLACE VIEW vw_sys_data as
-       select * from dblink('host=localhost dbname=klpsys user=klp password=1q2w3e4r', 'select * from tb_sys_data')
-       as t3 (id integer,
-              schoolid integer,
-              name character varying(100),
-              email character varying(100),
-              telephone character varying(50),
-              dateofvisit character varying(50),
-              comments character varying(500),
-              entered_timestamp timestamp with time zone,
-              verified character varying(1));
-    
-CREATE OR REPLACE VIEW vw_sys_images as
-       select * from dblink('host=localhost dbname=klpsys user=klp password=1q2w3e4r', 'select * from tb_sys_images')
-       as t4 (schoolid integer,
-              original_file character varying(100),
-              hash_file character varying(100),
-              verified character varying(1),
-              sysid integer);
-    
-CREATE OR REPLACE VIEW vw_sys_qans as
-       select * from dblink('host=localhost dbname=klpsys user=klp password=1q2w3e4r', 'select * from tb_sys_qans')
-       as t5 ( sysid integer,
-              qid integer,
-              answer character varying(500));
-    
-DROP TYPE IF EXISTS sys_question_type;
-CREATE TYPE sys_question_type as enum('text', 'numeric', 'radio');
-
-CREATE OR REPLACE VIEW vw_sys_questions as
-       select * from dblink('host=localhost dbname=klpsys user=klp password=1q2w3e4r', 'select * from tb_sys_questions')
-       as t6 ( id integer,
-              hiertype integer,
-              qtext character varying(500),
-              qfield character varying(50),
-              qtype sys_question_type,
-              options character varying(100)[]);
 
 DROP TYPE IF EXISTS admin_heirarchy cascade;
 CREATE TYPE admin_heirarchy as enum('Centre','State','District','Zone','MP Constituency','MLA Constituency','City Corporation','Ward','Gram Panchayat');

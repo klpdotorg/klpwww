@@ -26,3 +26,6 @@ sudo -u postgres psql -d ${DBNAME} -f load/load.sql
 
 echo Computing aggregates for ${DBNAME}
 psql -U ${OWNER} -d ${DBNAME} -f agg.sql 
+
+echo Running fixes for ${DBNAME}
+psql -U ${OWNER} -d ${DBNAME} -f fixes.sql 

@@ -12,7 +12,7 @@ var projectMarkers={};
 var circleMarkers={};
 var types = ["district","block","cluster","school","preschooldistrict","project","circle","preschool"];
 var zoomInfo = {"district":7,"preschooldistrict":7,"block":9,"cluster":11,"school":13,"project":9,"circle":11,"preschool":13};
-var images = {"district":"district.png","preschooldistrict":"district.png","block":"block.png","cluster":"cluster.png","circle":"cirle.png","project":"project.png","school":"school.png","preschool":"preschool.png"};
+var images = {"district":"district.png","preschooldistrict":"district.png","block":"block.png","cluster":"cluster.png","circle":"circle.png","project":"project.png","school":"school.png","preschool":"preschool.png"};
 var center={"lat":12.971606,"lon":77.594376};
 var defaultid="8877";
 var childInfo=[];
@@ -341,7 +341,7 @@ function createInfoData(info,type,id,name)
     for( num in assessArr)
     {
      var assessment = assessArr[num].split(",");
-     var asstext = assessment[0]
+     var asstext = assessment[2]+'-'+assessment[0]
      assessmentInfo = assessmentInfo+'<a href=\"javascript:void(0);\" onclick=window.open("assessment/'+type+'/'+assessment[1]+'/'+id+'","mywindow")>'+asstext+'</a><br>'
     }
     schooltext="Schools"
@@ -351,16 +351,16 @@ function createInfoData(info,type,id,name)
       '<div style="color:#439C1E;font-size:10pt;font-weight:bold">' + name.toUpperCase() + '</div>' +
       '<div style="display:table;font-size:8pt;font-weight:normal;margin-bottom:-10px;">' +
       '<div style="display:table-row">' + 
-        '<div style="display:table-cell"> Count of '+ schooltext+': '+ numSchools + '</div>' +
-        '<div style="display:table-cell;padding-left:5px;"> Count of Girls: ' + info.numGirls + '</div>' +
+        '<div style="display:table-cell"> Number of '+ schooltext+': '+ numSchools + '</div>' +
+        '<div style="display:table-cell;padding-left:5px;"> Number of Girls: ' + info.numGirls + '</div>' +
       '</div><div style="display:table-row">' +  
-        '<div style="display:table-cell"> Count of Students: ' + numStudents + '</div>' +
-        '<div style="display:table-cell;padding-left:5px;"> Count of Boys: '+ info.numBoys + '</div></div>' +
+        '<div style="display:table-cell"> Number of Students: ' + numStudents + '</div>' +
+        '<div style="display:table-cell;padding-left:5px;"> Number of Boys: '+ info.numBoys + '</div></div>' +
       '</div><hr/><div style="display:table;font-size:8pt;font-weight:normal;margin-top:-10px;margin-bottom:5px;">' +
       '<div style="display:table-row">' + 
         '<div style="display:table-cell"> Intervention Programs:</div>' +
-        '<div style="display:table-cell;padding-left:5px;"> ' + assessmentInfo + '</div> </div> </div>' +
-      '<div style="color:#222;font-size:7pt;font-weight:normal;float:left"> Source: Akshara Foundation</div>';
+        '<div style="display:table-cell;padding-left:5px;"> ' + assessmentInfo + '</div> </div> </div>'; // +
+      //'<div style="color:#222;font-size:7pt;font-weight:normal;float:left"> Partner: Akshara Foundation</div>';
 
   }
   return tableContent;
@@ -372,26 +372,24 @@ function createSchoolInfo(type,info,schoolId,name)
    var sysText;
    if( numStories == 0)
    {
-     sysText = 'No visits to this '+type+' yet. Be the <b><a href=\"javascript:void(0);\" onclick=window.open("shareyourstory'+type+'?type='+type+'?id='+schoolId+'","mywindow")>First to Share your Experience!</a></b>';
+     sysText = 'No visits to this '+type+' yet. Be the <b><a href=\"javascript:void(0);\" onclick=window.open("shareyourstory'+type+'?type='+type+'?id='+schoolId+'","mywindow") style="color:#439C1E">First to Share your Experience!</a></b>';
    }
    else
    {
-     sysText = numStories+' visits by the community. <b><a href=\"javascript:void(0);\" onclick=window.open("shareyourstory'+type+'?type='+type+'?id='+schoolId+'","mywindow")>Share your Experience!</a></b>';
+     sysText = numStories+' visits by the community. <b><a href=\"javascript:void(0);\" onclick=window.open("shareyourstory'+type+'?type='+type+'?id='+schoolId+'","mywindow") style="color:#439C1E">Share your Experience!</a></b>';
    }
    var numStudents = info.numStudents;
-     var schoolpage='<a href=\"javascript:void(0);\" onclick=window.open("schoolpage/'+type+'/'+schoolId+'","mywindow")>Know more...</a><br>';
-     var tableContent= '<div style="display:block">' +
-      '<div style="color:#439C1E;font-size:10pt;font-weight:normal"><b>' + name.toUpperCase() +
-        '</b> <i>'+schoolpage+'</i></div>'+
+   var tableContent= '<div style="display:block">' +
+      '<div><a href=\"javascript:void(0);\" onclick=window.open("schoolpage/'+type+'/'+schoolId+'","mywindow")<span  style="color:#439C1E;font-size:10pt;font-weight:normal"><b>' + name.toUpperCase() + '</b></span></a><span style="color:black"><i> Know more...</i></span></div>'+
       '<div style="display:table;font-size:8pt;font-weight:normal;margin-bottom:-10px;">' +
       '<div style="display:table-row">' +
-        '<div style="display:table-cell"> Count of Students: ' + numStudents + '</div>' +
+        '<div style="display:table-cell"> Number of Students: ' + numStudents + '</div>' +
       '</div><div style="display:table-row">' +
-        '<div style="display:table-cell"> Count of Girls: ' + info.numGirls + '</div>' +
-        '<div style="display:table-cell;padding-left:5px;"> Count of Boys: '+ info.numBoys + '</div></div></div><hr/>' +
-      '<div style="display:table;color:#439C1E;font-size:8pt;font-weight:normal;margin-top:-10px;margin-bottom:5px;">' +
-      '<div style="display:table-row;color:#439C1E;">' + sysText + '</div>' + 
-      '</div><div style="color:#222;font-size:7pt;font-weight:normal;float:left"> Source: Akshara Foundation</div>';
+        '<div style="display:table-cell"> Number of Girls: ' + info.numGirls + '</div>' +
+        '<div style="display:table-cell;padding-left:5px;"> Number of Boys: '+ info.numBoys + '</div></div></div><hr/>' +
+      '<div style="display:table;font-size:8pt;font-weight:normal;margin-top:-10px;margin-bottom:5px;">' +
+      '<div style="display:table-row;">' + sysText + '</div>' + 
+      '</div>'; //<div style="color:#222;font-size:7pt;font-weight:normal;float:left"> Partner: Akshara Foundation</div>';
    return tableContent;
 }
 
@@ -595,7 +593,6 @@ function displayInfo(widget) {
 };
 
 
-/*function eToggle(anctag,darg) */
 function eToggle(anctag,darg)
 {
   var ele = document.getElementById(darg);
@@ -616,6 +613,17 @@ function eToggle(anctag,darg)
   }
 } 
 
+function togglePanel(panelid)
+{
+  var ele = document.getElementById(panelid);
+  if(ele.style.display == "block") {
+    ele.style.display = "none";
+  }
+  else {
+    ele.style.display = "block";
+  }
+}
+
 var newwindow;
 function popwindow(url)
 {
@@ -623,30 +631,56 @@ function popwindow(url)
   if (window.focus) {newwindow.focus()}
 }
 
+
 function listFiles(fileList)
 {
-  var mptable = document.getElementById('mp_files');
-  var mlatable = document.getElementById('mla_files');
-  var fileNames = fileList["mpnames"].sort();
-  tableHTML = "<div class='div-table'>" + "<div class='div-table-caption'>List of Reports</div>" ;
-  for( each in fileNames) {
-    tableHTML = tableHTML + "<div class='div-table-row'>" + "<div class='div-table-col'>" + fileNames[each] + "</div>"+
-    "<div class='div-table-col'>" + "<a target='_blank' href='" + fileList["directory"] + fileList["subdir1"] + "/" + fileNames[each] + "'/>" + "Kannada</a></div>" +
-    "<div class='div-table-col'>" + "<a target='_blank' href='" + fileList["directory"] + fileList["subdir2"] + "/" + fileNames[each] + "'/>" + "English</a></div>" + 
-    "</div>";
+  var type = parseInt(fileList["listtype"])
+  if( type == 1 || type == 3) {
+    if( type == 1){
+      document.getElementById('selections').style.display = "block";
+    } else {
+      document.getElementById('selections').style.display = "none";
+      document.getElementById('mp_files').style.display = "block";
+      document.getElementById('mla_files').style.display = "block";
+    } 
+    var mptable = document.getElementById('mp_files');
+    var mlatable = document.getElementById('mla_files');
+    var fileNames = fileList["mpnames"].sort();
+    tableHTML = "<div class='div-table'>" + "<div class='div-table-caption'>List of Reports</div>" ;
+    for( each in fileNames) {
+      tableHTML = tableHTML + "<div class='div-table-row'>" + "<div class='div-table-col'>" + fileNames[each] + "</div>"+
+      "<div class='div-table-col'>" + "<a target='_blank' href='" + fileList["directory"] + fileList["subdir1"] + "/" + fileNames[each] + "'/>" + "Kannada</a></div>" +
+      "<div class='div-table-col'>" + "<a target='_blank' href='" + fileList["directory"] + fileList["subdir2"] + "/" + fileNames[each] + "'/>" + "English</a></div>" + 
+      "</div>";
+    }
+    mptable.innerHTML = tableHTML + '</div></div>'; 
+    tableHTML = "<div class='div-table'>" ;
+    if (type ==1 ) {
+      tableHTML = tableHTML + "<div class='div-table-caption'>List of Reports</div>" ;
+    }
+    fileNames = fileList["mlanames"].sort();
+    for( each in fileNames) {
+      tableHTML = tableHTML + "<div class='div-table-row'>" + "<div class='div-table-col'>" + fileNames[each] + "</div>"+
+      "<div class='div-table-col'>" + "<a target='_blank' href='" + fileList["directory"] + fileList["subdir1"] + "/" + fileNames[each] + "'/>" + "Kannada</a></div>" +
+      "<div class='div-table-col'>" + "<a target='_blank' href='" + fileList["directory"] + fileList["subdir2"] + "/" + fileNames[each] + "'/>" + "English</a></div>" + 
+      "</div>";
+    }
+    mlatable.innerHTML = tableHTML + "</div></div>"
+  } else if (type == 2) {
+    document.getElementById('raw_files').style.display = "block";
+    var rawfiletable = document.getElementById('raw_files');
+    var fileNames = fileList["rawfiles"].sort();
+    tableHTML = "<div class='div-table'>" + "<div class='div-table-caption'>List of Reports</div>" ;
+    tableHTML = tableHTML + "<div class='div-table-row'> Right click and use \"Save As\" to download files below:</div>";
+    for( each in fileNames) {
+      tableHTML = tableHTML + "<div class='div-table-row'>" +
+                              "<div class='div-table-col' style='width:200px;'>" + 
+                  "<a target='_blank' href='" + fileList["directory"] + "/" + fileNames[each] + "'/>" + 
+                  fileNames[each] + "</a></div></div>";
+    }
+    rawfiletable.innerHTML = tableHTML + "</div>"
   }
-  mptable.innerHTML = tableHTML + "</div></div>"
-  fileNames = fileList["mlanames"].sort();
-  tableHTML = "<div class='div-table'>" + "<div class='div-table-caption'>List of Reports</div>" ;
-  for( each in fileNames) {
-    tableHTML = tableHTML + "<div class='div-table-row'>" + "<div class='div-table-col'>" + fileNames[each] + "</div>"+
-    "<div class='div-table-col'>" + "<a target='_blank' href='" + fileList["directory"] + fileList["subdir1"] + "/" + fileNames[each] + "'/>" + "Kannada</a></div>" +
-    "<div class='div-table-col'>" + "<a target='_blank' href='" + fileList["directory"] + fileList["subdir2"] + "/" + fileNames[each] + "'/>" + "English</a></div>" + 
-    "</div>";
-  }
-  mlatable.innerHTML = tableHTML + "</div></div>"
 }
-
 function selectFiles()
 {
   elm = document.getElementById('filetype').value;

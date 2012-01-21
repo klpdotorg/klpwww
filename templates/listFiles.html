@@ -8,15 +8,18 @@ $def with (data)
   </head>
   <body onload="listFiles($data)" class="yui3-skin-sam  yui-skin-sam">
     <div id="container">
-      <select onchange='selectFiles();' id='filetype'>
+      <div id="selections" style="display:none">
+        <select onchange='selectFiles();' id='filetype'>
           <option value="">---Select---</option>
           <option value="mp_files">MP Reports</option>
           <option value="mla_files">MLA Reports</option>
           <option value="corp_files">Corporator Reports</option>
-      </select>
+        </select>
+      </div>
       <div id="mp_files" style="display:none;"></div>
       <div id="mla_files" style="display:none;"></div>
       <div id="corp_files" style="display:none;"></div>
+      <div id="raw_files" style="display:none;"></div>
     </div>
   </body>
 </html> 

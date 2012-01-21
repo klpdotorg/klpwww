@@ -337,7 +337,7 @@ ol, ul          {list-style: none;}
 /* Footer style */
 #footer {
   clear: left;
-  height: 50px;
+  height: 40px;
   width:100%;
   background-image: url(../images/footer.png);
   background-repeat: repeat-x;
@@ -348,6 +348,9 @@ ol, ul          {list-style: none;}
   position: relative;
   top: 94px;
   z-index:3;
+  border-top:solid 1px #43AD2F;
+  border-bottom:solid 3px #43AD2F;
+  padding-top:7px;
 }
 
 #footer ul {list-style-type: none;}
@@ -360,6 +363,12 @@ ol, ul          {list-style: none;}
 #footer a:link{color: black;}
 #footer a:visited{color: black;}
 #footer a:hover {color: white;}
+
+#footer img{
+  vertical-align:middle;
+  text-align:middle;
+  /*height:32px;*/
+}
 
 ol, ul          {list-style: none;}
 ul.bottomnav      {

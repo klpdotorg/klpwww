@@ -28,6 +28,17 @@ $def with (content)
       var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
     })();
   </script>
+<script>
+!function(d,s,id){
+  var js,fjs=d.getElementsByTagName(s)[0];
+  if(!d.getElementById(id)){
+    js=d.createElement(s);
+    js.id=id;
+    js.src="//platform.twitter.com/widgets.js";
+    fjs.parentNode.insertBefore(js,fjs);
+  }
+}(document,"script","twitter-wjs");
+</script>
 </head>
 
 <body $content.btags>
@@ -40,6 +51,7 @@ $def with (content)
           <li><a href="/visualization?type=school">Map</a></li>
           <!--li><a href="/visualization?type=preschool">Map (Preschools)</a></li-->
           <li><a href="/text/partners">Partners</a></li>
+          <li><a href="/text/reports" target="_blank">Reports</a></li>
           <li><a href="#">Programmes</a>
             <ul>
               <li><a href="/text/reading" target="_blank">Reading</a></li>
@@ -49,23 +61,30 @@ $def with (content)
             </ul>
           </li>
         <!--div id="textheader"><img src="../images/klp_txt.png"/></div-->
-      </ul>
+        </ul>
+      </div>
     </div>
   </div>
   <div class="clearfix"></div>
-</div>
 
   $:content
 
+</div><!-- end of top bar -->
 <div id="bottombar" class="container container_12">
-  <div class="grid_12">
+  <div class="grid_12" style="float:left;">
     <div id="footer">
-           <ul class="bottomnav">
-              <li><a href="/text/aboutus" class="footerlink">About Us</a></li>
-              <li><a href="/text/credits" class="footerlink">Credits</a></li>
-           </ul>
-    </div>
-  </div>
+      <div class="grid_2" style="padding-left:20px">
+       <a href="/text/aboutus"><img src="/images/aboutus.png" height="38px"/></a>
+      </div>
+      <div class="grid_10" style="text-align:right">
+        <a href="mailto:team@klp.org.in"><img src="/images/c_icon.png" height="30px"/></a>
+        <a href="http://www.facebook.com/aksharadotorg" target="_blank"><img src="/images/fb_icon.png" height="30px"/></a>
+        <a href="https://twitter.com/share" data-url=document.location.href data-text="Interesting find-" target="_blank"><img src="/images/t_icon.png" height="28px"/></a>
+        <a href="http://blog.klp.org.in/feeds/posts/default" target="_blank"><img src="/images/rf_icon.png" height="30px"/></a>
+        <a href="http://www.youtube.com/user/AksharaFoundation" target="_blank"><img src="/images/ut_icon.png" height="25px"/></a>
+      </div>
+   </div>
+ </div>
 </div>
 </body>
 </html> 

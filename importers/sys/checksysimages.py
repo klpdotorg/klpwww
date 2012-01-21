@@ -10,7 +10,8 @@ abspath = os.path.dirname(__file__)
 rootdir = abspath
 
 #TODO change depending on where the files are stored
-odir="/srv/klpwww_new/uploaded_images/sys/"
+#odir="/srv/klpwww_new/uploaded_images/sys/"
+odir="/home/megha/www/klpwww_mock/uploaded_images/sys/"
 
 #Create dirs if not already there
 newodir=rootdir+"correctedsys/sys/"
@@ -21,7 +22,8 @@ newverifiedodir=rootdir+"correctedsys/verifiedsys/"
 if not os.path.exists(newverifiedodir):
     os.makedirs(newverifiedodir)
 
-hdir="/srv/klpwww_new/uploaded_images/school_pics_hash/"
+#hdir="/srv/klpwww_new/uploaded_images/school_pics_hash/"
+hdir="/home/megha/www/klpwww_mock/uploaded_images/school_pics_hash/"
 
 newhdir=rootdir+"correctedsys/school_pics_hash/"
 if not os.path.exists(newhdir):

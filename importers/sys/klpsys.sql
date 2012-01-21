@@ -81,7 +81,6 @@ INSERT INTO tb_sys_questions values(default,1,'Were at least 50% of the children
 INSERT INTO tb_sys_questions values(default,1,'Were all teachers present on the day you visited the school?','schoolq21');
 
 
-);
 
 DROP TABLE IF EXISTS "tb_sys_displayq";
 CREATE TABLE "tb_sys_displayq" (

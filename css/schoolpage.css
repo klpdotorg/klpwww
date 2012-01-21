@@ -5,20 +5,44 @@
   margin-left: 200px;
   margin-top: 55px;
 }
-#sub_header {
+
+#school_info {
+    margin-left: 200px;
+}
+
+#school_info_heading {
+    margin-left: 200px;
+}
+#reportlinks {
+    margin-left: 10px;
+}
+
+.sub_header {
   font-family: "Helvetica", Sans-serif;
   font-size: 15px;
-  color:#43AD2F;
+  color:#E35804;
   font-weight:bold;
   display:block;
   margin-left:5px;
+  margin-top:10px;
+}
+
+img{
+  border: 0px;
+  vertical-align: top;
+}
+
+img.album{
+  border: 2px solid #43AD2F;
+  width:100%;
+  margin-left:16px;
 }
 
 #map {
   width:100%;
-  height:25%;
+  height:150px;
 	border:2px solid #43AD2F;
-  margin-left:35px;
+  margin-left:15px;
   margin-top:10px;
 }
 
@@ -36,28 +60,18 @@
    clear: both;
 }
 
-img{
-        border: 0px;
-        vertical-align: top;
-}
-img.album{
-	opacity: 1;
-	filter:alpha(opacity=1);
-	/*-moz-border-radius: 12px;*/
-	border: 3px solid #C38713;
-  width:80%;
-}
-
 .div-table {
     display: table;
     margin-left: 5px;
     margin-top: 10px;
 }
 .div-table-caption {
-    background: none repeat scroll 0 0 #43AD2F;
-    color: white;
+    /*background: none repeat scroll 0 0 #43AD2F;
+    color: white;*/
     display: table-caption;
     font-weight: bold;
+    text-align:justify;
+    margin-bottom:5px;
 }
 .div-table-row {
     /*border-bottom: 1px solid #F89400;*/
@@ -73,4 +87,10 @@ img.album{
 
 #div-col-125width {
   width:125px;
+}
+#div-col-350width {
+  width:300px;
+}
+#div-row-border{
+  border-bottom: 1px solid #F89400;
 }

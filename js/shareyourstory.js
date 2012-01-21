@@ -133,7 +133,7 @@ function populateInfo(info)
            '</div><div> Is this the school you visited? If yes, please fill the form below. ' +
       'If not, find the preschool from the <a href="visualization?type=preschool">map</a> and Share your Story! '
     }
-    content = content + 'If you have any trouble, please call us at +91 80 25429726 or e-mail us at team@klp.org.in';
+    content = content + 'If you have any trouble, please call us at +91 80 25429726 or e-mail us at  <a href="mailto:team@klp.org.in">team@klp.org.in</a>';
     document.getElementById("schoolInfo").innerHTML= content
 }
 

@@ -21,6 +21,7 @@ body { background-image: url(../images/parchment-tile.png);}
 .div-table-row{i
   display:table-row;
   border-bottom: 1px solid #F89400;
+  line-height: 20px;
 }
 .div-table-col{
   display:table-cell;

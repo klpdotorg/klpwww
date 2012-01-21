@@ -1,6 +1,6 @@
 $var title: KLP: Visualization
 $var cssfiles: /yui/build/cssfonts/fonts-min.css /css/style.css /css/map.css /css/grid.css
-$var jsfiles: /yui/build/yui/yui-min.js http://maps.google.com/maps/api/js?sensor=false /js/klp.js js/distancewidget.js
+$var jsfiles: /yui/build/yui/yui-min.js http://maps.google.com/maps/api/js?sensor=false /js/klp.js js/libs/distancewidget.js
 $var btags: class="yui-skin-sam" onload=initialiseSchool();
 
 <style type="text/css">
@@ -28,13 +28,17 @@ $var btags: class="yui-skin-sam" onload=initialiseSchool();
 </div>
 </div>
 <div class="grid_12" id="circleinfo" style="display:none"></div>
+<div class="clearfix"></div>
 <div class="grid_12" id="map">
       <br>
-    <div id="map_canvas" style="width:100%;height:500px;"></div>
-    <div class="grid_5" id="panel">
-       <label>Search for a school in your neighbourhood:</label>
+    <div id="map_canvas" style="width:100%;height:500px;z-index:15"></div>
+    <div class="grid_2 push_10" id="togglebtn">
+      <a href="javascript:togglePanel('panel');"><img src="/images/toggle.png"></img></a> 
+    </div>
+    <div class="grid_5" id="panel" style="display:block">
+      <label>Search for a school in your neighbourhood:</label>
       <input type="text" value="e.g.: Indiranagar, Bangalore" id="address">
-      <a class="button" style='float:right;margin-right:-10px;' href="javascript:eToggle('more','moreoptions');" id="toggle1"><span>More...</span></a>
+      <a class="button" style='float:right;' href="javascript:eToggle('more','moreoptions');" id="toggle1"><span>More...</span></a>
       <a class="button" style='float:right;' href="#" onclick="geocode()"><span>Find Schools</span></a> 
       <div id="moreoptions" style="display: none">
 <!--43YY-->
@@ -86,7 +90,7 @@ $var btags: class="yui-skin-sam" onload=initialiseSchool();
   </select></dd>
 </dl>
 </div>
-  <a class="button" style='float:right;margin-top:-130px;margin-right:-10px;' href="javascript:eToggle('less','moreoptions');" id="toggle2"><span>Less...</span></a>
+  <a class="button" style='float:right;margin-top:-130px;' href="javascript:eToggle('less','moreoptions');" id="toggle2"><span>Less...</span></a>
   <a class="button" style='float:left;margin-top:5px;margin-left:-5px;' href="visualization"><span>Reset Map</span></a> 
 
       </div>

@@ -3,6 +3,10 @@ var map;
 var type;
 var image={"school":"school.png","preschool":"preschool.png"}
 
+// Load the Visualization API and the piechart package.
+//google.load('visualization', '1', {'packages':['table','piechart']});
+
+
 function initialise(data)
 {
   info=data;
@@ -20,12 +24,16 @@ function initialise(data)
   {
     type="school";
     document.getElementById("school_info_heading").innerHTML = "School Information";
+    document.getElementById("school_hier_heading").innerHTML = "School District Information";
     document.getElementById("school_visits_heading").innerHTML = "School Visits";
+    document.getElementById("sys_comments_heading").innerHTML = "Visitors' Comments";
+    document.getElementById("sys_data_heading").innerHTML = "Information from School Visits";
     document.title = "School Information";
   }
 
   document.getElementById("student_info_heading").innerHTML = "Student Information";
   document.getElementById("const_info_heading").innerHTML = "Constituency Information";
+  document.getElementById("assmt_info_heading").innerHTML = "Programme Information";
   var latlng = new google.maps.LatLng(info["lat"],info["lon"]);
   var myOptions = {
       zoom: 14,
@@ -44,33 +52,34 @@ function initialise(data)
   
   document.getElementById("school_name").innerHTML= info["name"];
   address = '<div class="div-table">'
+  add = '<div class="div-table">'
 
   if (info["address"] != "-")
   {
-        address = address + '<div class="div-table-row">' +
+        add = add + '<div class="div-table-row">' +
                         '<div id="div-col-90width" class="div-table-col" >District</div>' +
                         '<div class="div-table-col">:' + info["b"] +'</div>' +
                         '</div>' 
         
-        address = address + '<div class="div-table-row">' 
+        add = add + '<div class="div-table-row">' 
         if(info["type"] != 2)
         {
-          address = address + '<div id="div-col-90width" class="div-table-col" >Block</div>' 
+          add = add + '<div id="div-col-90width" class="div-table-col" >Block</div>' 
         }else{
-          address = address + '<div id="div-col-90width" class="div-table-col" >Project</div>' 
+          add = add + '<div id="div-col-90width" class="div-table-col" >Project</div>' 
         }
-        address = address + '<div class="div-table-col">:' + info["b1"] +'</div>' +
+        add = add + '<div class="div-table-col">:' + info["b1"] +'</div>' +
                             '</div>'
 
 
-        address = address + '<div class="div-table-row">' 
+        add = add + '<div class="div-table-row">' 
         if(info["type"] != 2)
         {
-          address = address + '<div id="div-col-90width" class="div-table-col" >Cluster</div>' 
+          add = add + '<div id="div-col-90width" class="div-table-col" >Cluster</div>' 
         }else{
-          address = address + '<div id="div-col-90width" class="div-table-col" >Circle</div>' 
+          add = add + '<div id="div-col-90width" class="div-table-col" >Circle</div>' 
         }
-        address = address + '<div class="div-table-col">:' + info["b2"] +'</div>' +
+        add = add + '<div class="div-table-col">:' + info["b2"] +'</div>' +
                             '</div>'
 
         address = address + '<div class="div-table-row">' + 
@@ -91,7 +100,9 @@ function initialise(data)
                             '<div class="div-table-col">:'+info["address"]+'</div></div>' 
   }
         address=address+'</div>'
+        add=add+'</div>'
         document.getElementById("school_geo").innerHTML= address;
+        document.getElementById("school_hier").innerHTML= add;
 
 
   infotable = '<div class="div-table">'
@@ -119,54 +130,60 @@ function initialise(data)
   infotable = infotable + '</div>'
 	document.getElementById("school_info").innerHTML= infotable;
 
-  studentinfo='<img src=\"http://chart.apis.google.com/chart'+
-                        '?chf=bg,s,67676704'+
-                        '&chs=300x225'+
-                        '&cht=p'+
-                        '&chco=EFB136|B56F1C|67676704'+
-                        '&chdl=No.+of+Boys: '+info["numBoys"]+' ('+ Math.round(info["numBoys"]/info["numStudents"]*100)+'%)' +
-                                '|No.+of+Girls: '+ info["numGirls"] +' ('+ Math.round(info["numGirls"]/info["numStudents"]*100)+'%)' + 
-                                '|Total: '+info["numStudents"]+
-                        '&chd=t:'+ info["numBoys"]+','+ info["numGirls"]+'\"'+ 
-                        'width=\"300\" height=\"225\"/>'
-  document.getElementById("student_info").innerHTML= studentinfo;
+  var data = new google.visualization.DataTable();
+  data.addColumn('string', "Gender");
+  data.addColumn('number', "Count");
+  data.addRows([
+    ['Boys' + ' (' + info["numBoys"] + ')', info["numBoys"]],
+    ['Girls' + ' (' + info["numGirls"] + ')', info["numGirls"]],
+    //[Math.round(info["numGirls"]/info["numStudents"]*100) + '% are Girls', info["numGirls"]],
+  ]);
+  //var table2 = new google.visualization.Table(document.getElementById('gendsch_tb'));
+  //table2.draw(data,{width:350, height: 120});
+  //var chart1 = new BarsOfStuff(document.getElementById('student_gend'));
+  //chart1.draw(data, {width:400, height: 240, title:"Gender Profile"});
+  var chart1 = new google.visualization.PieChart(document.getElementById('student_gend'));
+  chart1.draw(data, {width: 350, height: 200, title:  'Gender Profile', backgroundColor: 'transparent', pieSliceText:'label', colors: ['D78103','F49406','E35804','F7AA33','FBBC59']});
+ 
+  var data = new google.visualization.DataTable();
+  data.addColumn('string', 'Language');
+  data.addColumn('number', 'Number of Students');
+  for (var key in info["school_mt_tb"]){
+    data.addRow([key + ' (' + info["school_mt_tb"][key] + ')', parseInt(info["school_mt_tb"][key])]);
+  }
+  //var table = new google.visualization.Table(document.getElementById('mtsch_tb'));
+  //table.draw(data,{width: 400});
+  var chart2 = new google.visualization.PieChart(document.getElementById('student_mt'));
+  chart2.draw(data, {width: 400, height: 200, title:  'Mother Tongue Profile', backgroundColor: 'transparent', pieSliceText:'label', colors: ['D78103','F49406','E35804','F7AA33','FBBC59']});
 
-
-  systable = '<div class="div-table"><div class="div-table-row">' +
-             '<div class="div-table-col"> No. of Visits:</div>' +
-             '<div class="div-table-col">' + info["syscount"] + '</div>';
+  systable = '<div class="div-table">' +
+             '<div class="div-table-row">No. of Visits:' + info["syscount"] + '</div>';
+  systable = systable+ 'If you have visited this school, please' + '<div class="div-table-row"><b><a href=\"javascript:void(0);\" onclick=window.open("../../shareyourstory'+type+'?type='+type+'?id='+info["id"]+'","_blank") style="color:#43AD2F">share your experience </a></b>here.</div>';
             if( info["syscount"]>0)
             {
-              systable = systable+'<div class="div-table-row">Dates of Visit</div>';
+              systable = systable+'<div class="div-table-row">Dates of Visit</div><div class="div-table-row"><b>';
               for(entry in info["sysdate"])
               {
                 date = info["sysdate"][entry];
                 if(date !="") 
-                  systable = systable+'<div class="div-table-row">'+date+'</div>';
+                  systable = systable + date + '&nbsp;&nbsp;'
               }
+              systable = systable + '</b></div>';
             }
-  systable = systable+'<div class="div-table-row"><b><a href=\"javascript:void(0);\" onclick=window.open("../../shareyourstory'+type+'?type='+type+'?id='+info["id"]+'","mywindow")>Share your Experience</a></b></div>';
   document.getElementById("sys_info").innerHTML= systable;
 
   if(info["images"])
   {
-    school_pics= '<a rel=\"lightbox['+ info['id']+']\" href=\"' + info["image_dir"] + info["images"][0]+'\"><img class="album" src=\"' + info["image_dir"] + 
-                info["images"][0]+'\"/>'
+    school_pics= '<a href=\"' + info["image_dir"] + info["images"][0]+'\" rel=\"lightbox['+ info['id']+']\"><img class="album" src=\"' + info["image_dir"] + info["images"][0]+'\"></img></a>'
     for(i=1;i<info["images"].length;i++)
     {
-      school_pics = school_pics+'<a rel=\"lightbox['+ info['id']+']\" href=\"' + info["image_dir"] + info["images"][i] +'\"></a>' 
+      school_pics = school_pics+'<a href=\"' + info["image_dir"] + info["images"][i] +'\" rel=\"lightbox['+ info['id']+']\"></a>' 
     }
   }else{
     school_pics='This school does not have a picture album yet.<br/><br/>'
   }
   document.getElementById("school_pics").innerHTML=school_pics;
  
-  tweet='<iframe allowtransparency=\"true\" frameborder=\"0\" scrolling=\"no\" src=\"http://platform.twitter.com/widgets/tweet_button.html?url=' + document.location.href + '&text='+ 'I visited ' + info["name"] +' and shared my story. More on the school here:' +'\" style=\"vertical-align:top; width:130px; height:50px;\"></iframe>'
-
-  fb_like='<iframe src=\"http://www.facebook.com/plugins/like.php?href='+ document.location.href + '&amp;layout=standard&amp;show_faces=true&amp;width=350&amp;action=like&amp;colorscheme=light&amp;height=80\" scrolling=\"no\" frameborder=\"0\" style=\"vertical-align:top; border:none; overflow:hidden; width:350px; height:80px;\" allowTransparency=\"true\"></iframe>'
-
-  document.getElementById("sharing").innerHTML = tweet + fb_like;
-
   const_table = '<div class="div-table">' +
                 '<div class="div-table-row"><div id="div-col-125width" class="div-table-col">MLA Constituency</div>' + 
                 '<div class="div-table-col">:' + info['mla'].toUpperCase() + '</div><div>' +
@@ -175,24 +192,49 @@ function initialise(data)
                 '<div class="div-table-row"><div id="div-col-125width" class="div-table-col">MP Constituency</div>' + 
                 '<div class="div-table-col">:' + info['mp'].toUpperCase() + '</div><div>' +
                 '<div class="div-table-row"><div id="div-col-125width" class="div-table-col">MP Details</div>' + 
-                '<div class="div-table-col">:' + info['mpname'].toUpperCase() + '</div><div>' +
-                '<div class="div-table-row"><a href="" onclick="javascript:popwindow(\'/listFiles/1\')" style="color:#43AD2F">Please find Constituency-wise Reports here.</a></div>' +
-                '</div>';
+                '<div class="div-table-col">:' + info['mpname'].toUpperCase() + '</div>' +
+                '</div></div>';
   document.getElementById("school_const").innerHTML = const_table
+  document.getElementById("reportlinks").innerHTML = '<a href="" onclick="javascript:popwindow(\'/listFiles/3|'+info['mp'] +'|'+info['mla'] + '\')" style="color:#43AD2F">Please find Constituency Reports here.</a>';
 
   var assessArr = info.assessments.split(",");
   var assessmentInfo = '';
-   for( num in assessArr)
-   {
+  for( num in assessArr)
+  {
      var assessment = assessArr[num].split("|");
-     var asstext = assessment[0];
-     assessmentInfo = assessmentInfo+'<a href=\"javascript:void(0);\" onclick=window.open("../../assessment/'+type+'/'+assessment[1]+'/'+info['id']+'","mywindow")>'+asstext+'</a><br>'
-   }
+     var asstext = assessment[2]+'-'+assessment[0];
+     assessmentInfo = assessmentInfo+'<a href=\"javascript:void(0);\" onclick=window.open("../../assessment/'+type+'/'+assessment[1]+'/'+info['id']+'","_blank")><span style="color:#43AD2F">'+asstext+'</span></a><br/>'
+  }
 
   document.getElementById("assessment_info").innerHTML = '<div class="div-table">' +
-                '<div class="div-table-row"><div class="div-table-col">Akshara Programmes</div>' +
-                '<div class="div-table-col">' + assessmentInfo + '</div><div>' +
+                '<div class="div-table-row">' + assessmentInfo + '</div><div>' +
                 '</div>';
 
+  if(info["syscomment"].length > 0){
+    var syscomm = '<div class="div-table">';
+    for(entry in info["syscomment"]){
+      syscomm = syscomm + '<div class="div-table-row">\"' + info["syscomment"][entry] + '\"</div>';}
+    syscomm = syscomm + '</div>'
+  } else {
+    syscomm = "<div class='div-table'><div class='div-table-row'>No remarks yet.</div></div>"
+  } 
+  document.getElementById("sys_comments").innerHTML = syscomm;
+
+
+  if(info["sysdata"].length > 0){
+    var sysdata = '<div class="div-table">';
+    sysdata = sysdata + '<div class="div-table-caption">This data is gathered from vistors sharing their experiences. It indicates whether or not the school has facilities under the headings below: </div>'
+    for(entry in info["sysdata"]){
+      tdata = info["sysdata"][entry].split('|');
+      sysdata = sysdata + '<div class="div-table-row" id="div-row-border"><div class="div-table-col" id="div-col-350width">' + tdata[0] + '</div>'
+                      + '<div class="div-table-col">:' + tdata[1] + '</div></div>'
+    }
+    sysdata = sysdata + '</div>'
+  } else {
+    sysdata = "<div class='div-table'><div class='div-table-row'>No information available from visits yet.</div></div>"
+  }
+  document.getElementById("sys_data").innerHTML = sysdata;
+    
+  
 }
 

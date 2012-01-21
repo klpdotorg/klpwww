@@ -6,6 +6,7 @@ CREATE TABLE "tb_school_agg" (
   "name" varchar(300),
   "bid" integer,
   "sex" sex,
+  "mt" school_moi,
   "num" integer
 );
 
@@ -148,12 +149,12 @@ CREATE OR REPLACE function agg_school(int) returns void as $$
 declare
         schs RECORD;
 begin
-        for schs in SELECT s.id as id, s.name as name, s.bid as bid, c.sex as sex, count(stu.id) AS count
+        for schs in SELECT s.id as id, s.name as name, s.bid as bid, c.sex as sex, c.mt as mt, count(stu.id) AS count
                  FROM tb_student stu, tb_class cl, tb_student_class sc, tb_child c, tb_school s
                  WHERE cl.sid = s.id AND sc.clid = cl.id AND sc.stuid = stu.id AND sc.status=1 AND stu.cid = c.id AND sc.ayid = $1
-                 GROUP BY s.id, s.name, s.bid, c.sex 
+                 GROUP BY s.id, s.name, s.bid, c.sex, c.mt 
         loop
-                insert into tb_school_agg values (schs.id, schs.name, schs.bid, schs.sex, schs.count);
+                insert into tb_school_agg values (schs.id, schs.name, schs.bid, schs.sex, schs.mt, schs.count);
         end loop;
 end;
 $$ language plpgsql;

@@ -4,6 +4,7 @@ import decimal
 import jsonpickle
 import csv
 import re
+import difflib
 import smtplib,email,email.encoders,email.mime.text,email.mime.base,mimetypes
 from web import form
 
@@ -115,7 +116,8 @@ statements = {'get_district':"select bcoord.id_bndry,ST_AsText(bcoord.coord),ini
               'get_cluster_info':"select count(distinct sv.id),b2.name from tb_school_agg sv, tb_boundary b, tb_boundary b1, tb_boundary b2 where sv.bid = b2.id and b2.parent = b1.id and b1.parent = b.id and b2.id = %s group by b2.name",
               'get_circle_gender':"select sv.sex, sum(sv.num) from tb_school_agg sv, tb_boundary b, tb_boundary b1, tb_boundary b2,tb_bhierarchy bhier where sv.bid = b2.id and b2.parent = b1.id and b1.parent = b.id and b2.hid=bhier.id and b.type='2'and b2.id = %s group by sv.sex",
               'get_circle_info':"select count(distinct sv.id),b2.name from tb_school_agg sv, tb_boundary b, tb_boundary b1, tb_boundary b2,tb_bhierarchy bhier where sv.bid = b2.id and b2.parent = b1.id and b1.parent = b.id and b2.hid=bhier.id and b.type='2' and b2.id = %s group by b2.name",
-              'get_school_gender':"select sv.name, sv.sex, sum(sv.num) from tb_school_agg sv where sv.id = %s group by sv.name, sv.sex",
+              'get_school_gender':"select sv.name, sv.sex, sum(sv.num) from tb_school_agg2 sv where sv.id = %s group by sv.name, sv.sex",
+              'get_school_mt':"select sv.name, sv.mt, sum(sv.num) from tb_school_agg2 sv where sv.id = %s group by sv.name, sv.mt",
               'get_school_boundary_info':"select b.name, b1.name, b2.name, s.name,b.type from tb_boundary b, tb_boundary b1, tb_boundary b2, tb_school s,tb_bhierarchy h where s.id = %s and b.id=b1.parent and b1.id=b2.parent and s.bid=b2.id and b.hid=h.id",
               'get_num_stories':"select count(*) from tb_sys_data where schoolid= %s",
               'get_sys_qids':"select id, qfield from tb_sys_questions order by id",
@@ -123,13 +125,13 @@ statements = {'get_district':"select bcoord.id_bndry,ST_AsText(bcoord.coord),ini
               'get_sys_school_questions':"select * from tb_sys_displayq where hiertype=1 order by id",
               'get_sys_preschool_questions':"select * from tb_sys_displayq where hiertype=2 order by id",
               'get_programme_info':"select p.name,p.start from tb_programme p where p.id =%s",
-              'get_assessmentinfo':"select distinct p.name,p.start,p.id from tb_programme p, tb_assessment ass, tb_school_assessment_agg agg where agg.sid =%s  and ass.id = agg.assid and p.id = ass.pid",
-              'get_district_assessmentinfo':"select distinct p.name, p.start,p.id from tb_programme p, tb_assessment ass, tb_school_assessment_agg agg, tb_boundary b, tb_boundary b1, tb_boundary b2, tb_school s,tb_bhierarchy hier where b.id=%s and b1.parent = b.id and b2.parent=b1.id and b.hid=hier.id and b.type=1 and s.bid=b2.id and agg.sid = s.id and ass.id = agg.assid and p.id = ass.pid",
-              'get_block_assessmentinfo':"select distinct p.name, p.start,p.id from tb_programme p, tb_assessment ass, tb_school_assessment_agg agg, tb_boundary b, tb_boundary b1, tb_boundary b2,tb_school s,tb_bhierarchy hier where b.id = b1.parent and b1.id=b2.parent and b.hid=hier.id and b.type=1 and s.bid=b2.id and agg.sid = s.id and ass.id = agg.assid and p.id = ass.pid and b1.id=%s",
-              'get_cluster_assessmentinfo':"select distinct p.name, p.start,p.id from tb_programme p, tb_assessment ass, tb_school_assessment_agg agg, tb_boundary b, tb_boundary b1, tb_boundary b2,tb_school s,tb_bhierarchy hier where b.id = b1.parent and b1.id=b2.parent and b.hid=hier.id and b.type=1 and s.bid=b2.id and agg.sid = s.id and ass.id = agg.assid and p.id = ass.pid and b2.id=%s",
-              'get_preschooldistrict_assessmentinfo':"select distinct p.name, p.start,p.id from tb_programme p, tb_assessment ass, tb_school_assessment_agg agg, tb_boundary b, tb_boundary b1, tb_boundary b2, tb_school s,tb_bhierarchy hier where b.id=%s and b1.parent = b.id and b2.parent=b1.id and b.hid=hier.id and b.type=2 and s.bid=b2.id and agg.sid = s.id and ass.id = agg.assid and p.id = ass.pid",
-              'get_project_assessmentinfo':"select distinct p.name, p.start,p.id from tb_programme p, tb_assessment ass, tb_school_assessment_agg agg, tb_boundary b, tb_boundary b1, tb_boundary b2,tb_school s,tb_bhierarchy hier where b.id = b1.parent and b1.id=b2.parent and b.hid=hier.id and b.type=2 and s.bid=b2.id and agg.sid = s.id and ass.id = agg.assid and p.id = ass.pid and b1.id=%s",
-              'get_circle_assessmentinfo':"select distinct p.name, p.start,p.id from tb_programme p, tb_assessment ass, tb_school_assessment_agg agg, tb_boundary b, tb_boundary b1, tb_boundary b2,tb_school s,tb_bhierarchy hier where b.id = b1.parent and b1.id=b2.parent and b.hid=hier.id and b.type=2 and s.bid=b2.id and agg.sid = s.id and ass.id = agg.assid and p.id = ass.pid and b2.id=%s",
+              'get_assessmentinfo':"select distinct p.name,p.start,p.id,pn.name from tb_programme p, tb_assessment ass, tb_school_assessment_agg agg, tb_partner pn where agg.sid =%s  and ass.id = agg.assid and p.id = ass.pid and p.partnerid=pn.id",
+              'get_district_assessmentinfo':"select distinct p.name, p.start,p.id,pn.name from tb_programme p, tb_assessment ass, tb_school_assessment_agg agg, tb_boundary b, tb_boundary b1, tb_boundary b2, tb_school s,tb_bhierarchy hier, tb_partner pn where b.id=%s and b1.parent = b.id and b2.parent=b1.id and b.hid=hier.id and b.type=1 and s.bid=b2.id and agg.sid = s.id and ass.id = agg.assid and p.id = ass.pid and p.partnerid=pn.id",
+              'get_block_assessmentinfo':"select distinct p.name, p.start,p.id ,pn.name from tb_programme p, tb_assessment ass, tb_school_assessment_agg agg, tb_boundary b, tb_boundary b1, tb_boundary b2,tb_school s,tb_bhierarchy hier, tb_partner pn where b.id = b1.parent and b1.id=b2.parent and b.hid=hier.id and b.type=1 and s.bid=b2.id and agg.sid = s.id and ass.id = agg.assid and p.id = ass.pid and b1.id=%s  and p.partnerid=pn.id",
+              'get_cluster_assessmentinfo':"select distinct p.name, p.start,p.id,pn.name from tb_programme p, tb_assessment ass, tb_school_assessment_agg agg, tb_boundary b, tb_boundary b1, tb_boundary b2,tb_school s,tb_bhierarchy hier, tb_partner pn where b.id = b1.parent and b1.id=b2.parent and b.hid=hier.id and b.type=1 and s.bid=b2.id and agg.sid = s.id and ass.id = agg.assid and p.id = ass.pid and b2.id=%s  and p.partnerid=pn.id",
+              'get_preschooldistrict_assessmentinfo':"select distinct p.name, p.start,p.id,pn.name from tb_programme p, tb_assessment ass, tb_school_assessment_agg agg, tb_boundary b, tb_boundary b1, tb_boundary b2, tb_school s,tb_bhierarchy hier, tb_partner pn where b.id=%s and b1.parent = b.id and b2.parent=b1.id and b.hid=hier.id and b.type=2 and s.bid=b2.id and agg.sid = s.id and ass.id = agg.assid and p.id = ass.pid  and p.partnerid=pn.id",
+              'get_project_assessmentinfo':"select distinct p.name, p.start,p.id,pn.name from tb_programme p, tb_assessment ass, tb_school_assessment_agg agg, tb_boundary b, tb_boundary b1, tb_boundary b2,tb_school s,tb_bhierarchy hier, tb_partner pn where b.id = b1.parent and b1.id=b2.parent and b.hid=hier.id and b.type=2 and s.bid=b2.id and agg.sid = s.id and ass.id = agg.assid and p.id = ass.pid and b1.id=%s  and p.partnerid=pn.id",
+              'get_circle_assessmentinfo':"select distinct p.name, p.start,p.id,pn.name from tb_programme p, tb_assessment ass, tb_school_assessment_agg agg, tb_boundary b, tb_boundary b1, tb_boundary b2,tb_school s,tb_bhierarchy hier, tb_partner pn where b.id = b1.parent and b1.id=b2.parent and b.hid=hier.id and b.type=2 and s.bid=b2.id and agg.sid = s.id and ass.id = agg.assid and p.id = ass.pid and b2.id=%s and p.partnerid=pn.id",
               'get_basic_assessmentinfo':"select agg.sex,s.name, sum(agg.aggval),b.id,b1.id,b2.id from tb_school_assessment_agg agg,tb_assessment ass,tb_school s,tb_boundary b,tb_boundary b1, tb_boundary b2 where ass.pid=%s and agg.assid=ass.id and ass.id=%s and agg.sid=%s and s.id=agg.sid and b.id=b1.parent and b1.id=b2.parent and b2.id=s.bid group by agg.sex,s.name,b.id,b1.id,b2.id",
               'get_basic_district_assessmentinfo':"select agg.sex,b.name, sum(agg.aggval) from tb_school_assessment_agg agg,tb_assessment ass,tb_school s,tb_boundary b,tb_boundary b1, tb_boundary b2 where ass.pid=%s and agg.assid=ass.id and agg.sid=s.id and ass.id=%s and b.id=b1.parent and b1.id=b2.parent and b2.id=s.bid and b.id=%s group by agg.sex,b.name",
               'get_basic_block_assessmentinfo':"select agg.sex,b1.name, sum(agg.aggval) from tb_school_assessment_agg agg,tb_assessment ass,tb_school s,tb_boundary b,tb_boundary b1, tb_boundary b2 where ass.pid=%s and agg.assid=ass.id and agg.sid=s.id and ass.id=%s and b.id=b1.parent and b1.id=b2.parent and b2.id=s.bid and b1.id=%s group by agg.sex,b1.name",
@@ -199,7 +201,8 @@ statements = {'get_district':"select bcoord.id_bndry,ST_AsText(bcoord.coord),ini
               'get_assessmentinfo_cluster':"select b2.name,sum(agg.aggval) from tb_school_assessment_agg agg,tb_assessment ass,tb_boundary b, tb_boundary b1, tb_boundary b2,tb_school s where ass.pid=%s and agg.assid=ass.id and b.id=b1.parent and b1.id = b2.parent and s.bid = b2.id and agg.sid=s.id and b2.id = %s group by b2.name",
               'get_school_info':"select b.name, b1.name, b2.name, s.name,b.type,s.cat,s.sex,s.moi,s.mgmt,s.dise_code,s.status from tb_boundary b, tb_boundary b1, tb_boundary b2, tb_school s,tb_bhierarchy h where s.id = %s and b.id=b1.parent and b1.id=b2.parent and s.bid=b2.id and b.hid=h.id",
               'get_school_address_info':"select a.address,a.area,a.pincode,a.landmark,a.instidentification,a.instidentification2, a.bus from tb_address a,tb_school s where s.aid=a.id and s.id=%s",
-              'get_sys_info':"select sys.dateofvisit from tb_sys_data sys where sys.schoolid=%s group by sys.dateofvisit",
+              'get_sys_info':"select sys.dateofvisit,sys.comments,sys.id from tb_sys_data sys where sys.schoolid=%s",
+              'get_sys_qans':"select q.qtext,a.answer from tb_sys_questions q, tb_sys_qans a where a.qid = q.id and a.sysid in %s",
               'get_school_point':"select ST_AsText(inst.coord) from vw_inst_coord inst where inst.instid=%s",
               'get_sys_nums':"select count(*) from tb_sys_data",
               'get_sys_image_nums':"select count(*) from tb_sys_images",
@@ -659,8 +662,8 @@ class schoolpage:
       for row in result:
         data["mla"] = self.checkEmpty(row[0],'Not available')
         data["mp"] = self.checkEmpty(row[1],'Not available')
-        data["mlaname"] = self.checkEmpty(row[2]+'('+row[3]+')','Not available')
-        data["mpname"] = self.checkEmpty(row[4]+'('+row[5]+')','Not available')
+        data["mlaname"] = self.checkEmpty(row[2]+' ('+row[3]+')','Not available')
+        data["mpname"] = self.checkEmpty(row[4]+' ('+row[5]+')','Not available')
     
       cursor.execute(statements['get_assessmentinfo'],(id,))
       result = cursor.fetchall()
@@ -668,11 +671,12 @@ class schoolpage:
       first=1
       for row in result:
         if first:
-          assessments=assessments+row[0]+"-"+str(row[1]).split("-")[0]+"|"+str(row[2])
+          assessments=assessments+row[0]+"-"+str(row[1]).split("-")[0]+"|"+str(row[2])+"|"+str(row[3])
           first=0
         else:
-          assessments=assessments+","+row[0]+"-"+str(row[1]).split("-")[0]+"|"+str(row[2])
+          assessments=assessments+","+row[0]+"-"+str(row[1]).split("-")[0]+"|"+str(row[2])+"|"+str(row[3])
       data["assessments"]=assessments
+      print assessments 
 
       #Added to query images from tb_sys_images
       from ConfigParser import SafeConfigParser
@@ -699,15 +703,63 @@ class schoolpage:
         data["numBoys"] = 0
       data["numStudents"]= data["numBoys"]+data["numGirls"]
 
+      cursor.execute(statements['get_school_mt'],(id,))
+      result = cursor.fetchall()
+      tabledata = {}
+      invertdata = {}
+      order_lst = []
+      for row in result:
+        invertdata[int(row[2])] = str(row[1].strip().title())
+      if len(invertdata.keys()) > 0:
+        checklist = sorted(invertdata)
+        others = 0
+        for i in checklist[0:len(checklist)-4]:
+          others = others + i
+          del invertdata[i]
+        invertdata[others] = 'Others'
+        tabledata = dict(zip(invertdata.values(),invertdata.keys()))
+        if 'Other' in tabledata.keys():
+          tabledata['Others'] = tabledata['Others'] + tabledata['Other']
+          del tabledata['Other']
+      for i in sorted(tabledata,key=tabledata.get,reverse=True):
+        order_lst.append(i)
+      if len(tabledata.keys()) > 0:
+        data["school_mt_tb"] = tabledata
+        data["school_mt_ord"] = order_lst
+
       syscursor.execute(statements['get_sys_info'],(id,))
       result = syscursor.fetchall()
+      sysdates =  []
+      syscomments = []
+      sysids = []
       data["syscount"]=0
       for row in result:
-        data["syscount"]=data["syscount"]+1
-        if row[0]==None:
-          data["sysdate"].append('')
+        if row[0] != None:
+          if row[0].strip() not in sysdates:
+            sysdates.append(row[0].strip().replace('/','-'))
+          data["syscount"]=data["syscount"]+1
+        if row[1] != None:
+          syscomments.append(row[1].strip())
+        sysids.append(row[2])
+      data["sysdate"] = sysdates
+      data["syscomment"] = syscomments
+
+      syscursor.execute(statements['get_sys_qans'],[tuple(sysids)])
+      result = syscursor.fetchall()
+      sysdata = {}
+      data["sysdata"] = []
+      pos_ans = ["Yes","Available and functional","Available but not functional"]
+      for row in result:
+        if row[0] in sysdata.keys():
+          if row[1] not in pos_ans:
+            sysdata[row[0]] = "No or Not known"
         else:
-          data["sysdate"].append(str(row[0]))
+          if row[1] in pos_ans:
+            sysdata[row[0]] = "Yes" 
+          else:
+            sysdata[row[0]] = "No or Not known"
+      for (k,v) in sysdata.items():
+        data["sysdata"].append(k +'|'+v);
 
       cursor.execute(statements['get_school_point'],(id,))
       result = cursor.fetchall()
@@ -745,7 +797,7 @@ class shareyourstory:
 class text:
   def GET(self, name):
     web.header('Content-Type','text/html; charset=utf-8')
-    textlinks = {'library': 'library', 'maths': 'maths', 'preschool': 'preschool', 'reading': 'reading', 'partners': 'partners','aboutus':'aboutus','credits':'credits'}
+    textlinks = {'library': 'library', 'maths': 'maths', 'preschool': 'preschool', 'reading': 'reading', 'partners': 'partners','aboutus':'aboutus','credits':'credits', 'reports':'reports'}
 
     try:
       return eval('render.' + textlinks[name] + '()')
@@ -768,10 +820,10 @@ class getBoundaryInfo:
       first=1
       for row in result:
         if first: 
-          assessments=assessments+row[0]+"-"+str(row[1]).split("-")[0]+","+str(row[2])
+          assessments=assessments+row[0]+"-"+str(row[1]).split("-")[0]+","+str(row[2])+","+str(row[3])
           first=0
         else:
-          assessments=assessments+";"+row[0]+"-"+str(row[1]).split("-")[0]+","+str(row[2])
+          assessments=assessments+";"+row[0]+"-"+str(row[1]).split("-")[0]+","+str(row[2])+","+str(row[3])
       boundaryInfo["assessments"]=str(assessments)
     except:
       traceback.print_exc(file=sys.stderr)
@@ -944,6 +996,7 @@ class postSYS:
       config = SafeConfigParser()
       config.read(os.path.join(os.getcwd(),'config/klpconfig.ini'))
       savepath = config.get('Pictures','origpicpath')
+      hashpath = config.get('Pictures','hashpicpath')
       hashed_filename = ''
       if selectedfile.filename != "":
         try:
@@ -951,10 +1004,13 @@ class postSYS:
             savefilename = selectedfile.filename.split('.')[0] + '-' + schoolid + '.jpg'
           else:
             savefilename = selectedfile.filename
-            wf=open(savepath + savefilename,'w')
-            wf.write(selectedfile.file.read())
-            wf.close()
-            hashed_filename = hashlib.md5(open(savepath +savefilename,'r').read()).hexdigest() + '.jpg'
+          wf=open(savepath + savefilename,'w')
+          wf.write(selectedfile.file.read())
+          wf.close()
+          hashed_filename = hashlib.md5(open(savepath +savefilename,'r').read()).hexdigest() + '.jpg'
+          wf=open(hashpath + hashed_filename,'w')
+          wf.write(selectedfile.file.read())
+          wf.close()
         except IOError:
           traceback.print_exc(file=sys.stderr)
           print "Error occurred during processing this file: " + savefilename
@@ -1064,8 +1120,13 @@ class postSYS:
 class listFiles:
   def GET(self,type):
     fileList = {}
+    if len(type) > 1:
+      reqp = type.split('|')
+      type = reqp[0]
+      mp = reqp[1]
+      mla = reqp[2]
     path = ""
-    if (int(type) == 1):
+    if (int(type) == 1 or int(type) == 3):
       mpfilenames = []
       mlafilenames = []
       path = "/reports"
@@ -1074,17 +1135,38 @@ class listFiles:
       fileList["directory"] = path
       try:
         dirList=os.listdir(os.getcwd() + path + "/English")
-        for fname in dirList:
-          if '.zip' in fname:
-            pass
-          else:
-            if 'MP_' in fname:
-              mpfilenames.append(fname)
+        if int(type) == 3:
+          fname = difflib.get_close_matches('mp_' + mp.replace(' ','_').lower(), dirList)
+          mpfilenames.append(fname[0])
+          fname = difflib.get_close_matches('mla_' + mla.replace(' ','_').lower(), dirList)
+          mlafilenames.append(fname[0])
+          fileList["listtype"] = '3'
+        else:
+          for fname in dirList:
+            if '.zip' in fname:
+              pass
             else:
-              mlafilenames.append(fname)
+              if 'MP_' in fname:
+                mpfilenames.append(fname)
+              else:
+                mlafilenames.append(fname)
+          fileList["listtype"] = '1'
         fileList["mpnames"] = mpfilenames
         fileList["mlanames"] = mlafilenames
       except:
         traceback.print_exc(file=sys.stderr)
+    if (int(type) == 2):
+      path = "/rawdata"
+      rawfilenames =[]
+      try:
+        dirList=os.listdir(os.getcwd() + path)
+        for fname in dirList:
+          rawfilenames.append(fname)
+        fileList["directory"] = path
+        fileList["rawfiles"] = rawfilenames
+        fileList["listtype"] = '2'
+      except:
+        traceback.print_exc(file=sys.stderr)
+      
     web.header('Content-Type','text/html; charset=utf-8')
     return render_plain.listFiles(fileList)

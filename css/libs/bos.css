@@ -1,0 +1,5 @@
+.barsofstuff-bar {font-family: arial,sans-serif; font-size: 12px; padding: 1px; width: 80%}
+.barsofstuff-title {font-family: arial,sans-serif; font-size: 14px; font-weight: bold; text-align: center; }
+.barsofstuff-label {font-family: arial,sans-serif; font-size: 12px; text-align: right; }
+.barsofstuff-error {font-size: 12px; color: red; }
+.barsofstuff-barhi {font-family: arial,sans-serif; font-size: 12px; padding: 0px; background-color: #e5ecf9; border: 1px solid black; }

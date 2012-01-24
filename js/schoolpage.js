@@ -143,18 +143,18 @@ function initialise(data)
   //var chart1 = new BarsOfStuff(document.getElementById('student_gend'));
   //chart1.draw(data, {width:400, height: 240, title:"Gender Profile"});
   var chart1 = new google.visualization.PieChart(document.getElementById('student_gend'));
-  chart1.draw(data, {width: 350, height: 200, title:  'Gender Profile', backgroundColor: 'transparent', pieSliceText:'label', colors: ['D78103','F49406','E35804','F7AA33','FBBC59']});
+  chart1.draw(data, {width: 450, height: 260, title:  'Gender Profile', backgroundColor: 'transparent', pieSliceText:'label', colors: ['D78103','F49406','E35804','F7AA33','FBBC59']});
  
   var data = new google.visualization.DataTable();
   data.addColumn('string', 'Language');
   data.addColumn('number', 'Number of Students');
   for (var key in info["school_mt_tb"]){
-    data.addRow([key + ' (' + info["school_mt_tb"][key] + ')', parseInt(info["school_mt_tb"][key])]);
+    data.addRow([key.substring(0,4) + ' (' + info["school_mt_tb"][key] + ')', parseInt(info["school_mt_tb"][key])]);
   }
   //var table = new google.visualization.Table(document.getElementById('mtsch_tb'));
   //table.draw(data,{width: 400});
   var chart2 = new google.visualization.PieChart(document.getElementById('student_mt'));
-  chart2.draw(data, {width: 400, height: 200, title:  'Mother Tongue Profile', backgroundColor: 'transparent', pieSliceText:'label', colors: ['D78103','F49406','E35804','F7AA33','FBBC59']});
+  chart2.draw(data, {width: 450, height: 260, title:  'Mother Tongue Profile', backgroundColor: 'transparent', pieSliceText:'label', colors: ['D78103','F49406','E35804','F7AA33','FBBC59']});
 
   systable = '<div class="div-table">' +
              '<div class="div-table-row">No. of Visits:' + info["syscount"] + '</div>';

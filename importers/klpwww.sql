@@ -239,10 +239,6 @@ GRANT SELECT ON tb_school,
                 tb_student_eval,
                 vw_boundary_coord, 
                 vw_inst_coord,
-                vw_sys_data, 
-                vw_sys_qans, 
-                vw_sys_questions, 
-                vw_sys_images,
                 vw_electedrep_master,
                 vw_school_electedrep
 TO web;

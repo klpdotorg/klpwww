@@ -3,18 +3,66 @@ $def with (data)
  <head> 
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"> 
     <title>Assessments</title> 
-    <link type="text/css" rel="stylesheet" href="/css/main.css"/>
-    <link type="text/css" rel="stylesheet" href="/css/tabview.css"/>
+    <link type="text/css" rel="stylesheet" href="/css/style.css"/>
+    <link type="text/css" rel="stylesheet" href="/css/grid.css"/>
     <link type="text/css" rel="stylesheet" href="/css/charts.css"/>
-    <script type="text/javascript" charset="utf-8"
-        src="http://yui.yahooapis.com/3.1.1/build/yui/yui-min.js">
-    </script>
-    <script type="text/javascript" src="/yui/build/tabview/tabview-min.js"></script>
-    <!--[if IE]><script language="javascript" type="text/javascript" src="/flot/excanvas.js"></script><![endif]-->
-    <script type="text/javascript" src="/flot/jquery.js"></script> 
-    <script type="text/javascript" src="/flot/jquery.flot.js"></script> 
-    <script type="text/javascript" src="/flot/jquery.flot.pie.js"></script> 
-    <script type="text/javascript" src="/flot/jquery.flot.orderBars.js"></script> 
+    <link type="text/css" rel="stylesheet" href="/css/tabber.css"/>
+    <script type="text/javascript" src="https://www.google.com/jsapi"></script>
+    <script type="text/javascript">
+
+/* Optional: Temporarily hide the "tabber" class so it does not "flash"
+   on the page as plain HTML. After tabber runs, the class is changed
+   to "tabberlive" and it will appear.
+*/
+document.write('<style type="text/css">.tabber{display:none;}<\/style>');
+
+var tabberOptions = {
+
+  /* Optional: instead of letting tabber run during the onload event,
+     we'll start it up manually. This can be useful because the onload
+     even runs after all the images have finished loading, and we can
+     run tabber at the bottom of our page to start it up faster. See the
+     bottom of this page for more info. Note: this variable must be set
+     BEFORE you include tabber.js.
+  */
+  'manualStartup':true,
+
+  /* Optional: code to run after each tabber object has initialized */
+
+  'onLoad': function(argsObj) {
+    /* Display an alert only after tab2 */
+    if (argsObj.tabber.id == 'tab2') {
+      alert('Finished loading tab2!');
+    }
+  },
+
+  /* Optional: code to run when the user clicks a tab. If this
+     function returns boolean false then the tab will not be changed
+     (the click is canceled). If you do not return a value or return
+     something that is not boolean false, */
+
+  'onClick': function(argsObj) {
+
+    var t = argsObj.tabber; /* Tabber object */
+    var id = t.id; /* ID of the main tabber DIV */
+    var i = argsObj.index; /* Which tab was clicked (0 is the first tab) */
+    var e = argsObj.event; /* Event object */
+
+    if (id == 'tab2') {
+      return confirm('Swtich to '+t.tabs[i].headingText+'?\nEvent type: '+e.type);
+    }
+  },
+
+  /* Optional: set an ID for each tab navigation link */
+  'addLinkId': true
+
+};
+
+</script>
+
+
+    
+    <script type="text/javascript" src="/js/libs/tabber.js"></script> 
     <script type="text/javascript" src="/js/charts.js"></script> 
 <script type="text/javascript">
 
@@ -30,145 +78,66 @@ $def with (data)
 
 </script>
  </head> 
- <body class="yui3-skin-sam" onload="initialise($data)" id="top"> 
-    <h1 id="tabview-heading">Assessments</h1>
-    <div style="width:1100px">
-    <div id="school" style="display:none">
-     <ul>
-        <li><a href="#school-enrollment">Enrollment</a></li>
-        <li><a href="#school-baselinedata">BaseLine Data</a></li>
-        <li><a href="#school-progress" id="school-progress-tab" style="display:none">Progress Data</a></li>
-        <li><a href="#school-analytics">Analytics</a></li>
-    </ul>
-    <div>
-      <div id="school-enrollment" style="height:500px">
-      </div>
-      <div id="school-baselinedata" style="height:1200px">
-        <ul>
-          <li><a href="#school-baseline-general">General</a></li>
-          <br>
-          <li><a href="#school-baseline-gender">By Gender</a></li>
-          <br>
-          <li><a href="#school-baseline-mt">By Mother Tongue</a></li>
-          <br>
-          <li><a href="#school-baseline-class">By Class Performance</a></li>
-        </ul>
-        <br>
-        <div id="school-baseline-general" class="leftContent">
-          <p align="left"><b>General</b></p>
-          <div id="school-general-content" style="height:300px; width:300px"></div>
-        </div> 
-        <div id="school-baseline-gender" class="rightContent">
-          <p align="left"><b>Gender</b></p>
-          <div id="school-gender-legend" class="rightside">Legend<div id="school-gender-legend-content"></div></div>
-          <div id="school-gender-content" class="leftside" style="height:300px; width:400px"></div>
-        </div> 
-        <div class="midcontent"><p align="center"><a href="#top">Back to Top</a></p></div>
-        <div id="school-baseline-mt" class="leftContent">
-          <p align="left"><b>Mother Tongue</b></p>
-          <div id="school-mt-legend" class="rightside">Legend<div id="school-mt-legend-content"></div></div>
-          <div id="school-mt-content"  class="leftside" style="height:300px; width:400px"></div>
-        </div> 
-        <div id="school-baseline-class" class="rightContent">
-          <p align="left"><b>Class Performance</b></p>
-          <div id="school-class-legend" class="rightside">Legend<div id="school-class-legend-content"></div></div>
-          <div id="school-class-content" class="leftside" style="height:300px; width:400px"></div>
-        </div> 
-        <br>
-        <br>
-      </div>
-      <div id="school-progress" style="height:500px;width:900px">
-      </div>
-      <div id="school-analytics" style="height:1200px">
-      </div>
-    </div>
-    </div>
-    </div>
-    <div style="width:1100px">
-    <div id="preschool" style="display:none">
-     <ul>
-        <li><a href="#preschool-enrollment">Enrollment</a></li>
-        <li><a href="#preschool-baselinedata">BaseLine Data</a></li>
-        <li><a href="#preschool-progress">Progress Data</a></li>
-    </ul>
-    <div>
-      <div id="preschool-enrollment" style="height:500px; width:500px">
-      </div>
-      <div id="preschool-baselinedata" style="height:1200px">
-        <ul>
-          <li><a href="#preschool-baseline-gender">Average Score By Gender</a></li>
-          <br>
-          <li><a href="#preschool-baseline-mt">Average Score By Mother Tongue</a></li>
-          <br>
-        </ul>
-      <br>
-      <div id="preschool-baseline-gender" class="leftContent">
-        <p align="left"><b>Average Score by Gender</b></p>
-        <div id="preschool-gender-legend" class="rightside"><div id="preschool-gender-legend-content"></div></div>
-        <div id="preschool-gender-content" class="leftside" style="height:300px; width:400px"></div>
-      </div> 
-      <div id="preschool-baseline-mt" class="rightContent">
-        <p align="left"><b>Average Score by Mother Tongue</b></p>
-        <div id="preschool-mt-legend" class="rightside">Legend<div id="preschool-mt-legend-content"></div></div>
-        <div id="preschool-mt-content"  class="leftside" style="height:300px; width:400px"></div>
-      </div> 
-      <br>
-      <br>
-      </div>
-      <div id="preschool-progress"  style="height:500px;widht:900px">
+ <body onload="initialise($data)" id="top"> 
+   <div class="container container_12">
+    <div id="school" class="grid_12">
+      <h1 id="tabview-heading">Assessments</h1>
+      <div id="maintab" class="tabber">
+        <div id="enrollment" class="tabbertab" >
+          <h2>Enrollment</h2>
+          <div id="school-enrollment" style="height:500px" class="grid_12">
+          </div>
+        </div>
+        <div id="baseline" class="tabbertab" title="BaseLine Data">
+          <h2>BaseLine Data</h2>
+          <div id="school-baselinedata" style="height:2000px">
+            <br>
+            <br>
+            <ul>
+              <li><a href="#school-baseline-general">General</a></li>
+              <br>
+              <li><a href="#school-baseline-gender">By Gender</a></li>
+              <br>
+              <li><a href="#school-baseline-mt">By Mother Tongue</a></li>
+            </ul>
+            <br>
+            <hr/>
+            <div class="grid_12 suffix_6"><p align="center"><a href="#top">Back to Top</a></p></div>
+            <br>
+            <div id="school-baseline-general" class="grid_12">
+              <div class="grid_1 suffix_11"><p><b>General</b></p></div>
+              <div id="school-general-content"></div>
+            </div> 
+            <br>
+
+            <br>
+            <div class="grid_12 suffix_6"><p align="center"><a href="#top">Back to Top</a></p></div>
+            <br>
+            <div id="school-baseline-gender" class="grid_12">
+              <div class="grid_1 suffix_11"><p><b>Gender</b></p></div>
+              <div id="school-gender-content"></div>
+            </div> 
+            <br>
+
+            <br>
+            <div class="grid_12 suffix_6"><p align="center"><a href="#top">Back to Top</a></p></div>
+            <br>
+            <div id="school-baseline-mt" class="grid_12">
+              <div class="grid_1 suffix_11"><p><b>Mother Tongue</b></p></div>
+              <div id="school-mt-content"></div>
+            </div> 
+            <br>
+          </div>
+        </div>
+        <div id="progress" class="tabbertab" title="Progress Data">
+          <h2>Progress Data</h2>
+          <div id="school-progress">
+            <div id="school-progress-info"></div>
+            <div id="school-progress-content"></div>
+          </div>
+        </div>
       </div>
     </div>
-    </div>
-    </div>
-    <div style="width:1100px">
-    <div id="boundary" style="display:none" class="tab">
-     <ul>
-        <li><a href="#boundary-enrollment">Enrollment</a></li>
-        <li><a href="#boundary-baselinedata">BaseLine Data</a></li>
-        <li><a href="#boundary-progress">Progress Data</a></li>
-    </ul>
-    <div>
-      <div id="boundary-enrollment" style="height:500px; width:500px">
-      </div>
-      <div id="boundary-baselinedata" style="height:1200px">
-        <ul>
-          <li><a href="#boundary-baseline-general">General</a></li>
-          <br>
-          <li><a href="#boundary-baseline-gender">By Gender</a></li>
-          <br>
-          <li><a href="#boundary-baseline-mt">By Mother Tongue</a></li>
-          <br>
-          <li><a href="#boundary-baseline-class">By Class</a></li>
-          <br>
-        </ul>
-      <br>
-      <div id="boundary-baseline-general" class="leftContent">
-        <p align="left"><b>General</b></p>
-        <div id="boundary-general-content" style="height:300px; width:400px"></div>
-      </div> 
-      <div id="boundary-baseline-gender" class="rightContent">
-        <p align="left"><b>Gender</b></p>
-        <div id="boundary-gender-legend" class="rightside">Legend<div id="boundary-gender-legend-content"></div></div>
-        <div id="boundary-gender-content" class="leftside" style="height:300px; width:400px"></div>
-      </div> 
-      <div class="midcontent"><p align="center"><a href="#top">Back to Top</a></p></div>
-      <div id="boundary-baseline-mt" class="leftContent">
-        <p align="left"><b>Mother Tongue</b></p>
-        <div id="boundary-mt-legend" class="rightside">Legend<div id="boundary-mt-legend-content"></div></div>
-        <div id="boundary-mt-content"  class="leftside" style="height:300px; width:400px"></div>
-      </div> 
-      <div id="boundary-baseline-class" class="rightContent">
-        <p align="left"><b>Class</b></p>
-        <div id="boundary-class-legend" class="rightside">Legend<div id="boundary-class-legend-content"></div></div>
-        <div id="boundary-class-content"  class="leftside" style="height:300px; width:400px"></div>
-      </div> 
-      <br>
-      <br>
-      </div>
-      <div id="boundary-progress" style="height:500px;width:900px">
-      </div>
-    </div>
-    <div>
-    </div>
+  </div>
  </body> 
 </html> 

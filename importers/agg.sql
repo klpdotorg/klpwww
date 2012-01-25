@@ -1,7 +1,5 @@
 -- Aggregation tables
 
-DROP TABLE IF EXISTS "tb_school_agg";
-CREATE TABLE "tb_school_agg" (
   "id" integer,
   "name" varchar(300),
   "bid" integer,
@@ -231,7 +229,7 @@ begin
 end;
 $$ language plpgsql;
 
-CREATE OR REPLACE function agg_school_eng(int, int) returns void as $$
+CREATE OR REPLACE function agg_school_eng_old(int, int) returns void as $$
 declare
         stueval RECORD;
 begin
@@ -260,37 +258,93 @@ end;
 $$ language plpgsql;
 
 
-CREATE OR REPLACE function agg_school_grade(int, int) returns void as $$
+CREATE OR REPLACE function agg_school_eng_119(int) returns void as $$
 declare
         stueval RECORD;
 begin
 
-        for stueval in 
-        SELECT id, assid,clid,sex,mt,
-        count(case when mark < 20 then id else null end) as Rung1, 
-        count(case when mark between 20 and 40 then id else null end) as Rung2,
-        count(case when mark between 40 and 60 then id else null end) as Rung3,
-        count(case when mark between 60 and 80 then id else null end) as Rung4,
-        count(case when mark > 80 then id else null end) as Rung5
-        FROM ( SELECT se.stuid,s.id as id, ass.id as assid, sc.clid as clid, c.sex as sex, c.mt as mt, avg(cast(se.mark as integer) *100) as mark
-               FROM tb_student stu, tb_class cl, tb_student_class sc, tb_child c, tb_school s, tb_student_eval se, tb_assessment ass,tb_question q 
-               WHERE cl.sid = s.id AND sc.clid = cl.id AND sc.stuid = stu.id AND stu.cid = c.id AND stu.id = se.stuid AND se.qid=q.id and q.assid = ass.id AND ass.id = $1 AND sc.ayid =$2  
-               GROUP BY s.id, ass.id, sc.clid, c.sex, c.mt,se.qid,se.stuid ) as output 
-        GROUP BY id,assid,clid,sex,mt
+        for stueval in
+        SELECT sid, assid,clid,sex,mt, 
+          count(case when wskill=1 then stuid else null end) as write1,
+          count(case when wskill=0 then stuid else null end) as write0,
+          count(case when sskill=1 then stuid else null end) as speak1,
+          count(case when sskill=0 then stuid else null end) as speak0,
+          count(case when rskill=1 then stuid else null end) as read1,
+          count(case when rskill=0 then stuid else null end) as read0
+        from( 
+          select aggregates.stuid as stuid,s.id as sid,aggregates.assid as assid,stusg.clid as clid, c.sex as sex,c.mt as mt,  case when wagg <10 then 0 else 1 end as wskill, case when sagg<1 then 0 else 1 end as sskill, case when ragg<1 then 0 else 1 end as rskill 
+          from
+          (  select se.stuid as stuid,q.assid as assid, 
+               sum(case when se.qid in (674,675,676) then case when se.mark is null then 0 else cast(se.mark as int) end end)  as wagg, 
+               sum(case when se.qid=680 then  case when se.grade is null then 0 else cast(se.grade as int) end end) as sagg, 
+               sum(case when se.qid=681 then case when se.grade is null then 0 else cast(se.grade as int) end end) as ragg 
+             from tb_student_eval se,tb_question q 
+             where se.qid=q.id and q.assid=$1 group by se.stuid,q.assid
+          ) aggregates, tb_school s, tb_child c, tb_student_class stusg, tb_class cl, tb_student stu
+          where
+            stusg.stuid=aggregates.stuid
+            and stu.id=stusg.stuid
+            and stusg.clid=cl.id
+            and stusg.ayid=119
+            and cl.sid=s.id
+            and stu.cid=c.id)info
+           group by sid,assid,clid,sex,mt 
         loop
-               insert into tb_school_assessment_agg values (stueval.id, stueval.assid, stueval.clid, stueval.sex, stueval.mt, 'Rung1', stueval.Rung1);
-               insert into tb_school_assessment_agg values (stueval.id, stueval.assid, stueval.clid, stueval.sex, stueval.mt, 'Rung2', stueval.Rung2);
-               insert into tb_school_assessment_agg values (stueval.id, stueval.assid, stueval.clid, stueval.sex, stueval.mt, 'Rung3', stueval.Rung3);
-               insert into tb_school_assessment_agg values (stueval.id, stueval.assid, stueval.clid, stueval.sex, stueval.mt, 'Rung4', stueval.Rung4);
-               insert into tb_school_assessment_agg values (stueval.id, stueval.assid, stueval.clid, stueval.sex, stueval.mt, 'Rung5', stueval.Rung5);
+            insert into tb_school_assessment_agg values (stueval.sid, stueval.assid, stueval.clid, stueval.sex, stueval.mt, 'Can Read', stueval.read1);
+            insert into tb_school_assessment_agg values (stueval.sid, stueval.assid, stueval.clid, stueval.sex, stueval.mt, 'Cannot Read', stueval.read0);
+            insert into tb_school_assessment_agg values (stueval.sid, stueval.assid, stueval.clid, stueval.sex, stueval.mt, 'Can Write', stueval.write1);
+            insert into tb_school_assessment_agg values (stueval.sid, stueval.assid, stueval.clid, stueval.sex, stueval.mt, 'Cannot Write', stueval.write0);
+            insert into tb_school_assessment_agg values (stueval.sid, stueval.assid, stueval.clid, stueval.sex, stueval.mt, 'Can Speak', stueval.speak1);
+            insert into tb_school_assessment_agg values (stueval.sid, stueval.assid, stueval.clid, stueval.sex, stueval.mt, 'Cannot Speak', stueval.speak0);
         end loop;
 
 end;
 $$ language plpgsql;
+ 
 
+CREATE OR REPLACE function agg_school_eng(int,int) returns void as $$
+declare
+        stueval RECORD;
+begin
 
+        for stueval in
+        SELECT sid, assid,clid,sex,mt, 
+          count(case when wskill=1 then stuid else null end) as write1,
+          count(case when wskill=0 then stuid else null end) as write0,
+          count(case when sskill=1 then stuid else null end) as speak1,
+          count(case when sskill=0 then stuid else null end) as speak0,
+          count(case when rskill=1 then stuid else null end) as read1,
+          count(case when rskill=0 then stuid else null end) as read0
+        from( 
+          select aggregates.stuid as stuid,s.id as sid,aggregates.assid as assid,stusg.clid as clid, c.sex as sex,c.mt as mt,  case when wagg <10 then 0 else 1 end as wskill, case when sagg<1 then 0 else 1 end as sskill, case when ragg<1 then 0 else 1 end as rskill 
+          from
+          (  select se.stuid as stuid,q.assid as assid, 
+               sum(case when se.qid in (246,247,248) then  case when se.grade is null then 0 else cast(se.grade as int) end end) as ragg, 
+               sum(case when se.qid=251 then  case when se.grade is null then 0 else cast(se.grade as int) end end) as sagg, 
+               sum(case when se.qid=252 then case when se.grade is null then 0 else cast(se.grade as int) end end) as ragg 
+             from tb_student_eval se,tb_question q 
+             where se.qid=q.id and q.assid=$1 group by se.stuid,q.assid
+          ) aggregates, tb_school s, tb_child c, tb_student_class stusg, tb_class cl, tb_student stu
+          where
+            stusg.stuid=aggregates.stuid
+            and stu.id=stusg.stuid
+            and stusg.clid=cl.id
+            and stusg.ayid=$2
+            and cl.sid=s.id
+            and stu.cid=c.id)info
+           group by sid,assid,clid,sex,mt 
+        loop
+            insert into tb_school_assessment_agg values (stueval.sid, stueval.assid, stueval.clid, stueval.sex, stueval.mt, 'Can Read', stueval.read1);
+            insert into tb_school_assessment_agg values (stueval.sid, stueval.assid, stueval.clid, stueval.sex, stueval.mt, 'Cannot Read', stueval.read0);
+            insert into tb_school_assessment_agg values (stueval.sid, stueval.assid, stueval.clid, stueval.sex, stueval.mt, 'Can Write', stueval.write1);
+            insert into tb_school_assessment_agg values (stueval.sid, stueval.assid, stueval.clid, stueval.sex, stueval.mt, 'Cannot Write', stueval.write0);
+            insert into tb_school_assessment_agg values (stueval.sid, stueval.assid, stueval.clid, stueval.sex, stueval.mt, 'Can Speak', stueval.speak1);
+            insert into tb_school_assessment_agg values (stueval.sid, stueval.assid, stueval.clid, stueval.sex, stueval.mt, 'Cannot Speak', stueval.speak0);
+        end loop;
 
-
+end;
+$$ language plpgsql;
+ 
 
 -- Populate tb_school_agg for the current academic year
 select agg_school(101);
@@ -386,16 +440,14 @@ select agg_school_ang(62, 101);
 
 --English
 --2009 English
-select agg_school_eng(25,119);
-select agg_school_eng(26,119);
+select agg_school_eng_119(25);
+select agg_school_eng_119(26);
 
 --2010 English
-select agg_school_grade(49,101);
-select agg_school_grade(50,101);
+select agg_school_eng(49,101);
+select agg_school_eng(50,101);
 
 
---2010 Class1
-select agg_school_grade(55,101);
 
 
 --For weighted assessment

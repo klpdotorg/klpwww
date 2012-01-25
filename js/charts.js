@@ -3,14 +3,73 @@ var datasets;
 var choiceContainer;
 var info;
 
+google.load('visualization', '1', {'packages':['corechart','table','imagechart']});
 
-var levels={"Reading":{"0":0,"L":2,"W":4,"S":6,"P":8},"English":{"Rung1":0,"Rung2":1,"Rung3":2,"Rung4":3,"Rung5":4},"NNG":{"Rung1":0,"Rung2":1,"Rung3":2,"Rung4":3,"Rung5":4},"NNG3":{"Rung1":0,"Rung2":1,"Rung3":2,"Rung4":3,"Rung5":4},"Ramanagara-NNG1":{"Rung1":0,"Rung2":1,"Rung3":2,"Rung4":3,"Rung5":4},"Ramanagara-NNG2":{"Rung1":0,"Rung2":1,"Rung3":2,"Rung4":3,"Rung5":4},"Anganwadi":{"General awareness":0,"Gross motor":1,"Fine motor":2,"Language":3,"Intellectual":4,"Socio-emotional":5,"Pre-academic":6},"Target NNG":{"Rung1":0,"Rung2":1,"Rung3":2,"Rung4":3,"Rung5":4},"Target Reading":{"0":0,"L":2,"W":4,"S":6,"P":8}};
-
-var timeLabel= {"1":{"Pre test":0,"Post test":4},"2":{"20th day test":0,"60th day test":4},"3":{"20th day test":0,"60th day test":4},"4":{"Pre test":0,"Post test":4},"5":{"Baseline":0,"15th day test":4,"30th day test":8,"45th day test":12},"6":{"Pre test":0,"Post test":4},"7":{"Pre test":0,"Mid test":4,"Post test":8},"8":{"Pre test":0,"Post test":4},"9":{"Pre test":0,"Post test":4},"10":{"Pre test":0,"Post test":4},"11":{"NNG2":4},"12":{"Reading":4}};
+var levels={"Reading":{"0":0,"L":2,"W":4,"S":6,"P":8},
+            "NNG":{"Rung1":0,"Rung2":1,"Rung3":2,"Rung4":3,"Rung5":4},
+            "Anganwadi":{"General awareness":0,"Gross motor":1,"Fine motor":2,"Language":3,"Intellectual":4,"Socio-emotional":5,"Pre-academic":6},
+            "English":{"Rung1":0,"Rung2":1,"Rung3":2,"Rung4":3,"Rung5":4},
+            "Reading-Ramnagara":{"0":0,"L":2,"W":4,"S":6,"P":8},
+            "Reading-Dharwad":{"0":0,"L":2,"W":4,"S":6,"P":8},
+            "NNG3":{"Rung1":0,"Rung2":1,"Rung3":2,"Rung4":3,"Rung5":4},
+            "Ramanagara-NNG1":{"Rung1":0,"Rung2":1,"Rung3":2,"Rung4":3,"Rung5":4},
+            "Ramanagara-NNG2":{"Rung1":0,"Rung2":1,"Rung3":2,"Rung4":3,"Rung5":4},
+            "Target NNG":{"Rung1":0,"Rung2":1,"Rung3":2,"Rung4":3,"Rung5":4},
+            "Target Reading":{"0":0,"L":2,"W":4,"S":6,"P":8},
+            "NNGSupport":{"Rung1":0,"Rung2":1,"Rung3":2,"Rung4":3,"Rung5":4},
+            "NNG10by10":{"Rung1":0,"Rung2":1,"Rung3":2,"Rung4":3,"Rung5":4},
+            "Akshara English":{"Rung1":0,"Rung2":1,"Rung3":2,"Rung4":3,"Rung5":4},
+            "Class1-CarryThrough":{"Rung1":0,"Rung2":1,"Rung3":2,"Rung4":3,"Rung5":4},
+            "Third Party Anganwadi":{"General awareness":0,"Gross motor":1,"Fine motor":2,"Language":3,"Intellectual":4,"Socio-emotional":5,"Pre-academic":6},
+            };
 
 var color={"0":"red","O":"red","L":"orange","W":"yellow","S":"blue","P":"green","Boys":"blue","Girls":"pink"};
 
 var typeIndex={"District":0,"Block":1,"Cluster":2,"School":3};
+
+
+var tabberOptions = {
+
+  /* Optional: instead of letting tabber run during the onload event,
+     we'll start it up manually. This can be useful because the onload
+     even runs after all the images have finished loading, and we can
+     run tabber at the bottom of our page to start it up faster. See the
+     bottom of this page for more info. Note: this variable must be set
+     BEFORE you include tabber.js.
+  */
+  'manualStartup':true,
+
+  /* Optional: code to run after each tabber object has initialized */
+
+  'onLoad': function(argsObj) {
+    /* Display an alert only after tab2 */
+    if (argsObj.tabber.id == 'tab2') {
+      alert('Finished loading tab2!');
+    }
+  },
+
+  /* Optional: code to run when the user clicks a tab. If this
+     function returns boolean false then the tab will not be changed
+     (the click is canceled). If you do not return a value or return
+     something that is not boolean false, */
+
+  'onClick': function(argsObj) {
+
+    var t = argsObj.tabber; /* Tabber object */
+    var id = t.id; /* ID of the main tabber DIV */
+    var i = argsObj.index; /* Which tab was clicked (0 is the first tab) */
+    var e = argsObj.event; /* Event object */
+
+    if (id == 'tab2') {
+      return confirm('Swtich to '+t.tabs[i].headingText+'?\nEvent type: '+e.type);
+    }
+  },
+
+  /* Optional: set an ID for each tab navigation link */
+  'addLinkId': true
+
+};
+
 
 function initCap(str)
 {
@@ -21,421 +80,425 @@ function initCap(str)
 function initialise(data)
 {
    info= data;
-   info["name"]=info["name"].toUpperCase();
-   if( info["programme"]["name"] == "Anganwadi" )
+   if( info["type"] == "school" )//show analytics
    {
-      chartPreSchoolData(info["programme"]["pid"],info["programme"]["name"]);
-
+     var maintab=document.getElementById('maintab');
+     var analtab=document.createElement('div');
+     analtab.setAttribute('id','analytics');
+     analtab.setAttribute('class','tabbertab');
+     maintab.appendChild(analtab);
+     document.getElementById("analytics").innerHTML='<h2>Analytics</h2> <div id="school-analytics-info"> </div> <div id="school-analytics-content"> </div>';
    }
-   else
-   { 
-     if( info["type"] == "school" )
-     {
-       chartData(info["programme"]["pid"],info["programme"]["name"]);
-     }
-     else
-     {
-       chartBoundaryData(info["programme"]["pid"],info["programme"]["name"]);
-     }
-   }
+   tabberAutomatic(tabberOptions);
+   chartData(info["programme"]["pid"],info["programme"]["name"]);
 }
-
-function chartPreSchoolData(pid,programme)
-{
-  document.getElementById("preschool").style.display="inline"
-  document.getElementById("school").style.display="none"
-  document.getElementById("boundary").style.display="none"
-  YUI().use('tabview',function(Y){
-    var tabview = new Y.TabView({
-      srcNode: '#preschool'
-    });
-    tabview.render();
-  })
-  enrollment("preschool",pid,programme);
-  baselinepreschooldata(programme);
-  preschoolprogressdata(pid,programme);
-}
-
 
 function chartData(pid,programme)
 {
-  if( pid !=11 && pid !=12)
-  {
-    document.getElementById("school-progress-tab").style.display="inline-block"
-  }
-  document.getElementById("school").style.display="inline"
-  document.getElementById("preschool").style.display="none"
-  document.getElementById("boundary").style.display="none"
-  YUI().use('tabview',function(Y){
-    var tabview = new Y.TabView({
-      srcNode: '#school'
-    });
-    tabview.render();
-  })
   enrollment("school",pid,programme);
   baselinedata("school",programme);
-  if( pid != 11 && pid!=12)
+  if( pid != 12 && pid!=13 && pid!=17 && pid!=20)
     progressdata("school",pid,programme); //no progress data for target
-  analyticsdata("school",programme);
+  if( info["type"]=="school")
+  {
+    analyticsdata("school",programme);
+  }
 }
-
-function chartBoundaryData(pid,programme)
-{
-  document.getElementById("boundary").style.display="inline"
-  document.getElementById("preschool").style.display="none"
-  document.getElementById("school").style.display="none"
-  YUI().use('tabview',function(Y){
-    var tabview = new Y.TabView({
-      srcNode: '#boundary'
-    });
-    tabview.render();
-  })
-  enrollment("boundary",pid,programme);
-  baselinedata("boundary",programme);
-  progressdata("boundary",pid,programme);
-}
-
 
 function enrollment(schooltype,pid,programme)
 {
   syear = Number(info["programme"]["year"])
   eyear = syear+1
   tablecontent=""
-  if(pid=="5" || pid=="6" || pid=="7" || pid=="12")
+  if(pid=="1" || pid=="4" || pid=="7" || pid=="8" ||pid=="13" || pid=="19")
   {
     tablecontent='<br><b>'+programme+' Programmes enrollment data for '+info["name"]+'('+initCap(info["type"])+') in '+syear+'-'+eyear+':-</b><br><table class=\"chart-table\" width=\"350\" border=\"1\" style=\"border-width:1px; border-style:dotted; border-color:#CCCCCC;\"><tr><td>Num of Boys:</td><td>'+info["Boys"]+'</td></tr><tr><td>Num of Girls:</td><td>'+info["Girls"]+'</td></tr></table><br><hr/><br>The <a href=\"/text/reading\">Reading program</a> measures the competency of a child using the following levels:<br><ul><li>0:- Child not able to read</li><li>L:- Child able to read letters</li><li>W:- Child able to read words</li><li>S:- Child able to read sentences</li><li>P:- Child able te read Paragaphs</li></ul>'
   }
-  if(pid=="2" || pid=="3" || pid=="4" || pid=="9" || pid=="10"|| pid=="11")
+  if(pid=="2" || pid=="3" || pid=="9" || pid=="10"|| pid=="11" || pid=="12" || pid=="14" || pid=="16")
   {
     tablecontent='<br><b>'+programme+' Programmes enrollment data for '+info["name"]+' ('+initCap(info["type"])+') in '+syear+'-'+eyear+':-</b><br><table class=\"chart-table\" width=\"350\" border=\"1\" style=\"border-width:1px; border-style:dotted; border-color:#CCCCCC;\"><tr><td>Num of Boys:</td><td>'+info["Boys"]+'</td></tr><tr><td>Num of Girls:</td><td>'+info["Girls"]+'</td></tr></table><br><hr/><br>The <a href=\"/text/maths\">Math program</a> measures the competency of a child using the following levels:<br><ul><li>Rung1:- 0-20</li><li>Rung2:- 21-40 </li><li>Rung3: -41-60 </li><li>Rung4:- 61-80 </li><li>Rung5:- 81-100</li></ul>'
   }
-  if(pid=="8")
+  if(pid=="6" || pid=="15")
   {
     tablecontent='<br><b>English Programmes enrollment data for '+info["name"]+' ('+initCap(info["type"])+') in '+syear+'-'+eyear+':-</b><br><table class=\"chart-table\" width=\"350\" border=\"1\" style=\"border-width:1px; border-style:dotted; border-color:#CCCCCC;\"><tr><td>Num of Boys:</td><td>'+info["Boys"]+'</td></tr><tr><td>Num of Girls:</td><td>'+info["Girls"]+'</td></tr></table><br><hr/><br>The <a href=\"/text/english\">English program</a> measures the competency of a child using the following levels:<br><ul><li>Rung1:- 0-20</li><li>Rung2:- 21-40 </li><li>Rung3: -41-60 </li><li>Rung4:- 61-80 </li><li>Rung5:- 81-100</li></ul>'
   }
-  if(pid=="1")
+  if(pid=="5" || pid=="18")
   {
     tablecontent='<br><b>Anganwadi Programmes enrollment data for '+info["name"]+' ('+initCap(info["type"])+') in '+syear+'-'+eyear+':-</b><br><table class=\"chart-table\" width=\"350\" border=\"1\" style=\"border-width:1px; border-style:dotted; border-color:#CCCCCC;\"><tr><td>Num of Boys:</td><td>'+info["Boys"]+'</td></tr><tr><td>Num of Girls:</td><td>'+info["Girls"]+'</td></tr></table><br><hr/><br>The <a href=\"/text/preschool\">Anganwadi program</a> measures the competency of a child using the following levels:<br><ul><li>General awareness</li><li>Gross Motor</li><li>Fine Motor</li><li>Language</li><li>Intellectual</li><li>Socio-emotional</li><li>Pre-academic</li></ul>'
   }
   document.getElementById(schooltype+"-enrollment").innerHTML= tablecontent;  
 }
 
-function baselinepreschooldata(programme)
-{
-   preschoollevelbar(programme,info["baseline"],"gender");
-   preschoollevelbar(programme,info["baseline"],"mt");
-}
-
-
 function baselinedata(divtype,programme)
 {
+   basegeneral(divtype,programme);
    levelbar(divtype,programme,info["baseline"],"gender");
    levelbar(divtype,programme,info["baseline"],"mt");
-   levelbar(divtype,programme,info["baseline"],"class");
-   basegeneral(divtype,programme);
 }
 
 function basegeneral(type,programme)
 {
-   var datageneral=[]
-
-   for(text in levels[programme])
+   var count=0;
+   var classcount=0;
+   var classnames=[];
+   var grid=12;
+   for(classname in info["assessPerText"])
    {
-     if(text in info["assessPerText"])
+     classnames.push(classname);
+     classcount=classcount+1;
+   }
+   classnames.sort();
+   grid=grid/2;
+   var width=400;
+   if(info['type']=='preschool')
+   {
+      width=600;
+   }
+   var height=300;
+   var count=0;
+   for(var i = 0; i < classnames.length; i++)
+   {
+     count=count+1;
+     var classname=classnames[i];
+     var data=new google.visualization.DataTable();
+     data.addColumn('string',"Rung");
+     data.addColumn('number',"% of students");
+     var colors=[]
+     for(text in levels[programme])
      {
-       if (text in color)
+       if(text in info["assessPerText"][classname])
        {
-         datageneral.push({label:text,data:info["assessPerText"][text],color:color[text]})
+         data.addRow([text,info["assessPerText"][classname][text]]);
        }
        else
        {
-         datageneral.push({label:text,data:info["assessPerText"][text]})
+         data.addRow([text,0]);
+       }
+       if(text in color)
+       {
+         colors.push(color[text]);
        }
      }
-     else
-     {
-       datageneral.push({label:text,data:0,color:color[text]})
-     }
-   }
-   $.plot(document.getElementById(type+"-general-content"),datageneral,
+     var general_div=document.getElementById(type+"-general-content");
+     var divIdName = type+"-"+classname+"-general";
+     var newdiv=document.createElement('div');
+     newdiv.setAttribute('id',divIdName);
+     newdiv.setAttribute('class','grid_'+grid);
+     general_div.appendChild(newdiv);
+     var options = {
+          title: 'Class-'+classname,
+          width: width, height: height,
+          backgroundColor: {stroke:'#000000',strokeWidth:'1',fill:'#F4E193'}
+        };
+    if(info['type']=="preschool")
     {
-      series: {
-        pie: { 
-          show: true
-	}
-      },
-      legend:{
-        show:false
-      }
-    });
+       options['title']='Preschool';
+    }
+     if(colors.length >0 )
+     {
+      options['colors']=colors;
+     } 
+ 
+    
+     var chart = new google.visualization.PieChart(document.getElementById(divIdName));
+     chart.draw(data,options);
+
+     if(count==2)
+     {
+       var br=document.createElement('div');
+       br.setAttribute('style','height:14px');
+       br.setAttribute('class','grid_12');
+       general_div.appendChild(br);
+       count=0;
+     }
+
+  }
 }
 
 
 function analyticsdata(divtype,programme)
 {
-  var divs="";
-  var links="";
-  var count=1;
-  var width="400px";
-  var numAssessments = info["analytics"].length;
-  var legendclass="legend";
-  for( num in info["analytics"])
+  var count=0;
+  var classcount=0;
+  var classnames=[];
+  var grid=12;
+  for(classname in info["analytics"])
   {
-    for(category in info["analytics"][num])
+     classnames.push(classname);
+     classcount=classcount+1;
+  }
+  classnames.sort();
+  grid=grid/2;
+  var width=400;
+  var height=300;
+
+  var count=0;
+  var analyticsinfo="<ul>"
+  for(var i = 0; i < classnames.length; i++)
+  {
+    var classname=classnames[i];
+    analyticsinfo=analyticsinfo+'<li><a href="#'+divtype+"-analytics-class-"+classname+'">Class-'+classname+"</a></li>"
+    var general_div=document.getElementById(divtype+"-analytics-content");
+    var parentdivIdName = divtype+"-analytics-class-"+classname
+    var newdiv=document.createElement('div');
+    newdiv.setAttribute('id',parentdivIdName);
+    newdiv.setAttribute('class','grid_12');
+    general_div.appendChild(newdiv);
+
+    var parent_div=document.getElementById(parentdivIdName);
+    var headerdiv=document.createElement('div')
+    headerdiv.setAttribute('id',parentdivIdName+"-header");
+    parent_div.appendChild(headerdiv)
+   
+    document.getElementById(parentdivIdName+"-header").innerHTML='<p>Class-'+classname+'  <a href="#top">(Back to Top)</a></p>';
+   
+    var starttimes=[];
+    for( starttime in info["analytics"][classname])
     {
-      var pagebreak=''
-      if( count%2 == 1 )
-      {
-        classtype="leftContent";
-      }
-      else
-      {
-        classtype="rightContent";
-      }
-      if(numAssessments == 1)
-      {
-        classtype="centerContent";
-        width="700px";
-        legendclass="centerLegend";
-      }
-      if( count%3 == 0 )
-      {
-        pagebreak='<div class="\midcontent\"><p align=\"center\"><a href=\"#top\">Back to Top</a></p></div>';
-      }
-      links = links+'<li><a href=\"#'+divtype+'-analytics-'+category+'\">'+category+'</a></li><br>'
-      divs=divs+pagebreak+'<div id=\"'+divtype+'-analytics-'+category+'\" class=\"'+classtype+'\"><p align=\"left\"><b>'+category+'</b></p><div id=\"'+divtype+'-'+category+'-content\" class=\"leftside\"  style=\"height:300px; width:'+width+'\"></div><div id=\"'+divtype+'-'+category+'-legend\" class=\"rightside\">Legend<div id=\"'+divtype+'-'+category+'-legend-content\" class=\"'+legendclass+'\"></div></div></div>'
+      starttimes.push(starttime);
+    }
+    starttimes.sort();
+
+    for(var j=0;j< starttimes.length;j++)
+    {
+      var starttime=starttimes[j];
       count=count+1;
+      var data=new google.visualization.DataTable();
+      data.addColumn('string',"level");
+      for( test in info["analytics"][classname][starttime])
+      {
+        for(type in  typeIndex)//info["analytics"][classname][test]) 
+        {
+          data.addColumn('number',info["analytics"][classname][starttime][test][type]["name"]+"("+type+")");
+        }
+        for(text in levels[programme])
+        {
+          var rowdata=[];
+          rowdata.push(text);
+          for(type in  info["analytics"][classname][starttime][test]) 
+          {
+            if(text in info["analytics"][classname][starttime][test][type])
+            {
+              rowdata.push(info["analytics"][classname][starttime][test][type][text]);
+            }
+            else
+            {
+              rowdata.push(0);
+            }
+          }
+          data.addRow(rowdata);
+        }       
+        var divIdName = divtype+"-analytics-"+classname+"-"+test;
+        var newdiv=document.createElement('div');
+        newdiv.setAttribute('id',divIdName);
+        newdiv.setAttribute('class','grid_'+grid);
+        parent_div.appendChild(newdiv);
+        var options = {
+          title: 'Class-'+classname+" ("+test+")",
+          width: width, height: height,
+          chartArea: {width:"50%",height:"75%",left:"50"},
+          backgroundColor: {stroke:'#000000',strokeWidth:'1',fill:'#F4E193'}
+        };
+        var chart = new google.visualization.BarChart(document.getElementById(divIdName));
+        chart.draw(data,options);
+        if(count==2)
+        {
+          var br=document.createElement('div');
+          br.setAttribute('style','height:14px');
+          br.setAttribute('class','grid_12');
+          parent_div.appendChild(br);
+          count=0
+        }
+      }
     }
   }
-  document.getElementById(divtype+"-analytics").style.height=(count/2)*500+100;
-  document.getElementById(divtype+"-analytics").innerHTML='<ul>'+links+'</ul><br><br><hr/>'+divs
-    
-  for( num in info["analytics"])
-  {
-  for( category in info["analytics"][num])
-  {
-    analyticslevelbar(divtype,programme,info["analytics"][num],category)
-  }
- }
-}
-
-function preschoollevelbar(programme,assesstype,category)
-{
-  var data=[];
-  var y_axis=[];
-  count=1;
-  var align=["left","right","center"];
-  var assessmenttype=[]
-  assessmenttype=getSortedCategory(assesstype[category]);
-  for( index in assessmenttype)
-  {
-    var type=assessmenttype[index];
-    var dataplot=[];
-    for( text in assesstype[category][type])
-    {   
-        var datapoint =[];
-        datapoint.push(assesstype[category][type][text]);
-        datapoint.push(levels[programme][text]);
-        dataplot.push(datapoint);
-    }
-    data.push({label:type,data:dataplot,bars:{barWidth:0.22, show:true,horizontal:true,align:align[count-1]},color:color[type]});
-    count=count+1;
-  }
-  for( num in levels[programme])
-  {
-    var y_tick=[];
-    y_tick.push(levels[programme][num]); 
-    y_tick.push(num);
-    y_axis.push(y_tick);
-  }
-  id = "preschool-"+category+"-content";
-  $.plot(document.getElementById(id), data,{yaxis:{ticks:y_axis,autoscaleMargin:0.0},xaxis:{autoscaleMargin:0.0},legend:{show:true,container:document.getElementById("preschool-"+category+"-legend-content")}});
+  analyticsinfo=analyticsinfo+'</ul>'
+  document.getElementById(divtype+"-analytics-info").innerHTML=analyticsinfo;
 
 }
-
-function getSortedCategory(list)
-{
- var catlist=[];
- var otherpresent=0;
- for( type in list )
- {
-   if( type == "Other")
-   {
-     otherpresent=1;
-   }
-   else
-   {
-     catlist.push(type);
-   }
- }
- catlist.sort();
- if( otherpresent == 1)
-   catlist.push("Other");
- return catlist;
-}
-
 
 function levelbar(divtype,programme,assesstype,category)
 {
-  var data=[];
-  var x_axis=[];
-  count=1;
-  var assessmenttype=[]
-  assessmenttype=getSortedCategory(assesstype[category]);
-  for( index in assessmenttype)
+  var count=0;
+  var classcount=0;
+  var classnames=[];
+  var grid=12;
+  for(classname in assesstype[category])
   {
-    var type=assessmenttype[index];
-    var dataplot=[];
-    for( text in assesstype[category][type])
-    {   
-        var datapoint =[];
-        datapoint.push(levels[programme][text]);
-        datapoint.push(assesstype[category][type][text]);
-        dataplot.push(datapoint);
-    }
-    data.push({label:type,data:dataplot,bars:{barWidth:0.22, order:count,show:true},color:color[type]});
+     classnames.push(classname);
+     classcount=classcount+1;
+  }
+  classnames.sort();
+  grid=grid/2;
+  var width=400;
+  if(info['type']=='preschool')
+  {
+     width=600;
+  }
+  var height=300;
+
+  var count=0;
+  for(var i = 0; i < classnames.length; i++)
+  {
     count=count+1;
-  }
-  for( num in levels[programme])
-  {
-    var x_tick=[];
-    x_tick.push(levels[programme][num]); 
-    x_tick.push(num);
-    x_axis.push(x_tick);
-  }
-  id = divtype+"-"+category+"-content";
-  $.plot(document.getElementById(id), data,{xaxis:{ticks:x_axis,autoscaleMargin:0.0},yaxis:{autoscaleMargin:0.0},legend:{show:true,container:document.getElementById(divtype+"-"+category+"-legend-content")}});
-
-}
-
-function getType(type)
-{
-  var temp = type.split("(");
-  var index = temp.length - 1;
-  var btype=type.split("(")[index].split(")")[0];
-  return btype;
-}
-
-
-function analyticslevelbar(divtype,programme,assesstype,category)
-{
-  var data=[];
-  var x_axis=[];
-  count=1;
-   
-  var boundary=[];
-  for( type in assesstype[category])
-  {
-    boundary[typeIndex[getType(type)]]=type;
-  }
-  
-  for( bval in boundary)
-  {
-    type = boundary[bval];
-    var dataplot=[];
-    for( text in assesstype[category][type])
-    {   
-        var datapoint =[];
-        datapoint.push(levels[programme][text]);
-        datapoint.push(assesstype[category][type][text]);
-        dataplot.push(datapoint);
+    var classname=classnames[i];
+    var data=new google.visualization.DataTable();
+    data.addColumn('string',"Rung");
+    var colors=[]
+    for(type in  assesstype[category][classname]) 
+    {
+       data.addColumn('number',type);
+       if(type in color)
+       {
+         colors.push(color[type]);
+       }
     }
-    data.push({label:type,data:dataplot,bars:{barWidth:0.22, order:count,show:true},color:color[type]});
-    count=count+1;
-  }
-  for( num in levels[programme])
-  {
-    var x_tick=[];
-    x_tick.push(levels[programme][num]); 
-    x_tick.push(num);
-    x_axis.push(x_tick);
-  }
-  id = divtype+"-"+category+"-content";
-  $.plot(document.getElementById(id), data,{xaxis:{ticks:x_axis,autoscaleMargin:0.0},yaxis:{autoscaleMargin:0.0},legend:{show:true,container:document.getElementById(divtype+"-"+category+"-legend-content")}});
-
-}
-
-function preschoolprogressdata(pid,programme)
-{
-  document.getElementById("preschool-progress").innerHTML='<p align=\"left\"><b>Progress performance for '+info["name"]+' (Average Scores)</b></p><div id=\"preschool-progress-content\" class=\"leftside\" style=\"height:400px; width:700px\"></div><br><br><div id=\"preschool-progress-legend\" class=\"rightside\">Legend<div id=\"preschool-progress-legend-content\" class=\"centerLegend\"></div></div>'
-
-  var data=[];
-  var y_axis=[];
-  count=1;
-  var align=["left","right","center"];
-  for( type in info["progress"])
-  {
-    var dataplot=[];
-    for( text in info["progress"][type])
-    {   
-        var datapoint =[];
-        datapoint.push(info["progress"][type][text]);
-        datapoint.push(levels[programme][text]);
-        dataplot.push(datapoint);
+    for(text in levels[programme])
+    {
+      var rowdata=[];
+      rowdata.push(text);
+      for(type in  assesstype[category][classname]) 
+      {
+        if(text in assesstype[category][classname][type])
+        {
+          rowdata.push(assesstype[category][classname][type][text]);
+        }
+        else
+        {
+          rowdata.push(0);
+        }
+      }
+      data.addRow(rowdata);
+    } 
+    var general_div=document.getElementById(divtype+"-"+category+"-content");
+    
+    var divIdName = divtype+"-"+category+"-"+classname;
+    var newdiv=document.createElement('div');
+    newdiv.setAttribute('id',divIdName);
+    newdiv.setAttribute('class','grid_'+grid);
+    general_div.appendChild(newdiv);
+    var options = {
+       title: 'Class-'+classname,
+       width: width, height: height,
+       chartArea: {width:"50%",height:"75%",left:"50"},
+       backgroundColor: {stroke:'#000000',strokeWidth:'1',fill:'#F4E193'}
+    };
+    if(info['type']=="preschool")
+    {
+       options['title']='Preschool';
+       options['chartArea']['left']='200';
     }
-    data.push({label:type,data:dataplot,bars:{barWidth:0.22, show:true,horizontal:true,align:align[count-1]},color:color[type]});
-    count=count+1;
+    if(colors.length >0 )
+    {
+      options['colors']=colors;
+    } 
+    var chart = new google.visualization.BarChart(document.getElementById(divIdName));
+    chart.draw(data,options);
+    if(count==2)
+    {
+      var br=document.createElement('div');
+      br.setAttribute('style','height:14px');
+      br.setAttribute('class','grid_12');
+      general_div.appendChild(br);
+      count=0;
+    }
   }
-  for( num in levels[programme])
-  {
-    var y_tick=[];
-    y_tick.push(levels[programme][num]); 
-    y_tick.push(num);
-    y_axis.push(y_tick);
-  }
-  id = "preschool-progress-content";
-  $.plot(document.getElementById(id), data,{yaxis:{ticks:y_axis,autoscaleMargin:0.0},xaxis:{min:0,autoscaleMargin:0.0},legend:{show:true,container:document.getElementById("preschool-progress-legend-content")}});
-
 }
+
 
 function progressdata(divtype,pid,programme)
 {
-  document.getElementById(divtype+"-progress").innerHTML='<p align=\"left\"><b>Progress performance for '+info["name"]+'</b></p><div id=\"'+divtype+'-progress-content\" class=\"leftside\" style=\"height:400px; width:700px\"></div><br><br><div id=\"'+divtype+'-progress-legend\" class=\"rightside\">Legend<div id=\"'+divtype+'-progress-legend-content\" class=\"centerLegend\"></div></div>'
+  document.getElementById(divtype+"-progress-info").innerHTML='<p align=\"left\"><b>Progress performance for '+info["name"]+'</b></p>';
 
-  var data=[];
-  //var data1=[];
-  var x_axis=[];
-  count=1;
-  //for( type in info["progress"])
-  for( type in levels[programme])
+  var count=0;
+  var classcount=0;
+  var classnames=[];
+  var grid=12;
+  for(classname in info["progress"])
   {
-    var dataplot=[];
-    if( type in info["progress"])
-    {
-    for( text in info["progress"][type])
-    {   
-        var datapoint =[];
-        datapoint.push(timeLabel[pid][text]);
-        datapoint.push(info["progress"][type][text]);
-        dataplot.push(datapoint);
-    }
-    }
-    else
-    {
-      for( text in info["progress"][type])
-      {   
-        var datapoint =[];
-        datapoint.push(timeLabel[pid][text]);
-        datapoint.push(0);
-        dataplot.push(datapoint);
-      }
-    }
-    if (type=="0")
-    {
-      type="O"
-    }
-    data.push({label:type,data:dataplot,bars:{barWidth:0.4, order:count,show:true},color:color[type]});
-    //data1.push({label:type,data:dataplot,lines:{show:true}});
+     classnames.push(classname);
+     classcount=classcount+1;
+  }
+  classnames.sort();
+  grid=grid/2;
+  var width=400;
+  if(info['type']=='preschool')
+  {
+     width=600;
+  }
+  var height=300;
+
+  var count=0;
+  for(var i = 0; i < classnames.length; i++)
+  {
     count=count+1;
-  }
-  for( num in timeLabel[pid])
-  {
-    var x_tick=[];
-    x_tick.push(timeLabel[pid][num]); 
-    x_tick.push(num);
-    x_axis.push(x_tick);
-  }
-  id = divtype+"-progress"+"-content";
-  $.plot(document.getElementById(id), data,{xaxis:{ticks:x_axis},legend:{show:true,container:document.getElementById(divtype+"-progress-legend-content")}});
+    var classname=classnames[i];
+    var data=new google.visualization.DataTable();
+    data.addColumn('string',"level");
+    var starttimes=[]
+    for(starttime in  info["progress"][classname]) 
+    {
+       starttimes.push(starttime);
+    }
 
+    starttimes.sort();
+
+    for(var j=0; j<starttimes.length;j++)
+    {
+       starttime=starttimes[j]
+       for (type in  info["progress"][classname][starttime])
+       {
+         data.addColumn('number',type);
+       }
+    }
+    for(text in levels[programme])
+    {
+      var rowdata=[];
+      rowdata.push(text);
+      for(starttime in  info["progress"][classname])
+      {
+        for(type in  info["progress"][classname][starttime]) 
+        {
+          if(text in info["progress"][classname][starttime][type])
+          {
+            rowdata.push(info["progress"][classname][starttime][type][text]);
+          }
+          else
+          {
+            rowdata.push(0);
+          }
+        }
+      }
+      data.addRow(rowdata);
+    } 
+    var general_div=document.getElementById(divtype+"-progress-content");
+    var divIdName = divtype+"-progress-"+classname;
+    var newdiv=document.createElement('div');
+    newdiv.setAttribute('id',divIdName);
+    //newdiv.setAttribute('style','height:300px; width:300px');
+    newdiv.setAttribute('class','grid_'+grid);
+    general_div.appendChild(newdiv);
+    var options = {
+       title: 'Class-'+classname,
+       width: width, height: height,
+       chartArea: {width:"50%",height:"75%",left:"50"},
+       backgroundColor: {stroke:'#000000',strokeWidth:'1',fill:'#F4E193'}
+    };
+    if(info['type']=="preschool")
+    {
+       options['title']='Preschool';
+       options['chartArea']['left']='200';
+    }
+    var chart = new google.visualization.BarChart(document.getElementById(divIdName));
+    chart.draw(data,options);
+    if(count==2)
+    {
+      var br=document.createElement('div');
+      br.setAttribute('style','height:14px');
+      br.setAttribute('class','grid_12');
+      general_div.appendChild(br);
+      count=0;
+    }
+
+  }
 }

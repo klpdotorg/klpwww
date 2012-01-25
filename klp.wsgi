@@ -88,7 +88,37 @@ myPreSchoolform =form.Form(
                    form.Textarea('comments'),
                    form.Hidden('chkboxes'))
 
-baseassess = {"1":1,"2":3,"3":5,"4":7,"5":9,"6":13,"7":15,"8":19,"9":21,"10":23,"11":25,"12":26}
+
+pidType={"grade":[1,4,5,7,8,13,15,17,18,19,20],"mark":[2,3,6,9,10,11,12,14,16]}
+
+getTypes={"district":"district",
+          "project":"block",
+          "block":"block",
+          "circle":"circle",
+          "cluster":"cluster",
+          "school":"school",
+          "preschool":"school"}
+
+baseassess = {"1":[1],
+              "2":[5,6,7,8],
+              "3":[13,14,15,16],
+              "4":[21],
+              "5":[23],
+              "6":[25],
+              "7":[27],
+              "8":[30],
+              "9":[33],
+              "10":[35],
+              "11":[37],
+              "12":[39],
+              "13":[40],
+              "14":[41,43,45,47],
+              "15":[49],
+              "16":[51,53],
+              "18":[56],
+              "19":[59]
+              }
+
 
 statements = {'get_district':"select bcoord.id_bndry,ST_AsText(bcoord.coord),initcap(b.name) from vw_boundary_coord bcoord, tb_boundary b where bcoord.type='District' and b.id=bcoord.id_bndry order by b.name",
               'get_preschooldistrict':"select bcoord.id_bndry,ST_AsText(bcoord.coord),initcap(b.name) from vw_boundary_coord bcoord, tb_boundary b where bcoord.type='PreSchoolDistrict' and b.id=bcoord.id_bndry order by b.name",
@@ -132,73 +162,37 @@ statements = {'get_district':"select bcoord.id_bndry,ST_AsText(bcoord.coord),ini
               'get_preschooldistrict_assessmentinfo':"select distinct p.name, p.start,p.id,pn.name from tb_programme p, tb_assessment ass, tb_school_assessment_agg agg, tb_boundary b, tb_boundary b1, tb_boundary b2, tb_school s,tb_bhierarchy hier, tb_partner pn where b.id=%s and b1.parent = b.id and b2.parent=b1.id and b.hid=hier.id and b.type=2 and s.bid=b2.id and agg.sid = s.id and ass.id = agg.assid and p.id = ass.pid  and p.partnerid=pn.id",
               'get_project_assessmentinfo':"select distinct p.name, p.start,p.id,pn.name from tb_programme p, tb_assessment ass, tb_school_assessment_agg agg, tb_boundary b, tb_boundary b1, tb_boundary b2,tb_school s,tb_bhierarchy hier, tb_partner pn where b.id = b1.parent and b1.id=b2.parent and b.hid=hier.id and b.type=2 and s.bid=b2.id and agg.sid = s.id and ass.id = agg.assid and p.id = ass.pid and b1.id=%s  and p.partnerid=pn.id",
               'get_circle_assessmentinfo':"select distinct p.name, p.start,p.id,pn.name from tb_programme p, tb_assessment ass, tb_school_assessment_agg agg, tb_boundary b, tb_boundary b1, tb_boundary b2,tb_school s,tb_bhierarchy hier, tb_partner pn where b.id = b1.parent and b1.id=b2.parent and b.hid=hier.id and b.type=2 and s.bid=b2.id and agg.sid = s.id and ass.id = agg.assid and p.id = ass.pid and b2.id=%s and p.partnerid=pn.id",
-              'get_basic_assessmentinfo':"select agg.sex,s.name, sum(agg.aggval),b.id,b1.id,b2.id from tb_school_assessment_agg agg,tb_assessment ass,tb_school s,tb_boundary b,tb_boundary b1, tb_boundary b2 where ass.pid=%s and agg.assid=ass.id and ass.id=%s and agg.sid=%s and s.id=agg.sid and b.id=b1.parent and b1.id=b2.parent and b2.id=s.bid group by agg.sex,s.name,b.id,b1.id,b2.id",
-              'get_basic_district_assessmentinfo':"select agg.sex,b.name, sum(agg.aggval) from tb_school_assessment_agg agg,tb_assessment ass,tb_school s,tb_boundary b,tb_boundary b1, tb_boundary b2 where ass.pid=%s and agg.assid=ass.id and agg.sid=s.id and ass.id=%s and b.id=b1.parent and b1.id=b2.parent and b2.id=s.bid and b.id=%s group by agg.sex,b.name",
-              'get_basic_block_assessmentinfo':"select agg.sex,b1.name, sum(agg.aggval) from tb_school_assessment_agg agg,tb_assessment ass,tb_school s,tb_boundary b,tb_boundary b1, tb_boundary b2 where ass.pid=%s and agg.assid=ass.id and agg.sid=s.id and ass.id=%s and b.id=b1.parent and b1.id=b2.parent and b2.id=s.bid and b1.id=%s group by agg.sex,b1.name",
-              'get_basic_cluster_assessmentinfo':"select agg.sex,b2.name, sum(agg.aggval) from tb_school_assessment_agg agg,tb_assessment ass,tb_school s,tb_boundary b,tb_boundary b1, tb_boundary b2 where ass.pid=%s and agg.assid=ass.id and agg.sid=s.id and ass.id=%s and b.id=b1.parent and b1.id=b2.parent and b2.id=s.bid and b2.id=%s group by agg.sex,b2.name",
-              'get_basic_preschoolassessmentinfo':"select c.sex,s.name,count(distinct stu.id) from tb_student stu, tb_class cl, tb_student_class sc,tb_school s, tb_student_eval se, tb_assessment ass,tb_child c where cl.sid = s.id AND sc.clid = cl.id AND sc.stuid = stu.id AND stu.cid = c.id and stu.id = se.stuid and se.assid = ass.id and ass.pid=%s and ass.id=%s and sc.ayid=%s and s.id=%s group by c.sex,s.name",
-              'get_basic_preschoolpreschooldistrict_assessmentinfo':"select c.sex,b.name,count(distinct stu.id) from tb_student stu, tb_class cl, tb_student_class sc,tb_school s, tb_student_eval se, tb_assessment ass,tb_child c,tb_boundary b,tb_boundary b1, tb_boundary b2 where cl.sid = s.id AND sc.clid = cl.id AND sc.stuid = stu.id AND stu.cid = c.id and stu.id = se.stuid and se.assid = ass.id and ass.pid=%s and ass.id=%s and sc.ayid=%s and s.bid=b2.id and b2.parent =b1.id and b1.parent=b.id and b.id=%s  group by c.sex,b.name",
-              'get_basic_preschoolproject_assessmentinfo':"select c.sex,b1.name,count(distinct stu.id) from tb_student stu, tb_class cl, tb_student_class sc,tb_school s, tb_student_eval se, tb_assessment ass,tb_child c,tb_boundary b,tb_boundary b1, tb_boundary b2 where cl.sid = s.id AND sc.clid = cl.id AND sc.stuid = stu.id AND stu.cid = c.id and stu.id = se.stuid and se.assid = ass.id and ass.pid=%s and ass.id=%s and sc.ayid=%s and s.bid=b2.id and b2.parent =b1.id and b1.parent=b.id and b1.id=%s  group by c.sex,b1.name",
-              'get_basic_preschoolcircle_assessmentinfo':"select c.sex,b2.name,count(distinct stu.id) from tb_student stu, tb_class cl, tb_student_class sc,tb_school s, tb_student_eval se, tb_assessment ass,tb_child c,tb_boundary b,tb_boundary b1, tb_boundary b2 where cl.sid = s.id AND sc.clid = cl.id AND sc.stuid = stu.id AND stu.cid = c.id and stu.id = se.stuid and se.assid = ass.id and ass.pid=%s and ass.id=%s and sc.ayid=%s and s.bid=b2.id and b2.parent =b1.id and b1.parent=b.id and b2.id=%s  group by c.sex,b2.name",
-              'get_assessmentpertext':"select agg.aggtext, sum(agg.aggval) from tb_school_assessment_agg agg,tb_assessment ass where ass.pid=%s and agg.assid=ass.id and ass.id=%s and agg.sid=%s group by agg.aggtext",
-              'get_district_assessmentpertext':"select agg.aggtext, sum(agg.aggval) from tb_school_assessment_agg agg,tb_assessment ass,tb_boundary b,tb_boundary b1,tb_boundary b2,tb_school s where ass.pid=%s and agg.assid=ass.id and ass.id=%s and agg.sid=s.id and b.id=b1.parent and b1.id=b2.parent and b2.id=s.bid and b.id=%s group by agg.aggtext",
-              'get_block_assessmentpertext':"select agg.aggtext, sum(agg.aggval) from tb_school_assessment_agg agg,tb_assessment ass,tb_boundary b,tb_boundary b1,tb_boundary b2,tb_school s where ass.pid=%s and agg.assid=ass.id and ass.id=%s and agg.sid=s.id and b.id=b1.parent and b1.id=b2.parent and b2.id=s.bid and b1.id=%s group by agg.aggtext",
-              'get_cluster_assessmentpertext':"select agg.aggtext, sum(agg.aggval) from tb_school_assessment_agg agg,tb_assessment ass,tb_boundary b,tb_boundary b1,tb_boundary b2,tb_school s where ass.pid=%s and agg.assid=ass.id and ass.id=%s and agg.sid=s.id and b.id=b1.parent and b1.id=b2.parent and b2.id=s.bid and b2.id=%s group by agg.aggtext",
-              'get_preschoolassessmentpertext':"select agg.aggtext, avg(agg.aggval) from tb_school_assessment_agg agg,tb_assessment ass where ass.pid=%s and agg.assid=ass.id and ass.id=%s and agg.sid=%s group by agg.aggtext",
-              'get_preschoolpreschooldistrict_assessmentpertext':"select agg.aggtext, avg(agg.aggval) from tb_school_assessment_agg agg,tb_assessment ass,tb_boundary b,tb_boundary b1, tb_boundary b2,tb_school s where ass.pid=%s and agg.assid=ass.id and ass.id=%s and agg.sid=s.id and b.id=b1.parent and b1.id=b2.parent and b2.id=s.bid and b.id=%s group by agg.aggtext",
-              'get_preschoolproject_assessmentpertext':"select agg.aggtext, avg(agg.aggval) from tb_school_assessment_agg agg,tb_assessment ass,tb_boundary b,tb_boundary b1, tb_boundary b2,tb_school s where ass.pid=%s and agg.assid=ass.id and ass.id=%s and agg.sid=s.id and b.id=b1.parent and b1.id=b2.parent and b2.id=s.bid and b1.id=%s group by agg.aggtext",
-              'get_preschoolcircle_assessmentpertext':"select agg.aggtext, avg(agg.aggval) from tb_school_assessment_agg agg,tb_assessment ass,tb_boundary b,tb_boundary b1, tb_boundary b2,tb_school s where ass.pid=%s and agg.assid=ass.id and ass.id=%s and agg.sid=s.id and b.id=b1.parent and b1.id=b2.parent and b2.id=s.bid and b2.id=%s group by agg.aggtext",
-              'get_assessmentgender':"select agg.sex,agg.aggtext, sum(agg.aggval) from tb_school_assessment_agg agg,tb_assessment ass where ass.pid=%s and agg.assid=ass.id and ass.id=%s and agg.sid=%s group by agg.sex,agg.aggtext",
-              'get_district_assessmentgender':"select agg.sex,agg.aggtext, sum(agg.aggval) from tb_school_assessment_agg agg,tb_assessment ass,tb_boundary b,tb_boundary b1, tb_boundary b2,tb_school s where ass.pid=%s and agg.assid=ass.id and ass.id=%s and agg.sid=s.id and b.id=b1.parent and b1.id=b2.parent and b2.id=s.bid and b.id=%s group by agg.sex,agg.aggtext",
-              'get_block_assessmentgender':"select agg.sex,agg.aggtext, sum(agg.aggval) from tb_school_assessment_agg agg,tb_assessment ass,tb_boundary b,tb_boundary b1, tb_boundary b2,tb_school s where ass.pid=%s and agg.assid=ass.id and ass.id=%s and agg.sid=s.id and b.id=b1.parent and b1.id=b2.parent and b2.id=s.bid and b1.id=%s group by agg.sex,agg.aggtext",
-              'get_cluster_assessmentgender':"select agg.sex,agg.aggtext, sum(agg.aggval) from tb_school_assessment_agg agg,tb_assessment ass,tb_boundary b,tb_boundary b1, tb_boundary b2,tb_school s where ass.pid=%s and agg.assid=ass.id and ass.id=%s and agg.sid=s.id and b.id=b1.parent and b1.id=b2.parent and b2.id=s.bid and b2.id=%s group by agg.sex,agg.aggtext",
-              'get_preschoolassessmentgender':"select agg.sex,agg.aggtext, avg(agg.aggval) from tb_school_assessment_agg agg,tb_assessment ass where ass.pid=%s and agg.assid=ass.id and ass.id=%s and agg.sid=%s group by agg.sex,agg.aggtext",
-              'get_preschoolpreschooldistrict_assessmentgender':"select agg.sex,agg.aggtext, avg(agg.aggval) from tb_school_assessment_agg agg,tb_assessment ass,tb_boundary b,tb_boundary b1, tb_boundary b2,tb_school s where ass.pid=%s and agg.assid=ass.id and ass.id=%s and agg.sid=s.id and b.id=b1.parent and b1.id=b2.parent and b2.id=s.bid and b.id=%s group by agg.sex,agg.aggtext",
-              'get_preschoolproject_assessmentgender':"select agg.sex,agg.aggtext, avg(agg.aggval) from tb_school_assessment_agg agg,tb_assessment ass,tb_boundary b,tb_boundary b1, tb_boundary b2,tb_school s where ass.pid=%s and agg.assid=ass.id and ass.id=%s and agg.sid=s.id and b.id=b1.parent and b1.id=b2.parent and b2.id=s.bid and b1.id=%s group by agg.sex,agg.aggtext",
-              'get_preschoolcircle_assessmentgender':"select agg.sex,agg.aggtext, avg(agg.aggval) from tb_school_assessment_agg agg,tb_assessment ass,tb_boundary b,tb_boundary b1, tb_boundary b2,tb_school s where ass.pid=%s and agg.assid=ass.id and ass.id=%s and agg.sid=s.id and b.id=b1.parent and b1.id=b2.parent and b2.id=s.bid and b2.id=%s group by agg.sex,agg.aggtext",
-              'get_assessmentmt_count':"select agg.mt,sum(agg.aggval) from tb_school_assessment_agg agg,tb_assessment ass where ass.pid=%s and agg.assid=ass.id and ass.id=%s and agg.sid=%s group by agg.mt",
-              'get_district_assessmentmt_count':"select agg.mt,sum(agg.aggval) from tb_school_assessment_agg agg,tb_assessment ass,tb_boundary b,tb_boundary b1, tb_boundary b2,tb_school s where ass.pid=%s and agg.assid=ass.id and ass.id=%s and agg.sid=s.id and b.id=b1.parent and b1.id=b2.parent and b2.id=s.bid and b.id=%s group by agg.mt",
-              'get_block_assessmentmt_count':"select agg.mt,sum(agg.aggval) from tb_school_assessment_agg agg,tb_assessment ass,tb_boundary b,tb_boundary b1, tb_boundary b2,tb_school s where ass.pid=%s and agg.assid=ass.id and ass.id=%s and agg.sid=s.id and b.id=b1.parent and b1.id=b2.parent and b2.id=s.bid and b1.id=%s group by agg.mt",
-              'get_cluster_assessmentmt_count':"select agg.mt,sum(agg.aggval) from tb_school_assessment_agg agg,tb_assessment ass,tb_boundary b,tb_boundary b1, tb_boundary b2,tb_school s where ass.pid=%s and agg.assid=ass.id and ass.id=%s and agg.sid=s.id and b.id=b1.parent and b1.id=b2.parent and b2.id=s.bid and b2.id=%s group by agg.mt",
-              'get_preschoolassessmentmt_count':"select c.mt,count(distinct stu.id) from tb_student stu, tb_class cl, tb_student_class sc,tb_school s, tb_student_eval se, tb_assessment ass,tb_child c where cl.sid = s.id AND sc.clid = cl.id AND sc.stuid = stu.id AND stu.cid = c.id and stu.id = se.stuid AND se.assid = ass.id and ass.pid=%s and ass.id=%s and sc.ayid=%s and s.id=%s group by c.mt",
-              'get_preschoolpreschooldistrict_assessmentmt_count':"select c.mt,count(distinct stu.id) from tb_student stu, tb_class cl, tb_student_class sc,tb_school s, tb_student_eval se, tb_assessment ass,tb_child c,tb_boundary b,tb_boundary b1,tb_boundary b2 where cl.sid = s.id AND sc.clid = cl.id AND sc.stuid = stu.id AND stu.cid = c.id and stu.id = se.stuid AND se.assid = ass.id and ass.pid=%s and ass.id=%s and sc.ayid=%s and s.bid=b2.id and b2.parent=b1.id and b1.parent=b.id and b.id=%s group by c.mt",
-              'get_preschoolproject_assessmentmt_count':"select c.mt,count(distinct stu.id) from tb_student stu, tb_class cl, tb_student_class sc,tb_school s, tb_student_eval se, tb_assessment ass,tb_child c,tb_boundary b,tb_boundary b1,tb_boundary b2 where cl.sid = s.id AND sc.clid = cl.id AND sc.stuid = stu.id AND stu.cid = c.id and stu.id = se.stuid AND se.assid = ass.id and ass.pid=%s and ass.id=%s and sc.ayid=%s and s.bid=b2.id and b2.parent=b1.id and b1.parent=b.id and b1.id=%s group by c.mt",
-              'get_preschoolcircle_assessmentmt_count':"select c.mt,count(distinct stu.id) from tb_student stu, tb_class cl, tb_student_class sc,tb_school s, tb_student_eval se, tb_assessment ass,tb_child c,tb_boundary b,tb_boundary b1,tb_boundary b2 where cl.sid = s.id AND sc.clid = cl.id AND sc.stuid = stu.id AND stu.cid = c.id and stu.id = se.stuid AND se.assid = ass.id and ass.pid=%s and ass.id=%s and sc.ayid=%s and s.bid=b2.id and b2.parent=b1.id and b1.parent=b.id and b2.id=%s group by c.mt",
-              'get_assessmentmt':"select agg.mt,agg.aggtext, sum(agg.aggval) from tb_school_assessment_agg agg,tb_assessment ass where ass.pid=%s and agg.assid=ass.id and ass.id=%s and agg.sid=%s group by agg.mt,agg.aggtext",
-              'get_district_assessmentmt':"select agg.mt,agg.aggtext, sum(agg.aggval) from tb_school_assessment_agg agg,tb_assessment ass,tb_boundary b,tb_boundary b1,tb_boundary b2,tb_school s where ass.pid=%s and agg.assid=ass.id and ass.id=%s and agg.sid=s.id and b.id=b1.parent and b1.id=b2.parent and b2.id=s.bid and b.id=%s group by agg.mt,agg.aggtext",
-              'get_block_assessmentmt':"select agg.mt,agg.aggtext, sum(agg.aggval) from tb_school_assessment_agg agg,tb_assessment ass,tb_boundary b,tb_boundary b1,tb_boundary b2,tb_school s where ass.pid=%s and agg.assid=ass.id and ass.id=%s and agg.sid=s.id and b.id=b1.parent and b1.id=b2.parent and b2.id=s.bid and b1.id=%s group by agg.mt,agg.aggtext",
-              'get_cluster_assessmentmt':"select agg.mt,agg.aggtext, sum(agg.aggval) from tb_school_assessment_agg agg,tb_assessment ass,tb_boundary b,tb_boundary b1,tb_boundary b2,tb_school s where ass.pid=%s and agg.assid=ass.id and ass.id=%s and agg.sid=s.id and b.id=b1.parent and b1.id=b2.parent and b2.id=s.bid and b2.id=%s group by agg.mt,agg.aggtext",
-              'get_preschoolassessmentmt':"select agg.mt,agg.aggtext, avg(agg.aggval) from tb_school_assessment_agg agg,tb_assessment ass where ass.pid=%s and agg.assid=ass.id and ass.id=%s and agg.sid=%s group by agg.mt,agg.aggtext",
-              'get_preschoolpreschooldistrict_assessmentmt':"select agg.mt,agg.aggtext, avg(agg.aggval) from tb_school_assessment_agg agg,tb_assessment ass,tb_boundary b,tb_boundary b1,tb_boundary b2,tb_school s where ass.pid=%s and agg.assid=ass.id  and ass.id=%s and agg.sid=s.id and b.id=b1.parent and b1.id=b2.parent and b2.id=s.bid and b.id=%s group by agg.mt,agg.aggtext",
-              'get_preschoolproject_assessmentmt':"select agg.mt,agg.aggtext, avg(agg.aggval) from tb_school_assessment_agg agg,tb_assessment ass,tb_boundary b,tb_boundary b1,tb_boundary b2,tb_school s where ass.pid=%s and agg.assid=ass.id  and ass.id=%s and agg.sid=s.id and b.id=b1.parent and b1.id=b2.parent and b2.id=s.bid and b1.id=%s group by agg.mt,agg.aggtext",
-              'get_preschoolcircle_assessmentmt':"select agg.mt,agg.aggtext, avg(agg.aggval) from tb_school_assessment_agg agg,tb_assessment ass,tb_boundary b,tb_boundary b1,tb_boundary b2,tb_school s where ass.pid=%s and agg.assid=ass.id  and ass.id=%s and agg.sid=s.id and b.id=b1.parent and b1.id=b2.parent and b2.id=s.bid and b2.id=%s group by agg.mt,agg.aggtext",
-              'get_school_assessmentclass_count':"select cl.name, sum(agg.aggval) from tb_school_assessment_agg agg,tb_assessment ass,tb_class cl where ass.pid=%s and agg.assid=ass.id and ass.id=%s and agg.sid=%s and cl.id=agg.clid group by cl.name",
-              'get_school_assessmentclass':"select cl.name,agg.aggtext, sum(agg.aggval) from tb_school_assessment_agg agg,tb_assessment ass,tb_class cl where ass.pid=%s and agg.assid=ass.id and ass.id=%s and agg.sid=%s and cl.id=agg.clid group by cl.name,agg.aggtext",
-              'get_district_assessmentclass_count':"select cl.name, sum(agg.aggval) from tb_school_assessment_agg agg,tb_assessment ass,tb_class cl,tb_boundary b,tb_boundary b1,tb_boundary b2,tb_school s where ass.pid=%s and agg.assid=ass.id and ass.id=%s and cl.id=agg.clid and agg.sid=s.id and b.id=b1.parent and b1.id=b2.parent and b2.id=s.bid and b.id=%s group by cl.name",
-              'get_district_assessmentclass':"select cl.name,agg.aggtext, sum(agg.aggval) from tb_school_assessment_agg agg,tb_assessment ass,tb_class cl,tb_boundary b,tb_boundary b1,tb_boundary b2,tb_school s where ass.pid=%s and agg.assid=ass.id and ass.id=%s and cl.id=agg.clid and agg.sid=s.id and b.id=b1.parent and b1.id=b2.parent and b2.id=s.bid and b.id=%s group by cl.name,agg.aggtext",
-              'get_block_assessmentclass_count':"select cl.name, sum(agg.aggval) from tb_school_assessment_agg agg,tb_assessment ass,tb_class cl,tb_boundary b,tb_boundary b1,tb_boundary b2,tb_school s where ass.pid=%s and agg.assid=ass.id and ass.id=%s and cl.id=agg.clid and agg.sid=s.id and b.id=b1.parent and b1.id=b2.parent and b2.id=s.bid and b1.id=%s group by cl.name",
-              'get_block_assessmentclass':"select cl.name,agg.aggtext, sum(agg.aggval) from tb_school_assessment_agg agg,tb_assessment ass,tb_class cl,tb_boundary b,tb_boundary b1,tb_boundary b2,tb_school s where ass.pid=%s and agg.assid=ass.id and ass.id=%s and cl.id=agg.clid and agg.sid=s.id and b.id=b1.parent and b1.id=b2.parent and b2.id=s.bid and b1.id=%s group by cl.name,agg.aggtext",
-              'get_cluster_assessmentclass_count':"select cl.name, sum(agg.aggval) from tb_school_assessment_agg agg,tb_assessment ass,tb_class cl,tb_boundary b,tb_boundary b1,tb_boundary b2,tb_school s where ass.pid=%s and agg.assid=ass.id and ass.id=%s and cl.id=agg.clid and agg.sid=s.id and b.id=b1.parent and b1.id=b2.parent and b2.id=s.bid and b2.id=%s group by cl.name",
-              'get_cluster_assessmentclass':"select cl.name,agg.aggtext, sum(agg.aggval) from tb_school_assessment_agg agg,tb_assessment ass,tb_class cl,tb_boundary b,tb_boundary b1,tb_boundary b2,tb_school s where ass.pid=%s and agg.assid=ass.id and ass.id=%s and cl.id=agg.clid and agg.sid=s.id and b.id=b1.parent and b1.id=b2.parent and b2.id=s.bid and b2.id=%s group by cl.name,agg.aggtext",
-              'get_progress_count':"select ass.name,  sum(agg.aggval),ass.start from tb_school_assessment_agg agg,tb_assessment ass where ass.pid=%s and agg.assid=ass.id and agg.sid=%s group by ass.name,ass.start order by ass.start",
-              'get_progress_countpreschool':"select ass.name,count(distinct stu.id), ass.start from tb_student stu,tb_class cl, tb_student_class sc,tb_school s, tb_student_eval se, tb_assessment ass where cl.sid = s.id and sc.clid = cl.id and sc.stuid=stu.id and stu.id =se.stuid and se.assid=ass.id and ass.pid=%s and sc.ayid=%s and s.id=%s group by ass.name,ass.start order by ass.start",
-              'get_progress_preschool':"select s.name,agg.aggtext,ass.name,  avg(agg.aggval),ass.start from tb_school_assessment_agg agg,tb_assessment ass,tb_school s where ass.pid=%s and agg.assid=ass.id and agg.sid=%s and s.id=agg.sid group by s.name,agg.aggtext,ass.name,ass.start order by ass.start",
-              'get_progress_school':"select s.name,agg.aggtext,ass.name,  sum(agg.aggval),ass.start from tb_school_assessment_agg agg,tb_assessment ass,tb_school s where ass.pid=%s and agg.assid=ass.id and agg.sid=%s and s.id = agg.sid group by s.name,agg.aggtext,ass.name,ass.start order by ass.start",
-              'get_progress_count_district':"select ass.name,  sum(agg.aggval),ass.start from tb_school_assessment_agg agg,tb_assessment ass,tb_boundary b,tb_boundary b1,tb_boundary b2,tb_school s where ass.pid=%s and agg.assid=ass.id and agg.sid=s.id and s.bid=b2.id and b2.parent=b1.id and b1.parent=b.id and b.id=%s group by ass.name,ass.start order by ass.start",
-              'get_progress_district':"select b.name,agg.aggtext,ass.name,   sum(agg.aggval),ass.start from tb_school_assessment_agg agg,tb_assessment ass,tb_boundary b, tb_boundary b1, tb_boundary b2,tb_school s where ass.pid=%s and agg.assid=ass.id and b.id=b1.parent and b1.id = b2.parent and s.bid = b2.id and agg.sid=s.id and b.id = %s group by b.name,agg.aggtext,ass.name,ass.start order by ass.start",
-              'get_progress_count_block':"select ass.name,  sum(agg.aggval),ass.start from tb_school_assessment_agg agg,tb_assessment ass,tb_boundary b,tb_boundary b1,tb_boundary b2,tb_school s where ass.pid=%s and agg.assid=ass.id and agg.sid=s.id and s.bid=b2.id and b2.parent=b1.id and b1.parent=b.id and b1.id=%s group by ass.name,ass.start order by ass.start",
-              'get_progress_block':"select b1.name,agg.aggtext,ass.name,   sum(agg.aggval),ass.start from tb_school_assessment_agg agg,tb_assessment ass,tb_boundary b, tb_boundary b1, tb_boundary b2,tb_school s where ass.pid=%s and agg.assid=ass.id and b.id=b1.parent and b1.id = b2.parent and s.bid = b2.id and agg.sid=s.id and b1.id = %s group by b1.name,agg.aggtext,ass.name,ass.start order by ass.start",
-              'get_progress_count_cluster':"select ass.name,  sum(agg.aggval),ass.start from tb_school_assessment_agg agg,tb_assessment ass,tb_boundary b,tb_boundary b1,tb_boundary b2,tb_school s where ass.pid=%s and agg.assid=ass.id and agg.sid=s.id and s.bid=b2.id and b2.parent=b1.id and b1.parent=b.id and b2.id=%s group by ass.name,ass.start order by ass.start",
-              'get_progress_cluster':"select b2.name,agg.aggtext,ass.name,   sum(agg.aggval),ass.start from tb_school_assessment_agg agg,tb_assessment ass,tb_boundary b, tb_boundary b1, tb_boundary b2,tb_school s where ass.pid=%s and agg.assid=ass.id and b.id=b1.parent and b1.id = b2.parent and s.bid = b2.id and agg.sid=s.id and b2.id = %s group by b2.name,agg.aggtext,ass.name,ass.start order by ass.start",
-              'get_progress_count_preschoolpreschooldistrict':"select ass.name,count(distinct stu.id), ass.start from tb_student stu,tb_class cl, tb_student_class sc,tb_school s, tb_student_eval se, tb_assessment ass,tb_boundary b,tb_boundary b1,tb_boundary b2 where cl.sid = s.id and sc.clid = cl.id and sc.stuid=stu.id and stu.id =se.stuid and se.assid=ass.id and ass.pid=%s and sc.ayid=%s and s.bid=b2.id and b2.parent=b1.id and b1.parent=b.id and b.id=%s group by ass.name,ass.start order by ass.start",
-              'get_progress_preschoolpreschooldistrict':"select b.name,agg.aggtext,ass.name,   avg(agg.aggval),ass.start from tb_school_assessment_agg agg,tb_assessment ass,tb_boundary b, tb_boundary b1, tb_boundary b2,tb_school s where ass.pid=%s and agg.assid=ass.id and b.id=b1.parent and b1.id = b2.parent and s.bid = b2.id and agg.sid=s.id and b.id = %s group by b.name,agg.aggtext,ass.name,ass.start order by ass.start",
-              'get_progress_count_preschoolproject':"select ass.name,count(distinct stu.id), ass.start from tb_student stu,tb_class cl, tb_student_class sc,tb_school s, tb_student_eval se, tb_assessment ass,tb_boundary b,tb_boundary b1,tb_boundary b2 where cl.sid = s.id and sc.clid = cl.id and sc.stuid=stu.id and stu.id =se.stuid and se.assid=ass.id and ass.pid=%s and sc.ayid=%s and s.bid=b2.id and b2.parent=b1.id and b1.parent=b.id and b1.id=%s group by ass.name,ass.start order by ass.start",
-              'get_progress_preschoolproject':"select b1.name,agg.aggtext,ass.name,   avg(agg.aggval),ass.start from tb_school_assessment_agg agg,tb_assessment ass,tb_boundary b, tb_boundary b1, tb_boundary b2,tb_school s where ass.pid=%s and agg.assid=ass.id and b.id=b1.parent and b1.id = b2.parent and s.bid = b2.id and agg.sid=s.id and b1.id = %s group by b1.name,agg.aggtext,ass.name,ass.start order by ass.start",
-              'get_progress_count_preschoolcircle':"select ass.name,count(distinct stu.id), ass.start from tb_student stu,tb_class cl, tb_student_class sc,tb_school s, tb_student_eval se, tb_assessment ass,tb_boundary b,tb_boundary b1,tb_boundary b2 where cl.sid = s.id and sc.clid = cl.id and sc.stuid=stu.id and stu.id =se.stuid and se.assid=ass.id and ass.pid=%s and sc.ayid=%s and s.bid=b2.id and b2.parent=b1.id and b1.parent=b.id and b2.id=%s group by ass.name,ass.start order by ass.start",
-              'get_progress_preschoolcircle':"select b2.name,agg.aggtext,ass.name,   avg(agg.aggval),ass.start from tb_school_assessment_agg agg,tb_assessment ass,tb_boundary b, tb_boundary b1, tb_boundary b2,tb_school s where ass.pid=%s and agg.assid=ass.id and b.id=b1.parent and b1.id = b2.parent and s.bid = b2.id and agg.sid=s.id and b2.id = %s group by b2.name,agg.aggtext,ass.name,ass.start order by ass.start",
-              'get_assessmentinfo_district':"select b.name,sum(agg.aggval) from tb_school_assessment_agg agg,tb_assessment ass,tb_boundary b, tb_boundary b1, tb_boundary b2,tb_school s where ass.pid=%s and agg.assid=ass.id and b.id=b1.parent and b1.id = b2.parent and s.bid = b2.id and agg.sid=s.id and b.id = %s group by b.name",
-              'get_assessmentinfo_block':"select b1.name,sum(agg.aggval) from tb_school_assessment_agg agg,tb_assessment ass,tb_boundary b, tb_boundary b1, tb_boundary b2,tb_school s where ass.pid=%s and agg.assid=ass.id and b.id=b1.parent and b1.id = b2.parent and s.bid = b2.id and agg.sid=s.id and b1.id = %s group by b1.name",
-              'get_assessmentinfo_cluster':"select b2.name,sum(agg.aggval) from tb_school_assessment_agg agg,tb_assessment ass,tb_boundary b, tb_boundary b1, tb_boundary b2,tb_school s where ass.pid=%s and agg.assid=ass.id and b.id=b1.parent and b1.id = b2.parent and s.bid = b2.id and agg.sid=s.id and b2.id = %s group by b2.name",
+              'get_basic_assessmentinfo_school':"select agg.assid,cl.name,agg.sex,s.name, sum(agg.aggval),b.id,b1.id,b2.id from tb_class cl, tb_school_assessment_agg agg,tb_assessment ass,tb_school s,tb_boundary b,tb_boundary b1, tb_boundary b2 where ass.pid=%s and agg.assid=ass.id and agg.sid=%s and s.id=agg.sid and b.id=b1.parent and b1.id=b2.parent and b2.id=s.bid and agg.clid=cl.id group by agg.sex,s.name,b.id,b1.id,b2.id, agg.assid,cl.name",
+              'get_basic_assessmentinfo_district':"select agg.assid,cl.name,agg.sex,b.name, sum(agg.aggval) from tb_class cl, tb_school_assessment_agg agg,tb_assessment ass,tb_school s,tb_boundary b,tb_boundary b1, tb_boundary b2 where ass.pid=%s and agg.assid=ass.id and agg.sid=s.id and b.id=b1.parent and b1.id=b2.parent and b2.id=s.bid and b.id=%s and agg.clid=cl.id group by agg.sex,b.name,agg.assid,cl.name",
+              'get_basic_assessmentinfo_block':"select agg.assid,cl.name,agg.sex,b1.name, sum(agg.aggval) from tb_class cl,tb_school_assessment_agg agg,tb_assessment ass,tb_school s,tb_boundary b,tb_boundary b1, tb_boundary b2 where ass.pid=%s and agg.assid=ass.id and agg.sid=s.id and b.id=b1.parent and b1.id=b2.parent and b2.id=s.bid and b1.id=%s and agg.clid=cl.id group by agg.sex,b1.name,agg.assid,cl.name",
+              'get_basic_assessmentinfo_cluster':"select agg.assid,cl.name,agg.sex,b2.name, sum(agg.aggval) from tb_class cl,tb_school_assessment_agg agg,tb_assessment ass,tb_school s,tb_boundary b,tb_boundary b1, tb_boundary b2 where ass.pid=%s and agg.assid=ass.id and agg.sid=s.id and b.id=b1.parent and b1.id=b2.parent and b2.id=s.bid and b2.id=%s and agg.clid=cl.id group by agg.sex,b2.name,agg.assid,cl.name",
+              'get_assessmentpertext_school':"select agg.assid,cl.name,agg.aggtext, sum(agg.aggval) from tb_class cl,tb_school_assessment_agg agg,tb_assessment ass where ass.pid=%s and agg.assid=ass.id and agg.sid=%s and agg.clid=cl.id group by agg.aggtext,agg.assid,cl.name",
+              'get_assessmentpertext_district':"select agg.assid,cl.name,agg.aggtext, sum(agg.aggval) from tb_class cl,tb_school_assessment_agg agg,tb_assessment ass,tb_boundary b,tb_boundary b1,tb_boundary b2,tb_school s where ass.pid=%s and agg.assid=ass.id and agg.sid=s.id and b.id=b1.parent and b1.id=b2.parent and b2.id=s.bid and b.id=%s and agg.clid=cl.id group by cl.name,agg.aggtext,agg.assid",
+              'get_assessmentpertext_block':"select agg.assid,cl.name,agg.aggtext, sum(agg.aggval) from tb_class cl,tb_school_assessment_agg agg,tb_assessment ass,tb_boundary b,tb_boundary b1,tb_boundary b2,tb_school s where ass.pid=%s and agg.assid=ass.id and agg.sid=s.id and b.id=b1.parent and b1.id=b2.parent and b2.id=s.bid and b1.id=%s and agg.clid=cl.id group by agg.aggtext,agg.assid,cl.name",
+              'get_assessmentpertext_cluster':"select agg.assid,cl.name,agg.aggtext, sum(agg.aggval) from tb_class cl,tb_school_assessment_agg agg,tb_assessment ass,tb_boundary b,tb_boundary b1,tb_boundary b2,tb_school s where ass.pid=%s and agg.assid=ass.id and agg.sid=s.id and b.id=b1.parent and b1.id=b2.parent and b2.id=s.bid and b2.id=%s and agg.clid=cl.id group by agg.aggtext,agg.assid,cl.name",
+              'get_assessmentgender_school':"select agg.assid,cl.name,agg.sex,agg.aggtext, sum(agg.aggval) from tb_class cl, tb_school_assessment_agg agg,tb_assessment ass where ass.pid=%s and agg.assid=ass.id and agg.sid=%s and cl.id=agg.clid group by agg.sex,agg.aggtext,agg.assid,cl.name",
+              'get_assessmentgender_district':"select agg.assid,cl.name,agg.sex,agg.aggtext, sum(agg.aggval) from tb_class cl,tb_school_assessment_agg agg,tb_assessment ass,tb_boundary b,tb_boundary b1, tb_boundary b2,tb_school s where ass.pid=%s and agg.assid=ass.id and agg.sid=s.id and b.id=b1.parent and b1.id=b2.parent and b2.id=s.bid and b.id=%s and cl.id=agg.clid group by agg.sex,agg.aggtext,agg.assid,cl.name",
+              'get_assessmentgender_block':"select agg.assid,cl.name,agg.sex,agg.aggtext, sum(agg.aggval) from tb_class cl,tb_school_assessment_agg agg,tb_assessment ass,tb_boundary b,tb_boundary b1, tb_boundary b2,tb_school s where ass.pid=%s and agg.assid=ass.id and agg.sid=s.id and b.id=b1.parent and b1.id=b2.parent and b2.id=s.bid and b1.id=%s and cl.id=agg.clid group by agg.sex,agg.aggtext,agg.assid,cl.name",
+              'get_assessmentgender_cluster':"select agg.assid,cl.name,agg.sex,agg.aggtext, sum(agg.aggval) from tb_class cl,tb_school_assessment_agg agg,tb_assessment ass,tb_boundary b,tb_boundary b1, tb_boundary b2,tb_school s where ass.pid=%s and agg.assid=ass.id and agg.sid=s.id and b.id=b1.parent and b1.id=b2.parent and b2.id=s.bid and b2.id=%s and cl.id=agg.clid group by agg.sex,agg.aggtext,agg.assid,cl.name",
+              'get_assessmentmt_count_school':"select agg.assid,cl.name,agg.mt,sum(agg.aggval) from tb_class cl,tb_school_assessment_agg agg,tb_assessment ass where ass.pid=%s and agg.assid=ass.id and agg.sid=%s and cl.id=agg.clid group by agg.mt,agg.assid,cl.name",
+              'get_assessmentmt_count_district':"select agg.assid,cl.name,agg.mt,sum(agg.aggval) from tb_class cl,tb_school_assessment_agg agg,tb_assessment ass,tb_boundary b,tb_boundary b1, tb_boundary b2,tb_school s where ass.pid=%s and agg.assid=ass.id and agg.sid=s.id and b.id=b1.parent and b1.id=b2.parent and b2.id=s.bid and b.id=%s and cl.id=agg.clid group by agg.mt,agg.assid,cl.name",
+              'get_assessmentmt_count_block':"select agg.assid,cl.name,agg.mt,sum(agg.aggval) from tb_class cl,tb_school_assessment_agg agg,tb_assessment ass,tb_boundary b,tb_boundary b1, tb_boundary b2,tb_school s where ass.pid=%s and agg.assid=ass.id and agg.sid=s.id and b.id=b1.parent and b1.id=b2.parent and b2.id=s.bid and b1.id=%s and cl.id=agg.clid group by agg.mt,agg.assid,cl.name",
+              'get_assessmentmt_count_cluster':"select agg.assid,cl.name,agg.mt,sum(agg.aggval) from tb_class cl,tb_school_assessment_agg agg,tb_assessment ass,tb_boundary b,tb_boundary b1, tb_boundary b2,tb_school s where ass.pid=%s and agg.assid=ass.id and agg.sid=s.id and b.id=b1.parent and b1.id=b2.parent and b2.id=s.bid and b2.id=%s and cl.id=agg.clid group by agg.mt,agg.assid,cl.name",
+              'get_assessmentmt_school':"select agg.assid,cl.name,agg.mt,agg.aggtext, sum(agg.aggval) from tb_class cl,tb_school_assessment_agg agg,tb_assessment ass where ass.pid=%s and agg.assid=ass.id and agg.sid=%s and cl.id=agg.clid group by agg.mt,agg.aggtext,agg.assid,cl.name",
+              'get_assessmentmt_district':"select agg.assid,cl.name,agg.mt,agg.aggtext, sum(agg.aggval) from tb_class cl,tb_school_assessment_agg agg,tb_assessment ass,tb_boundary b,tb_boundary b1,tb_boundary b2,tb_school s where ass.pid=%s and agg.assid=ass.id and agg.sid=s.id and b.id=b1.parent and b1.id=b2.parent and b2.id=s.bid and b.id=%s and cl.id=agg.clid group by agg.mt,agg.aggtext,agg.assid,cl.name",
+              'get_assessmentmt_block':"select agg.assid,cl.name,agg.mt,agg.aggtext, sum(agg.aggval) from tb_class cl,tb_school_assessment_agg agg,tb_assessment ass,tb_boundary b,tb_boundary b1,tb_boundary b2,tb_school s where ass.pid=%s and agg.assid=ass.id and agg.sid=s.id and b.id=b1.parent and b1.id=b2.parent and b2.id=s.bid and b1.id=%s and cl.id=agg.clid group by agg.mt,agg.aggtext,agg.assid,cl.name",
+              'get_assessmentmt_cluster':"select agg.assid,cl.name,agg.mt,agg.aggtext, sum(agg.aggval) from tb_class cl,tb_school_assessment_agg agg,tb_assessment ass,tb_boundary b,tb_boundary b1,tb_boundary b2,tb_school s where ass.pid=%s and agg.assid=ass.id and agg.sid=s.id and b.id=b1.parent and b1.id=b2.parent and b2.id=s.bid and b2.id=%s and cl.id=agg.clid group by agg.mt,agg.aggtext,agg.assid,cl.name",
+              'get_progress_count_school':"select agg.assid,cl.name,ass.name,sum(agg.aggval),ass.start from tb_class cl,tb_school_assessment_agg agg,tb_assessment ass where ass.pid=%s and agg.assid=ass.id and agg.sid=%s and cl.id=agg.clid group by ass.name,ass.start,agg.assid,cl.name order by ass.start,cl.name",
+              'get_progress_school':"select agg.assid,s.name,cl.name,agg.aggtext,ass.name,  sum(agg.aggval),ass.start from tb_class cl,tb_school_assessment_agg agg,tb_assessment ass,tb_school s where ass.pid=%s and agg.assid=ass.id and agg.sid=%s and s.id = agg.sid and cl.id=agg.clid group by s.name,agg.aggtext,ass.name,ass.start,agg.assid,cl.name  order by ass.start,cl.name",
+              'get_progress_count_district':"select agg.assid,cl.name,ass.name,  sum(agg.aggval),ass.start from tb_class cl,tb_school_assessment_agg agg,tb_assessment ass,tb_boundary b,tb_boundary b1,tb_boundary b2,tb_school s where ass.pid=%s and agg.assid=ass.id and agg.sid=s.id and s.bid=b2.id and b2.parent=b1.id and b1.parent=b.id and b.id=%s and cl.id=agg.clid group by ass.name,ass.start,agg.assid,cl.name  order by ass.start,cl.name",
+              'get_progress_district':"select agg.assid,b.name,cl.name,agg.aggtext,ass.name,   sum(agg.aggval),ass.start from tb_class cl,tb_school_assessment_agg agg,tb_assessment ass,tb_boundary b, tb_boundary b1, tb_boundary b2,tb_school s where ass.pid=%s and agg.assid=ass.id and b.id=b1.parent and b1.id = b2.parent and s.bid = b2.id and agg.sid=s.id and b.id = %s and cl.id=agg.clid group by b.name,agg.aggtext,ass.name,ass.start,agg.assid,cl.name  order by ass.start,cl.name",
+              'get_progress_count_block':"select agg.assid,cl.name,ass.name,  sum(agg.aggval),ass.start from tb_class cl,tb_school_assessment_agg agg,tb_assessment ass,tb_boundary b,tb_boundary b1,tb_boundary b2,tb_school s where ass.pid=%s and agg.assid=ass.id and agg.sid=s.id and s.bid=b2.id and b2.parent=b1.id and b1.parent=b.id and b1.id=%s and cl.id=agg.clid group by ass.name,ass.start,agg.assid,cl.name order by ass.start,cl.name",
+              'get_progress_block':"select agg.assid,b1.name,cl.name,agg.aggtext,ass.name,   sum(agg.aggval),ass.start from tb_class cl,tb_school_assessment_agg agg,tb_assessment ass,tb_boundary b, tb_boundary b1, tb_boundary b2,tb_school s where ass.pid=%s and agg.assid=ass.id and b.id=b1.parent and b1.id = b2.parent and s.bid = b2.id and agg.sid=s.id and b1.id = %s and cl.id=agg.clid group by b1.name,agg.aggtext,ass.name,ass.start,agg.assid,cl.name  order by ass.start,cl.name",
+              'get_progress_count_cluster':"select agg.assid,cl.name,ass.name,  sum(agg.aggval),ass.start from tb_class cl,tb_school_assessment_agg agg,tb_assessment ass,tb_boundary b,tb_boundary b1,tb_boundary b2,tb_school s where ass.pid=%s and agg.assid=ass.id and agg.sid=s.id and s.bid=b2.id and b2.parent=b1.id and b1.parent=b.id and b2.id=%s and cl.id=agg.clid group by ass.name,ass.start,agg.assid,cl.name  order by ass.start,cl.name",
+              'get_progress_cluster':"select agg.assid,b2.name,cl.name,agg.aggtext,ass.name,   sum(agg.aggval),ass.start from tb_class cl,tb_school_assessment_agg agg,tb_assessment ass,tb_boundary b, tb_boundary b1, tb_boundary b2,tb_school s where ass.pid=%s and agg.assid=ass.id and b.id=b1.parent and b1.id = b2.parent and s.bid = b2.id and agg.sid=s.id and b2.id = %s and cl.id=agg.clid group by b2.name,agg.aggtext,ass.name,ass.start,agg.assid,cl.name  order by ass.start,cl.name",
+              'get_assessmentinfo_district':"select b.name,cl.name,ass.name,sum(agg.aggval) from tb_class cl,tb_school_assessment_agg agg,tb_assessment ass,tb_boundary b, tb_boundary b1, tb_boundary b2,tb_school s where ass.pid=%s and agg.assid=ass.id and b.id=b1.parent and b1.id = b2.parent and s.bid = b2.id and agg.sid=s.id and b.id = %s and cl.id=agg.clid group by b.name,cl.name,ass.name",
+              'get_assessmentinfo_block':"select b1.name,cl.name,ass.name,sum(agg.aggval) from tb_class cl,tb_school_assessment_agg agg,tb_assessment ass,tb_boundary b, tb_boundary b1, tb_boundary b2,tb_school s where ass.pid=%s and agg.assid=ass.id and b.id=b1.parent and b1.id = b2.parent and s.bid = b2.id and agg.sid=s.id and b1.id = %s and cl.id=agg.clid group by b1.name,cl.name,ass.name",
+              'get_assessmentinfo_cluster':"select b2.name,cl.name,ass.name,sum(agg.aggval) from tb_class cl,tb_school_assessment_agg agg,tb_assessment ass,tb_boundary b, tb_boundary b1, tb_boundary b2,tb_school s where ass.pid=%s and agg.assid=ass.id and b.id=b1.parent and b1.id = b2.parent and s.bid = b2.id and agg.sid=s.id and b2.id = %s and cl.id=agg.clid group by b2.name,cl.name,ass.name",
               'get_school_info':"select b.name, b1.name, b2.name, s.name,b.type,s.cat,s.sex,s.moi,s.mgmt,s.dise_code,s.status from tb_boundary b, tb_boundary b1, tb_boundary b2, tb_school s,tb_bhierarchy h where s.id = %s and b.id=b1.parent and b1.id=b2.parent and s.bid=b2.id and b.hid=h.id",
               'get_school_address_info':"select a.address,a.area,a.pincode,a.landmark,a.instidentification,a.instidentification2, a.bus from tb_address a,tb_school s where s.aid=a.id and s.id=%s",
               'get_sys_info':"select sys.dateofvisit,sys.comments,sys.id from tb_sys_data sys where sys.schoolid=%s",
@@ -276,21 +270,8 @@ class assessments:
   def GET(self,type,pid,id):
     data={}
     try:
-      if pid == "1":
-        assess = anganwadiAssessment(type,pid,id)
-        data = assess.getData()
-      elif pid == "2" or pid =="3" or pid=="4" or pid=="9" or pid=="10" or pid=="11":
-        assess= nngAssessment(type,pid,id)
-        data = assess.getData()
-      elif pid =="5" or pid=="6" or pid=="7" or pid=="12":
-        assess= readingAssessment(type,pid,id)
-        data = assess.getData()
-      elif pid=="8":
-        assess= englishAssessment(type,pid,id)
-        data = assess.getData()
-      else:
-        assess = baseAssessment(type,pid,id)
-        data = assess.data
+       assess = assessmentData(type,pid,id)
+       data = assess.getData()
     except:
       traceback.print_exc(file=sys.stderr)
       connection.rollback()
@@ -303,13 +284,13 @@ class baseAssessment:
     districtid=0
     blockid=0
     clusterid=0
-    total=0
+    total={}
     count={}
     def __init__(self,type,programmeid,id):
       self.type = str(type)
       self.pid=programmeid
       self.id = id
-      self.data= {"programme":{"pid":int(self.pid),"name":"","year":""},"type":self.type,"name":"","Boys":0,"Girls":0,"assessPerText":{},"baseline":{"gender":{},"mt":{},"class":{}},"progress":{},"analytics":[]}
+      self.data= {"programme":{"pid":int(self.pid),"name":"","year":""},"type":self.type,"name":"","Boys":0,"Girls":0,"assessPerText":{},"baseline":{"gender":{},"mt":{},"class":{}},"progress":{},"analytics":{},"base":{}}
 
     def getProgramInfo(self):
       try:
@@ -321,262 +302,299 @@ class baseAssessment:
       except:
         traceback.print_exc(file=sys.stderr)
         connection.rollback()
-   
-    def getBasicAssessmentInfo(self,type=""):
+
+    def getBasicAssessmentInfo(self):
       try:
-        if self.type in ('school','preschool'):
-          query='get_basic_'+type+'assessmentinfo'
-        else:
-          query='get_basic_'+type+self.type+'_assessmentinfo'
-        if type=='preschool':
-          cursor.execute(statements[query],(self.pid,baseassess[self.pid],119,self.id,))
-        else:
-          #print >> sys.stderr, query
-          cursor.execute(statements[query],(self.pid,baseassess[self.pid],self.id,))
+        qtype=getTypes[self.type]
+        query='get_basic_assessmentinfo_'+qtype
+        cursor.execute(statements[query],(self.pid,self.id,))
         result = cursor.fetchall()
         for row in result:
-          self.data["name"]=row[1].capitalize()
-          if row[0] == "female":
-            self.data["Girls"]=str(int(row[2]))
-          if row[0] == "male":
-            self.data["Boys"]=str(int(row[2]))
-          self.total = self.total+row[2]
-          self.count[row[0]]=row[2]
-          if self.type=='school':
-            self.districtid=row[3]
-            self.blockid=row[4]
-            self.clusterid=row[5]
+          self.data["name"]=row[3].capitalize()
+          if row[0] not in baseassess[self.pid]:
+            continue
+          classname=str(row[1])
+          if classname not in self.data["base"]:
+            self.data["base"][classname]={}
+          if row[2] == "female":
+            gender="Girls"
+          else:
+            gender="Boys"
+          if gender not in self.data["base"][classname]:
+            self.data["base"][classname][gender]=int(row[4])
+          else:
+            self.data["base"][classname][gender]=self.data["base"][classname][gender]+int(row[4])
+
+          if classname not in self.total:
+            self.total[classname] = row[4]
+          else:
+            self.total[classname] =self.total[classname]+ row[4]
+
+          if classname not in self.count:
+            self.count[classname]={}
+          if gender not in self.count[classname]:
+            self.count[classname][gender]=row[4]
+          else:
+            self.count[classname][gender]=self.count[classname][gender]+row[4]
+
+          if qtype=='school':
+            self.districtid=row[5]
+            self.blockid=row[6]
+            self.clusterid=row[7]
+
+        for classname in self.data["base"]:
+          for gender in self.data["base"][classname]:
+            self.data[gender]=self.data[gender]+self.data["base"][classname][gender]
       except:
         traceback.print_exc(file=sys.stderr)
         connection.rollback()
 
     def getBaselineGeneral(self,type=""):
       try:
-        if self.type in ('school','preschool'):
-          query='get_'+type+'assessmentpertext'
-        else:
-          query='get_'+type+self.type+'_assessmentpertext'
-        cursor.execute(statements[query],(self.pid,baseassess[self.pid],self.id,))
+        qtype=getTypes[self.type]
+        query='get_assessmentpertext_'+qtype
+        cursor.execute(statements[query],(self.pid,self.id,))
         result = cursor.fetchall()
         for row in result:
-          if row[1]==0:
-            self.data["assessPerText"][row[0]]=0
+          if row[0] not in baseassess[self.pid]:
+            continue
+          classname=str(row[1])
+          if classname not in self.data["assessPerText"]:
+             self.data["assessPerText"][classname]={}
+
+          asstext=row[2]
+          assval=row[3]
+          if asstext not in self.data["assessPerText"][classname]:
+            self.data["assessPerText"][classname][asstext]=assval
           else:
-            if type=="preschool":
-              self.data["assessPerText"][row[0]]=float(row[1])*100.0
-            else:
-              self.data["assessPerText"][row[0]]=(float(row[1])/float(self.total))*100.0
+            self.data["assessPerText"][classname][asstext]=self.data["assessPerText"][classname][asstext]+assval
+        for classname in  self.data["assessPerText"]:
+          for asstext in self.data["assessPerText"][classname]:
+             if self.type=="preschool":
+               self.data["assessPerText"][classname][asstext]=float(self.data["assessPerText"][classname][asstext])*100.0             
+             else:
+               self.data["assessPerText"][classname][asstext]=(float(self.data["assessPerText"][classname][asstext])/float(self.total[classname]))*100.0
       except:
         traceback.print_exc(file=sys.stderr)
         connection.rollback()
 
-    def getBaselineGender(self,type=""):
+    def getBaselineGender(self):
       try:
-        if self.type in ('school','preschool'):
-          query='get_'+type+'assessmentgender'
-        else:
-          query='get_'+type+self.type+'_assessmentgender'
-        cursor.execute(statements[query],(self.pid,baseassess[self.pid],self.id,))
+        qtype=getTypes[self.type]
+        query='get_assessmentgender_'+qtype
+        cursor.execute(statements[query],(self.pid,self.id,))
         result = cursor.fetchall()
         for row in result:
-          if row[0] =="female":
+          if row[0] not in baseassess[self.pid]:
+           continue
+          classname=str(row[1])
+          if row[2] =="female":
             gender="Girls"
-          if row[0] =="male":
+          if row[2] =="male":
             gender="Boys"
-          if not gender in self.data["baseline"]["gender"]:
-            self.data["baseline"]["gender"][gender]={}
-          if row[2]==0:
-            self.data["baseline"]["gender"][gender][row[1]]=0
+
+          aggtext=row[3]
+          aggval=row[4]
+          if classname not in self.data["baseline"]["gender"]:
+             self.data["baseline"]["gender"][classname]={}
+          if gender not in self.data["baseline"]["gender"][classname]:
+            self.data["baseline"]["gender"][classname][gender]={}
+          if aggtext not in self.data["baseline"]["gender"][classname][gender]:
+            self.data["baseline"]["gender"][classname][gender][aggtext]=aggval
           else:
-            if type=="preschool":
-              self.data["baseline"]["gender"][gender][row[1]]=float(row[2])*100.0
-            else:
-              self.data["baseline"]["gender"][gender][row[1]]=(float(row[2])/float(self.count[row[0]]))*100.0
+              self.data["baseline"]["gender"][classname][gender][aggtext]=float(self.data["baseline"]["gender"][classname][gender][aggtext])+float(aggval)
+
+
+        print self.count
+
+        for classname in self.data["baseline"]["gender"]:
+          for gender in self.data["baseline"]["gender"][classname]:
+            for asstext in self.data["baseline"]["gender"][classname][gender]:
+              if self.type=="preschool":
+                self.data["baseline"]["gender"][classname][gender][asstext]=float(self.data["baseline"]["gender"][classname][gender][asstext])*100.0
+              else:
+                self.data["baseline"]["gender"][classname][gender][asstext]=(float(self.data["baseline"]["gender"][classname][gender][asstext])/float(self.count[classname][gender]))*100.0
       except:
         traceback.print_exc(file=sys.stderr)
         connection.rollback()
 
     def getBaselineMTCount(self,type):
-      if self.type in ('school'):
-        query='get_'+type+'assessmentmt_count'
-      else:
-        query='get_'+type+self.type+'_assessmentmt_count'
-      cursor.execute(statements[query],(self.pid,baseassess[self.pid],self.id,))
-      result = cursor.fetchall()
-      for row in result:
-        self.count[row[0]]=row[1]
-
-    def getBaselineMT(self,type=""):
-      try:
-        if type=="":
-          self.getBaselineMTCount(type)
-        if self.type in ('school','preschool'):
-          query='get_'+type+'assessmentmt'
-        else:
-          query='get_'+type+self.type+'_assessmentmt'
-        cursor.execute(statements[query],(self.pid,baseassess[self.pid],self.id,))
-        result = cursor.fetchall()
-        for row in result:
-           if not row[0].capitalize() in self.data["baseline"]["mt"]:
-              self.data["baseline"]["mt"][row[0].capitalize()]={}
-           if row[2]==0:
-             self.data["baseline"]["mt"][row[0].capitalize()][row[1]]=0
-           else:
-            if type=="preschool":
-              self.data["baseline"]["mt"][row[0].capitalize()][row[1]]=float(row[2])*100.0
-            else:
-              self.data["baseline"]["mt"][row[0].capitalize()][row[1]]=(float(row[2])/float(self.count[row[0]]))*100.0
-      except:
-        traceback.print_exc(file=sys.stderr)
-        connection.rollback()
-
-
-    def getBaselineClass(self):
-      try:
-        cursor.execute(statements['get_'+self.type+'_assessmentclass_count'],(self.pid,baseassess[self.pid],self.id,))
-        result = cursor.fetchall()
-        for row in result:
-          self.count[row[0]]=row[1]
-
-        cursor.execute(statements['get_'+self.type+'_assessmentclass'],(self.pid,baseassess[self.pid],self.id,))
-        result = cursor.fetchall()
-        for row in result:
-           std= "class-"+str(row[0])
-           if not std in self.data["baseline"]["class"]:
-              self.data["baseline"]["class"][std]={}
-           if row[2]==0:
-             self.data["baseline"]["class"][std][row[1]]=0
-           else:
-             self.data["baseline"]["class"][std][row[1]]=(float(row[2])/float(self.count[row[0]]))*100.0
-      except:
-        traceback.print_exc(file=sys.stderr)
-        connection.rollback()
-
-
-    def getProgressCount(self,type):
-      if self.type in ('school'):
-        query='get_progress_count'+type
-      else:
-        query='get_progress_count_'+type+self.type
+      query='get_assessmentmt_count_'+type
       cursor.execute(statements[query],(self.pid,self.id,))
       result = cursor.fetchall()
       for row in result:
-        self.count[row[0]]=row[1]
-
-
-    def getProgressInfo(self,type=""):
-      try:
-        if type=="":
-          self.getProgressCount(type)
-        if self.type in ('school','preschool'):
-          query='get_progress_'+self.type
+        if row[0] not in baseassess[self.pid]:
+          continue
+        classname=row[1]
+        mt=row[2].capitalize()
+        count=row[3]
+        if classname not in self.count:
+          self.count[classname]={}
+        if mt not in self.count[classname]:
+          self.count[classname][mt]=count
         else:
-          query='get_progress_'+type+self.type
+          self.count[classname][mt]=self.count[classname][mt]+count
 
+    def getBaselineMT(self,type=""):
+      try:
+        qtype=getTypes[self.type]
+        self.getBaselineMTCount(qtype)
+        query='get_assessmentmt_'+qtype
         cursor.execute(statements[query],(self.pid,self.id,))
         result = cursor.fetchall()
         for row in result:
-           if not row[1] in self.data["progress"]:
-              self.data["progress"][row[1]]={}
-           if row[3]==0:
-             self.data["progress"][row[1]][row[2]]=0
-           else:
-             if type=="preschool":
-               self.data["progress"][row[1]][row[2]]=float(row[3])*100.0
-             else:
-               self.data["progress"][row[1]][row[2]]=(float(row[3])/float(self.count[row[2]]))*100.0
+          if row[0] not in baseassess[self.pid]:
+            continue
+          classname=row[1]
+          mt=row[2].capitalize()
+          aggtext=row[3]
+          count=row[4]
+          if classname not in self.data["baseline"]["mt"]:
+            self.data["baseline"]["mt"][classname]={}
+          if mt not in self.data["baseline"]["mt"][classname]:
+            self.data["baseline"]["mt"][classname][mt]={}
+          if aggtext not in self.data["baseline"]["mt"][classname][mt]:
+            self.data["baseline"]["mt"][classname][mt][aggtext]=count
+          else:
+            self.data["baseline"]["mt"][classname][mt][aggtext]=self.data["baseline"]["mt"][classname][mt][aggtext]+count
+
+        for classname in self.data["baseline"]["mt"]:
+          for mt in self.data["baseline"]["mt"][classname]:
+            for asstext in self.data["baseline"]["mt"][classname][mt]:
+              if self.type=="preschool":
+                self.data["baseline"]["mt"][classname][mt][asstext]=float(self.data["baseline"]["mt"][classname][mt][asstext])*100.0
+              else:
+                self.data["baseline"]["mt"][classname][mt][asstext]=(float(self.data["baseline"]["mt"][classname][mt][asstext])/float(self.count[classname][mt]))*100.0
       except:
         traceback.print_exc(file=sys.stderr)
         connection.rollback()
-    
-    def getAnalyticsInfo(self):   
-      temp={}
-      timeArray=[]
 
+    def getProgressCount(self,qtype):
+      query='get_progress_count_'+qtype
+      cursor.execute(statements[query],(self.pid,self.id,))
+      result = cursor.fetchall()
+      for row in result:
+        classname=row[1]
+        assname=row[2]
+        count=row[3]
+        if classname not in self.count:
+          self.count[classname]={}
+        self.count[classname][assname]=count
+
+    def getProgressInfo(self,type=""):
+      try:
+        qtype=getTypes[self.type]
+        self.getProgressCount(qtype)
+        query='get_progress_'+qtype
+        cursor.execute(statements[query],(self.pid,self.id,))
+        result = cursor.fetchall()
+        for row in result:
+          classname=row[2]
+          aggtext=row[3]
+          assname=row[4]
+          sum=row[5]
+          starttime=str(row[6])
+
+          if classname not in self.data["progress"]:
+            self.data["progress"][classname]={}
+          if starttime not in self.data["progress"][classname]:
+            self.data["progress"][classname][starttime]={}
+          if assname not in self.data["progress"][classname][starttime]:
+            self.data["progress"][classname][starttime][assname]={}
+          if aggtext not in self.data["progress"][classname][starttime][assname]:
+            self.data["progress"][classname][starttime][assname][aggtext]=sum
+          else:
+            self.data["progress"][classname][starttime][assname][aggtext]=self.data["progress"][classname][starttime][assname][aggtext]+sum
+
+
+        for classname in self.data["progress"]:
+          for starttime in self.data["progress"][classname]:
+            for assname in self.data["progress"][classname][starttime]:
+              for aggtext in self.data["progress"][classname][starttime][assname]:
+                if self.type=="preschool":
+                  self.data["progress"][classname][starttime][assname][aggtext]=float(self.data["progress"][classname][starttime][assname][aggtext])*100.0
+                else:
+                  self.data["progress"][classname][starttime][assname][aggtext]=(float(self.data["progress"][classname][starttime][assname][aggtext])/float(self.count[classname][assname]))*100.0
+      except:
+        traceback.print_exc(file=sys.stderr)
+        connection.rollback()
+
+    def getAnalyticsInfo(self):
       name=self.data["name"].capitalize()+" (School)"
       try:
         cursor.execute(statements['get_progress_school'],(self.pid,self.id,))
         result = cursor.fetchall()
         for row in result:
-          if not row[2] in temp:
-            temp[row[2]]={}
-            timeArray.append(row[2])
-          if not name in temp[row[2]]:
-            temp[row[2]][name]={}
-          if row[3]==0:
-            temp[row[2]][name][row[1]]=0
-          else:
-            temp[row[2]][name][row[1]]=(float(row[3])/float(self.total))*100.0
+          sname=row[1].capitalize()
+          classname=str(row[2])
+          aggtext=row[3]
+          assname=row[4]
+          aggsum=row[5]
+          starttime=str(row[6])
+
+          if classname not in self.data["analytics"]:
+            self.data["analytics"][classname]={}
+          if starttime not in self.data["analytics"][classname]:
+            self.data["analytics"][classname][starttime]={}
+          if assname not in self.data["analytics"][classname][starttime]:
+            self.data["analytics"][classname][starttime][assname]={}
+          if "School" not in self.data["analytics"][classname][starttime][assname]:
+            self.data["analytics"][classname][starttime][assname]["School"]={"name":sname}
+          if aggtext not in self.data["analytics"][classname][starttime][assname]["School"]:
+            if aggsum==0:
+              self.data["analytics"][classname][starttime][assname]["School"][aggtext]=float(aggsum)
+            else:
+              self.data["analytics"][classname][starttime][assname]["School"][aggtext]=(float(aggsum)/float(self.total[classname]))*100
 
 
         boundaries={"district":self.districtid,"block":self.blockid,"cluster":self.clusterid}
 
         for boundary in boundaries:
+          boundarytotal={}
           cursor.execute(statements['get_assessmentinfo_'+boundary],(self.pid,boundaries[boundary],))
           result = cursor.fetchall()
+          bname=""
           for row in result:
-            boundarytotal=row[1]
-
+            classname=str(row[1])
+            assname=row[2]
+            classsum=row[3]
+            if classname not in boundarytotal:
+              boundarytotal[classname]={}
+            boundarytotal[classname][assname]=classsum
           cursor.execute(statements['get_progress_'+boundary],(self.pid,boundaries[boundary],))
           result = cursor.fetchall()
           for row in result:
-            bname=row[0].capitalize()+" ("+boundary.capitalize()+")"
-            if not row[2] in temp:
-              temp[row[2]]={}
-            if not bname in temp[row[2]]:
-              temp[row[2]][bname]={}
-            if row[3]==0:
-              temp[row[2]][bname][row[1]]=0
-            else:
-              temp[row[2]][bname][row[1]]=(float(row[3])/float(boundarytotal))*100.0
+            boundary=boundary.capitalize()
+            bname=row[1].capitalize()
+            classname=str(row[2])
+            aggtext=row[3]
+            assname=row[4]
+            aggsum=row[5]
+            starttime=str(row[6])
+            if classname not in self.data["analytics"]:
+              continue
+            if starttime not in self.data["analytics"][classname]:
+              continue
+            if assname not in self.data["analytics"][classname][starttime]:
+              continue
+            if boundary not in self.data["analytics"][classname][starttime][assname]:
+              self.data["analytics"][classname][starttime][assname][boundary]={"name":bname}
+            if aggtext not in self.data["analytics"][classname][starttime][assname][boundary]:
+              if aggsum==0:
+                self.data["analytics"][classname][starttime][assname][boundary][aggtext]=float(aggsum)
+              else:
+                self.data["analytics"][classname][starttime][assname][boundary][aggtext]=(float(aggsum)/float(boundarytotal[classname][assname]))*100
 
-        for i in timeArray:
-          self.data["analytics"].append({i:temp[i]})
       except:
         traceback.print_exc(file=sys.stderr)
         connection.rollback()
 
 
-class anganwadiAssessment(baseAssessment):
-
-    def getProgressInfo(self,type=""):
-      try:
-        if self.type in ('school','preschool'):
-          query='get_progress_'+self.type
-        else:
-          query='get_progress_'+type+self.type
-        cursor.execute(statements[query],(self.pid,self.id,))
-        result = cursor.fetchall()
-        for row in result:
-           if not row[2] in self.data["progress"]:
-              self.data["progress"][row[2]]={}
-           if row[3]==0:
-             self.data["progress"][row[2]][row[1]]=0
-           else:
-             self.data["progress"][row[2]][row[1]]=float(row[3])*100.0
-      except:
-        traceback.print_exc(file=sys.stderr)
-        connection.rollback()
-
-    def getBaselineAssessmentInfo(self):
-      self.getBaselineGeneral("preschool")
-      self.getBaselineGender("preschool")
-      self.getBaselineMT("preschool")
-
-    def getData(self):
-      self.getProgramInfo()
-      self.getBasicAssessmentInfo("preschool")
-      self.getBaselineAssessmentInfo()
-      self.getProgressInfo("preschool")
-      connection.commit()
-      return self.data
-
-class nngAssessment(baseAssessment):
+class assessmentData(baseAssessment):
     def getBaselineAssessmentInfo(self):
       self.getBaselineGeneral()
       self.getBaselineGender()
       self.getBaselineMT()
-      self.getBaselineClass()
 
     def getData(self):
       self.getProgramInfo()
@@ -588,41 +606,6 @@ class nngAssessment(baseAssessment):
       connection.commit()
       return self.data
 
-
-class readingAssessment(baseAssessment):
-    def getBaselineAssessmentInfo(self):
-      self.getBaselineGeneral()
-      self.getBaselineGender()
-      self.getBaselineMT()
-      self.getBaselineClass()
-
-    def getData(self):
-      self.getProgramInfo()
-      self.getBasicAssessmentInfo()
-      self.getBaselineAssessmentInfo()
-      self.getProgressInfo()
-      if self.type =="school":
-        self.getAnalyticsInfo()
-      connection.commit()
-      return self.data
-
-
-class englishAssessment(baseAssessment):
-    def getBaselineAssessmentInfo(self):
-      self.getBaselineGeneral()
-      self.getBaselineGender()
-      self.getBaselineMT()
-      self.getBaselineClass()
-
-    def getData(self):
-      self.getProgramInfo()
-      self.getBasicAssessmentInfo()
-      self.getBaselineAssessmentInfo()
-      self.getProgressInfo()
-      if self.type =="school":
-        self.getAnalyticsInfo()
-      connection.commit()
-      return self.data
 
 class schoolpage:
   def GET(self,type,id):

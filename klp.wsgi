@@ -1044,7 +1044,7 @@ class postSYS:
       syscursor.execute("BEGIN")
       syscursor.execute("LOCK TABLE tb_sys_data IN ROW EXCLUSIVE MODE");
       syscursor.execute(query,data)
-      syscursor.execute("select nextval('tb_sys_data_id_seq')")
+      syscursor.execute("select currval('tb_sys_data_id_seq')")
       result = syscursor.fetchall()
       syscursor.execute("COMMIT")
       for row in result:

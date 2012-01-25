@@ -5,7 +5,6 @@ import jsonpickle
 import csv
 import re
 import difflib
-import shutil
 import smtplib,email,email.encoders,email.mime.text,email.mime.base,mimetypes
 from web import form
 
@@ -986,6 +985,7 @@ class postSYS:
           wf.write(selectedfile.file.read())
           wf.close()
           hashed_filename = hashlib.md5(open(savepath +savefilename,'r').read()).hexdigest() + '.jpg'
+          import shutil
           shutil.move(savepath + savefilename,hashpath + hashed_filename)
         except IOError:
           traceback.print_exc(file=sys.stderr)

@@ -8,7 +8,7 @@ google.load('visualization', '1', {'packages':['corechart','table','imagechart']
 var levels={"Reading":{"0":0,"L":2,"W":4,"S":6,"P":8},
             "NNG":{"Rung1":0,"Rung2":1,"Rung3":2,"Rung4":3,"Rung5":4},
             "Anganwadi":{"General awareness":0,"Gross motor":1,"Fine motor":2,"Language":3,"Intellectual":4,"Socio-emotional":5,"Pre-academic":6},
-            "English":{"Rung1":0,"Rung2":1,"Rung3":2,"Rung4":3,"Rung5":4},
+            "English":{"Can Read":0,"Cannot Read":1,"Can Write":2,"Cannot Write":3,"Can Speak":4,"Cannot Speak":5},
             "Reading-Ramnagara":{"0":0,"L":2,"W":4,"S":6,"P":8},
             "Reading-Dharwad":{"0":0,"L":2,"W":4,"S":6,"P":8},
             "NNG3":{"Rung1":0,"Rung2":1,"Rung3":2,"Rung4":3,"Rung5":4},
@@ -18,7 +18,7 @@ var levels={"Reading":{"0":0,"L":2,"W":4,"S":6,"P":8},
             "Target Reading":{"0":0,"L":2,"W":4,"S":6,"P":8},
             "NNGSupport":{"Rung1":0,"Rung2":1,"Rung3":2,"Rung4":3,"Rung5":4},
             "NNG10by10":{"Rung1":0,"Rung2":1,"Rung3":2,"Rung4":3,"Rung5":4},
-            "Akshara English":{"Rung1":0,"Rung2":1,"Rung3":2,"Rung4":3,"Rung5":4},
+            "Akshara English":{"Can Read":0,"Cannot Read":1,"Can Write":2,"Cannot Write":3,"Can Speak":4,"Cannot Speak":5},
             "Class1-CarryThrough":{"Rung1":0,"Rung2":1,"Rung3":2,"Rung4":3,"Rung5":4},
             "Third Party Anganwadi":{"General awareness":0,"Gross motor":1,"Fine motor":2,"Language":3,"Intellectual":4,"Socio-emotional":5,"Pre-academic":6},
             };
@@ -120,7 +120,7 @@ function enrollment(schooltype,pid,programme)
   }
   if(pid=="6" || pid=="15")
   {
-    tablecontent='<br><b>English Programmes enrollment data for '+info["name"]+' ('+initCap(info["type"])+') in '+syear+'-'+eyear+':-</b><br><table class=\"chart-table\" width=\"350\" border=\"1\" style=\"border-width:1px; border-style:dotted; border-color:#CCCCCC;\"><tr><td>Num of Boys:</td><td>'+info["Boys"]+'</td></tr><tr><td>Num of Girls:</td><td>'+info["Girls"]+'</td></tr></table><br><hr/><br>The <a href=\"/text/english\">English program</a> measures the competency of a child using the following levels:<br><ul><li>Rung1:- 0-20</li><li>Rung2:- 21-40 </li><li>Rung3: -41-60 </li><li>Rung4:- 61-80 </li><li>Rung5:- 81-100</li></ul>'
+    tablecontent='<br><b>English Programmes enrollment data for '+info["name"]+' ('+initCap(info["type"])+') in '+syear+'-'+eyear+':-</b><br><table class=\"chart-table\" width=\"350\" border=\"1\" style=\"border-width:1px; border-style:dotted; border-color:#CCCCCC;\"><tr><td>Num of Boys:</td><td>'+info["Boys"]+'</td></tr><tr><td>Num of Girls:</td><td>'+info["Girls"]+'</td></tr></table><br><hr/><br>The <a href=\"/text/english\">English program</a> measures the competency of a child using the following levels:<br><ul><li>Whether the child can Read</li><li>Whether the child can Write</li><li>Whether the child can Speak</li></ul>'
   }
   if(pid=="5" || pid=="18")
   {
@@ -296,7 +296,7 @@ function analyticsdata(divtype,programme)
         var options = {
           title: 'Class-'+classname+" ("+test+")",
           width: width, height: height,
-          chartArea: {width:"50%",height:"75%",left:"50"},
+          chartArea: {width:"50%",height:"75%",left:"100"},
           backgroundColor: {stroke:'#000000',strokeWidth:'1',fill:'#F4E193'}
         };
         var chart = new google.visualization.BarChart(document.getElementById(divIdName));
@@ -380,7 +380,7 @@ function levelbar(divtype,programme,assesstype,category)
     var options = {
        title: 'Class-'+classname,
        width: width, height: height,
-       chartArea: {width:"50%",height:"75%",left:"50"},
+       chartArea: {width:"50%",height:"75%",left:"100"},
        backgroundColor: {stroke:'#000000',strokeWidth:'1',fill:'#F4E193'}
     };
     if(info['type']=="preschool")
@@ -481,7 +481,7 @@ function progressdata(divtype,pid,programme)
     var options = {
        title: 'Class-'+classname,
        width: width, height: height,
-       chartArea: {width:"50%",height:"75%",left:"50"},
+       chartArea: {width:"50%",height:"75%",left:"100"},
        backgroundColor: {stroke:'#000000',strokeWidth:'1',fill:'#F4E193'}
     };
     if(info['type']=="preschool")

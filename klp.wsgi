@@ -659,7 +659,7 @@ class schoolpage:
       from ConfigParser import SafeConfigParser
       config = SafeConfigParser()
       config.read(os.path.join(os.getcwd(),'config/klpconfig.ini'))
-      imgpath = config.get('Pictures','hashpicpath')
+      imgpath = config.get('Pictures','htmlpicpath')
       data["image_dir"] = "/" + imgpath
       syscursor.execute(statements['get_school_images'],(id,))
       result = syscursor.fetchall()
@@ -985,6 +985,7 @@ class postSYS:
           wf.write(selectedfile.file.read())
           wf.close()
           hashed_filename = hashlib.md5(open(savepath +savefilename,'r').read()).hexdigest() + '.jpg'
+          import shutil
           shutil.move(savepath + savefilename,hashpath + hashed_filename)
         except IOError:
           traceback.print_exc(file=sys.stderr)

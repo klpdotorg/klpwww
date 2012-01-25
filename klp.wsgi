@@ -930,11 +930,12 @@ class postSYS:
     #cc = [recipient]
     to = [recipient]
     subject = sub
-    smtpserver = 'localhost'
     from ConfigParser import SafeConfigParser
     config = SafeConfigParser()
     config.read(os.path.join(os.getcwd(),'config/klpconfig.ini'))
     sender = config.get('Mail','senderid')
+    smtpport = config.get('Mail','smtpport') 
+    smtpserver = config.get('Mail','smtpserver')
 
     # create html email
     html = '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" '
@@ -962,7 +963,7 @@ class postSYS:
         fileMsg.add_header('Content-Disposition','attachment;filename='+file.lstrip(filedir))
         emailMsg.attach(fileMsg)
 
-    server = smtplib.SMTP(smtpserver)
+    server = smtplib.SMTP(smtpserver,smtpport)
     server.sendmail(sender,to,emailMsg.as_string())
     server.quit()
 

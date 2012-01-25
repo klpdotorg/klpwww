@@ -185,7 +185,7 @@ begin
         count(case when mark between 40 and 60 then id else null end) as Rung3,
         count(case when mark between 60 and 80 then id else null end) as Rung4,
         count(case when mark > 80 then id else null end) as Rung5
-        FROM ( SELECT se.stuid,s.id as id, ass.id as assid, sc.clid as clid, c.sex as sex, c.mt as mt, avg(se.mark) as mark 
+        FROM ( SELECT se.stuid,s.id as id, ass.id as assid, sc.clid as clid, c.sex as sex, c.mt as mt, avg(se.mark/q.maxmarks*100) as mark 
                FROM tb_student stu, tb_class cl, tb_student_class sc, tb_child c, tb_school s, tb_student_eval se, tb_assessment ass,tb_question q 
                WHERE cl.sid = s.id AND sc.clid = cl.id AND sc.stuid = stu.id AND stu.cid = c.id AND stu.id = se.stuid AND se.qid=q.id and q.assid = ass.id AND ass.id = $1 AND sc.ayid =$2  
                GROUP BY s.id, ass.id, sc.clid, c.sex, c.mt,se.stuid ) as output 

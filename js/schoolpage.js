@@ -149,7 +149,7 @@ function initialise(data)
   data.addColumn('string', 'Language');
   data.addColumn('number', 'Number of Students');
   for (var key in info["school_mt_tb"]){
-    data.addRow([key.substring(0,4) + ' (' + info["school_mt_tb"][key] + ')', parseInt(info["school_mt_tb"][key])]);
+    data.addRow([key + ' (' + info["school_mt_tb"][key] + ')', parseInt(info["school_mt_tb"][key])]);
   }
   //var table = new google.visualization.Table(document.getElementById('mtsch_tb'));
   //table.draw(data,{width: 400});

@@ -1,9 +1,0 @@
-psql:klpsys.sql:1: NOTICE:  table "tb_sys_data" does not exist, skipping
-psql:klpsys.sql:12: NOTICE:  CREATE TABLE will create implicit sequence "tb_sys_data_id_seq" for serial column "tb_sys_data.id"
-psql:klpsys.sql:12: NOTICE:  CREATE TABLE / UNIQUE will create implicit index "tb_sys_data_id_key" for table "tb_sys_data"
-psql:klpsys.sql:14: NOTICE:  table "tb_sys_qans" does not exist, skipping
-psql:klpsys.sql:21: NOTICE:  type "sys_question_type" does not exist, skipping
-psql:klpsys.sql:24: NOTICE:  table "tb_sys_questions" does not exist, skipping
-psql:klpsys.sql:32: NOTICE:  CREATE TABLE will create implicit sequence "tb_sys_questions_id_seq" for serial column "tb_sys_questions.id"
-psql:klpsys.sql:32: NOTICE:  CREATE TABLE / UNIQUE will create implicit index "tb_sys_questions_id_key" for table "tb_sys_questions"
-psql:klpsys.sql:53: NOTICE:  table "tb_sys_images" does not exist, skipping

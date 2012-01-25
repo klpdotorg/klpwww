@@ -15,12 +15,6 @@ sys.path.append(abspath)
 os.chdir(abspath)
 
 from Utility import KLPDB
-#import KLPDB
-
-import monitor
-monitor.start(interval=1.0)
-monitor.track(os.path.join(os.path.dirname(__file__), 'Utility/KLPDB.py'))
-#monitor.track(os.path.join(os.path.dirname(__file__), 'KLPDB.py'))
 
 urls = (
      '/','mainmap',
@@ -146,8 +140,8 @@ statements = {'get_district':"select bcoord.id_bndry,ST_AsText(bcoord.coord),ini
               'get_cluster_info':"select count(distinct sv.id),b2.name from tb_school_agg sv, tb_boundary b, tb_boundary b1, tb_boundary b2 where sv.bid = b2.id and b2.parent = b1.id and b1.parent = b.id and b2.id = %s group by b2.name",
               'get_circle_gender':"select sv.sex, sum(sv.num) from tb_school_agg sv, tb_boundary b, tb_boundary b1, tb_boundary b2,tb_bhierarchy bhier where sv.bid = b2.id and b2.parent = b1.id and b1.parent = b.id and b2.hid=bhier.id and b.type='2'and b2.id = %s group by sv.sex",
               'get_circle_info':"select count(distinct sv.id),b2.name from tb_school_agg sv, tb_boundary b, tb_boundary b1, tb_boundary b2,tb_bhierarchy bhier where sv.bid = b2.id and b2.parent = b1.id and b1.parent = b.id and b2.hid=bhier.id and b.type='2' and b2.id = %s group by b2.name",
-              'get_school_gender':"select sv.name, sv.sex, sum(sv.num) from tb_school_agg2 sv where sv.id = %s group by sv.name, sv.sex",
-              'get_school_mt':"select sv.name, sv.mt, sum(sv.num) from tb_school_agg2 sv where sv.id = %s group by sv.name, sv.mt",
+              'get_school_gender':"select sv.name, sv.sex, sum(sv.num) from tb_school_agg sv where sv.id = %s group by sv.name, sv.sex",
+              'get_school_mt':"select sv.name, sv.mt, sum(sv.num) from tb_school_agg sv where sv.id = %s group by sv.name, sv.mt",
               'get_school_boundary_info':"select b.name, b1.name, b2.name, s.name,b.type from tb_boundary b, tb_boundary b1, tb_boundary b2, tb_school s,tb_bhierarchy h where s.id = %s and b.id=b1.parent and b1.id=b2.parent and s.bid=b2.id and b.hid=h.id",
               'get_num_stories':"select count(*) from tb_sys_data where schoolid= %s",
               'get_sys_qids':"select id, qfield from tb_sys_questions order by id",
@@ -991,9 +985,7 @@ class postSYS:
           wf.write(selectedfile.file.read())
           wf.close()
           hashed_filename = hashlib.md5(open(savepath +savefilename,'r').read()).hexdigest() + '.jpg'
-          wf=open(hashpath + hashed_filename,'w')
-          wf.write(selectedfile.file.read())
-          wf.close()
+          shutil.move(savepath + savefilename,hashpath + hashed_filename)
         except IOError:
           traceback.print_exc(file=sys.stderr)
           print "Error occurred during processing this file: " + savefilename

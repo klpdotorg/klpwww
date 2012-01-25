@@ -1048,7 +1048,7 @@ class postSYS:
       result = syscursor.fetchall()
       syscursor.execute("COMMIT")
       for row in result:
-        sysid=row[0]-1
+        sysid=row[0]
       for q in qdata.keys():
         syscursor.execute(qansquery,{'sysid':sysid,'qid':q,'answer':qdata[q]})
       sysconnection.commit()

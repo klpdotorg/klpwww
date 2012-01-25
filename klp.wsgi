@@ -712,7 +712,7 @@ class schoolpage:
       data["syscount"]=0
       for row in result:
         if row[0] != None:
-          if row[0].strip() not in sysdates:
+          if row[0].strip().replace('/','-') not in sysdates:
             sysdates.append(row[0].strip().replace('/','-'))
           data["syscount"]=data["syscount"]+1
         if row[1] != None:

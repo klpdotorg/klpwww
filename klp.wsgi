@@ -5,6 +5,7 @@ import jsonpickle
 import csv
 import re
 import difflib
+import shutil
 import smtplib,email,email.encoders,email.mime.text,email.mime.base,mimetypes
 from web import form
 

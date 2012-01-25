@@ -1089,7 +1089,8 @@ class postSYS:
       body = body + "to notify them of this error immediately, if possible."
       sub = "Error while sharing your story on KLP"
     if recipient != None:
-      self.sendMail(recipient, sub, body)
+      #self.sendMail(recipient, sub, body)
+      pass
 
     web.header('Content-Type','text/html; charset=utf-8')
     return render_plain.sys_submitted()

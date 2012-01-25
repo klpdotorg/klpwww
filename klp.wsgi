@@ -659,7 +659,7 @@ class schoolpage:
       from ConfigParser import SafeConfigParser
       config = SafeConfigParser()
       config.read(os.path.join(os.getcwd(),'config/klpconfig.ini'))
-      imgpath = config.get('Pictures','hashpicpath')
+      imgpath = config.get('Pictures','htmlpicpath')
       data["image_dir"] = "/" + imgpath
       syscursor.execute(statements['get_school_images'],(id,))
       result = syscursor.fetchall()

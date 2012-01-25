@@ -1,5 +1,7 @@
 -- Aggregation tables
 
+DROP TABLE IF EXISTS "tb_school_agg";
+CREATE TABLE "tb_school_agg" (
   "id" integer,
   "name" varchar(300),
   "bid" integer,
@@ -319,7 +321,7 @@ begin
           select aggregates.stuid as stuid,s.id as sid,aggregates.assid as assid,stusg.clid as clid, c.sex as sex,c.mt as mt,  case when wagg <10 then 0 else 1 end as wskill, case when sagg<1 then 0 else 1 end as sskill, case when ragg<1 then 0 else 1 end as rskill 
           from
           (  select se.stuid as stuid,q.assid as assid, 
-               sum(case when se.qid in (246,247,248) then  case when se.grade is null then 0 else cast(se.grade as int) end end) as ragg, 
+               sum(case when se.qid in (246,247,248) then  case when se.grade is null then 0 else cast(se.grade as int) end end) as wagg, 
                sum(case when se.qid=251 then  case when se.grade is null then 0 else cast(se.grade as int) end end) as sagg, 
                sum(case when se.qid=252 then case when se.grade is null then 0 else cast(se.grade as int) end end) as ragg 
              from tb_student_eval se,tb_question q 

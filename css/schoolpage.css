@@ -13,6 +13,13 @@
 #school_info_heading {
     margin-left: 200px;
 }
+#school_hier {
+    /*margin-top: 50px;*/
+}
+
+#school_hier_heading {
+    margin-top: 50px;
+}
 #reportlinks {
     margin-left: 10px;
 }

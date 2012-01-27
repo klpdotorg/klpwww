@@ -725,13 +725,13 @@ class schoolpage:
       result = syscursor.fetchall()
       sysdata = {}
       data["sysdata"] = []
-      pos_ans = ["Yes","Available and functional","Available but not functional"]
+      pos_ans = ["yes","available and functional","available but not functional"]
       for row in result:
         if row[0] in sysdata.keys():
-          if row[1] not in pos_ans:
+          if row[1].lower() not in pos_ans:
             sysdata[row[0]] = "No or Not known"
         else:
-          if row[1] in pos_ans:
+          if row[1].lower() in pos_ans:
             sysdata[row[0]] = "Yes" 
           else:
             sysdata[row[0]] = "No or Not known"
@@ -1089,8 +1089,8 @@ class postSYS:
       body = body + "to notify them of this error immediately, if possible."
       sub = "Error while sharing your story on KLP"
     if recipient != None:
-      #self.sendMail(recipient, sub, body)
-      pass
+      self.sendMail(recipient, sub, body)
+      #pass
 
     web.header('Content-Type','text/html; charset=utf-8')
     return render_plain.sys_submitted()

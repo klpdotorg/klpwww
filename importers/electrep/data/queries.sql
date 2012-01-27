@@ -1,0 +1,1 @@
+select distinct se.sid, w.const_ward_name, mla.const_ward_name, mp.const_ward_name from tb_school_electedrep se LEFT OUTER JOIN tb_electedrep_master w ON se.ward_id = w.id LEFT OUTER JOIN tb_electedrep_master mla ON se.mla_const_id=mla.id LEFT OUTER JOIN tb_electedrep_master mp ON se.mp_const_id = mp.id order by se.sid \g dbs_with_rep.lst

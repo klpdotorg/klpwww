@@ -1,0 +1,1 @@
+select a.count as "ELECTED_REP_COUNT", b.count as "SCHOOL_REPS_COUNT", c.count as "SCHOOL_AGG_COUNT" from (select count(*) from tb_electedrep_master) a, (select count(*) from tb_school_electedrep) b, (select count(*) from tb_school_stu_counts) c \g ../data/db_counts.txt

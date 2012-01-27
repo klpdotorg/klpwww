@@ -1,0 +1,5 @@
+ ELECTED_REP_COUNT | SCHOOL_REPS_COUNT | SCHOOL_AGG_COUNT 
+-------------------+-------------------+------------------
+               467 |              3404 |            49333
+(1 row)
+

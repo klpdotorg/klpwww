@@ -1,0 +1,459 @@
+ id  |      const_ward_name      | const_ward_type  
+-----+---------------------------+------------------
+   1 | INDIA                     | Centre
+   2 | KARNATAKA                 | State
+   3 | BBMP-Bangalore            | City Corporation
+   4 | Bangalore                 | District
+   5 | Bangalore Rural           | District
+   6 | SRINIVASAPUR              | MLA Constituency
+   9 | ULLAL                     | MLA Constituency
+  10 | KAUP                      | MLA Constituency
+  11 | UDUPI                     | MLA Constituency
+  12 | BRAHMAVAR                 | MLA Constituency
+  13 | COONDAPUR                 | MLA Constituency
+  14 | BAINDUR                   | MLA Constituency
+  15 | BHATKAL                   | MLA Constituency
+  16 | KUMTA                     | MLA Constituency
+  17 | ANKOLA                    | MLA Constituency
+  18 | KARWAR                    | MLA Constituency
+  19 | KARKAL                    | MLA Constituency
+  20 | MOODABIDRI                | MLA Constituency
+  21 | BANTWAL                   | MLA Constituency
+  22 | VIRAJPET                  | MLA Constituency
+  23 | HEGGADADEVANAKOTE         | MLA Constituency
+  24 | GUNDLUPET                 | MLA Constituency
+  25 | HANUR                     | MLA Constituency
+  26 | MALAVALLI                 | MLA Constituency
+  27 | SATHANUR                  | MLA Constituency
+  28 | CHANNAPATNA               | MLA Constituency
+  29 | TUMKUR                    | MLA Constituency
+  31 | KUNIGAL                   | MLA Constituency
+  32 | GUBBI                     | MLA Constituency
+  33 | MAGADI                    | MLA Constituency
+  34 | HULIYURDURGA              | MLA Constituency
+  35 | NAGAMANGALA               | MLA Constituency
+  36 | TURUVEKERE                | MLA Constituency
+  37 | NIPPANI                   | MLA Constituency
+  38 | KAGWAD                    | MLA Constituency
+  39 | ATHANI                    | MLA Constituency
+  40 | YADGIR                    | MLA Constituency
+  41 | SANDUR                    | MLA Constituency
+  42 | GANGAVATHI                | MLA Constituency
+  43 | KUDLIGI                   | MLA Constituency
+  44 | KOPPAL                    | MLA Constituency
+  45 | MANVI                     | MLA Constituency
+  46 | KALMALA                   | MLA Constituency
+  47 | RAICHUR                   | MLA Constituency
+  48 | DEODURG                   | MLA Constituency
+  49 | LINGSUGUR                 | MLA Constituency
+  50 | SHORAPUR                  | MLA Constituency
+  51 | SHAHAPUR                  | MLA Constituency
+  52 | GURMITKAL                 | MLA Constituency
+  53 | AFZALPUR                  | MLA Constituency
+  54 | BASAVAKALYAN              | MLA Constituency
+  56 | CHIKNAIKANAHALLI          | MLA Constituency
+  57 | BHARAMASAGARA             | MLA Constituency
+  58 | CHANNAGIRI                | MLA Constituency
+  59 | JAGALUR                   | MLA Constituency
+  60 | CHITRADURGA               | MLA Constituency
+  61 | HIRIYUR                   | MLA Constituency
+  62 | MADHUGIRI                 | MLA Constituency
+  63 | BAGEPALLI                 | MLA Constituency
+  64 | CHINTAMANI                | MLA Constituency
+  65 | KOLAR                     | MLA Constituency
+  67 | UTTARAHALLI               | MLA Constituency
+  68 | KORATAGERE                | MLA Constituency
+  69 | DODDABALLAPUR             | MLA Constituency
+  70 | GOWRIBIDANUR              | MLA Constituency
+  71 | CHIKBALLAPUR              | MLA Constituency
+  72 | SIDLAGHATTA               | MLA Constituency
+  74 | VARTHUR                   | MLA Constituency
+  77 | MALUR                     | MLA Constituency
+  78 | MULBAGAL                  | MLA Constituency
+  79 | TIPTUR                    | MLA Constituency
+  80 | GANDSI                    | MLA Constituency
+  81 | BELUR                     | MLA Constituency
+  82 | SAKLESHPUR                | MLA Constituency
+  83 | HASSAN                    | MLA Constituency
+  84 | SRAVANABELAGOLA           | MLA Constituency
+  85 | HOLENARASIPUR             | MLA Constituency
+  86 | KRISHNARAJANAGAR          | MLA Constituency
+  87 | KRISHNARAJPET             | MLA Constituency
+  88 | PANDAVAPURA               | MLA Constituency
+  89 | SRIRANGAPATNA             | MLA Constituency
+  90 | KERAGODU                  | MLA Constituency
+  30 | NELAMANGALA               | MLA Constituency
+  66 | RAMANAGARAM               | MLA Constituency
+  91 | MADDUR                    | MLA Constituency
+  92 | KIRAGAVAL                 | MLA Constituency
+  93 | MANDYA                    | MLA Constituency
+  94 | BANNUR                    | MLA Constituency
+  95 | T. NARASIPUR              | MLA Constituency
+  96 | KOLLEGAL                  | MLA Constituency
+  98 | CHAMARAJANAGAR            | MLA Constituency
+  99 | NANJANGUD                 | MLA Constituency
+ 100 | HUNSUR                    | MLA Constituency
+ 101 | PERIYAPATNA               | MLA Constituency
+ 102 | ARKALGUD                  | MLA Constituency
+ 103 | MADIKERE                  | MLA Constituency
+ 104 | SULLIA                    | MLA Constituency
+ 105 | PUTTUR                    | MLA Constituency
+ 106 | BELTHANGADY               | MLA Constituency
+ 107 | MUDIGERE                  | MLA Constituency
+ 108 | SRINGERI                  | MLA Constituency
+ 110 | BIRUR                     | MLA Constituency
+ 111 | ARSIKERE                  | MLA Constituency
+ 112 | KADUR                     | MLA Constituency
+ 113 | TARIKERE                  | MLA Constituency
+ 114 | BHADRAVATHI               | MLA Constituency
+ 115 | SHIMOGA                   | MLA Constituency
+ 116 | TIRTHAHALLI               | MLA Constituency
+ 117 | HOSANAGAR                 | MLA Constituency
+ 118 | SAGAR                     | MLA Constituency
+ 119 | SORAB                     | MLA Constituency
+ 120 | SIRSI                     | MLA Constituency
+ 121 | HANAGAL                   | MLA Constituency
+ 122 | HAVERI                    | MLA Constituency
+ 123 | SHIGGAON                  | MLA Constituency
+ 124 | KUNDGOL                   | MLA Constituency
+ 125 | HUBLI RURAL               | MLA Constituency
+ 126 | HUBLI                     | MLA Constituency
+ 127 | KALGHATGI                 | MLA Constituency
+ 128 | HALIYAL                   | MLA Constituency
+ 129 | NAVALGUND                 | MLA Constituency
+ 130 | GADAG                     | MLA Constituency
+ 131 | SHIRHATTI                 | MLA Constituency
+ 132 | MUNDARGI                  | MLA Constituency
+ 133 | KOTTUR                    | MLA Constituency
+ 134 | HADAGALLI                 | MLA Constituency
+ 135 | HARAPANAHALLI             | MLA Constituency
+ 136 | HARIHAR                   | MLA Constituency
+ 137 | RANIBENNUR                | MLA Constituency
+ 138 | BYADGI                    | MLA Constituency
+ 139 | HIREKERUR                 | MLA Constituency
+ 140 | SHIKARIPUR                | MLA Constituency
+ 141 | HONNALI                   | MLA Constituency
+ 142 | HOLEHONNUR                | MLA Constituency
+ 143 | HOLALKERE                 | MLA Constituency
+ 144 | HOSADURGA                 | MLA Constituency
+ 145 | BELLAVI                   | MLA Constituency
+ 146 | SIRA                      | MLA Constituency
+ 147 | PAVAGADA                  | MLA Constituency
+ 148 | CHALLAKERE                | MLA Constituency
+ 149 | MOLAKALMURU               | MLA Constituency
+ 150 | SIRUGUPPA                 | MLA Constituency
+ 151 | SINDHNOOR                 | MLA Constituency
+ 152 | KANAKAGIRI                | MLA Constituency
+ 153 | YELBURGA                  | MLA Constituency
+ 154 | RON                       | MLA Constituency
+ 155 | KUSHTAGI                  | MLA Constituency
+ 156 | HUNGUND                   | MLA Constituency
+ 157 | BAGALKOT                  | MLA Constituency
+ 158 | HUVIN-HIPPARGI            | MLA Constituency
+ 159 | MUDDEBIHAL                | MLA Constituency
+ 160 | SEDAM                     | MLA Constituency
+ 161 | KHANAPUR                  | MLA Constituency
+ 162 | BAGEWADI                  | MLA Constituency
+ 163 | KITTUR                    | MLA Constituency
+ 164 | BAILHONGAL                | MLA Constituency
+ 165 | GOKAK                     | MLA Constituency
+ 166 | HUKKERI                   | MLA Constituency
+ 167 | SANKESHWAR                | MLA Constituency
+ 168 | CHIKKODI                  | MLA Constituency
+ 169 | SADALGA                   | MLA Constituency
+ 170 | RAIBAG                    | MLA Constituency
+ 171 | ARABHAVI                  | MLA Constituency
+ 172 | PARASGAD                  | MLA Constituency
+ 173 | NARAGUND                  | MLA Constituency
+ 174 | BADAMI                    | MLA Constituency
+ 175 | RAMDURG                   | MLA Constituency
+ 176 | MUDHOL                    | MLA Constituency
+ 177 | JAMKHANDI                 | MLA Constituency
+ 178 | BILGI                     | MLA Constituency
+ 179 | BASAVANA-BAGEWADI         | MLA Constituency
+ 180 | BIJAPUR                   | MLA Constituency
+ 181 | SINDGI                    | MLA Constituency
+ 182 | INDI                      | MLA Constituency
+ 183 | JEWARGI                   | MLA Constituency
+ 184 | SHAHABAD                  | MLA Constituency
+ 185 | CHINCHOLI                 | MLA Constituency
+ 186 | KAMALAPUR                 | MLA Constituency
+ 187 | ALLAND                    | MLA Constituency
+ 188 | HULSOOR                   | MLA Constituency
+ 189 | HUMNABAD                  | MLA Constituency
+ 190 | BIDAR                     | MLA Constituency
+ 191 | BHALKI                    | MLA Constituency
+ 192 | AURAD                     | MLA Constituency
+ 193 | CHITAPUR                  | MLA Constituency
+ 194 | GULBARGA                  | MLA Constituency
+ 195 | BELLARY                   | MLA Constituency
+ 196 | UCHAGAON                  | MLA Constituency
+ 197 | BELGAUM                   | MLA Constituency
+ 198 | DHARWAD                   | MLA Constituency
+ 199 | DHARWAD RURAL             | MLA Constituency
+ 200 | MAYAKONDA                 | MLA Constituency
+ 201 | DAVANGERE                 | MLA Constituency
+ 202 | KOLAR GOLD FIELDS         | MLA Constituency
+ 203 | BETHAMANGALA              | MLA Constituency
+ 204 | CHAMUNDESWARI             | MLA Constituency
+ 205 | KRISHNARAJ                | MLA Constituency
+ 206 | CHAMARAJA                 | MLA Constituency
+ 207 | NARASIMHARAJA             | MLA Constituency
+ 220 | KOLAR                     | MP Constituency
+ 222 | UDUPI                     | MP Constituency
+ 224 | MYSORE                    | MP Constituency
+ 225 | CHAMARAJANAGAR            | MP Constituency
+ 226 | TUMKUR                    | MP Constituency
+ 228 | MANDYA                    | MP Constituency
+ 229 | CHIKKODI                  | MP Constituency
+ 230 | BIJAPUR                   | MP Constituency
+ 231 | RAICHUR                   | MP Constituency
+ 232 | BELLARY                   | MP Constituency
+ 233 | KOPPAL                    | MP Constituency
+ 234 | GULBARGA                  | MP Constituency
+ 235 | BIDAR                     | MP Constituency
+ 236 | DAVANGERE                 | MP Constituency
+ 237 | CHITRADURGA               | MP Constituency
+ 239 | HASSAN                    | MP Constituency
+ 240 | SHIMOGA                   | MP Constituency
+ 243 | BAGALKOT                  | MP Constituency
+ 244 | BELGAUM                   | MP Constituency
+ 208 | YELAHANKA                 | MLA Constituency
+ 209 | RAJAJINAGAR               | MLA Constituency
+ 210 | CHICKPET                  | MLA Constituency
+ 211 | CHAMARAJAPET              | MLA Constituency
+ 227 | CHIKBALLAPUR              | MP Constituency
+ 238 | BANGALORE NORTH           | MP Constituency
+ 245 | BANGALORE SOUTH           | MP Constituency
+ 265 | HAVERI                    | MP Constituency
+ 266 | UTTARA                    | MP Constituency
+ 267 | DHARWAD                   | MP Constituency
+ 268 | DAKSHINA                  | MP Constituency
+ 269 | ADUGODI                   | Ward
+ 270 | AGARAM                    | Ward
+ 271 | AGRAHARA DASARAHALLI      | Ward
+ 272 | A NARAYANAPURA            | Ward
+ 273 | ANJANAPURA                | Ward
+ 274 | ARAKERE                   | Ward
+ 275 | ARAMANE NAGARA            | Ward
+ 276 | ATTIGUPPE                 | Ward
+ 277 | ATTURU                    | Ward
+ 278 | AZAD NAGAR                | Ward
+ 279 | BAGALAKUNTE               | Ward
+ 280 | BANASAVADI                | Ward
+ 281 | BANASHANKARI TEMPLE WARD  | Ward
+ 282 | BAPUJI NAGAR              | Ward
+ 283 | BASAVANAGUDI              | Ward
+ 284 | BASAVANAPURA              | Ward
+ 285 | BASAVESHWARA NAGAR        | Ward
+ 286 | BEGUR                     | Ward
+ 287 | BELLANDURU                | Ward
+ 288 | BENNIGANAHALLI            | Ward
+ 289 | BHARATHI NAGAR            | Ward
+ 290 | BILEKHALLI                | Ward
+ 291 | BINNIPETE                 | Ward
+ 292 | BOMMANAHALLI              | Ward
+ 293 | BTM LAYOUT                | Ward
+ 294 | BYATARAYANAPURA           | Ward
+ 295 | BYRASANDRA                | Ward
+ 296 | CHALAVADIPALYA            | Ward
+ 297 | CHAMRAJAPET               | Ward
+ 298 | CHICKPETE                 | Ward
+ 299 | CHIKKALSANDRA             | Ward
+ 300 | CHOKKASANDRA              | Ward
+ 301 | CHOWDESWARI WARD          | Ward
+ 302 | COTTONPETE                | Ward
+ 303 | C V RAMAN NAGAR           | Ward
+ 304 | DATTATREYA TEMPLE         | Ward
+ 305 | DAYANANDA NAGAR           | Ward
+ 306 | DEEPANJALI NAGAR          | Ward
+ 307 | DEVARA JEEVANAHALLI       | Ward
+ 308 | DEVASANDRA                | Ward
+ 309 | DHARMARAYA SWAMY TEMPLE   | Ward
+ 310 | DODDA BIDARAKALLU         | Ward
+ 311 | DODDA BOMMASANDRA         | Ward
+ 312 | DODDA NEKKUNDI            | Ward
+ 313 | DOMLUR                    | Ward
+ 314 | DR. RAJ KUMAR WARD        | Ward
+ 315 | EJIPURA                   | Ward
+ 316 | GALI ANJENAYA TEMPLE WARD | Ward
+ 317 | GANDHINAGAR               | Ward
+ 318 | GANESH MANDIR WARD        | Ward
+ 319 | GANGA NAGAR               | Ward
+ 320 | GANGENAHALLI              | Ward
+ 321 | GARUDACHAR PLAYA          | Ward
+ 322 | GAYITHRI NAGAR            | Ward
+ 323 | GIRINAGAR                 | Ward
+ 324 | GOTTIGERE                 | Ward
+ 325 | GOVINDARAJA NAGAR         | Ward
+ 326 | GURAPPANAPALYA            | Ward
+ 327 | HAGADUR                   | Ward
+ 328 | HAL AIRPORT               | Ward
+ 329 | HALSOOR                   | Ward
+ 330 | HAMPI NAGAR               | Ward
+ 331 | HANUMANTH NAGAR           | Ward
+ 332 | HBR LAYOUT                | Ward
+ 333 | HEBBALA                   | Ward
+ 334 | HEGGANAHALLI              | Ward
+ 335 | HEMMIGEPURA               | Ward
+ 336 | HEROHALLI                 | Ward
+ 337 | HMT WARD                  | Ward
+ 338 | HOMBEGOWDA NAGARA         | Ward
+ 339 | HONGASANDRA               | Ward
+ 340 | HORAMAVU                  | Ward
+ 341 | HOSAHALLI                 | Ward
+ 342 | HOSAKEREHALLI             | Ward
+ 343 | HOYSALA NAGAR             | Ward
+ 344 | HSR LAYOUT                | Ward
+ 345 | HUDI                      | Ward
+ 346 | JAGAJIVANARAMNAGAR        | Ward
+ 347 | JAKKASANDRA               | Ward
+ 348 | JAKKURU                   | Ward
+ 349 | JALAHALLI                 | Ward
+ 350 | JARAGANAHALLI             | Ward
+ 351 | JAYACHAMARAJENDRA NAGAR   | Ward
+ 353 | JAYANAGAR                 | Ward
+ 354 | JAYANAGAR EAST            | Ward
+ 355 | JEEVANBHIMA NAGAR         | Ward
+ 356 | JNANA BHARATHI WARD       | Ward
+ 357 | JOGUPALYA                 | Ward
+ 358 | J P NAGAR                 | Ward
+ 359 | J P PARK                  | Ward
+ 360 | KACHARKANAHALLI           | Ward
+ 361 | KADUGODI                  | Ward
+ 362 | KADUGONDANAHALLI          | Ward
+ 363 | KADU MALLESHWAR WARD      | Ward
+ 364 | KAMAKSHIPALYA             | Ward
+ 365 | KAMMANAHALLI              | Ward
+ 366 | KARISANDRA                | Ward
+ 367 | KATRIGUPPE                | Ward
+ 368 | KAVAL BAIRASANDRA         | Ward
+ 369 | KAVERIPURA                | Ward
+ 370 | KEMPAPURA AGRAHARA        | Ward
+ 371 | KEMPEGOWDA WARD           | Ward
+ 372 | KENGERI                   | Ward
+ 373 | KODIGEHALLI               | Ward
+ 374 | KONANKUNTE                | Ward
+ 375 | KONENA AGRAHARA           | Ward
+ 376 | KORAMANGALA               | Ward
+ 377 | KOTTEGEPALYA              | Ward
+ 378 | K R MARKET                | Ward
+ 379 | K R PURAM                 | Ward
+ 380 | KUMARASWAMY LAYOUT        | Ward
+ 381 | KUSHAL NAGAR              | Ward
+ 382 | KUVEMPU NAGAR             | Ward
+ 383 | LAGGERE                   | Ward
+ 384 | LAKKASANDRA               | Ward
+ 385 | LAKSHMI DEVI NAGAR        | Ward
+ 386 | LINGARAJAPURA             | Ward
+ 387 | MADIVALA                  | Ward
+ 388 | MAHALAKSHIMPURAM          | Ward
+ 389 | MALLASANDRA               | Ward
+ 390 | MALLESWARAM               | Ward
+ 391 | MANGAMMANAPALYA           | Ward
+ 392 | MANORAYANAPALYA           | Ward
+ 393 | MARAPPANA PALYA           | Ward
+ 394 | MARATHAHALLI              | Ward
+ 395 | MARENAHALLI               | Ward
+ 396 | MARUTHI MANDIR WARD       | Ward
+ 397 | MARUTHI SEVA NAGAR        | Ward
+ 398 | MATTIKERE                 | Ward
+ 399 | MUDALAPALYA               | Ward
+ 400 | MUNESHWARA NAGAR          | Ward
+ 401 | NAGAPURA                  | Ward
+ 402 | NAGARABHAVI               | Ward
+ 403 | NAGAVARA                  | Ward
+ 404 | NANDINI LAYOUT            | Ward
+ 405 | NAYANDAHALLI              | Ward
+ 406 | NEW TIPPASANDARA          | Ward
+ 407 | NILASANDRA                | Ward
+ 408 | OKALIPURAM                | Ward
+ 409 | PADARAYANAPURA            | Ward
+ 410 | PADMANABHA NAGAR          | Ward
+ 411 | PATTABHIRAM NAGAR         | Ward
+ 412 | PEENYA INDUSTRIAL AREA    | Ward
+ 413 | PRAKASH NAGAR             | Ward
+ 414 | PULIKESHINAGAR            | Ward
+ 415 | PUTTENAHALLI              | Ward
+ 416 | RADHAKRISHNA TEMPLE WARD  | Ward
+ 417 | RAJAGOPAL NAGAR           | Ward
+ 418 | RAJAJI NAGAR              | Ward
+ 419 | RAJAMAHAL GUTTAHALLI      | Ward
+ 420 | RAJARAJESHWARI NAGAR      | Ward
+ 421 | RAMAMURTHY NAGAR          | Ward
+ 422 | RAMASWAMY PALYA           | Ward
+ 423 | RAYAPURAM                 | Ward
+ 424 | SAGAYARAPURAM             | Ward
+ 425 | SAMPANGIRAM NAGAR         | Ward
+ 426 | SANJAYA NAGAR             | Ward
+ 427 | SARAKKI                   | Ward
+ 428 | SARVAGNA NAGAR            | Ward
+ 429 | SHAKAMBARI NAGAR          | Ward
+ 430 | SHAKTHI GANAPATHI NAGAR   | Ward
+ 431 | SHANKAR MATT              | Ward
+ 432 | SHANTALA NAGAR            | Ward
+ 433 | SHANTHI NAGAR             | Ward
+ 434 | SHETTIHALLI               | Ward
+ 435 | SHIVAJI NAGAR             | Ward
+ 436 | SHIVANAGARA               | Ward
+ 437 | SIDDAPURA                 | Ward
+ 438 | SINGASANDRA               | Ward
+ 439 | S K GARDEN                | Ward
+ 440 | SRINAGAR                  | Ward
+ 441 | SRIRAMAMANDIR             | Ward
+ 442 | SUBHASH NAGAR             | Ward
+ 443 | SUBRAMANYA NAGAR          | Ward
+ 444 | SUDDAGUNTE PALYA          | Ward
+ 445 | SUDHAM NAGARA             | Ward
+ 446 | SUNKENAHALLI              | Ward
+ 447 | T DASARAHALLI             | Ward
+ 448 | THANISANDRA               | Ward
+ 449 | ULLALU                    | Ward
+ 450 | UTTARAHALLI               | Ward
+ 451 | VANNARPET                 | Ward
+ 452 | VARTHURU                  | Ward
+ 453 | VASANTH NAGAR             | Ward
+ 454 | VASANTHPURA               | Ward
+ 455 | VIDYAPEETA WARD           | Ward
+ 456 | VIDYARANYAPURA            | Ward
+ 457 | VIJAYANAGAR               | Ward
+ 458 | VIJNANA NAGAR             | Ward
+ 459 | VIJNANAPURA               | Ward
+ 460 | VISHVESHWARA PURAM        | Ward
+ 461 | VISHWANATH NAGENAHALLI    | Ward
+ 462 | VRISABHAVATHI NAGAR       | Ward
+ 463 | YEDIYUR                   | Ward
+ 464 | YELAHANKA SATELLITE TOWN  | Ward
+ 465 | YELCHENAHALLI             | Ward
+ 466 | YESHWANTHPURA             | Ward
+ 212 | MALLESWARAM               | MLA Constituency
+ 215 | SHIVAJINAGAR              | MLA Constituency
+ 216 | BASAVANAGUDI              | MLA Constituency
+ 217 | GANDHINAGAR               | MLA Constituency
+ 218 | SHANTHINAGAR              | MLA Constituency
+ 219 | JAYANAGAR                 | MLA Constituency
+ 246 | KR PURAM                  | MLA Constituency
+ 247 | RAJARAJESWARINAGARA       | MLA Constituency
+ 248 | T.DASARAHALLI             | MLA Constituency
+ 249 | MAHALAKSHMI LAYOUT        | MLA Constituency
+ 250 | HEBBAL                    | MLA Constituency
+ 251 | PULAKESHINAGAR            | MLA Constituency
+ 252 | SARVAJNA NAGARA           | MLA Constituency
+ 253 | CV RAMAN NAGAR            | MLA Constituency
+ 254 | GOVINDRAJ NAGAR           | MLA Constituency
+ 255 | VIJAYNAGAR                | MLA Constituency
+ 256 | PADMANABANAGAR            | MLA Constituency
+ 257 | BTM LAYOUT                | MLA Constituency
+ 258 | MAHADEVAPURA              | MLA Constituency
+ 259 | BOMMANAHALLI              | MLA Constituency
+ 260 | BANGALORE SOUTH           | MLA Constituency
+ 261 | BYATARAYANAPURA           | MLA Constituency
+ 262 | YASHWANTHPURA             | MLA Constituency
+ 263 | BANGALORE RURAL           | MP Constituency
+ 264 | BANGALORE CENTRAL         | MP Constituency
+  73 | DEVANAHALLI               | MLA Constituency
+  75 | ANEKAL                    | MLA Constituency
+  76 | HOSAKOTE                  | MLA Constituency
+ 467 | GP Update                 | Gram Panchayat
+(455 rows)
+

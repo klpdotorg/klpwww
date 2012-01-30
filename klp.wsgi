@@ -712,7 +712,7 @@ class schoolpage:
       data["syscount"]=0
       for row in result:
         if row[0] != None:
-          if row[0].strip() not in sysdates:
+          if row[0].strip().replace('/','-') not in sysdates:
             sysdates.append(row[0].strip().replace('/','-'))
           data["syscount"]=data["syscount"]+1
         if row[1] != None:
@@ -725,13 +725,13 @@ class schoolpage:
       result = syscursor.fetchall()
       sysdata = {}
       data["sysdata"] = []
-      pos_ans = ["Yes","Available and functional","Available but not functional"]
+      pos_ans = ["yes","available and functional","available but not functional"]
       for row in result:
         if row[0] in sysdata.keys():
-          if row[1] not in pos_ans:
+          if row[1].lower() not in pos_ans:
             sysdata[row[0]] = "No or Not known"
         else:
-          if row[1] in pos_ans:
+          if row[1].lower() in pos_ans:
             sysdata[row[0]] = "Yes" 
           else:
             sysdata[row[0]] = "No or Not known"
@@ -930,11 +930,12 @@ class postSYS:
     #cc = [recipient]
     to = [recipient]
     subject = sub
-    smtpserver = 'localhost'
     from ConfigParser import SafeConfigParser
     config = SafeConfigParser()
     config.read(os.path.join(os.getcwd(),'config/klpconfig.ini'))
     sender = config.get('Mail','senderid')
+    smtpport = config.get('Mail','smtpport') 
+    smtpserver = config.get('Mail','smtpserver')
 
     # create html email
     html = '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" '
@@ -962,7 +963,7 @@ class postSYS:
         fileMsg.add_header('Content-Disposition','attachment;filename='+file.lstrip(filedir))
         emailMsg.attach(fileMsg)
 
-    server = smtplib.SMTP(smtpserver)
+    server = smtplib.SMTP(smtpserver,smtpport)
     server.sendmail(sender,to,emailMsg.as_string())
     server.quit()
 
@@ -1043,11 +1044,11 @@ class postSYS:
       syscursor.execute("BEGIN")
       syscursor.execute("LOCK TABLE tb_sys_data IN ROW EXCLUSIVE MODE");
       syscursor.execute(query,data)
-      syscursor.execute("select nextval('tb_sys_data_id_seq')")
+      syscursor.execute("select currval('tb_sys_data_id_seq')")
       result = syscursor.fetchall()
       syscursor.execute("COMMIT")
       for row in result:
-        sysid=row[0]-1
+        sysid=row[0]
       for q in qdata.keys():
         syscursor.execute(qansquery,{'sysid':sysid,'qid':q,'answer':qdata[q]})
       sysconnection.commit()
@@ -1089,6 +1090,7 @@ class postSYS:
       sub = "Error while sharing your story on KLP"
     if recipient != None:
       self.sendMail(recipient, sub, body)
+      #pass
 
     web.header('Content-Type','text/html; charset=utf-8')
     return render_plain.sys_submitted()

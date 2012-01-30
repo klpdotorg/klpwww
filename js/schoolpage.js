@@ -17,7 +17,9 @@ function initialise(data)
   {
     type="preschool";
     document.getElementById("school_info_heading").innerHTML = "Preschool Information";
+    document.getElementById("school_hier_heading").innerHTML = "Preschool District Information";
     document.getElementById("school_visits_heading").innerHTML = "Preschool Visits";
+    document.getElementById("sys_data_heading").innerHTML = "Information from Preschool Visits";
     document.title = "Preschool Information";
   }
   else
@@ -26,11 +28,11 @@ function initialise(data)
     document.getElementById("school_info_heading").innerHTML = "School Information";
     document.getElementById("school_hier_heading").innerHTML = "School District Information";
     document.getElementById("school_visits_heading").innerHTML = "School Visits";
-    document.getElementById("sys_comments_heading").innerHTML = "Visitors' Comments";
     document.getElementById("sys_data_heading").innerHTML = "Information from School Visits";
     document.title = "School Information";
   }
 
+  document.getElementById("sys_comments_heading").innerHTML = "Visitors' Comments";
   document.getElementById("student_info_heading").innerHTML = "Student Information";
   document.getElementById("const_info_heading").innerHTML = "Constituency Information";
   document.getElementById("assmt_info_heading").innerHTML = "Programme Information";

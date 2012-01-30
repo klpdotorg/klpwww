@@ -1,0 +1,2504 @@
+Invalid schoolid31063
+Unexpected error: (<type 'exceptions.TypeError'>, TypeError("cannot concatenate 'str' and 'int' objects",), <traceback object at 0x120c680>)
+Exception in user code:
+------------------------------------------------------------
+Traceback (most recent call last):
+  File "./parse_school_missing.py", line 69, in main
+    insertsql = "INSERT INTO tb_school_electedrep values("+str(school_id)+","+ ward_id+","+mla_id+","+mp_id+","+str(stype)+");\n"
+TypeError: cannot concatenate 'str' and 'int' objects
+------------------------------------------------------------
+Invalid schoolid34109
+Unexpected error: (<type 'exceptions.TypeError'>, TypeError("cannot concatenate 'str' and 'int' objects",), <traceback object at 0x11b8ea8>)
+Exception in user code:
+------------------------------------------------------------
+Traceback (most recent call last):
+  File "./parse_school_missing.py", line 69, in main
+    insertsql = "INSERT INTO tb_school_electedrep values("+str(school_id)+","+ ward_id+","+mla_id+","+mp_id+","+str(stype)+");\n"
+TypeError: cannot concatenate 'str' and 'int' objects
+------------------------------------------------------------
+Invalid schoolid31197
+Unexpected error: (<type 'exceptions.TypeError'>, TypeError("cannot concatenate 'str' and 'int' objects",), <traceback object at 0x11b8ea8>)
+Exception in user code:
+------------------------------------------------------------
+Traceback (most recent call last):
+  File "./parse_school_missing.py", line 69, in main
+    insertsql = "INSERT INTO tb_school_electedrep values("+str(school_id)+","+ ward_id+","+mla_id+","+mp_id+","+str(stype)+");\n"
+TypeError: cannot concatenate 'str' and 'int' objects
+------------------------------------------------------------
+Invalid schoolid31515
+Unexpected error: (<type 'exceptions.TypeError'>, TypeError("cannot concatenate 'str' and 'int' objects",), <traceback object at 0x120c680>)
+Exception in user code:
+------------------------------------------------------------
+Traceback (most recent call last):
+  File "./parse_school_missing.py", line 69, in main
+    insertsql = "INSERT INTO tb_school_electedrep values("+str(school_id)+","+ ward_id+","+mla_id+","+mp_id+","+str(stype)+");\n"
+TypeError: cannot concatenate 'str' and 'int' objects
+------------------------------------------------------------
+Invalid schoolid30643
+Unexpected error: (<type 'exceptions.TypeError'>, TypeError("cannot concatenate 'str' and 'int' objects",), <traceback object at 0x11b8ea8>)
+Exception in user code:
+------------------------------------------------------------
+Traceback (most recent call last):
+  File "./parse_school_missing.py", line 69, in main
+    insertsql = "INSERT INTO tb_school_electedrep values("+str(school_id)+","+ ward_id+","+mla_id+","+mp_id+","+str(stype)+");\n"
+TypeError: cannot concatenate 'str' and 'int' objects
+------------------------------------------------------------
+Invalid schoolid31457
+Unexpected error: (<type 'exceptions.TypeError'>, TypeError("cannot concatenate 'str' and 'int' objects",), <traceback object at 0x120c680>)
+Exception in user code:
+------------------------------------------------------------
+Traceback (most recent call last):
+  File "./parse_school_missing.py", line 69, in main
+    insertsql = "INSERT INTO tb_school_electedrep values("+str(school_id)+","+ ward_id+","+mla_id+","+mp_id+","+str(stype)+");\n"
+TypeError: cannot concatenate 'str' and 'int' objects
+------------------------------------------------------------
+Invalid schoolid35114
+Unexpected error: (<type 'exceptions.TypeError'>, TypeError("cannot concatenate 'str' and 'int' objects",), <traceback object at 0x120c680>)
+Exception in user code:
+------------------------------------------------------------
+Traceback (most recent call last):
+  File "./parse_school_missing.py", line 69, in main
+    insertsql = "INSERT INTO tb_school_electedrep values("+str(school_id)+","+ ward_id+","+mla_id+","+mp_id+","+str(stype)+");\n"
+TypeError: cannot concatenate 'str' and 'int' objects
+------------------------------------------------------------
+Invalid schoolid30315
+Unexpected error: (<type 'exceptions.TypeError'>, TypeError("cannot concatenate 'str' and 'int' objects",), <traceback object at 0x11b8ea8>)
+Exception in user code:
+------------------------------------------------------------
+Traceback (most recent call last):
+  File "./parse_school_missing.py", line 69, in main
+    insertsql = "INSERT INTO tb_school_electedrep values("+str(school_id)+","+ ward_id+","+mla_id+","+mp_id+","+str(stype)+");\n"
+TypeError: cannot concatenate 'str' and 'int' objects
+------------------------------------------------------------
+Invalid schoolid29606
+Unexpected error: (<type 'exceptions.TypeError'>, TypeError("cannot concatenate 'str' and 'int' objects",), <traceback object at 0x120c680>)
+Exception in user code:
+------------------------------------------------------------
+Traceback (most recent call last):
+  File "./parse_school_missing.py", line 69, in main
+    insertsql = "INSERT INTO tb_school_electedrep values("+str(school_id)+","+ ward_id+","+mla_id+","+mp_id+","+str(stype)+");\n"
+TypeError: cannot concatenate 'str' and 'int' objects
+------------------------------------------------------------
+Invalid schoolid30573
+Unexpected error: (<type 'exceptions.TypeError'>, TypeError("cannot concatenate 'str' and 'int' objects",), <traceback object at 0x120c878>)
+Exception in user code:
+------------------------------------------------------------
+Traceback (most recent call last):
+  File "./parse_school_missing.py", line 69, in main
+    insertsql = "INSERT INTO tb_school_electedrep values("+str(school_id)+","+ ward_id+","+mla_id+","+mp_id+","+str(stype)+");\n"
+TypeError: cannot concatenate 'str' and 'int' objects
+------------------------------------------------------------
+Invalid schoolid30313
+Unexpected error: (<type 'exceptions.TypeError'>, TypeError("cannot concatenate 'str' and 'int' objects",), <traceback object at 0x11b8ea8>)
+Exception in user code:
+------------------------------------------------------------
+Traceback (most recent call last):
+  File "./parse_school_missing.py", line 69, in main
+    insertsql = "INSERT INTO tb_school_electedrep values("+str(school_id)+","+ ward_id+","+mla_id+","+mp_id+","+str(stype)+");\n"
+TypeError: cannot concatenate 'str' and 'int' objects
+------------------------------------------------------------
+Invalid schoolid29701
+Unexpected error: (<type 'exceptions.TypeError'>, TypeError("cannot concatenate 'str' and 'int' objects",), <traceback object at 0x11b8ea8>)
+Exception in user code:
+------------------------------------------------------------
+Traceback (most recent call last):
+  File "./parse_school_missing.py", line 69, in main
+    insertsql = "INSERT INTO tb_school_electedrep values("+str(school_id)+","+ ward_id+","+mla_id+","+mp_id+","+str(stype)+");\n"
+TypeError: cannot concatenate 'str' and 'int' objects
+------------------------------------------------------------
+Invalid schoolid31103
+Unexpected error: (<type 'exceptions.TypeError'>, TypeError("cannot concatenate 'str' and 'int' objects",), <traceback object at 0x120c878>)
+Exception in user code:
+------------------------------------------------------------
+Traceback (most recent call last):
+  File "./parse_school_missing.py", line 69, in main
+    insertsql = "INSERT INTO tb_school_electedrep values("+str(school_id)+","+ ward_id+","+mla_id+","+mp_id+","+str(stype)+");\n"
+TypeError: cannot concatenate 'str' and 'int' objects
+------------------------------------------------------------
+Invalid schoolid31041
+Unexpected error: (<type 'exceptions.TypeError'>, TypeError("cannot concatenate 'str' and 'int' objects",), <traceback object at 0x120c878>)
+Exception in user code:
+------------------------------------------------------------
+Traceback (most recent call last):
+  File "./parse_school_missing.py", line 69, in main
+    insertsql = "INSERT INTO tb_school_electedrep values("+str(school_id)+","+ ward_id+","+mla_id+","+mp_id+","+str(stype)+");\n"
+TypeError: cannot concatenate 'str' and 'int' objects
+------------------------------------------------------------
+Invalid schoolid35484
+Unexpected error: (<type 'exceptions.TypeError'>, TypeError("cannot concatenate 'str' and 'int' objects",), <traceback object at 0x11b8ea8>)
+Exception in user code:
+------------------------------------------------------------
+Traceback (most recent call last):
+  File "./parse_school_missing.py", line 69, in main
+    insertsql = "INSERT INTO tb_school_electedrep values("+str(school_id)+","+ ward_id+","+mla_id+","+mp_id+","+str(stype)+");\n"
+TypeError: cannot concatenate 'str' and 'int' objects
+------------------------------------------------------------
+Invalid schoolid30387
+Unexpected error: (<type 'exceptions.TypeError'>, TypeError("cannot concatenate 'str' and 'int' objects",), <traceback object at 0x120c680>)
+Exception in user code:
+------------------------------------------------------------
+Traceback (most recent call last):
+  File "./parse_school_missing.py", line 69, in main
+    insertsql = "INSERT INTO tb_school_electedrep values("+str(school_id)+","+ ward_id+","+mla_id+","+mp_id+","+str(stype)+");\n"
+TypeError: cannot concatenate 'str' and 'int' objects
+------------------------------------------------------------
+Invalid schoolid31363
+Unexpected error: (<type 'exceptions.TypeError'>, TypeError("cannot concatenate 'str' and 'int' objects",), <traceback object at 0x120c878>)
+Exception in user code:
+------------------------------------------------------------
+Traceback (most recent call last):
+  File "./parse_school_missing.py", line 69, in main
+    insertsql = "INSERT INTO tb_school_electedrep values("+str(school_id)+","+ ward_id+","+mla_id+","+mp_id+","+str(stype)+");\n"
+TypeError: cannot concatenate 'str' and 'int' objects
+------------------------------------------------------------
+Invalid schoolid31435
+Unexpected error: (<type 'exceptions.TypeError'>, TypeError("cannot concatenate 'str' and 'int' objects",), <traceback object at 0x120c680>)
+Exception in user code:
+------------------------------------------------------------
+Traceback (most recent call last):
+  File "./parse_school_missing.py", line 69, in main
+    insertsql = "INSERT INTO tb_school_electedrep values("+str(school_id)+","+ ward_id+","+mla_id+","+mp_id+","+str(stype)+");\n"
+TypeError: cannot concatenate 'str' and 'int' objects
+------------------------------------------------------------
+Invalid schoolid31368
+Unexpected error: (<type 'exceptions.TypeError'>, TypeError("cannot concatenate 'str' and 'int' objects",), <traceback object at 0x120c878>)
+Exception in user code:
+------------------------------------------------------------
+Traceback (most recent call last):
+  File "./parse_school_missing.py", line 69, in main
+    insertsql = "INSERT INTO tb_school_electedrep values("+str(school_id)+","+ ward_id+","+mla_id+","+mp_id+","+str(stype)+");\n"
+TypeError: cannot concatenate 'str' and 'int' objects
+------------------------------------------------------------
+Invalid schoolid31509
+Unexpected error: (<type 'exceptions.TypeError'>, TypeError("cannot concatenate 'str' and 'int' objects",), <traceback object at 0x120c680>)
+Exception in user code:
+------------------------------------------------------------
+Traceback (most recent call last):
+  File "./parse_school_missing.py", line 69, in main
+    insertsql = "INSERT INTO tb_school_electedrep values("+str(school_id)+","+ ward_id+","+mla_id+","+mp_id+","+str(stype)+");\n"
+TypeError: cannot concatenate 'str' and 'int' objects
+------------------------------------------------------------
+Invalid schoolid30287
+Unexpected error: (<type 'exceptions.TypeError'>, TypeError("cannot concatenate 'str' and 'int' objects",), <traceback object at 0x120c878>)
+Exception in user code:
+------------------------------------------------------------
+Traceback (most recent call last):
+  File "./parse_school_missing.py", line 69, in main
+    insertsql = "INSERT INTO tb_school_electedrep values("+str(school_id)+","+ ward_id+","+mla_id+","+mp_id+","+str(stype)+");\n"
+TypeError: cannot concatenate 'str' and 'int' objects
+------------------------------------------------------------
+Invalid schoolid30585
+Unexpected error: (<type 'exceptions.TypeError'>, TypeError("cannot concatenate 'str' and 'int' objects",), <traceback object at 0x11b8ea8>)
+Exception in user code:
+------------------------------------------------------------
+Traceback (most recent call last):
+  File "./parse_school_missing.py", line 69, in main
+    insertsql = "INSERT INTO tb_school_electedrep values("+str(school_id)+","+ ward_id+","+mla_id+","+mp_id+","+str(stype)+");\n"
+TypeError: cannot concatenate 'str' and 'int' objects
+------------------------------------------------------------
+Invalid schoolid30983
+Unexpected error: (<type 'exceptions.TypeError'>, TypeError("cannot concatenate 'str' and 'int' objects",), <traceback object at 0x120c680>)
+Exception in user code:
+------------------------------------------------------------
+Traceback (most recent call last):
+  File "./parse_school_missing.py", line 69, in main
+    insertsql = "INSERT INTO tb_school_electedrep values("+str(school_id)+","+ ward_id+","+mla_id+","+mp_id+","+str(stype)+");\n"
+TypeError: cannot concatenate 'str' and 'int' objects
+------------------------------------------------------------
+Invalid schoolid30594
+Unexpected error: (<type 'exceptions.TypeError'>, TypeError("cannot concatenate 'str' and 'int' objects",), <traceback object at 0x120c878>)
+Exception in user code:
+------------------------------------------------------------
+Traceback (most recent call last):
+  File "./parse_school_missing.py", line 69, in main
+    insertsql = "INSERT INTO tb_school_electedrep values("+str(school_id)+","+ ward_id+","+mla_id+","+mp_id+","+str(stype)+");\n"
+TypeError: cannot concatenate 'str' and 'int' objects
+------------------------------------------------------------
+Invalid schoolid30348
+Unexpected error: (<type 'exceptions.TypeError'>, TypeError("cannot concatenate 'str' and 'int' objects",), <traceback object at 0x11b8ea8>)
+Exception in user code:
+------------------------------------------------------------
+Traceback (most recent call last):
+  File "./parse_school_missing.py", line 69, in main
+    insertsql = "INSERT INTO tb_school_electedrep values("+str(school_id)+","+ ward_id+","+mla_id+","+mp_id+","+str(stype)+");\n"
+TypeError: cannot concatenate 'str' and 'int' objects
+------------------------------------------------------------
+Invalid schoolid30985
+Unexpected error: (<type 'exceptions.TypeError'>, TypeError("cannot concatenate 'str' and 'int' objects",), <traceback object at 0x120c680>)
+Exception in user code:
+------------------------------------------------------------
+Traceback (most recent call last):
+  File "./parse_school_missing.py", line 69, in main
+    insertsql = "INSERT INTO tb_school_electedrep values("+str(school_id)+","+ ward_id+","+mla_id+","+mp_id+","+str(stype)+");\n"
+TypeError: cannot concatenate 'str' and 'int' objects
+------------------------------------------------------------
+Invalid schoolid31288
+Unexpected error: (<type 'exceptions.TypeError'>, TypeError("cannot concatenate 'str' and 'int' objects",), <traceback object at 0x120c878>)
+Exception in user code:
+------------------------------------------------------------
+Traceback (most recent call last):
+  File "./parse_school_missing.py", line 69, in main
+    insertsql = "INSERT INTO tb_school_electedrep values("+str(school_id)+","+ ward_id+","+mla_id+","+mp_id+","+str(stype)+");\n"
+TypeError: cannot concatenate 'str' and 'int' objects
+------------------------------------------------------------
+Invalid schoolid30363
+Unexpected error: (<type 'exceptions.TypeError'>, TypeError("cannot concatenate 'str' and 'int' objects",), <traceback object at 0x11b8ea8>)
+Exception in user code:
+------------------------------------------------------------
+Traceback (most recent call last):
+  File "./parse_school_missing.py", line 69, in main
+    insertsql = "INSERT INTO tb_school_electedrep values("+str(school_id)+","+ ward_id+","+mla_id+","+mp_id+","+str(stype)+");\n"
+TypeError: cannot concatenate 'str' and 'int' objects
+------------------------------------------------------------
+Invalid schoolid30994
+Unexpected error: (<type 'exceptions.TypeError'>, TypeError("cannot concatenate 'str' and 'int' objects",), <traceback object at 0x120c680>)
+Exception in user code:
+------------------------------------------------------------
+Traceback (most recent call last):
+  File "./parse_school_missing.py", line 69, in main
+    insertsql = "INSERT INTO tb_school_electedrep values("+str(school_id)+","+ ward_id+","+mla_id+","+mp_id+","+str(stype)+");\n"
+TypeError: cannot concatenate 'str' and 'int' objects
+------------------------------------------------------------
+Invalid schoolid32103
+Unexpected error: (<type 'exceptions.TypeError'>, TypeError("cannot concatenate 'str' and 'int' objects",), <traceback object at 0x11b8ea8>)
+Exception in user code:
+------------------------------------------------------------
+Traceback (most recent call last):
+  File "./parse_school_missing.py", line 69, in main
+    insertsql = "INSERT INTO tb_school_electedrep values("+str(school_id)+","+ ward_id+","+mla_id+","+mp_id+","+str(stype)+");\n"
+TypeError: cannot concatenate 'str' and 'int' objects
+------------------------------------------------------------
+Invalid schoolid32098
+Unexpected error: (<type 'exceptions.TypeError'>, TypeError("cannot concatenate 'str' and 'int' objects",), <traceback object at 0x11b8ea8>)
+Exception in user code:
+------------------------------------------------------------
+Traceback (most recent call last):
+  File "./parse_school_missing.py", line 69, in main
+    insertsql = "INSERT INTO tb_school_electedrep values("+str(school_id)+","+ ward_id+","+mla_id+","+mp_id+","+str(stype)+");\n"
+TypeError: cannot concatenate 'str' and 'int' objects
+------------------------------------------------------------
+Invalid schoolid32102
+Unexpected error: (<type 'exceptions.TypeError'>, TypeError("cannot concatenate 'str' and 'int' objects",), <traceback object at 0x120cab8>)
+Exception in user code:
+------------------------------------------------------------
+Traceback (most recent call last):
+  File "./parse_school_missing.py", line 69, in main
+    insertsql = "INSERT INTO tb_school_electedrep values("+str(school_id)+","+ ward_id+","+mla_id+","+mp_id+","+str(stype)+");\n"
+TypeError: cannot concatenate 'str' and 'int' objects
+------------------------------------------------------------
+Invalid schoolid32104
+Unexpected error: (<type 'exceptions.TypeError'>, TypeError("cannot concatenate 'str' and 'int' objects",), <traceback object at 0x120cab8>)
+Exception in user code:
+------------------------------------------------------------
+Traceback (most recent call last):
+  File "./parse_school_missing.py", line 69, in main
+    insertsql = "INSERT INTO tb_school_electedrep values("+str(school_id)+","+ ward_id+","+mla_id+","+mp_id+","+str(stype)+");\n"
+TypeError: cannot concatenate 'str' and 'int' objects
+------------------------------------------------------------
+Invalid schoolid32094
+Unexpected error: (<type 'exceptions.TypeError'>, TypeError("cannot concatenate 'str' and 'int' objects",), <traceback object at 0x11b8ea8>)
+Exception in user code:
+------------------------------------------------------------
+Traceback (most recent call last):
+  File "./parse_school_missing.py", line 69, in main
+    insertsql = "INSERT INTO tb_school_electedrep values("+str(school_id)+","+ ward_id+","+mla_id+","+mp_id+","+str(stype)+");\n"
+TypeError: cannot concatenate 'str' and 'int' objects
+------------------------------------------------------------
+Invalid schoolid32095
+Unexpected error: (<type 'exceptions.TypeError'>, TypeError("cannot concatenate 'str' and 'int' objects",), <traceback object at 0x11b8ea8>)
+Exception in user code:
+------------------------------------------------------------
+Traceback (most recent call last):
+  File "./parse_school_missing.py", line 69, in main
+    insertsql = "INSERT INTO tb_school_electedrep values("+str(school_id)+","+ ward_id+","+mla_id+","+mp_id+","+str(stype)+");\n"
+TypeError: cannot concatenate 'str' and 'int' objects
+------------------------------------------------------------
+Invalid schoolid33869
+Unexpected error: (<type 'exceptions.TypeError'>, TypeError("cannot concatenate 'str' and 'int' objects",), <traceback object at 0x120c878>)
+Exception in user code:
+------------------------------------------------------------
+Traceback (most recent call last):
+  File "./parse_school_missing.py", line 69, in main
+    insertsql = "INSERT INTO tb_school_electedrep values("+str(school_id)+","+ ward_id+","+mla_id+","+mp_id+","+str(stype)+");\n"
+TypeError: cannot concatenate 'str' and 'int' objects
+------------------------------------------------------------
+Invalid schoolid35345
+Unexpected error: (<type 'exceptions.TypeError'>, TypeError("cannot concatenate 'str' and 'int' objects",), <traceback object at 0x11b8ea8>)
+Exception in user code:
+------------------------------------------------------------
+Traceback (most recent call last):
+  File "./parse_school_missing.py", line 69, in main
+    insertsql = "INSERT INTO tb_school_electedrep values("+str(school_id)+","+ ward_id+","+mla_id+","+mp_id+","+str(stype)+");\n"
+TypeError: cannot concatenate 'str' and 'int' objects
+------------------------------------------------------------
+Invalid schoolid32611
+Unexpected error: (<type 'exceptions.TypeError'>, TypeError("cannot concatenate 'str' and 'int' objects",), <traceback object at 0x120c878>)
+Exception in user code:
+------------------------------------------------------------
+Traceback (most recent call last):
+  File "./parse_school_missing.py", line 69, in main
+    insertsql = "INSERT INTO tb_school_electedrep values("+str(school_id)+","+ ward_id+","+mla_id+","+mp_id+","+str(stype)+");\n"
+TypeError: cannot concatenate 'str' and 'int' objects
+------------------------------------------------------------
+Invalid schoolid32696
+Unexpected error: (<type 'exceptions.TypeError'>, TypeError("cannot concatenate 'str' and 'int' objects",), <traceback object at 0x11b8ea8>)
+Exception in user code:
+------------------------------------------------------------
+Traceback (most recent call last):
+  File "./parse_school_missing.py", line 69, in main
+    insertsql = "INSERT INTO tb_school_electedrep values("+str(school_id)+","+ ward_id+","+mla_id+","+mp_id+","+str(stype)+");\n"
+TypeError: cannot concatenate 'str' and 'int' objects
+------------------------------------------------------------
+Invalid schoolid33138
+Unexpected error: (<type 'exceptions.TypeError'>, TypeError("cannot concatenate 'str' and 'int' objects",), <traceback object at 0x120c878>)
+Exception in user code:
+------------------------------------------------------------
+Traceback (most recent call last):
+  File "./parse_school_missing.py", line 69, in main
+    insertsql = "INSERT INTO tb_school_electedrep values("+str(school_id)+","+ ward_id+","+mla_id+","+mp_id+","+str(stype)+");\n"
+TypeError: cannot concatenate 'str' and 'int' objects
+------------------------------------------------------------
+Invalid schoolid32826
+Unexpected error: (<type 'exceptions.TypeError'>, TypeError("cannot concatenate 'str' and 'int' objects",), <traceback object at 0x11b8ea8>)
+Exception in user code:
+------------------------------------------------------------
+Traceback (most recent call last):
+  File "./parse_school_missing.py", line 69, in main
+    insertsql = "INSERT INTO tb_school_electedrep values("+str(school_id)+","+ ward_id+","+mla_id+","+mp_id+","+str(stype)+");\n"
+TypeError: cannot concatenate 'str' and 'int' objects
+------------------------------------------------------------
+Invalid schoolid32142
+Unexpected error: (<type 'exceptions.TypeError'>, TypeError("cannot concatenate 'str' and 'int' objects",), <traceback object at 0x11b8ea8>)
+Exception in user code:
+------------------------------------------------------------
+Traceback (most recent call last):
+  File "./parse_school_missing.py", line 69, in main
+    insertsql = "INSERT INTO tb_school_electedrep values("+str(school_id)+","+ ward_id+","+mla_id+","+mp_id+","+str(stype)+");\n"
+TypeError: cannot concatenate 'str' and 'int' objects
+------------------------------------------------------------
+Invalid schoolid32267
+Unexpected error: (<type 'exceptions.TypeError'>, TypeError("cannot concatenate 'str' and 'int' objects",), <traceback object at 0x11b8ea8>)
+Exception in user code:
+------------------------------------------------------------
+Traceback (most recent call last):
+  File "./parse_school_missing.py", line 69, in main
+    insertsql = "INSERT INTO tb_school_electedrep values("+str(school_id)+","+ ward_id+","+mla_id+","+mp_id+","+str(stype)+");\n"
+TypeError: cannot concatenate 'str' and 'int' objects
+------------------------------------------------------------
+Invalid schoolid32550
+Unexpected error: (<type 'exceptions.TypeError'>, TypeError("cannot concatenate 'str' and 'int' objects",), <traceback object at 0x11b8ea8>)
+Exception in user code:
+------------------------------------------------------------
+Traceback (most recent call last):
+  File "./parse_school_missing.py", line 69, in main
+    insertsql = "INSERT INTO tb_school_electedrep values("+str(school_id)+","+ ward_id+","+mla_id+","+mp_id+","+str(stype)+");\n"
+TypeError: cannot concatenate 'str' and 'int' objects
+------------------------------------------------------------
+Invalid schoolid32552
+Unexpected error: (<type 'exceptions.TypeError'>, TypeError("cannot concatenate 'str' and 'int' objects",), <traceback object at 0x120cab8>)
+Exception in user code:
+------------------------------------------------------------
+Traceback (most recent call last):
+  File "./parse_school_missing.py", line 69, in main
+    insertsql = "INSERT INTO tb_school_electedrep values("+str(school_id)+","+ ward_id+","+mla_id+","+mp_id+","+str(stype)+");\n"
+TypeError: cannot concatenate 'str' and 'int' objects
+------------------------------------------------------------
+Invalid schoolid32556
+Unexpected error: (<type 'exceptions.TypeError'>, TypeError("cannot concatenate 'str' and 'int' objects",), <traceback object at 0x120cb00>)
+Exception in user code:
+------------------------------------------------------------
+Traceback (most recent call last):
+  File "./parse_school_missing.py", line 69, in main
+    insertsql = "INSERT INTO tb_school_electedrep values("+str(school_id)+","+ ward_id+","+mla_id+","+mp_id+","+str(stype)+");\n"
+TypeError: cannot concatenate 'str' and 'int' objects
+------------------------------------------------------------
+Invalid schoolid32561
+Unexpected error: (<type 'exceptions.TypeError'>, TypeError("cannot concatenate 'str' and 'int' objects",), <traceback object at 0x11b8ea8>)
+Exception in user code:
+------------------------------------------------------------
+Traceback (most recent call last):
+  File "./parse_school_missing.py", line 69, in main
+    insertsql = "INSERT INTO tb_school_electedrep values("+str(school_id)+","+ ward_id+","+mla_id+","+mp_id+","+str(stype)+");\n"
+TypeError: cannot concatenate 'str' and 'int' objects
+------------------------------------------------------------
+Invalid schoolid32558
+Unexpected error: (<type 'exceptions.TypeError'>, TypeError("cannot concatenate 'str' and 'int' objects",), <traceback object at 0x120cab8>)
+Exception in user code:
+------------------------------------------------------------
+Traceback (most recent call last):
+  File "./parse_school_missing.py", line 69, in main
+    insertsql = "INSERT INTO tb_school_electedrep values("+str(school_id)+","+ ward_id+","+mla_id+","+mp_id+","+str(stype)+");\n"
+TypeError: cannot concatenate 'str' and 'int' objects
+------------------------------------------------------------
+Invalid schoolid30463
+Unexpected error: (<type 'exceptions.TypeError'>, TypeError("cannot concatenate 'str' and 'int' objects",), <traceback object at 0x120c878>)
+Exception in user code:
+------------------------------------------------------------
+Traceback (most recent call last):
+  File "./parse_school_missing.py", line 69, in main
+    insertsql = "INSERT INTO tb_school_electedrep values("+str(school_id)+","+ ward_id+","+mla_id+","+mp_id+","+str(stype)+");\n"
+TypeError: cannot concatenate 'str' and 'int' objects
+------------------------------------------------------------
+Invalid schoolid30424
+Unexpected error: (<type 'exceptions.TypeError'>, TypeError("cannot concatenate 'str' and 'int' objects",), <traceback object at 0x120c878>)
+Exception in user code:
+------------------------------------------------------------
+Traceback (most recent call last):
+  File "./parse_school_missing.py", line 69, in main
+    insertsql = "INSERT INTO tb_school_electedrep values("+str(school_id)+","+ ward_id+","+mla_id+","+mp_id+","+str(stype)+");\n"
+TypeError: cannot concatenate 'str' and 'int' objects
+------------------------------------------------------------
+Invalid schoolid30441
+Unexpected error: (<type 'exceptions.TypeError'>, TypeError("cannot concatenate 'str' and 'int' objects",), <traceback object at 0x11b8ea8>)
+Exception in user code:
+------------------------------------------------------------
+Traceback (most recent call last):
+  File "./parse_school_missing.py", line 69, in main
+    insertsql = "INSERT INTO tb_school_electedrep values("+str(school_id)+","+ ward_id+","+mla_id+","+mp_id+","+str(stype)+");\n"
+TypeError: cannot concatenate 'str' and 'int' objects
+------------------------------------------------------------
+Invalid schoolid34060
+Unexpected error: (<type 'exceptions.TypeError'>, TypeError("cannot concatenate 'str' and 'int' objects",), <traceback object at 0x120cb00>)
+Exception in user code:
+------------------------------------------------------------
+Traceback (most recent call last):
+  File "./parse_school_missing.py", line 69, in main
+    insertsql = "INSERT INTO tb_school_electedrep values("+str(school_id)+","+ ward_id+","+mla_id+","+mp_id+","+str(stype)+");\n"
+TypeError: cannot concatenate 'str' and 'int' objects
+------------------------------------------------------------
+Invalid schoolid34058
+Unexpected error: (<type 'exceptions.TypeError'>, TypeError("cannot concatenate 'str' and 'int' objects",), <traceback object at 0x11b8ea8>)
+Exception in user code:
+------------------------------------------------------------
+Traceback (most recent call last):
+  File "./parse_school_missing.py", line 69, in main
+    insertsql = "INSERT INTO tb_school_electedrep values("+str(school_id)+","+ ward_id+","+mla_id+","+mp_id+","+str(stype)+");\n"
+TypeError: cannot concatenate 'str' and 'int' objects
+------------------------------------------------------------
+Invalid schoolid34062
+Unexpected error: (<type 'exceptions.TypeError'>, TypeError("cannot concatenate 'str' and 'int' objects",), <traceback object at 0x11b8ea8>)
+Exception in user code:
+------------------------------------------------------------
+Traceback (most recent call last):
+  File "./parse_school_missing.py", line 69, in main
+    insertsql = "INSERT INTO tb_school_electedrep values("+str(school_id)+","+ ward_id+","+mla_id+","+mp_id+","+str(stype)+");\n"
+TypeError: cannot concatenate 'str' and 'int' objects
+------------------------------------------------------------
+Invalid schoolid30423
+Unexpected error: (<type 'exceptions.TypeError'>, TypeError("cannot concatenate 'str' and 'int' objects",), <traceback object at 0x11b8ea8>)
+Exception in user code:
+------------------------------------------------------------
+Traceback (most recent call last):
+  File "./parse_school_missing.py", line 69, in main
+    insertsql = "INSERT INTO tb_school_electedrep values("+str(school_id)+","+ ward_id+","+mla_id+","+mp_id+","+str(stype)+");\n"
+TypeError: cannot concatenate 'str' and 'int' objects
+------------------------------------------------------------
+Invalid schoolid34055
+Unexpected error: (<type 'exceptions.TypeError'>, TypeError("cannot concatenate 'str' and 'int' objects",), <traceback object at 0x120cb48>)
+Exception in user code:
+------------------------------------------------------------
+Traceback (most recent call last):
+  File "./parse_school_missing.py", line 69, in main
+    insertsql = "INSERT INTO tb_school_electedrep values("+str(school_id)+","+ ward_id+","+mla_id+","+mp_id+","+str(stype)+");\n"
+TypeError: cannot concatenate 'str' and 'int' objects
+------------------------------------------------------------
+Invalid schoolid30460
+Unexpected error: (<type 'exceptions.TypeError'>, TypeError("cannot concatenate 'str' and 'int' objects",), <traceback object at 0x11b8ea8>)
+Exception in user code:
+------------------------------------------------------------
+Traceback (most recent call last):
+  File "./parse_school_missing.py", line 69, in main
+    insertsql = "INSERT INTO tb_school_electedrep values("+str(school_id)+","+ ward_id+","+mla_id+","+mp_id+","+str(stype)+");\n"
+TypeError: cannot concatenate 'str' and 'int' objects
+------------------------------------------------------------
+Invalid schoolid30458
+Unexpected error: (<type 'exceptions.TypeError'>, TypeError("cannot concatenate 'str' and 'int' objects",), <traceback object at 0x120cb48>)
+Exception in user code:
+------------------------------------------------------------
+Traceback (most recent call last):
+  File "./parse_school_missing.py", line 69, in main
+    insertsql = "INSERT INTO tb_school_electedrep values("+str(school_id)+","+ ward_id+","+mla_id+","+mp_id+","+str(stype)+");\n"
+TypeError: cannot concatenate 'str' and 'int' objects
+------------------------------------------------------------
+Invalid schoolid34096
+Unexpected error: (<type 'exceptions.TypeError'>, TypeError("cannot concatenate 'str' and 'int' objects",), <traceback object at 0x120cb48>)
+Exception in user code:
+------------------------------------------------------------
+Traceback (most recent call last):
+  File "./parse_school_missing.py", line 69, in main
+    insertsql = "INSERT INTO tb_school_electedrep values("+str(school_id)+","+ ward_id+","+mla_id+","+mp_id+","+str(stype)+");\n"
+TypeError: cannot concatenate 'str' and 'int' objects
+------------------------------------------------------------
+Invalid schoolid34036
+Unexpected error: (<type 'exceptions.TypeError'>, TypeError("cannot concatenate 'str' and 'int' objects",), <traceback object at 0x11b8ea8>)
+Exception in user code:
+------------------------------------------------------------
+Traceback (most recent call last):
+  File "./parse_school_missing.py", line 69, in main
+    insertsql = "INSERT INTO tb_school_electedrep values("+str(school_id)+","+ ward_id+","+mla_id+","+mp_id+","+str(stype)+");\n"
+TypeError: cannot concatenate 'str' and 'int' objects
+------------------------------------------------------------
+Invalid schoolid
+Unexpected error: (<type 'exceptions.ValueError'>, ValueError("invalid literal for int() with base 10: ''",), <traceback object at 0x120cb48>)
+Exception in user code:
+------------------------------------------------------------
+Traceback (most recent call last):
+  File "./parse_school_missing.py", line 53, in main
+    school_id = int(row[4].strip())
+ValueError: invalid literal for int() with base 10: ''
+------------------------------------------------------------
+Invalid schoolid30434
+Unexpected error: (<type 'exceptions.TypeError'>, TypeError("cannot concatenate 'str' and 'int' objects",), <traceback object at 0x120cb48>)
+Exception in user code:
+------------------------------------------------------------
+Traceback (most recent call last):
+  File "./parse_school_missing.py", line 69, in main
+    insertsql = "INSERT INTO tb_school_electedrep values("+str(school_id)+","+ ward_id+","+mla_id+","+mp_id+","+str(stype)+");\n"
+TypeError: cannot concatenate 'str' and 'int' objects
+------------------------------------------------------------
+Invalid schoolid35478
+Unexpected error: (<type 'exceptions.TypeError'>, TypeError("cannot concatenate 'str' and 'int' objects",), <traceback object at 0x11b8ea8>)
+Exception in user code:
+------------------------------------------------------------
+Traceback (most recent call last):
+  File "./parse_school_missing.py", line 69, in main
+    insertsql = "INSERT INTO tb_school_electedrep values("+str(school_id)+","+ ward_id+","+mla_id+","+mp_id+","+str(stype)+");\n"
+TypeError: cannot concatenate 'str' and 'int' objects
+------------------------------------------------------------
+Invalid schoolid30439
+Unexpected error: (<type 'exceptions.TypeError'>, TypeError("cannot concatenate 'str' and 'int' objects",), <traceback object at 0x11b8ea8>)
+Exception in user code:
+------------------------------------------------------------
+Traceback (most recent call last):
+  File "./parse_school_missing.py", line 69, in main
+    insertsql = "INSERT INTO tb_school_electedrep values("+str(school_id)+","+ ward_id+","+mla_id+","+mp_id+","+str(stype)+");\n"
+TypeError: cannot concatenate 'str' and 'int' objects
+------------------------------------------------------------
+Invalid schoolid34098
+Unexpected error: (<type 'exceptions.TypeError'>, TypeError("cannot concatenate 'str' and 'int' objects",), <traceback object at 0x120cb48>)
+Exception in user code:
+------------------------------------------------------------
+Traceback (most recent call last):
+  File "./parse_school_missing.py", line 69, in main
+    insertsql = "INSERT INTO tb_school_electedrep values("+str(school_id)+","+ ward_id+","+mla_id+","+mp_id+","+str(stype)+");\n"
+TypeError: cannot concatenate 'str' and 'int' objects
+------------------------------------------------------------
+Invalid schoolid30379
+Unexpected error: (<type 'exceptions.TypeError'>, TypeError("cannot concatenate 'str' and 'int' objects",), <traceback object at 0x120cb00>)
+Exception in user code:
+------------------------------------------------------------
+Traceback (most recent call last):
+  File "./parse_school_missing.py", line 69, in main
+    insertsql = "INSERT INTO tb_school_electedrep values("+str(school_id)+","+ ward_id+","+mla_id+","+mp_id+","+str(stype)+");\n"
+TypeError: cannot concatenate 'str' and 'int' objects
+------------------------------------------------------------
+Invalid schoolid34044
+Unexpected error: (<type 'exceptions.TypeError'>, TypeError("cannot concatenate 'str' and 'int' objects",), <traceback object at 0x120cb48>)
+Exception in user code:
+------------------------------------------------------------
+Traceback (most recent call last):
+  File "./parse_school_missing.py", line 69, in main
+    insertsql = "INSERT INTO tb_school_electedrep values("+str(school_id)+","+ ward_id+","+mla_id+","+mp_id+","+str(stype)+");\n"
+TypeError: cannot concatenate 'str' and 'int' objects
+------------------------------------------------------------
+Invalid schoolid34097
+Unexpected error: (<type 'exceptions.TypeError'>, TypeError("cannot concatenate 'str' and 'int' objects",), <traceback object at 0x11b8ea8>)
+Exception in user code:
+------------------------------------------------------------
+Traceback (most recent call last):
+  File "./parse_school_missing.py", line 69, in main
+    insertsql = "INSERT INTO tb_school_electedrep values("+str(school_id)+","+ ward_id+","+mla_id+","+mp_id+","+str(stype)+");\n"
+TypeError: cannot concatenate 'str' and 'int' objects
+------------------------------------------------------------
+Invalid schoolid30425
+Unexpected error: (<type 'exceptions.TypeError'>, TypeError("cannot concatenate 'str' and 'int' objects",), <traceback object at 0x11b8ea8>)
+Exception in user code:
+------------------------------------------------------------
+Traceback (most recent call last):
+  File "./parse_school_missing.py", line 69, in main
+    insertsql = "INSERT INTO tb_school_electedrep values("+str(school_id)+","+ ward_id+","+mla_id+","+mp_id+","+str(stype)+");\n"
+TypeError: cannot concatenate 'str' and 'int' objects
+------------------------------------------------------------
+Invalid schoolid30429
+Unexpected error: (<type 'exceptions.TypeError'>, TypeError("cannot concatenate 'str' and 'int' objects",), <traceback object at 0x120cb48>)
+Exception in user code:
+------------------------------------------------------------
+Traceback (most recent call last):
+  File "./parse_school_missing.py", line 69, in main
+    insertsql = "INSERT INTO tb_school_electedrep values("+str(school_id)+","+ ward_id+","+mla_id+","+mp_id+","+str(stype)+");\n"
+TypeError: cannot concatenate 'str' and 'int' objects
+------------------------------------------------------------
+Invalid schoolid35329
+Unexpected error: (<type 'exceptions.TypeError'>, TypeError("cannot concatenate 'str' and 'int' objects",), <traceback object at 0x120cb48>)
+Exception in user code:
+------------------------------------------------------------
+Traceback (most recent call last):
+  File "./parse_school_missing.py", line 69, in main
+    insertsql = "INSERT INTO tb_school_electedrep values("+str(school_id)+","+ ward_id+","+mla_id+","+mp_id+","+str(stype)+");\n"
+TypeError: cannot concatenate 'str' and 'int' objects
+------------------------------------------------------------
+Invalid schoolid35330
+Unexpected error: (<type 'exceptions.TypeError'>, TypeError("cannot concatenate 'str' and 'int' objects",), <traceback object at 0x120cb48>)
+Exception in user code:
+------------------------------------------------------------
+Traceback (most recent call last):
+  File "./parse_school_missing.py", line 69, in main
+    insertsql = "INSERT INTO tb_school_electedrep values("+str(school_id)+","+ ward_id+","+mla_id+","+mp_id+","+str(stype)+");\n"
+TypeError: cannot concatenate 'str' and 'int' objects
+------------------------------------------------------------
+Invalid schoolid35476
+Unexpected error: (<type 'exceptions.TypeError'>, TypeError("cannot concatenate 'str' and 'int' objects",), <traceback object at 0x120cab8>)
+Exception in user code:
+------------------------------------------------------------
+Traceback (most recent call last):
+  File "./parse_school_missing.py", line 69, in main
+    insertsql = "INSERT INTO tb_school_electedrep values("+str(school_id)+","+ ward_id+","+mla_id+","+mp_id+","+str(stype)+");\n"
+TypeError: cannot concatenate 'str' and 'int' objects
+------------------------------------------------------------
+Invalid schoolid35480
+Unexpected error: (<type 'exceptions.TypeError'>, TypeError("cannot concatenate 'str' and 'int' objects",), <traceback object at 0x11b8ea8>)
+Exception in user code:
+------------------------------------------------------------
+Traceback (most recent call last):
+  File "./parse_school_missing.py", line 69, in main
+    insertsql = "INSERT INTO tb_school_electedrep values("+str(school_id)+","+ ward_id+","+mla_id+","+mp_id+","+str(stype)+");\n"
+TypeError: cannot concatenate 'str' and 'int' objects
+------------------------------------------------------------
+Invalid schoolid35479
+Unexpected error: (<type 'exceptions.TypeError'>, TypeError("cannot concatenate 'str' and 'int' objects",), <traceback object at 0x11b8ea8>)
+Exception in user code:
+------------------------------------------------------------
+Traceback (most recent call last):
+  File "./parse_school_missing.py", line 69, in main
+    insertsql = "INSERT INTO tb_school_electedrep values("+str(school_id)+","+ ward_id+","+mla_id+","+mp_id+","+str(stype)+");\n"
+TypeError: cannot concatenate 'str' and 'int' objects
+------------------------------------------------------------
+Invalid schoolid35486
+Unexpected error: (<type 'exceptions.TypeError'>, TypeError("cannot concatenate 'str' and 'int' objects",), <traceback object at 0x11b8ea8>)
+Exception in user code:
+------------------------------------------------------------
+Traceback (most recent call last):
+  File "./parse_school_missing.py", line 69, in main
+    insertsql = "INSERT INTO tb_school_electedrep values("+str(school_id)+","+ ward_id+","+mla_id+","+mp_id+","+str(stype)+");\n"
+TypeError: cannot concatenate 'str' and 'int' objects
+------------------------------------------------------------
+Invalid schoolid35342
+Unexpected error: (<type 'exceptions.TypeError'>, TypeError("cannot concatenate 'str' and 'int' objects",), <traceback object at 0x120cb48>)
+Exception in user code:
+------------------------------------------------------------
+Traceback (most recent call last):
+  File "./parse_school_missing.py", line 69, in main
+    insertsql = "INSERT INTO tb_school_electedrep values("+str(school_id)+","+ ward_id+","+mla_id+","+mp_id+","+str(stype)+");\n"
+TypeError: cannot concatenate 'str' and 'int' objects
+------------------------------------------------------------
+Invalid schoolid31282
+Unexpected error: (<type 'exceptions.TypeError'>, TypeError("cannot concatenate 'str' and 'int' objects",), <traceback object at 0x120cab8>)
+Exception in user code:
+------------------------------------------------------------
+Traceback (most recent call last):
+  File "./parse_school_missing.py", line 69, in main
+    insertsql = "INSERT INTO tb_school_electedrep values("+str(school_id)+","+ ward_id+","+mla_id+","+mp_id+","+str(stype)+");\n"
+TypeError: cannot concatenate 'str' and 'int' objects
+------------------------------------------------------------
+Invalid schoolid31294
+Unexpected error: (<type 'exceptions.TypeError'>, TypeError("cannot concatenate 'str' and 'int' objects",), <traceback object at 0x11b8ea8>)
+Exception in user code:
+------------------------------------------------------------
+Traceback (most recent call last):
+  File "./parse_school_missing.py", line 69, in main
+    insertsql = "INSERT INTO tb_school_electedrep values("+str(school_id)+","+ ward_id+","+mla_id+","+mp_id+","+str(stype)+");\n"
+TypeError: cannot concatenate 'str' and 'int' objects
+------------------------------------------------------------
+Invalid schoolid33884
+Unexpected error: (<type 'exceptions.TypeError'>, TypeError("cannot concatenate 'str' and 'int' objects",), <traceback object at 0x120cb48>)
+Exception in user code:
+------------------------------------------------------------
+Traceback (most recent call last):
+  File "./parse_school_missing.py", line 69, in main
+    insertsql = "INSERT INTO tb_school_electedrep values("+str(school_id)+","+ ward_id+","+mla_id+","+mp_id+","+str(stype)+");\n"
+TypeError: cannot concatenate 'str' and 'int' objects
+------------------------------------------------------------
+Invalid schoolid33938
+Unexpected error: (<type 'exceptions.TypeError'>, TypeError("cannot concatenate 'str' and 'int' objects",), <traceback object at 0x120cab8>)
+Exception in user code:
+------------------------------------------------------------
+Traceback (most recent call last):
+  File "./parse_school_missing.py", line 69, in main
+    insertsql = "INSERT INTO tb_school_electedrep values("+str(school_id)+","+ ward_id+","+mla_id+","+mp_id+","+str(stype)+");\n"
+TypeError: cannot concatenate 'str' and 'int' objects
+------------------------------------------------------------
+Invalid schoolid33901
+Unexpected error: (<type 'exceptions.TypeError'>, TypeError("cannot concatenate 'str' and 'int' objects",), <traceback object at 0x11b8ea8>)
+Exception in user code:
+------------------------------------------------------------
+Traceback (most recent call last):
+  File "./parse_school_missing.py", line 69, in main
+    insertsql = "INSERT INTO tb_school_electedrep values("+str(school_id)+","+ ward_id+","+mla_id+","+mp_id+","+str(stype)+");\n"
+TypeError: cannot concatenate 'str' and 'int' objects
+------------------------------------------------------------
+Invalid schoolid30586
+Unexpected error: (<type 'exceptions.TypeError'>, TypeError("cannot concatenate 'str' and 'int' objects",), <traceback object at 0x120cb48>)
+Exception in user code:
+------------------------------------------------------------
+Traceback (most recent call last):
+  File "./parse_school_missing.py", line 69, in main
+    insertsql = "INSERT INTO tb_school_electedrep values("+str(school_id)+","+ ward_id+","+mla_id+","+mp_id+","+str(stype)+");\n"
+TypeError: cannot concatenate 'str' and 'int' objects
+------------------------------------------------------------
+Invalid schoolid31439
+Unexpected error: (<type 'exceptions.TypeError'>, TypeError("cannot concatenate 'str' and 'int' objects",), <traceback object at 0x120cab8>)
+Exception in user code:
+------------------------------------------------------------
+Traceback (most recent call last):
+  File "./parse_school_missing.py", line 69, in main
+    insertsql = "INSERT INTO tb_school_electedrep values("+str(school_id)+","+ ward_id+","+mla_id+","+mp_id+","+str(stype)+");\n"
+TypeError: cannot concatenate 'str' and 'int' objects
+------------------------------------------------------------
+Invalid schoolid31507
+Unexpected error: (<type 'exceptions.TypeError'>, TypeError("cannot concatenate 'str' and 'int' objects",), <traceback object at 0x11b8ea8>)
+Exception in user code:
+------------------------------------------------------------
+Traceback (most recent call last):
+  File "./parse_school_missing.py", line 69, in main
+    insertsql = "INSERT INTO tb_school_electedrep values("+str(school_id)+","+ ward_id+","+mla_id+","+mp_id+","+str(stype)+");\n"
+TypeError: cannot concatenate 'str' and 'int' objects
+------------------------------------------------------------
+Invalid schoolid30993
+Unexpected error: (<type 'exceptions.TypeError'>, TypeError("cannot concatenate 'str' and 'int' objects",), <traceback object at 0x120cb48>)
+Exception in user code:
+------------------------------------------------------------
+Traceback (most recent call last):
+  File "./parse_school_missing.py", line 69, in main
+    insertsql = "INSERT INTO tb_school_electedrep values("+str(school_id)+","+ ward_id+","+mla_id+","+mp_id+","+str(stype)+");\n"
+TypeError: cannot concatenate 'str' and 'int' objects
+------------------------------------------------------------
+Invalid schoolid30999
+Unexpected error: (<type 'exceptions.TypeError'>, TypeError("cannot concatenate 'str' and 'int' objects",), <traceback object at 0x120cab8>)
+Exception in user code:
+------------------------------------------------------------
+Traceback (most recent call last):
+  File "./parse_school_missing.py", line 69, in main
+    insertsql = "INSERT INTO tb_school_electedrep values("+str(school_id)+","+ ward_id+","+mla_id+","+mp_id+","+str(stype)+");\n"
+TypeError: cannot concatenate 'str' and 'int' objects
+------------------------------------------------------------
+Invalid schoolid33933
+Unexpected error: (<type 'exceptions.TypeError'>, TypeError("cannot concatenate 'str' and 'int' objects",), <traceback object at 0x11b8ea8>)
+Exception in user code:
+------------------------------------------------------------
+Traceback (most recent call last):
+  File "./parse_school_missing.py", line 69, in main
+    insertsql = "INSERT INTO tb_school_electedrep values("+str(school_id)+","+ ward_id+","+mla_id+","+mp_id+","+str(stype)+");\n"
+TypeError: cannot concatenate 'str' and 'int' objects
+------------------------------------------------------------
+Invalid schoolid33888
+Unexpected error: (<type 'exceptions.TypeError'>, TypeError("cannot concatenate 'str' and 'int' objects",), <traceback object at 0x120cb48>)
+Exception in user code:
+------------------------------------------------------------
+Traceback (most recent call last):
+  File "./parse_school_missing.py", line 69, in main
+    insertsql = "INSERT INTO tb_school_electedrep values("+str(school_id)+","+ ward_id+","+mla_id+","+mp_id+","+str(stype)+");\n"
+TypeError: cannot concatenate 'str' and 'int' objects
+------------------------------------------------------------
+Invalid schoolid31001
+Unexpected error: (<type 'exceptions.TypeError'>, TypeError("cannot concatenate 'str' and 'int' objects",), <traceback object at 0x120cab8>)
+Exception in user code:
+------------------------------------------------------------
+Traceback (most recent call last):
+  File "./parse_school_missing.py", line 69, in main
+    insertsql = "INSERT INTO tb_school_electedrep values("+str(school_id)+","+ ward_id+","+mla_id+","+mp_id+","+str(stype)+");\n"
+TypeError: cannot concatenate 'str' and 'int' objects
+------------------------------------------------------------
+Invalid schoolid33887
+Unexpected error: (<type 'exceptions.TypeError'>, TypeError("cannot concatenate 'str' and 'int' objects",), <traceback object at 0x11b8ea8>)
+Exception in user code:
+------------------------------------------------------------
+Traceback (most recent call last):
+  File "./parse_school_missing.py", line 69, in main
+    insertsql = "INSERT INTO tb_school_electedrep values("+str(school_id)+","+ ward_id+","+mla_id+","+mp_id+","+str(stype)+");\n"
+TypeError: cannot concatenate 'str' and 'int' objects
+------------------------------------------------------------
+Invalid schoolid33879
+Unexpected error: (<type 'exceptions.TypeError'>, TypeError("cannot concatenate 'str' and 'int' objects",), <traceback object at 0x120cb48>)
+Exception in user code:
+------------------------------------------------------------
+Traceback (most recent call last):
+  File "./parse_school_missing.py", line 69, in main
+    insertsql = "INSERT INTO tb_school_electedrep values("+str(school_id)+","+ ward_id+","+mla_id+","+mp_id+","+str(stype)+");\n"
+TypeError: cannot concatenate 'str' and 'int' objects
+------------------------------------------------------------
+Invalid schoolid33907
+Unexpected error: (<type 'exceptions.TypeError'>, TypeError("cannot concatenate 'str' and 'int' objects",), <traceback object at 0x120cab8>)
+Exception in user code:
+------------------------------------------------------------
+Traceback (most recent call last):
+  File "./parse_school_missing.py", line 69, in main
+    insertsql = "INSERT INTO tb_school_electedrep values("+str(school_id)+","+ ward_id+","+mla_id+","+mp_id+","+str(stype)+");\n"
+TypeError: cannot concatenate 'str' and 'int' objects
+------------------------------------------------------------
+Invalid schoolid33800
+Unexpected error: (<type 'exceptions.TypeError'>, TypeError("cannot concatenate 'str' and 'int' objects",), <traceback object at 0x11b8ea8>)
+Exception in user code:
+------------------------------------------------------------
+Traceback (most recent call last):
+  File "./parse_school_missing.py", line 69, in main
+    insertsql = "INSERT INTO tb_school_electedrep values("+str(school_id)+","+ ward_id+","+mla_id+","+mp_id+","+str(stype)+");\n"
+TypeError: cannot concatenate 'str' and 'int' objects
+------------------------------------------------------------
+Invalid schoolid33883
+Unexpected error: (<type 'exceptions.TypeError'>, TypeError("cannot concatenate 'str' and 'int' objects",), <traceback object at 0x120cb48>)
+Exception in user code:
+------------------------------------------------------------
+Traceback (most recent call last):
+  File "./parse_school_missing.py", line 69, in main
+    insertsql = "INSERT INTO tb_school_electedrep values("+str(school_id)+","+ ward_id+","+mla_id+","+mp_id+","+str(stype)+");\n"
+TypeError: cannot concatenate 'str' and 'int' objects
+------------------------------------------------------------
+Invalid schoolid30984
+Unexpected error: (<type 'exceptions.TypeError'>, TypeError("cannot concatenate 'str' and 'int' objects",), <traceback object at 0x120cab8>)
+Exception in user code:
+------------------------------------------------------------
+Traceback (most recent call last):
+  File "./parse_school_missing.py", line 69, in main
+    insertsql = "INSERT INTO tb_school_electedrep values("+str(school_id)+","+ ward_id+","+mla_id+","+mp_id+","+str(stype)+");\n"
+TypeError: cannot concatenate 'str' and 'int' objects
+------------------------------------------------------------
+Invalid schoolid31317
+Unexpected error: (<type 'exceptions.TypeError'>, TypeError("cannot concatenate 'str' and 'int' objects",), <traceback object at 0x11b8ea8>)
+Exception in user code:
+------------------------------------------------------------
+Traceback (most recent call last):
+  File "./parse_school_missing.py", line 69, in main
+    insertsql = "INSERT INTO tb_school_electedrep values("+str(school_id)+","+ ward_id+","+mla_id+","+mp_id+","+str(stype)+");\n"
+TypeError: cannot concatenate 'str' and 'int' objects
+------------------------------------------------------------
+Invalid schoolid31006
+Unexpected error: (<type 'exceptions.TypeError'>, TypeError("cannot concatenate 'str' and 'int' objects",), <traceback object at 0x120cb48>)
+Exception in user code:
+------------------------------------------------------------
+Traceback (most recent call last):
+  File "./parse_school_missing.py", line 69, in main
+    insertsql = "INSERT INTO tb_school_electedrep values("+str(school_id)+","+ ward_id+","+mla_id+","+mp_id+","+str(stype)+");\n"
+TypeError: cannot concatenate 'str' and 'int' objects
+------------------------------------------------------------
+Invalid schoolid30456
+Unexpected error: (<type 'exceptions.TypeError'>, TypeError("cannot concatenate 'str' and 'int' objects",), <traceback object at 0x120cab8>)
+Exception in user code:
+------------------------------------------------------------
+Traceback (most recent call last):
+  File "./parse_school_missing.py", line 69, in main
+    insertsql = "INSERT INTO tb_school_electedrep values("+str(school_id)+","+ ward_id+","+mla_id+","+mp_id+","+str(stype)+");\n"
+TypeError: cannot concatenate 'str' and 'int' objects
+------------------------------------------------------------
+Invalid schoolid30982
+Unexpected error: (<type 'exceptions.TypeError'>, TypeError("cannot concatenate 'str' and 'int' objects",), <traceback object at 0x11b8ea8>)
+Exception in user code:
+------------------------------------------------------------
+Traceback (most recent call last):
+  File "./parse_school_missing.py", line 69, in main
+    insertsql = "INSERT INTO tb_school_electedrep values("+str(school_id)+","+ ward_id+","+mla_id+","+mp_id+","+str(stype)+");\n"
+TypeError: cannot concatenate 'str' and 'int' objects
+------------------------------------------------------------
+Invalid schoolid33872
+Unexpected error: (<type 'exceptions.TypeError'>, TypeError("cannot concatenate 'str' and 'int' objects",), <traceback object at 0x120cb48>)
+Exception in user code:
+------------------------------------------------------------
+Traceback (most recent call last):
+  File "./parse_school_missing.py", line 69, in main
+    insertsql = "INSERT INTO tb_school_electedrep values("+str(school_id)+","+ ward_id+","+mla_id+","+mp_id+","+str(stype)+");\n"
+TypeError: cannot concatenate 'str' and 'int' objects
+------------------------------------------------------------
+Invalid schoolid35473
+Unexpected error: (<type 'exceptions.TypeError'>, TypeError("cannot concatenate 'str' and 'int' objects",), <traceback object at 0x11b8ea8>)
+Exception in user code:
+------------------------------------------------------------
+Traceback (most recent call last):
+  File "./parse_school_missing.py", line 69, in main
+    insertsql = "INSERT INTO tb_school_electedrep values("+str(school_id)+","+ ward_id+","+mla_id+","+mp_id+","+str(stype)+");\n"
+TypeError: cannot concatenate 'str' and 'int' objects
+------------------------------------------------------------
+Invalid schoolid30438
+Unexpected error: (<type 'exceptions.TypeError'>, TypeError("cannot concatenate 'str' and 'int' objects",), <traceback object at 0x120cab8>)
+Exception in user code:
+------------------------------------------------------------
+Traceback (most recent call last):
+  File "./parse_school_missing.py", line 69, in main
+    insertsql = "INSERT INTO tb_school_electedrep values("+str(school_id)+","+ ward_id+","+mla_id+","+mp_id+","+str(stype)+");\n"
+TypeError: cannot concatenate 'str' and 'int' objects
+------------------------------------------------------------
+Invalid schoolid30435
+Unexpected error: (<type 'exceptions.TypeError'>, TypeError("cannot concatenate 'str' and 'int' objects",), <traceback object at 0x11b8ea8>)
+Exception in user code:
+------------------------------------------------------------
+Traceback (most recent call last):
+  File "./parse_school_missing.py", line 69, in main
+    insertsql = "INSERT INTO tb_school_electedrep values("+str(school_id)+","+ ward_id+","+mla_id+","+mp_id+","+str(stype)+");\n"
+TypeError: cannot concatenate 'str' and 'int' objects
+------------------------------------------------------------
+Invalid schoolid30468
+Unexpected error: (<type 'exceptions.TypeError'>, TypeError("cannot concatenate 'str' and 'int' objects",), <traceback object at 0x120cab8>)
+Exception in user code:
+------------------------------------------------------------
+Traceback (most recent call last):
+  File "./parse_school_missing.py", line 69, in main
+    insertsql = "INSERT INTO tb_school_electedrep values("+str(school_id)+","+ ward_id+","+mla_id+","+mp_id+","+str(stype)+");\n"
+TypeError: cannot concatenate 'str' and 'int' objects
+------------------------------------------------------------
+Invalid schoolid30451
+Unexpected error: (<type 'exceptions.TypeError'>, TypeError("cannot concatenate 'str' and 'int' objects",), <traceback object at 0x11b8ea8>)
+Exception in user code:
+------------------------------------------------------------
+Traceback (most recent call last):
+  File "./parse_school_missing.py", line 69, in main
+    insertsql = "INSERT INTO tb_school_electedrep values("+str(school_id)+","+ ward_id+","+mla_id+","+mp_id+","+str(stype)+");\n"
+TypeError: cannot concatenate 'str' and 'int' objects
+------------------------------------------------------------
+Invalid schoolid30472
+Unexpected error: (<type 'exceptions.TypeError'>, TypeError("cannot concatenate 'str' and 'int' objects",), <traceback object at 0x11b8ea8>)
+Exception in user code:
+------------------------------------------------------------
+Traceback (most recent call last):
+  File "./parse_school_missing.py", line 69, in main
+    insertsql = "INSERT INTO tb_school_electedrep values("+str(school_id)+","+ ward_id+","+mla_id+","+mp_id+","+str(stype)+");\n"
+TypeError: cannot concatenate 'str' and 'int' objects
+------------------------------------------------------------
+Invalid schoolid30447
+Unexpected error: (<type 'exceptions.TypeError'>, TypeError("cannot concatenate 'str' and 'int' objects",), <traceback object at 0x120cab8>)
+Exception in user code:
+------------------------------------------------------------
+Traceback (most recent call last):
+  File "./parse_school_missing.py", line 69, in main
+    insertsql = "INSERT INTO tb_school_electedrep values("+str(school_id)+","+ ward_id+","+mla_id+","+mp_id+","+str(stype)+");\n"
+TypeError: cannot concatenate 'str' and 'int' objects
+------------------------------------------------------------
+Invalid schoolid30430
+Unexpected error: (<type 'exceptions.TypeError'>, TypeError("cannot concatenate 'str' and 'int' objects",), <traceback object at 0x11b8ea8>)
+Exception in user code:
+------------------------------------------------------------
+Traceback (most recent call last):
+  File "./parse_school_missing.py", line 69, in main
+    insertsql = "INSERT INTO tb_school_electedrep values("+str(school_id)+","+ ward_id+","+mla_id+","+mp_id+","+str(stype)+");\n"
+TypeError: cannot concatenate 'str' and 'int' objects
+------------------------------------------------------------
+Invalid schoolid35331
+Unexpected error: (<type 'exceptions.TypeError'>, TypeError("cannot concatenate 'str' and 'int' objects",), <traceback object at 0x11b8ea8>)
+Exception in user code:
+------------------------------------------------------------
+Traceback (most recent call last):
+  File "./parse_school_missing.py", line 69, in main
+    insertsql = "INSERT INTO tb_school_electedrep values("+str(school_id)+","+ ward_id+","+mla_id+","+mp_id+","+str(stype)+");\n"
+TypeError: cannot concatenate 'str' and 'int' objects
+------------------------------------------------------------
+Invalid schoolid35481
+Unexpected error: (<type 'exceptions.TypeError'>, TypeError("cannot concatenate 'str' and 'int' objects",), <traceback object at 0x120cb48>)
+Exception in user code:
+------------------------------------------------------------
+Traceback (most recent call last):
+  File "./parse_school_missing.py", line 69, in main
+    insertsql = "INSERT INTO tb_school_electedrep values("+str(school_id)+","+ ward_id+","+mla_id+","+mp_id+","+str(stype)+");\n"
+TypeError: cannot concatenate 'str' and 'int' objects
+------------------------------------------------------------
+Invalid schoolid30462
+Unexpected error: (<type 'exceptions.TypeError'>, TypeError("cannot concatenate 'str' and 'int' objects",), <traceback object at 0x120cab8>)
+Exception in user code:
+------------------------------------------------------------
+Traceback (most recent call last):
+  File "./parse_school_missing.py", line 69, in main
+    insertsql = "INSERT INTO tb_school_electedrep values("+str(school_id)+","+ ward_id+","+mla_id+","+mp_id+","+str(stype)+");\n"
+TypeError: cannot concatenate 'str' and 'int' objects
+------------------------------------------------------------
+Invalid schoolid30457
+Unexpected error: (<type 'exceptions.TypeError'>, TypeError("cannot concatenate 'str' and 'int' objects",), <traceback object at 0x11b8ea8>)
+Exception in user code:
+------------------------------------------------------------
+Traceback (most recent call last):
+  File "./parse_school_missing.py", line 69, in main
+    insertsql = "INSERT INTO tb_school_electedrep values("+str(school_id)+","+ ward_id+","+mla_id+","+mp_id+","+str(stype)+");\n"
+TypeError: cannot concatenate 'str' and 'int' objects
+------------------------------------------------------------
+Invalid schoolid34150
+Unexpected error: (<type 'exceptions.TypeError'>, TypeError("cannot concatenate 'str' and 'int' objects",), <traceback object at 0x120cb48>)
+Exception in user code:
+------------------------------------------------------------
+Traceback (most recent call last):
+  File "./parse_school_missing.py", line 69, in main
+    insertsql = "INSERT INTO tb_school_electedrep values("+str(school_id)+","+ ward_id+","+mla_id+","+mp_id+","+str(stype)+");\n"
+TypeError: cannot concatenate 'str' and 'int' objects
+------------------------------------------------------------
+Invalid schoolid29637
+Unexpected error: (<type 'exceptions.TypeError'>, TypeError("cannot concatenate 'str' and 'int' objects",), <traceback object at 0x120cb48>)
+Exception in user code:
+------------------------------------------------------------
+Traceback (most recent call last):
+  File "./parse_school_missing.py", line 69, in main
+    insertsql = "INSERT INTO tb_school_electedrep values("+str(school_id)+","+ ward_id+","+mla_id+","+mp_id+","+str(stype)+");\n"
+TypeError: cannot concatenate 'str' and 'int' objects
+------------------------------------------------------------
+Invalid schoolid29663
+Unexpected error: (<type 'exceptions.TypeError'>, TypeError("cannot concatenate 'str' and 'int' objects",), <traceback object at 0x120cab8>)
+Exception in user code:
+------------------------------------------------------------
+Traceback (most recent call last):
+  File "./parse_school_missing.py", line 69, in main
+    insertsql = "INSERT INTO tb_school_electedrep values("+str(school_id)+","+ ward_id+","+mla_id+","+mp_id+","+str(stype)+");\n"
+TypeError: cannot concatenate 'str' and 'int' objects
+------------------------------------------------------------
+Invalid schoolid29632
+Unexpected error: (<type 'exceptions.TypeError'>, TypeError("cannot concatenate 'str' and 'int' objects",), <traceback object at 0x11b8ea8>)
+Exception in user code:
+------------------------------------------------------------
+Traceback (most recent call last):
+  File "./parse_school_missing.py", line 69, in main
+    insertsql = "INSERT INTO tb_school_electedrep values("+str(school_id)+","+ ward_id+","+mla_id+","+mp_id+","+str(stype)+");\n"
+TypeError: cannot concatenate 'str' and 'int' objects
+------------------------------------------------------------
+Invalid schoolid29686
+Unexpected error: (<type 'exceptions.TypeError'>, TypeError("cannot concatenate 'str' and 'int' objects",), <traceback object at 0x120cb48>)
+Exception in user code:
+------------------------------------------------------------
+Traceback (most recent call last):
+  File "./parse_school_missing.py", line 69, in main
+    insertsql = "INSERT INTO tb_school_electedrep values("+str(school_id)+","+ ward_id+","+mla_id+","+mp_id+","+str(stype)+");\n"
+TypeError: cannot concatenate 'str' and 'int' objects
+------------------------------------------------------------
+Invalid schoolid30421
+Unexpected error: (<type 'exceptions.TypeError'>, TypeError("cannot concatenate 'str' and 'int' objects",), <traceback object at 0x120cb48>)
+Exception in user code:
+------------------------------------------------------------
+Traceback (most recent call last):
+  File "./parse_school_missing.py", line 69, in main
+    insertsql = "INSERT INTO tb_school_electedrep values("+str(school_id)+","+ ward_id+","+mla_id+","+mp_id+","+str(stype)+");\n"
+TypeError: cannot concatenate 'str' and 'int' objects
+------------------------------------------------------------
+Invalid schoolid34052
+Unexpected error: (<type 'exceptions.TypeError'>, TypeError("cannot concatenate 'str' and 'int' objects",), <traceback object at 0x120cab8>)
+Exception in user code:
+------------------------------------------------------------
+Traceback (most recent call last):
+  File "./parse_school_missing.py", line 69, in main
+    insertsql = "INSERT INTO tb_school_electedrep values("+str(school_id)+","+ ward_id+","+mla_id+","+mp_id+","+str(stype)+");\n"
+TypeError: cannot concatenate 'str' and 'int' objects
+------------------------------------------------------------
+Invalid schoolid33737
+Unexpected error: (<type 'exceptions.TypeError'>, TypeError("cannot concatenate 'str' and 'int' objects",), <traceback object at 0x120cb48>)
+Exception in user code:
+------------------------------------------------------------
+Traceback (most recent call last):
+  File "./parse_school_missing.py", line 69, in main
+    insertsql = "INSERT INTO tb_school_electedrep values("+str(school_id)+","+ ward_id+","+mla_id+","+mp_id+","+str(stype)+");\n"
+TypeError: cannot concatenate 'str' and 'int' objects
+------------------------------------------------------------
+Invalid schoolid30518
+Unexpected error: (<type 'exceptions.TypeError'>, TypeError("cannot concatenate 'str' and 'int' objects",), <traceback object at 0x120cb48>)
+Exception in user code:
+------------------------------------------------------------
+Traceback (most recent call last):
+  File "./parse_school_missing.py", line 69, in main
+    insertsql = "INSERT INTO tb_school_electedrep values("+str(school_id)+","+ ward_id+","+mla_id+","+mp_id+","+str(stype)+");\n"
+TypeError: cannot concatenate 'str' and 'int' objects
+------------------------------------------------------------
+Invalid schoolid33732
+Unexpected error: (<type 'exceptions.TypeError'>, TypeError("cannot concatenate 'str' and 'int' objects",), <traceback object at 0x11b8ea8>)
+Exception in user code:
+------------------------------------------------------------
+Traceback (most recent call last):
+  File "./parse_school_missing.py", line 69, in main
+    insertsql = "INSERT INTO tb_school_electedrep values("+str(school_id)+","+ ward_id+","+mla_id+","+mp_id+","+str(stype)+");\n"
+TypeError: cannot concatenate 'str' and 'int' objects
+------------------------------------------------------------
+Invalid schoolid30418
+Unexpected error: (<type 'exceptions.TypeError'>, TypeError("cannot concatenate 'str' and 'int' objects",), <traceback object at 0x120cb48>)
+Exception in user code:
+------------------------------------------------------------
+Traceback (most recent call last):
+  File "./parse_school_missing.py", line 69, in main
+    insertsql = "INSERT INTO tb_school_electedrep values("+str(school_id)+","+ ward_id+","+mla_id+","+mp_id+","+str(stype)+");\n"
+TypeError: cannot concatenate 'str' and 'int' objects
+------------------------------------------------------------
+Invalid schoolid33734
+Unexpected error: (<type 'exceptions.TypeError'>, TypeError("cannot concatenate 'str' and 'int' objects",), <traceback object at 0x11b8ea8>)
+Exception in user code:
+------------------------------------------------------------
+Traceback (most recent call last):
+  File "./parse_school_missing.py", line 69, in main
+    insertsql = "INSERT INTO tb_school_electedrep values("+str(school_id)+","+ ward_id+","+mla_id+","+mp_id+","+str(stype)+");\n"
+TypeError: cannot concatenate 'str' and 'int' objects
+------------------------------------------------------------
+Invalid schoolid33736
+Unexpected error: (<type 'exceptions.TypeError'>, TypeError("cannot concatenate 'str' and 'int' objects",), <traceback object at 0x120cb48>)
+Exception in user code:
+------------------------------------------------------------
+Traceback (most recent call last):
+  File "./parse_school_missing.py", line 69, in main
+    insertsql = "INSERT INTO tb_school_electedrep values("+str(school_id)+","+ ward_id+","+mla_id+","+mp_id+","+str(stype)+");\n"
+TypeError: cannot concatenate 'str' and 'int' objects
+------------------------------------------------------------
+Invalid schoolid35482
+Unexpected error: (<type 'exceptions.TypeError'>, TypeError("cannot concatenate 'str' and 'int' objects",), <traceback object at 0x11b8ea8>)
+Exception in user code:
+------------------------------------------------------------
+Traceback (most recent call last):
+  File "./parse_school_missing.py", line 69, in main
+    insertsql = "INSERT INTO tb_school_electedrep values("+str(school_id)+","+ ward_id+","+mla_id+","+mp_id+","+str(stype)+");\n"
+TypeError: cannot concatenate 'str' and 'int' objects
+------------------------------------------------------------
+Invalid schoolid34041
+Unexpected error: (<type 'exceptions.TypeError'>, TypeError("cannot concatenate 'str' and 'int' objects",), <traceback object at 0x11b8ea8>)
+Exception in user code:
+------------------------------------------------------------
+Traceback (most recent call last):
+  File "./parse_school_missing.py", line 69, in main
+    insertsql = "INSERT INTO tb_school_electedrep values("+str(school_id)+","+ ward_id+","+mla_id+","+mp_id+","+str(stype)+");\n"
+TypeError: cannot concatenate 'str' and 'int' objects
+------------------------------------------------------------
+Invalid schoolid34067
+Unexpected error: (<type 'exceptions.TypeError'>, TypeError("cannot concatenate 'str' and 'int' objects",), <traceback object at 0x120cb48>)
+Exception in user code:
+------------------------------------------------------------
+Traceback (most recent call last):
+  File "./parse_school_missing.py", line 69, in main
+    insertsql = "INSERT INTO tb_school_electedrep values("+str(school_id)+","+ ward_id+","+mla_id+","+mp_id+","+str(stype)+");\n"
+TypeError: cannot concatenate 'str' and 'int' objects
+------------------------------------------------------------
+Invalid schoolid30410
+Unexpected error: (<type 'exceptions.TypeError'>, TypeError("cannot concatenate 'str' and 'int' objects",), <traceback object at 0x11b8ea8>)
+Exception in user code:
+------------------------------------------------------------
+Traceback (most recent call last):
+  File "./parse_school_missing.py", line 69, in main
+    insertsql = "INSERT INTO tb_school_electedrep values("+str(school_id)+","+ ward_id+","+mla_id+","+mp_id+","+str(stype)+");\n"
+TypeError: cannot concatenate 'str' and 'int' objects
+------------------------------------------------------------
+Invalid schoolid30398
+Unexpected error: (<type 'exceptions.TypeError'>, TypeError("cannot concatenate 'str' and 'int' objects",), <traceback object at 0x11b8ea8>)
+Exception in user code:
+------------------------------------------------------------
+Traceback (most recent call last):
+  File "./parse_school_missing.py", line 69, in main
+    insertsql = "INSERT INTO tb_school_electedrep values("+str(school_id)+","+ ward_id+","+mla_id+","+mp_id+","+str(stype)+");\n"
+TypeError: cannot concatenate 'str' and 'int' objects
+------------------------------------------------------------
+Invalid schoolid30402
+Unexpected error: (<type 'exceptions.TypeError'>, TypeError("cannot concatenate 'str' and 'int' objects",), <traceback object at 0x120cb00>)
+Exception in user code:
+------------------------------------------------------------
+Traceback (most recent call last):
+  File "./parse_school_missing.py", line 69, in main
+    insertsql = "INSERT INTO tb_school_electedrep values("+str(school_id)+","+ ward_id+","+mla_id+","+mp_id+","+str(stype)+");\n"
+TypeError: cannot concatenate 'str' and 'int' objects
+------------------------------------------------------------
+Invalid schoolid34126
+Unexpected error: (<type 'exceptions.TypeError'>, TypeError("cannot concatenate 'str' and 'int' objects",), <traceback object at 0x11b8ea8>)
+Exception in user code:
+------------------------------------------------------------
+Traceback (most recent call last):
+  File "./parse_school_missing.py", line 69, in main
+    insertsql = "INSERT INTO tb_school_electedrep values("+str(school_id)+","+ ward_id+","+mla_id+","+mp_id+","+str(stype)+");\n"
+TypeError: cannot concatenate 'str' and 'int' objects
+------------------------------------------------------------
+Invalid schoolid34137
+Unexpected error: (<type 'exceptions.TypeError'>, TypeError("cannot concatenate 'str' and 'int' objects",), <traceback object at 0x120cb48>)
+Exception in user code:
+------------------------------------------------------------
+Traceback (most recent call last):
+  File "./parse_school_missing.py", line 69, in main
+    insertsql = "INSERT INTO tb_school_electedrep values("+str(school_id)+","+ ward_id+","+mla_id+","+mp_id+","+str(stype)+");\n"
+TypeError: cannot concatenate 'str' and 'int' objects
+------------------------------------------------------------
+Invalid schoolid34117
+Unexpected error: (<type 'exceptions.TypeError'>, TypeError("cannot concatenate 'str' and 'int' objects",), <traceback object at 0x120cb00>)
+Exception in user code:
+------------------------------------------------------------
+Traceback (most recent call last):
+  File "./parse_school_missing.py", line 69, in main
+    insertsql = "INSERT INTO tb_school_electedrep values("+str(school_id)+","+ ward_id+","+mla_id+","+mp_id+","+str(stype)+");\n"
+TypeError: cannot concatenate 'str' and 'int' objects
+------------------------------------------------------------
+Invalid schoolid30450
+Unexpected error: (<type 'exceptions.TypeError'>, TypeError("cannot concatenate 'str' and 'int' objects",), <traceback object at 0x11b8ea8>)
+Exception in user code:
+------------------------------------------------------------
+Traceback (most recent call last):
+  File "./parse_school_missing.py", line 69, in main
+    insertsql = "INSERT INTO tb_school_electedrep values("+str(school_id)+","+ ward_id+","+mla_id+","+mp_id+","+str(stype)+");\n"
+TypeError: cannot concatenate 'str' and 'int' objects
+------------------------------------------------------------
+Invalid schoolid30224
+Unexpected error: (<type 'exceptions.TypeError'>, TypeError("cannot concatenate 'str' and 'int' objects",), <traceback object at 0x120cb48>)
+Exception in user code:
+------------------------------------------------------------
+Traceback (most recent call last):
+  File "./parse_school_missing.py", line 69, in main
+    insertsql = "INSERT INTO tb_school_electedrep values("+str(school_id)+","+ ward_id+","+mla_id+","+mp_id+","+str(stype)+");\n"
+TypeError: cannot concatenate 'str' and 'int' objects
+------------------------------------------------------------
+Invalid schoolid29582
+Unexpected error: (<type 'exceptions.TypeError'>, TypeError("cannot concatenate 'str' and 'int' objects",), <traceback object at 0x120cb48>)
+Exception in user code:
+------------------------------------------------------------
+Traceback (most recent call last):
+  File "./parse_school_missing.py", line 69, in main
+    insertsql = "INSERT INTO tb_school_electedrep values("+str(school_id)+","+ ward_id+","+mla_id+","+mp_id+","+str(stype)+");\n"
+TypeError: cannot concatenate 'str' and 'int' objects
+------------------------------------------------------------
+Invalid schoolid34162
+Unexpected error: (<type 'exceptions.TypeError'>, TypeError("cannot concatenate 'str' and 'int' objects",), <traceback object at 0x120cb00>)
+Exception in user code:
+------------------------------------------------------------
+Traceback (most recent call last):
+  File "./parse_school_missing.py", line 69, in main
+    insertsql = "INSERT INTO tb_school_electedrep values("+str(school_id)+","+ ward_id+","+mla_id+","+mp_id+","+str(stype)+");\n"
+TypeError: cannot concatenate 'str' and 'int' objects
+------------------------------------------------------------
+Invalid schoolid29690
+Unexpected error: (<type 'exceptions.TypeError'>, TypeError("cannot concatenate 'str' and 'int' objects",), <traceback object at 0x120cb48>)
+Exception in user code:
+------------------------------------------------------------
+Traceback (most recent call last):
+  File "./parse_school_missing.py", line 69, in main
+    insertsql = "INSERT INTO tb_school_electedrep values("+str(school_id)+","+ ward_id+","+mla_id+","+mp_id+","+str(stype)+");\n"
+TypeError: cannot concatenate 'str' and 'int' objects
+------------------------------------------------------------
+Invalid schoolid34136
+Unexpected error: (<type 'exceptions.TypeError'>, TypeError("cannot concatenate 'str' and 'int' objects",), <traceback object at 0x120cb00>)
+Exception in user code:
+------------------------------------------------------------
+Traceback (most recent call last):
+  File "./parse_school_missing.py", line 69, in main
+    insertsql = "INSERT INTO tb_school_electedrep values("+str(school_id)+","+ ward_id+","+mla_id+","+mp_id+","+str(stype)+");\n"
+TypeError: cannot concatenate 'str' and 'int' objects
+------------------------------------------------------------
+Invalid schoolid34138
+Unexpected error: (<type 'exceptions.TypeError'>, TypeError("cannot concatenate 'str' and 'int' objects",), <traceback object at 0x11b8ea8>)
+Exception in user code:
+------------------------------------------------------------
+Traceback (most recent call last):
+  File "./parse_school_missing.py", line 69, in main
+    insertsql = "INSERT INTO tb_school_electedrep values("+str(school_id)+","+ ward_id+","+mla_id+","+mp_id+","+str(stype)+");\n"
+TypeError: cannot concatenate 'str' and 'int' objects
+------------------------------------------------------------
+Invalid schoolid34140
+Unexpected error: (<type 'exceptions.TypeError'>, TypeError("cannot concatenate 'str' and 'int' objects",), <traceback object at 0x120cb48>)
+Exception in user code:
+------------------------------------------------------------
+Traceback (most recent call last):
+  File "./parse_school_missing.py", line 69, in main
+    insertsql = "INSERT INTO tb_school_electedrep values("+str(school_id)+","+ ward_id+","+mla_id+","+mp_id+","+str(stype)+");\n"
+TypeError: cannot concatenate 'str' and 'int' objects
+------------------------------------------------------------
+Invalid schoolid34146
+Unexpected error: (<type 'exceptions.TypeError'>, TypeError("cannot concatenate 'str' and 'int' objects",), <traceback object at 0x120cb00>)
+Exception in user code:
+------------------------------------------------------------
+Traceback (most recent call last):
+  File "./parse_school_missing.py", line 69, in main
+    insertsql = "INSERT INTO tb_school_electedrep values("+str(school_id)+","+ ward_id+","+mla_id+","+mp_id+","+str(stype)+");\n"
+TypeError: cannot concatenate 'str' and 'int' objects
+------------------------------------------------------------
+Invalid schoolid29649
+Unexpected error: (<type 'exceptions.TypeError'>, TypeError("cannot concatenate 'str' and 'int' objects",), <traceback object at 0x11b8ea8>)
+Exception in user code:
+------------------------------------------------------------
+Traceback (most recent call last):
+  File "./parse_school_missing.py", line 69, in main
+    insertsql = "INSERT INTO tb_school_electedrep values("+str(school_id)+","+ ward_id+","+mla_id+","+mp_id+","+str(stype)+");\n"
+TypeError: cannot concatenate 'str' and 'int' objects
+------------------------------------------------------------
+Invalid schoolid34141
+Unexpected error: (<type 'exceptions.TypeError'>, TypeError("cannot concatenate 'str' and 'int' objects",), <traceback object at 0x120cb48>)
+Exception in user code:
+------------------------------------------------------------
+Traceback (most recent call last):
+  File "./parse_school_missing.py", line 69, in main
+    insertsql = "INSERT INTO tb_school_electedrep values("+str(school_id)+","+ ward_id+","+mla_id+","+mp_id+","+str(stype)+");\n"
+TypeError: cannot concatenate 'str' and 'int' objects
+------------------------------------------------------------
+Invalid schoolid30781
+Unexpected error: (<type 'exceptions.TypeError'>, TypeError("cannot concatenate 'str' and 'int' objects",), <traceback object at 0x11b8ea8>)
+Exception in user code:
+------------------------------------------------------------
+Traceback (most recent call last):
+  File "./parse_school_missing.py", line 69, in main
+    insertsql = "INSERT INTO tb_school_electedrep values("+str(school_id)+","+ ward_id+","+mla_id+","+mp_id+","+str(stype)+");\n"
+TypeError: cannot concatenate 'str' and 'int' objects
+------------------------------------------------------------
+Invalid schoolid29660
+Unexpected error: (<type 'exceptions.TypeError'>, TypeError("cannot concatenate 'str' and 'int' objects",), <traceback object at 0x120cb00>)
+Exception in user code:
+------------------------------------------------------------
+Traceback (most recent call last):
+  File "./parse_school_missing.py", line 69, in main
+    insertsql = "INSERT INTO tb_school_electedrep values("+str(school_id)+","+ ward_id+","+mla_id+","+mp_id+","+str(stype)+");\n"
+TypeError: cannot concatenate 'str' and 'int' objects
+------------------------------------------------------------
+Invalid schoolid34127
+Unexpected error: (<type 'exceptions.TypeError'>, TypeError("cannot concatenate 'str' and 'int' objects",), <traceback object at 0x11b8ea8>)
+Exception in user code:
+------------------------------------------------------------
+Traceback (most recent call last):
+  File "./parse_school_missing.py", line 69, in main
+    insertsql = "INSERT INTO tb_school_electedrep values("+str(school_id)+","+ ward_id+","+mla_id+","+mp_id+","+str(stype)+");\n"
+TypeError: cannot concatenate 'str' and 'int' objects
+------------------------------------------------------------
+Invalid schoolid34135
+Unexpected error: (<type 'exceptions.TypeError'>, TypeError("cannot concatenate 'str' and 'int' objects",), <traceback object at 0x120cb48>)
+Exception in user code:
+------------------------------------------------------------
+Traceback (most recent call last):
+  File "./parse_school_missing.py", line 69, in main
+    insertsql = "INSERT INTO tb_school_electedrep values("+str(school_id)+","+ ward_id+","+mla_id+","+mp_id+","+str(stype)+");\n"
+TypeError: cannot concatenate 'str' and 'int' objects
+------------------------------------------------------------
+Invalid schoolid34124
+Unexpected error: (<type 'exceptions.TypeError'>, TypeError("cannot concatenate 'str' and 'int' objects",), <traceback object at 0x11b8ea8>)
+Exception in user code:
+------------------------------------------------------------
+Traceback (most recent call last):
+  File "./parse_school_missing.py", line 69, in main
+    insertsql = "INSERT INTO tb_school_electedrep values("+str(school_id)+","+ ward_id+","+mla_id+","+mp_id+","+str(stype)+");\n"
+TypeError: cannot concatenate 'str' and 'int' objects
+------------------------------------------------------------
+Invalid schoolid34132
+Unexpected error: (<type 'exceptions.TypeError'>, TypeError("cannot concatenate 'str' and 'int' objects",), <traceback object at 0x120cb00>)
+Exception in user code:
+------------------------------------------------------------
+Traceback (most recent call last):
+  File "./parse_school_missing.py", line 69, in main
+    insertsql = "INSERT INTO tb_school_electedrep values("+str(school_id)+","+ ward_id+","+mla_id+","+mp_id+","+str(stype)+");\n"
+TypeError: cannot concatenate 'str' and 'int' objects
+------------------------------------------------------------
+Invalid schoolid34122
+Unexpected error: (<type 'exceptions.TypeError'>, TypeError("cannot concatenate 'str' and 'int' objects",), <traceback object at 0x11b8ea8>)
+Exception in user code:
+------------------------------------------------------------
+Traceback (most recent call last):
+  File "./parse_school_missing.py", line 69, in main
+    insertsql = "INSERT INTO tb_school_electedrep values("+str(school_id)+","+ ward_id+","+mla_id+","+mp_id+","+str(stype)+");\n"
+TypeError: cannot concatenate 'str' and 'int' objects
+------------------------------------------------------------
+Invalid schoolid35491
+Unexpected error: (<type 'exceptions.TypeError'>, TypeError("cannot concatenate 'str' and 'int' objects",), <traceback object at 0x120cb48>)
+Exception in user code:
+------------------------------------------------------------
+Traceback (most recent call last):
+  File "./parse_school_missing.py", line 69, in main
+    insertsql = "INSERT INTO tb_school_electedrep values("+str(school_id)+","+ ward_id+","+mla_id+","+mp_id+","+str(stype)+");\n"
+TypeError: cannot concatenate 'str' and 'int' objects
+------------------------------------------------------------
+Invalid schoolid29688
+Unexpected error: (<type 'exceptions.TypeError'>, TypeError("cannot concatenate 'str' and 'int' objects",), <traceback object at 0x11b8ea8>)
+Exception in user code:
+------------------------------------------------------------
+Traceback (most recent call last):
+  File "./parse_school_missing.py", line 69, in main
+    insertsql = "INSERT INTO tb_school_electedrep values("+str(school_id)+","+ ward_id+","+mla_id+","+mp_id+","+str(stype)+");\n"
+TypeError: cannot concatenate 'str' and 'int' objects
+------------------------------------------------------------
+Invalid schoolid29658
+Unexpected error: (<type 'exceptions.TypeError'>, TypeError("cannot concatenate 'str' and 'int' objects",), <traceback object at 0x120cb00>)
+Exception in user code:
+------------------------------------------------------------
+Traceback (most recent call last):
+  File "./parse_school_missing.py", line 69, in main
+    insertsql = "INSERT INTO tb_school_electedrep values("+str(school_id)+","+ ward_id+","+mla_id+","+mp_id+","+str(stype)+");\n"
+TypeError: cannot concatenate 'str' and 'int' objects
+------------------------------------------------------------
+Invalid schoolid34128
+Unexpected error: (<type 'exceptions.TypeError'>, TypeError("cannot concatenate 'str' and 'int' objects",), <traceback object at 0x11b8ea8>)
+Exception in user code:
+------------------------------------------------------------
+Traceback (most recent call last):
+  File "./parse_school_missing.py", line 69, in main
+    insertsql = "INSERT INTO tb_school_electedrep values("+str(school_id)+","+ ward_id+","+mla_id+","+mp_id+","+str(stype)+");\n"
+TypeError: cannot concatenate 'str' and 'int' objects
+------------------------------------------------------------
+Invalid schoolid34131
+Unexpected error: (<type 'exceptions.TypeError'>, TypeError("cannot concatenate 'str' and 'int' objects",), <traceback object at 0x120cb48>)
+Exception in user code:
+------------------------------------------------------------
+Traceback (most recent call last):
+  File "./parse_school_missing.py", line 69, in main
+    insertsql = "INSERT INTO tb_school_electedrep values("+str(school_id)+","+ ward_id+","+mla_id+","+mp_id+","+str(stype)+");\n"
+TypeError: cannot concatenate 'str' and 'int' objects
+------------------------------------------------------------
+Invalid schoolid34115
+Unexpected error: (<type 'exceptions.TypeError'>, TypeError("cannot concatenate 'str' and 'int' objects",), <traceback object at 0x120cb00>)
+Exception in user code:
+------------------------------------------------------------
+Traceback (most recent call last):
+  File "./parse_school_missing.py", line 69, in main
+    insertsql = "INSERT INTO tb_school_electedrep values("+str(school_id)+","+ ward_id+","+mla_id+","+mp_id+","+str(stype)+");\n"
+TypeError: cannot concatenate 'str' and 'int' objects
+------------------------------------------------------------
+Invalid schoolid29589
+Unexpected error: (<type 'exceptions.TypeError'>, TypeError("cannot concatenate 'str' and 'int' objects",), <traceback object at 0x120cb48>)
+Exception in user code:
+------------------------------------------------------------
+Traceback (most recent call last):
+  File "./parse_school_missing.py", line 69, in main
+    insertsql = "INSERT INTO tb_school_electedrep values("+str(school_id)+","+ ward_id+","+mla_id+","+mp_id+","+str(stype)+");\n"
+TypeError: cannot concatenate 'str' and 'int' objects
+------------------------------------------------------------
+Invalid schoolid29591
+Unexpected error: (<type 'exceptions.TypeError'>, TypeError("cannot concatenate 'str' and 'int' objects",), <traceback object at 0x120cb00>)
+Exception in user code:
+------------------------------------------------------------
+Traceback (most recent call last):
+  File "./parse_school_missing.py", line 69, in main
+    insertsql = "INSERT INTO tb_school_electedrep values("+str(school_id)+","+ ward_id+","+mla_id+","+mp_id+","+str(stype)+");\n"
+TypeError: cannot concatenate 'str' and 'int' objects
+------------------------------------------------------------
+Invalid schoolid29595
+Unexpected error: (<type 'exceptions.TypeError'>, TypeError("cannot concatenate 'str' and 'int' objects",), <traceback object at 0x11b8ea8>)
+Exception in user code:
+------------------------------------------------------------
+Traceback (most recent call last):
+  File "./parse_school_missing.py", line 69, in main
+    insertsql = "INSERT INTO tb_school_electedrep values("+str(school_id)+","+ ward_id+","+mla_id+","+mp_id+","+str(stype)+");\n"
+TypeError: cannot concatenate 'str' and 'int' objects
+------------------------------------------------------------
+Invalid schoolid35468
+Unexpected error: (<type 'exceptions.TypeError'>, TypeError("cannot concatenate 'str' and 'int' objects",), <traceback object at 0x11b8ea8>)
+Exception in user code:
+------------------------------------------------------------
+Traceback (most recent call last):
+  File "./parse_school_missing.py", line 69, in main
+    insertsql = "INSERT INTO tb_school_electedrep values("+str(school_id)+","+ ward_id+","+mla_id+","+mp_id+","+str(stype)+");\n"
+TypeError: cannot concatenate 'str' and 'int' objects
+------------------------------------------------------------
+Invalid schoolid30975
+Unexpected error: (<type 'exceptions.TypeError'>, TypeError("cannot concatenate 'str' and 'int' objects",), <traceback object at 0x120cb48>)
+Exception in user code:
+------------------------------------------------------------
+Traceback (most recent call last):
+  File "./parse_school_missing.py", line 69, in main
+    insertsql = "INSERT INTO tb_school_electedrep values("+str(school_id)+","+ ward_id+","+mla_id+","+mp_id+","+str(stype)+");\n"
+TypeError: cannot concatenate 'str' and 'int' objects
+------------------------------------------------------------
+Invalid schoolid34130
+Unexpected error: (<type 'exceptions.TypeError'>, TypeError("cannot concatenate 'str' and 'int' objects",), <traceback object at 0x11b8ea8>)
+Exception in user code:
+------------------------------------------------------------
+Traceback (most recent call last):
+  File "./parse_school_missing.py", line 69, in main
+    insertsql = "INSERT INTO tb_school_electedrep values("+str(school_id)+","+ ward_id+","+mla_id+","+mp_id+","+str(stype)+");\n"
+TypeError: cannot concatenate 'str' and 'int' objects
+------------------------------------------------------------
+Invalid schoolid34144
+Unexpected error: (<type 'exceptions.TypeError'>, TypeError("cannot concatenate 'str' and 'int' objects",), <traceback object at 0x120cb48>)
+Exception in user code:
+------------------------------------------------------------
+Traceback (most recent call last):
+  File "./parse_school_missing.py", line 69, in main
+    insertsql = "INSERT INTO tb_school_electedrep values("+str(school_id)+","+ ward_id+","+mla_id+","+mp_id+","+str(stype)+");\n"
+TypeError: cannot concatenate 'str' and 'int' objects
+------------------------------------------------------------
+Invalid schoolid35474
+Unexpected error: (<type 'exceptions.TypeError'>, TypeError("cannot concatenate 'str' and 'int' objects",), <traceback object at 0x120cb00>)
+Exception in user code:
+------------------------------------------------------------
+Traceback (most recent call last):
+  File "./parse_school_missing.py", line 69, in main
+    insertsql = "INSERT INTO tb_school_electedrep values("+str(school_id)+","+ ward_id+","+mla_id+","+mp_id+","+str(stype)+");\n"
+TypeError: cannot concatenate 'str' and 'int' objects
+------------------------------------------------------------
+Invalid schoolid34142
+Unexpected error: (<type 'exceptions.TypeError'>, TypeError("cannot concatenate 'str' and 'int' objects",), <traceback object at 0x120cb48>)
+Exception in user code:
+------------------------------------------------------------
+Traceback (most recent call last):
+  File "./parse_school_missing.py", line 69, in main
+    insertsql = "INSERT INTO tb_school_electedrep values("+str(school_id)+","+ ward_id+","+mla_id+","+mp_id+","+str(stype)+");\n"
+TypeError: cannot concatenate 'str' and 'int' objects
+------------------------------------------------------------
+Invalid schoolid30357
+Unexpected error: (<type 'exceptions.TypeError'>, TypeError("cannot concatenate 'str' and 'int' objects",), <traceback object at 0x120cb00>)
+Exception in user code:
+------------------------------------------------------------
+Traceback (most recent call last):
+  File "./parse_school_missing.py", line 69, in main
+    insertsql = "INSERT INTO tb_school_electedrep values("+str(school_id)+","+ ward_id+","+mla_id+","+mp_id+","+str(stype)+");\n"
+TypeError: cannot concatenate 'str' and 'int' objects
+------------------------------------------------------------
+Invalid schoolid35487
+Unexpected error: (<type 'exceptions.TypeError'>, TypeError("cannot concatenate 'str' and 'int' objects",), <traceback object at 0x11b8ea8>)
+Exception in user code:
+------------------------------------------------------------
+Traceback (most recent call last):
+  File "./parse_school_missing.py", line 69, in main
+    insertsql = "INSERT INTO tb_school_electedrep values("+str(school_id)+","+ ward_id+","+mla_id+","+mp_id+","+str(stype)+");\n"
+TypeError: cannot concatenate 'str' and 'int' objects
+------------------------------------------------------------
+Invalid schoolid34123
+Unexpected error: (<type 'exceptions.TypeError'>, TypeError("cannot concatenate 'str' and 'int' objects",), <traceback object at 0x120cb48>)
+Exception in user code:
+------------------------------------------------------------
+Traceback (most recent call last):
+  File "./parse_school_missing.py", line 69, in main
+    insertsql = "INSERT INTO tb_school_electedrep values("+str(school_id)+","+ ward_id+","+mla_id+","+mp_id+","+str(stype)+");\n"
+TypeError: cannot concatenate 'str' and 'int' objects
+------------------------------------------------------------
+Invalid schoolid30785
+Unexpected error: (<type 'exceptions.TypeError'>, TypeError("cannot concatenate 'str' and 'int' objects",), <traceback object at 0x120cb00>)
+Exception in user code:
+------------------------------------------------------------
+Traceback (most recent call last):
+  File "./parse_school_missing.py", line 69, in main
+    insertsql = "INSERT INTO tb_school_electedrep values("+str(school_id)+","+ ward_id+","+mla_id+","+mp_id+","+str(stype)+");\n"
+TypeError: cannot concatenate 'str' and 'int' objects
+------------------------------------------------------------
+Invalid schoolid34119
+Unexpected error: (<type 'exceptions.TypeError'>, TypeError("cannot concatenate 'str' and 'int' objects",), <traceback object at 0x120cb00>)
+Exception in user code:
+------------------------------------------------------------
+Traceback (most recent call last):
+  File "./parse_school_missing.py", line 69, in main
+    insertsql = "INSERT INTO tb_school_electedrep values("+str(school_id)+","+ ward_id+","+mla_id+","+mp_id+","+str(stype)+");\n"
+TypeError: cannot concatenate 'str' and 'int' objects
+------------------------------------------------------------
+Invalid schoolid35488
+Unexpected error: (<type 'exceptions.TypeError'>, TypeError("cannot concatenate 'str' and 'int' objects",), <traceback object at 0x120cb48>)
+Exception in user code:
+------------------------------------------------------------
+Traceback (most recent call last):
+  File "./parse_school_missing.py", line 69, in main
+    insertsql = "INSERT INTO tb_school_electedrep values("+str(school_id)+","+ ward_id+","+mla_id+","+mp_id+","+str(stype)+");\n"
+TypeError: cannot concatenate 'str' and 'int' objects
+------------------------------------------------------------
+Invalid schoolid30354
+Unexpected error: (<type 'exceptions.TypeError'>, TypeError("cannot concatenate 'str' and 'int' objects",), <traceback object at 0x120cb00>)
+Exception in user code:
+------------------------------------------------------------
+Traceback (most recent call last):
+  File "./parse_school_missing.py", line 69, in main
+    insertsql = "INSERT INTO tb_school_electedrep values("+str(school_id)+","+ ward_id+","+mla_id+","+mp_id+","+str(stype)+");\n"
+TypeError: cannot concatenate 'str' and 'int' objects
+------------------------------------------------------------
+Invalid schoolid34116
+Unexpected error: (<type 'exceptions.TypeError'>, TypeError("cannot concatenate 'str' and 'int' objects",), <traceback object at 0x11b8ea8>)
+Exception in user code:
+------------------------------------------------------------
+Traceback (most recent call last):
+  File "./parse_school_missing.py", line 69, in main
+    insertsql = "INSERT INTO tb_school_electedrep values("+str(school_id)+","+ ward_id+","+mla_id+","+mp_id+","+str(stype)+");\n"
+TypeError: cannot concatenate 'str' and 'int' objects
+------------------------------------------------------------
+Invalid schoolid34118
+Unexpected error: (<type 'exceptions.TypeError'>, TypeError("cannot concatenate 'str' and 'int' objects",), <traceback object at 0x120cb48>)
+Exception in user code:
+------------------------------------------------------------
+Traceback (most recent call last):
+  File "./parse_school_missing.py", line 69, in main
+    insertsql = "INSERT INTO tb_school_electedrep values("+str(school_id)+","+ ward_id+","+mla_id+","+mp_id+","+str(stype)+");\n"
+TypeError: cannot concatenate 'str' and 'int' objects
+------------------------------------------------------------
+Invalid schoolid34120
+Unexpected error: (<type 'exceptions.TypeError'>, TypeError("cannot concatenate 'str' and 'int' objects",), <traceback object at 0x120cb00>)
+Exception in user code:
+------------------------------------------------------------
+Traceback (most recent call last):
+  File "./parse_school_missing.py", line 69, in main
+    insertsql = "INSERT INTO tb_school_electedrep values("+str(school_id)+","+ ward_id+","+mla_id+","+mp_id+","+str(stype)+");\n"
+TypeError: cannot concatenate 'str' and 'int' objects
+------------------------------------------------------------
+Invalid schoolid34121
+Unexpected error: (<type 'exceptions.TypeError'>, TypeError("cannot concatenate 'str' and 'int' objects",), <traceback object at 0x11b8ea8>)
+Exception in user code:
+------------------------------------------------------------
+Traceback (most recent call last):
+  File "./parse_school_missing.py", line 69, in main
+    insertsql = "INSERT INTO tb_school_electedrep values("+str(school_id)+","+ ward_id+","+mla_id+","+mp_id+","+str(stype)+");\n"
+TypeError: cannot concatenate 'str' and 'int' objects
+------------------------------------------------------------
+Invalid schoolid31260
+Unexpected error: (<type 'exceptions.TypeError'>, TypeError("cannot concatenate 'str' and 'int' objects",), <traceback object at 0x11b8ea8>)
+Exception in user code:
+------------------------------------------------------------
+Traceback (most recent call last):
+  File "./parse_school_missing.py", line 69, in main
+    insertsql = "INSERT INTO tb_school_electedrep values("+str(school_id)+","+ ward_id+","+mla_id+","+mp_id+","+str(stype)+");\n"
+TypeError: cannot concatenate 'str' and 'int' objects
+------------------------------------------------------------
+Invalid schoolid30883
+Unexpected error: (<type 'exceptions.TypeError'>, TypeError("cannot concatenate 'str' and 'int' objects",), <traceback object at 0x120c878>)
+Exception in user code:
+------------------------------------------------------------
+Traceback (most recent call last):
+  File "./parse_school_missing.py", line 69, in main
+    insertsql = "INSERT INTO tb_school_electedrep values("+str(school_id)+","+ ward_id+","+mla_id+","+mp_id+","+str(stype)+");\n"
+TypeError: cannot concatenate 'str' and 'int' objects
+------------------------------------------------------------
+Invalid schoolid31022
+Unexpected error: (<type 'exceptions.TypeError'>, TypeError("cannot concatenate 'str' and 'int' objects",), <traceback object at 0x120cb00>)
+Exception in user code:
+------------------------------------------------------------
+Traceback (most recent call last):
+  File "./parse_school_missing.py", line 69, in main
+    insertsql = "INSERT INTO tb_school_electedrep values("+str(school_id)+","+ ward_id+","+mla_id+","+mp_id+","+str(stype)+");\n"
+TypeError: cannot concatenate 'str' and 'int' objects
+------------------------------------------------------------
+Invalid schoolid31008
+Unexpected error: (<type 'exceptions.TypeError'>, TypeError("cannot concatenate 'str' and 'int' objects",), <traceback object at 0x11b8ea8>)
+Exception in user code:
+------------------------------------------------------------
+Traceback (most recent call last):
+  File "./parse_school_missing.py", line 69, in main
+    insertsql = "INSERT INTO tb_school_electedrep values("+str(school_id)+","+ ward_id+","+mla_id+","+mp_id+","+str(stype)+");\n"
+TypeError: cannot concatenate 'str' and 'int' objects
+------------------------------------------------------------
+Invalid schoolid35329
+Unexpected error: (<type 'exceptions.TypeError'>, TypeError("cannot concatenate 'str' and 'int' objects",), <traceback object at 0x120c878>)
+Exception in user code:
+------------------------------------------------------------
+Traceback (most recent call last):
+  File "./parse_school_missing.py", line 69, in main
+    insertsql = "INSERT INTO tb_school_electedrep values("+str(school_id)+","+ ward_id+","+mla_id+","+mp_id+","+str(stype)+");\n"
+TypeError: cannot concatenate 'str' and 'int' objects
+------------------------------------------------------------
+Invalid schoolid31024
+Unexpected error: (<type 'exceptions.TypeError'>, TypeError("cannot concatenate 'str' and 'int' objects",), <traceback object at 0x11b8ea8>)
+Exception in user code:
+------------------------------------------------------------
+Traceback (most recent call last):
+  File "./parse_school_missing.py", line 69, in main
+    insertsql = "INSERT INTO tb_school_electedrep values("+str(school_id)+","+ ward_id+","+mla_id+","+mp_id+","+str(stype)+");\n"
+TypeError: cannot concatenate 'str' and 'int' objects
+------------------------------------------------------------
+Invalid schoolid30504
+Unexpected error: (<type 'exceptions.TypeError'>, TypeError("cannot concatenate 'str' and 'int' objects",), <traceback object at 0x120c878>)
+Exception in user code:
+------------------------------------------------------------
+Traceback (most recent call last):
+  File "./parse_school_missing.py", line 69, in main
+    insertsql = "INSERT INTO tb_school_electedrep values("+str(school_id)+","+ ward_id+","+mla_id+","+mp_id+","+str(stype)+");\n"
+TypeError: cannot concatenate 'str' and 'int' objects
+------------------------------------------------------------
+Invalid schoolid30520
+Unexpected error: (<type 'exceptions.TypeError'>, TypeError("cannot concatenate 'str' and 'int' objects",), <traceback object at 0x120cb00>)
+Exception in user code:
+------------------------------------------------------------
+Traceback (most recent call last):
+  File "./parse_school_missing.py", line 69, in main
+    insertsql = "INSERT INTO tb_school_electedrep values("+str(school_id)+","+ ward_id+","+mla_id+","+mp_id+","+str(stype)+");\n"
+TypeError: cannot concatenate 'str' and 'int' objects
+------------------------------------------------------------
+Invalid schoolid30521
+Unexpected error: (<type 'exceptions.TypeError'>, TypeError("cannot concatenate 'str' and 'int' objects",), <traceback object at 0x11b8ea8>)
+Exception in user code:
+------------------------------------------------------------
+Traceback (most recent call last):
+  File "./parse_school_missing.py", line 69, in main
+    insertsql = "INSERT INTO tb_school_electedrep values("+str(school_id)+","+ ward_id+","+mla_id+","+mp_id+","+str(stype)+");\n"
+TypeError: cannot concatenate 'str' and 'int' objects
+------------------------------------------------------------
+Invalid schoolid35330
+Unexpected error: (<type 'exceptions.TypeError'>, TypeError("cannot concatenate 'str' and 'int' objects",), <traceback object at 0x120c878>)
+Exception in user code:
+------------------------------------------------------------
+Traceback (most recent call last):
+  File "./parse_school_missing.py", line 69, in main
+    insertsql = "INSERT INTO tb_school_electedrep values("+str(school_id)+","+ ward_id+","+mla_id+","+mp_id+","+str(stype)+");\n"
+TypeError: cannot concatenate 'str' and 'int' objects
+------------------------------------------------------------
+Invalid schoolid35476
+Unexpected error: (<type 'exceptions.TypeError'>, TypeError("cannot concatenate 'str' and 'int' objects",), <traceback object at 0x120cb00>)
+Exception in user code:
+------------------------------------------------------------
+Traceback (most recent call last):
+  File "./parse_school_missing.py", line 69, in main
+    insertsql = "INSERT INTO tb_school_electedrep values("+str(school_id)+","+ ward_id+","+mla_id+","+mp_id+","+str(stype)+");\n"
+TypeError: cannot concatenate 'str' and 'int' objects
+------------------------------------------------------------
+Invalid schoolid35480
+Unexpected error: (<type 'exceptions.TypeError'>, TypeError("cannot concatenate 'str' and 'int' objects",), <traceback object at 0x11b8ea8>)
+Exception in user code:
+------------------------------------------------------------
+Traceback (most recent call last):
+  File "./parse_school_missing.py", line 69, in main
+    insertsql = "INSERT INTO tb_school_electedrep values("+str(school_id)+","+ ward_id+","+mla_id+","+mp_id+","+str(stype)+");\n"
+TypeError: cannot concatenate 'str' and 'int' objects
+------------------------------------------------------------
+Invalid schoolid33862
+Unexpected error: (<type 'exceptions.TypeError'>, TypeError("cannot concatenate 'str' and 'int' objects",), <traceback object at 0x120c878>)
+Exception in user code:
+------------------------------------------------------------
+Traceback (most recent call last):
+  File "./parse_school_missing.py", line 69, in main
+    insertsql = "INSERT INTO tb_school_electedrep values("+str(school_id)+","+ ward_id+","+mla_id+","+mp_id+","+str(stype)+");\n"
+TypeError: cannot concatenate 'str' and 'int' objects
+------------------------------------------------------------
+Invalid schoolid35479
+Unexpected error: (<type 'exceptions.TypeError'>, TypeError("cannot concatenate 'str' and 'int' objects",), <traceback object at 0x11b8ea8>)
+Exception in user code:
+------------------------------------------------------------
+Traceback (most recent call last):
+  File "./parse_school_missing.py", line 69, in main
+    insertsql = "INSERT INTO tb_school_electedrep values("+str(school_id)+","+ ward_id+","+mla_id+","+mp_id+","+str(stype)+");\n"
+TypeError: cannot concatenate 'str' and 'int' objects
+------------------------------------------------------------
+Invalid schoolid33903
+Unexpected error: (<type 'exceptions.TypeError'>, TypeError("cannot concatenate 'str' and 'int' objects",), <traceback object at 0x120c878>)
+Exception in user code:
+------------------------------------------------------------
+Traceback (most recent call last):
+  File "./parse_school_missing.py", line 69, in main
+    insertsql = "INSERT INTO tb_school_electedrep values("+str(school_id)+","+ ward_id+","+mla_id+","+mp_id+","+str(stype)+");\n"
+TypeError: cannot concatenate 'str' and 'int' objects
+------------------------------------------------------------
+Invalid schoolid31185
+Unexpected error: (<type 'exceptions.TypeError'>, TypeError("cannot concatenate 'str' and 'int' objects",), <traceback object at 0x120cb00>)
+Exception in user code:
+------------------------------------------------------------
+Traceback (most recent call last):
+  File "./parse_school_missing.py", line 69, in main
+    insertsql = "INSERT INTO tb_school_electedrep values("+str(school_id)+","+ ward_id+","+mla_id+","+mp_id+","+str(stype)+");\n"
+TypeError: cannot concatenate 'str' and 'int' objects
+------------------------------------------------------------
+Invalid schoolid30530
+Unexpected error: (<type 'exceptions.TypeError'>, TypeError("cannot concatenate 'str' and 'int' objects",), <traceback object at 0x11b8ea8>)
+Exception in user code:
+------------------------------------------------------------
+Traceback (most recent call last):
+  File "./parse_school_missing.py", line 69, in main
+    insertsql = "INSERT INTO tb_school_electedrep values("+str(school_id)+","+ ward_id+","+mla_id+","+mp_id+","+str(stype)+");\n"
+TypeError: cannot concatenate 'str' and 'int' objects
+------------------------------------------------------------
+Invalid schoolid31169
+Unexpected error: (<type 'exceptions.TypeError'>, TypeError("cannot concatenate 'str' and 'int' objects",), <traceback object at 0x120c878>)
+Exception in user code:
+------------------------------------------------------------
+Traceback (most recent call last):
+  File "./parse_school_missing.py", line 69, in main
+    insertsql = "INSERT INTO tb_school_electedrep values("+str(school_id)+","+ ward_id+","+mla_id+","+mp_id+","+str(stype)+");\n"
+TypeError: cannot concatenate 'str' and 'int' objects
+------------------------------------------------------------
+Invalid schoolid35486
+Unexpected error: (<type 'exceptions.TypeError'>, TypeError("cannot concatenate 'str' and 'int' objects",), <traceback object at 0x11b8ea8>)
+Exception in user code:
+------------------------------------------------------------
+Traceback (most recent call last):
+  File "./parse_school_missing.py", line 69, in main
+    insertsql = "INSERT INTO tb_school_electedrep values("+str(school_id)+","+ ward_id+","+mla_id+","+mp_id+","+str(stype)+");\n"
+TypeError: cannot concatenate 'str' and 'int' objects
+------------------------------------------------------------
+Invalid schoolid31249
+Unexpected error: (<type 'exceptions.TypeError'>, TypeError("cannot concatenate 'str' and 'int' objects",), <traceback object at 0x120c878>)
+Exception in user code:
+------------------------------------------------------------
+Traceback (most recent call last):
+  File "./parse_school_missing.py", line 69, in main
+    insertsql = "INSERT INTO tb_school_electedrep values("+str(school_id)+","+ ward_id+","+mla_id+","+mp_id+","+str(stype)+");\n"
+TypeError: cannot concatenate 'str' and 'int' objects
+------------------------------------------------------------
+Invalid schoolid30435
+Unexpected error: (<type 'exceptions.TypeError'>, TypeError("cannot concatenate 'str' and 'int' objects",), <traceback object at 0x11b8ea8>)
+Exception in user code:
+------------------------------------------------------------
+Traceback (most recent call last):
+  File "./parse_school_missing.py", line 69, in main
+    insertsql = "INSERT INTO tb_school_electedrep values("+str(school_id)+","+ ward_id+","+mla_id+","+mp_id+","+str(stype)+");\n"
+TypeError: cannot concatenate 'str' and 'int' objects
+------------------------------------------------------------
+Invalid schoolid29667
+Unexpected error: (<type 'exceptions.TypeError'>, TypeError("cannot concatenate 'str' and 'int' objects",), <traceback object at 0x120c878>)
+Exception in user code:
+------------------------------------------------------------
+Traceback (most recent call last):
+  File "./parse_school_missing.py", line 69, in main
+    insertsql = "INSERT INTO tb_school_electedrep values("+str(school_id)+","+ ward_id+","+mla_id+","+mp_id+","+str(stype)+");\n"
+TypeError: cannot concatenate 'str' and 'int' objects
+------------------------------------------------------------
+Invalid schoolid30512
+Unexpected error: (<type 'exceptions.TypeError'>, TypeError("cannot concatenate 'str' and 'int' objects",), <traceback object at 0x11b8ea8>)
+Exception in user code:
+------------------------------------------------------------
+Traceback (most recent call last):
+  File "./parse_school_missing.py", line 69, in main
+    insertsql = "INSERT INTO tb_school_electedrep values("+str(school_id)+","+ ward_id+","+mla_id+","+mp_id+","+str(stype)+");\n"
+TypeError: cannot concatenate 'str' and 'int' objects
+------------------------------------------------------------
+Invalid schoolid30513
+Unexpected error: (<type 'exceptions.TypeError'>, TypeError("cannot concatenate 'str' and 'int' objects",), <traceback object at 0x120c878>)
+Exception in user code:
+------------------------------------------------------------
+Traceback (most recent call last):
+  File "./parse_school_missing.py", line 69, in main
+    insertsql = "INSERT INTO tb_school_electedrep values("+str(school_id)+","+ ward_id+","+mla_id+","+mp_id+","+str(stype)+");\n"
+TypeError: cannot concatenate 'str' and 'int' objects
+------------------------------------------------------------
+Invalid schoolid30451
+Unexpected error: (<type 'exceptions.TypeError'>, TypeError("cannot concatenate 'str' and 'int' objects",), <traceback object at 0x11b8ea8>)
+Exception in user code:
+------------------------------------------------------------
+Traceback (most recent call last):
+  File "./parse_school_missing.py", line 69, in main
+    insertsql = "INSERT INTO tb_school_electedrep values("+str(school_id)+","+ ward_id+","+mla_id+","+mp_id+","+str(stype)+");\n"
+TypeError: cannot concatenate 'str' and 'int' objects
+------------------------------------------------------------
+Invalid schoolid29656
+Unexpected error: (<type 'exceptions.TypeError'>, TypeError("cannot concatenate 'str' and 'int' objects",), <traceback object at 0x120c878>)
+Exception in user code:
+------------------------------------------------------------
+Traceback (most recent call last):
+  File "./parse_school_missing.py", line 69, in main
+    insertsql = "INSERT INTO tb_school_electedrep values("+str(school_id)+","+ ward_id+","+mla_id+","+mp_id+","+str(stype)+");\n"
+TypeError: cannot concatenate 'str' and 'int' objects
+------------------------------------------------------------
+Invalid schoolid30174
+Unexpected error: (<type 'exceptions.TypeError'>, TypeError("cannot concatenate 'str' and 'int' objects",), <traceback object at 0x120cb00>)
+Exception in user code:
+------------------------------------------------------------
+Traceback (most recent call last):
+  File "./parse_school_missing.py", line 69, in main
+    insertsql = "INSERT INTO tb_school_electedrep values("+str(school_id)+","+ ward_id+","+mla_id+","+mp_id+","+str(stype)+");\n"
+TypeError: cannot concatenate 'str' and 'int' objects
+------------------------------------------------------------
+Invalid schoolid30185
+Unexpected error: (<type 'exceptions.TypeError'>, TypeError("cannot concatenate 'str' and 'int' objects",), <traceback object at 0x120c878>)
+Exception in user code:
+------------------------------------------------------------
+Traceback (most recent call last):
+  File "./parse_school_missing.py", line 69, in main
+    insertsql = "INSERT INTO tb_school_electedrep values("+str(school_id)+","+ ward_id+","+mla_id+","+mp_id+","+str(stype)+");\n"
+TypeError: cannot concatenate 'str' and 'int' objects
+------------------------------------------------------------
+Invalid schoolid33989
+Unexpected error: (<type 'exceptions.TypeError'>, TypeError("cannot concatenate 'str' and 'int' objects",), <traceback object at 0x120cb00>)
+Exception in user code:
+------------------------------------------------------------
+Traceback (most recent call last):
+  File "./parse_school_missing.py", line 69, in main
+    insertsql = "INSERT INTO tb_school_electedrep values("+str(school_id)+","+ ward_id+","+mla_id+","+mp_id+","+str(stype)+");\n"
+TypeError: cannot concatenate 'str' and 'int' objects
+------------------------------------------------------------
+Invalid schoolid30244
+Unexpected error: (<type 'exceptions.TypeError'>, TypeError("cannot concatenate 'str' and 'int' objects",), <traceback object at 0x11b8ea8>)
+Exception in user code:
+------------------------------------------------------------
+Traceback (most recent call last):
+  File "./parse_school_missing.py", line 69, in main
+    insertsql = "INSERT INTO tb_school_electedrep values("+str(school_id)+","+ ward_id+","+mla_id+","+mp_id+","+str(stype)+");\n"
+TypeError: cannot concatenate 'str' and 'int' objects
+------------------------------------------------------------
+Invalid schoolid29646
+Unexpected error: (<type 'exceptions.TypeError'>, TypeError("cannot concatenate 'str' and 'int' objects",), <traceback object at 0x120c878>)
+Exception in user code:
+------------------------------------------------------------
+Traceback (most recent call last):
+  File "./parse_school_missing.py", line 69, in main
+    insertsql = "INSERT INTO tb_school_electedrep values("+str(school_id)+","+ ward_id+","+mla_id+","+mp_id+","+str(stype)+");\n"
+TypeError: cannot concatenate 'str' and 'int' objects
+------------------------------------------------------------
+Invalid schoolid33964
+Unexpected error: (<type 'exceptions.TypeError'>, TypeError("cannot concatenate 'str' and 'int' objects",), <traceback object at 0x120cb00>)
+Exception in user code:
+------------------------------------------------------------
+Traceback (most recent call last):
+  File "./parse_school_missing.py", line 69, in main
+    insertsql = "INSERT INTO tb_school_electedrep values("+str(school_id)+","+ ward_id+","+mla_id+","+mp_id+","+str(stype)+");\n"
+TypeError: cannot concatenate 'str' and 'int' objects
+------------------------------------------------------------
+Invalid schoolid31011
+Unexpected error: (<type 'exceptions.TypeError'>, TypeError("cannot concatenate 'str' and 'int' objects",), <traceback object at 0x11b8ea8>)
+Exception in user code:
+------------------------------------------------------------
+Traceback (most recent call last):
+  File "./parse_school_missing.py", line 69, in main
+    insertsql = "INSERT INTO tb_school_electedrep values("+str(school_id)+","+ ward_id+","+mla_id+","+mp_id+","+str(stype)+");\n"
+TypeError: cannot concatenate 'str' and 'int' objects
+------------------------------------------------------------
+Invalid schoolid33970
+Unexpected error: (<type 'exceptions.TypeError'>, TypeError("cannot concatenate 'str' and 'int' objects",), <traceback object at 0x120c878>)
+Exception in user code:
+------------------------------------------------------------
+Traceback (most recent call last):
+  File "./parse_school_missing.py", line 69, in main
+    insertsql = "INSERT INTO tb_school_electedrep values("+str(school_id)+","+ ward_id+","+mla_id+","+mp_id+","+str(stype)+");\n"
+TypeError: cannot concatenate 'str' and 'int' objects
+------------------------------------------------------------
+Invalid schoolid31001
+Unexpected error: (<type 'exceptions.TypeError'>, TypeError("cannot concatenate 'str' and 'int' objects",), <traceback object at 0x11b8ea8>)
+Exception in user code:
+------------------------------------------------------------
+Traceback (most recent call last):
+  File "./parse_school_missing.py", line 69, in main
+    insertsql = "INSERT INTO tb_school_electedrep values("+str(school_id)+","+ ward_id+","+mla_id+","+mp_id+","+str(stype)+");\n"
+TypeError: cannot concatenate 'str' and 'int' objects
+------------------------------------------------------------
+Invalid schoolid33907
+Unexpected error: (<type 'exceptions.TypeError'>, TypeError("cannot concatenate 'str' and 'int' objects",), <traceback object at 0x11b8ea8>)
+Exception in user code:
+------------------------------------------------------------
+Traceback (most recent call last):
+  File "./parse_school_missing.py", line 69, in main
+    insertsql = "INSERT INTO tb_school_electedrep values("+str(school_id)+","+ ward_id+","+mla_id+","+mp_id+","+str(stype)+");\n"
+TypeError: cannot concatenate 'str' and 'int' objects
+------------------------------------------------------------
+Invalid schoolid30984
+Unexpected error: (<type 'exceptions.TypeError'>, TypeError("cannot concatenate 'str' and 'int' objects",), <traceback object at 0x11b8ea8>)
+Exception in user code:
+------------------------------------------------------------
+Traceback (most recent call last):
+  File "./parse_school_missing.py", line 69, in main
+    insertsql = "INSERT INTO tb_school_electedrep values("+str(school_id)+","+ ward_id+","+mla_id+","+mp_id+","+str(stype)+");\n"
+TypeError: cannot concatenate 'str' and 'int' objects
+------------------------------------------------------------
+Invalid schoolid30982
+Unexpected error: (<type 'exceptions.TypeError'>, TypeError("cannot concatenate 'str' and 'int' objects",), <traceback object at 0x120c680>)
+Exception in user code:
+------------------------------------------------------------
+Traceback (most recent call last):
+  File "./parse_school_missing.py", line 69, in main
+    insertsql = "INSERT INTO tb_school_electedrep values("+str(school_id)+","+ ward_id+","+mla_id+","+mp_id+","+str(stype)+");\n"
+TypeError: cannot concatenate 'str' and 'int' objects
+------------------------------------------------------------
+Invalid schoolid31300
+Unexpected error: (<type 'exceptions.TypeError'>, TypeError("cannot concatenate 'str' and 'int' objects",), <traceback object at 0x120c680>)
+Exception in user code:
+------------------------------------------------------------
+Traceback (most recent call last):
+  File "./parse_school_missing.py", line 69, in main
+    insertsql = "INSERT INTO tb_school_electedrep values("+str(school_id)+","+ ward_id+","+mla_id+","+mp_id+","+str(stype)+");\n"
+TypeError: cannot concatenate 'str' and 'int' objects
+------------------------------------------------------------
+Invalid schoolid31303
+Unexpected error: (<type 'exceptions.TypeError'>, TypeError("cannot concatenate 'str' and 'int' objects",), <traceback object at 0x120c680>)
+Exception in user code:
+------------------------------------------------------------
+Traceback (most recent call last):
+  File "./parse_school_missing.py", line 69, in main
+    insertsql = "INSERT INTO tb_school_electedrep values("+str(school_id)+","+ ward_id+","+mla_id+","+mp_id+","+str(stype)+");\n"
+TypeError: cannot concatenate 'str' and 'int' objects
+------------------------------------------------------------
+Invalid schoolid31015
+Unexpected error: (<type 'exceptions.TypeError'>, TypeError("cannot concatenate 'str' and 'int' objects",), <traceback object at 0x11b8ea8>)
+Exception in user code:
+------------------------------------------------------------
+Traceback (most recent call last):
+  File "./parse_school_missing.py", line 69, in main
+    insertsql = "INSERT INTO tb_school_electedrep values("+str(school_id)+","+ ward_id+","+mla_id+","+mp_id+","+str(stype)+");\n"
+TypeError: cannot concatenate 'str' and 'int' objects
+------------------------------------------------------------
+Invalid schoolid31023
+Unexpected error: (<type 'exceptions.TypeError'>, TypeError("cannot concatenate 'str' and 'int' objects",), <traceback object at 0x120cc20>)
+Exception in user code:
+------------------------------------------------------------
+Traceback (most recent call last):
+  File "./parse_school_missing.py", line 69, in main
+    insertsql = "INSERT INTO tb_school_electedrep values("+str(school_id)+","+ ward_id+","+mla_id+","+mp_id+","+str(stype)+");\n"
+TypeError: cannot concatenate 'str' and 'int' objects
+------------------------------------------------------------
+Invalid schoolid31299
+Unexpected error: (<type 'exceptions.TypeError'>, TypeError("cannot concatenate 'str' and 'int' objects",), <traceback object at 0x120c680>)
+Exception in user code:
+------------------------------------------------------------
+Traceback (most recent call last):
+  File "./parse_school_missing.py", line 69, in main
+    insertsql = "INSERT INTO tb_school_electedrep values("+str(school_id)+","+ ward_id+","+mla_id+","+mp_id+","+str(stype)+");\n"
+TypeError: cannot concatenate 'str' and 'int' objects
+------------------------------------------------------------
+1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40
+41
+42
+43
+44
+45
+46
+47
+48
+49
+50
+51
+52
+53
+54
+55
+56
+57
+58
+59
+60
+61
+62
+63
+64
+65
+66
+67
+68
+69
+70
+71
+72
+73
+74
+75
+76
+77
+78
+79
+80
+81
+82
+83
+84
+85
+86
+87
+88
+89
+90
+91
+92
+93
+94
+95
+96
+97
+98
+99
+100
+101
+102
+103
+104
+105
+106
+107
+108
+109
+110
+111
+112
+113
+114
+115
+116
+117
+118
+119
+120
+121
+122
+123
+124
+125
+126
+127
+128
+129
+130
+131
+132
+133
+134
+135
+136
+137
+138
+139
+140
+141
+142
+143
+144
+145
+146
+147
+148
+149
+150
+151
+152
+153
+154
+155
+156
+157
+158
+159
+160
+161
+162
+163
+164
+165
+166
+167
+168
+169
+170
+171
+172
+173
+174
+175
+176
+177
+178
+179
+180
+181
+182
+183
+184
+185
+186
+187
+188
+189
+190
+191
+192
+193
+194
+195
+196
+197
+198
+199
+200
+201
+202
+203
+204
+205
+206
+207
+208
+209
+210
+211
+212
+213
+214
+215
+216
+217
+218
+219
+220
+221
+222
+223
+224
+225
+226
+227
+228
+229
+230
+231
+232
+233
+234
+235
+236
+237
+238
+239
+240
+241
+242
+243
+244
+245
+246
+247
+248
+249
+250
+251
+252
+253
+254
+255
+256
+257
+258
+259
+260
+261
+262
+263
+264
+265
+266
+267
+268
+269
+270
+271
+272
+273
+274
+275
+276
+277
+278
+279
+280
+281
+282
+283
+284
+285
+286
+287
+288
+289
+290
+291
+292
+293
+294
+295
+296
+297
+298
+299
+300
+301
+302
+303
+304
+305
+306
+307
+308
+309
+310
+311
+312
+313
+314
+315
+316
+317
+318
+319
+320
+321
+322
+323
+324
+325
+326
+327
+328
+329
+330
+331
+332
+333
+334
+335
+336
+337
+338
+339
+340
+341
+342
+343
+344
+345
+346
+347
+348
+349
+350
+351
+352
+353
+354
+355
+356
+357
+358
+359
+360
+361
+362
+363
+364
+365
+366
+367
+368
+369
+370
+371
+372
+373
+374
+375
+376
+377
+378
+379
+380
+381
+382
+383
+384
+385
+386
+387
+388
+389
+390
+391
+392
+393
+394
+395
+396
+397
+398
+399
+400
+401
+402
+403
+404
+405
+406
+407
+408
+409
+410
+411
+412
+413
+414
+415
+416
+417
+418
+419
+420
+421
+422
+423
+424
+425
+426
+427
+428
+429
+430
+431
+432
+433
+434
+435
+436
+437
+438
+439
+440
+441
+442
+443
+444
+445
+446
+447
+448
+449
+450
+451
+452
+453
+454
+455
+456
+457
+458
+459
+460
+461
+462
+463
+464
+465
+466
+467
+468
+469
+470
+471
+472
+473
+474
+475
+476
+477
+478
+479
+480
+481
+482
+483
+484
+485
+486
+487
+488
+489
+490
+491
+492
+493
+494
+495
+496
+497
+498
+499
+500
+501
+502
+503
+504
+505
+506

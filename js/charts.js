@@ -455,8 +455,9 @@ function progressdata(divtype,pid,programme)
     {
       var rowdata=[];
       rowdata.push(text);
-      for(starttime in  info["progress"][classname])
+      for(var j=0; j<starttimes.length;j++)
       {
+        starttime=starttimes[j]
         for(type in  info["progress"][classname][starttime]) 
         {
           if(text in info["progress"][classname][starttime][type])

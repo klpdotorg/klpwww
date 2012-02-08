@@ -794,11 +794,11 @@ class getBoundaryInfo:
       assessments= ""
       first=1
       for row in result:
-        if first: 
-          assessments=assessments+row[0]+"-"+str(row[1]).split("-")[0]+","+str(row[2])+","+str(row[3])
+        if first:
+          assessments=assessments+row[0]+"|"+str(row[1]).split("-")[0]+"|"+str(row[2])+"|"+str(row[3])
           first=0
         else:
-          assessments=assessments+";"+row[0]+"-"+str(row[1]).split("-")[0]+","+str(row[2])+","+str(row[3])
+          assessments=assessments+","+row[0]+"|"+str(row[1]).split("-")[0]+"|"+str(row[2])+"|"+str(row[3])
       boundaryInfo["assessments"]=str(assessments)
     except:
       traceback.print_exc(file=sys.stderr)

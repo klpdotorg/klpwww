@@ -663,7 +663,6 @@ class schoolpage:
       data["image_dir"] = "/" + imgpath
       syscursor.execute(statements['get_school_images'],(id,))
       result = syscursor.fetchall()
-      data["images"]=[]
       for row in result:
         data["images"].append(row[0])
 
@@ -724,7 +723,6 @@ class schoolpage:
       syscursor.execute(statements['get_sys_qans'],[tuple(sysids)])
       result = syscursor.fetchall()
       sysdata = {}
-      data["sysdata"] = []
       pos_ans = ["yes","available and functional","available but not functional"]
       for row in result:
         if row[0] in sysdata.keys():

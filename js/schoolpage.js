@@ -6,6 +6,29 @@ var image={"school":"school.png","preschool":"preschool.png"}
 // Load the Visualization API and the piechart package.
 //google.load('visualization', '1', {'packages':['table','piechart']});
 
+if (!Array.prototype.indexOf)
+{
+  Array.prototype.indexOf = function(elt /*, from*/)
+  {
+    var len = this.length;
+
+    var from = Number(arguments[1]) || 0;
+    from = (from < 0)
+         ? Math.ceil(from)
+         : Math.floor(from);
+    if (from < 0)
+      from += len;
+
+    for (; from < len; from++)
+    {
+      if (from in this &&
+          this[from] === elt)
+        return from;
+    }
+    return -1;
+  };
+}
+
 
 function initialise(data)
 {
@@ -185,10 +208,13 @@ function initialise(data)
     school_pics='This school does not have a picture album yet.<br/><br/>'
   }
   document.getElementById("school_pics").innerHTML=school_pics;
+  //alert('mla' in info)
  
   const_table = '<div class="div-table">' +
                 '<div class="div-table-row"><div id="div-col-125width" class="div-table-col">MLA Constituency</div>' + 
-                '<div class="div-table-col">:' + info['mla'].toUpperCase() + '</div><div>' +
+                '<div class="div-table-col">:' + 'mla' in info == false ? '&nbsp;&nbsp;Not Available': info['mla'].toUpperCase() + '</div>' ;
+  if ('mla' in info){
+    const_table = const_table + '<div>' +
                 '<div class="div-table-row"><div id="div-col-125width" class="div-table-col">MLA Details</div>' + 
                 '<div class="div-table-col">:' + info['mlaname'].toUpperCase() + '</div><div>' +
                 '<div class="div-table-row"><div id="div-col-125width" class="div-table-col">MP Constituency</div>' + 
@@ -196,23 +222,43 @@ function initialise(data)
                 '<div class="div-table-row"><div id="div-col-125width" class="div-table-col">MP Details</div>' + 
                 '<div class="div-table-col">:' + info['mpname'].toUpperCase() + '</div>' +
                 '</div></div>';
-  document.getElementById("school_const").innerHTML = const_table
-  document.getElementById("reportlinks").innerHTML = '<a href="" onclick="javascript:popwindow(\'/listFiles/3|'+info['mp'] +'|'+info['mla'] + '\')" style="color:#43AD2F">Please find Constituency Reports here.</a>';
+    report_links = '<a href="" onclick="javascript:popwindow(\'/listFiles/3|'+info['mp'] +'|'+info['mla'] + '\')" style="color:#43AD2F">Please find Constituency Reports here.</a>';
+  }
+  else{
+    const_table = const_table + '</div>';
+    report_links = '';
+  }
+  document.getElementById("school_const").innerHTML = const_table;
+  document.getElementById("reportlinks").innerHTML = report_links;
 
   var assessArr = info.assessments.split(",");
+  var assdict = {};
+  var asskeys = [];
   var assessmentInfo = '';
+  var assessment = []; 
   for( num in assessArr)
   {
-     var assessment = assessArr[num].split("|");
-     var asstext = assessment[2]+'-'+assessment[0];
-     assessmentInfo = assessmentInfo+'<a href=\"javascript:void(0);\" onclick=window.open("../../assessment/'+type+'/'+assessment[1]+'/'+info['id']+'","_blank")><span style="color:#43AD2F">'+asstext+'</span></a><br/>'
+     assessment = assessArr[num].split("|");
+     assdict[assessment[1]] = [assessment[3]+'-'+assessment[0],assessment[2]];
+     asskeys.push(assessment[1]);
+  }
+  asskeys.sort();
+  var asstext = ''; 
+  var asstype = '';
+  var each = '';
+  for(var i = 0; i< asskeys.length; i++)
+  {
+     each = asskeys[i];
+     asstext = assdict[each][0] + ' (' + each + ')';
+     asstype = assdict[each][1];
+     assessmentInfo = assessmentInfo+'<a href=\"javascript:void(0);\" onclick=window.open("../../assessment/'+type+'/'+asstype+'/'+info['id']+'","_blank")><span style="color:#43AD2F">'+asstext+'</span></a><br/>'
   }
 
   document.getElementById("assessment_info").innerHTML = '<div class="div-table">' +
                 '<div class="div-table-row">' + assessmentInfo + '</div><div>' +
                 '</div>';
 
-  if(info["syscomment"].length > 0){
+  if(info["syscomment"]){
     var syscomm = '<div class="div-table">';
     for(entry in info["syscomment"]){
       syscomm = syscomm + '<div class="div-table-row">\"' + info["syscomment"][entry] + '\"</div>';}
@@ -223,7 +269,7 @@ function initialise(data)
   document.getElementById("sys_comments").innerHTML = syscomm;
 
 
-  if(info["sysdata"].length > 0){
+  if(info["sysdata"]){
     var sysdata = '<div class="div-table">';
     sysdata = sysdata + '<div class="div-table-caption">This data is gathered from vistors sharing their experiences. It indicates whether or not the school has facilities under the headings below: </div>'
     for(entry in info["sysdata"]){
@@ -239,4 +285,3 @@ function initialise(data)
     
   
 }
-

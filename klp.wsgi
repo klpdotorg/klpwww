@@ -648,10 +648,10 @@ class schoolpage:
       first=1
       for row in result:
         if first:
-          assessments=assessments+row[0]+"-"+str(row[1]).split("-")[0]+"|"+str(row[2])+"|"+str(row[3])
+          assessments=assessments+row[0]+"|"+str(row[1]).split("-")[0]+"|"+str(row[2])+"|"+str(row[3])
           first=0
         else:
-          assessments=assessments+","+row[0]+"-"+str(row[1]).split("-")[0]+"|"+str(row[2])+"|"+str(row[3])
+          assessments=assessments+","+row[0]+"|"+str(row[1]).split("-")[0]+"|"+str(row[2])+"|"+str(row[3])
       data["assessments"]=assessments
       print assessments 
 

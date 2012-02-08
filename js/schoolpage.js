@@ -230,28 +230,31 @@ function initialise(data)
   }
   document.getElementById("school_const").innerHTML = const_table;
   document.getElementById("reportlinks").innerHTML = report_links;
-
-  var assessArr = info.assessments.split(",");
-  var assdict = {};
-  var asskeys = [];
-  var assessmentInfo = '';
-  var assessment = []; 
-  for( num in assessArr)
-  {
-     assessment = assessArr[num].split("|");
-     assdict[assessment[1]] = [assessment[3]+'-'+assessment[0],assessment[2]];
-     asskeys.push(assessment[1]);
-  }
-  asskeys.sort();
-  var asstext = ''; 
-  var asstype = '';
-  var each = '';
-  for(var i = 0; i< asskeys.length; i++)
-  {
-     each = asskeys[i];
-     asstext = assdict[each][0] + ' (' + each + ')';
-     asstype = assdict[each][1];
-     assessmentInfo = assessmentInfo+'<a href=\"javascript:void(0);\" onclick=window.open("../../assessment/'+type+'/'+asstype+'/'+info['id']+'","_blank")><span style="color:#43AD2F">'+asstext+'</span></a><br/>'
+  if(info.assessments) {
+    var assessArr = info.assessments.split(",");
+    var assdict = {};
+    var asskeys = [];
+    var assessmentInfo = '';
+    var assessment = []; 
+    for( num in assessArr)
+    {
+       assessment = assessArr[num].split("|");
+       assdict[assessment[1]] = [assessment[3]+'-'+assessment[0],assessment[2]];
+       asskeys.push(assessment[1]);
+    }
+    asskeys.sort();
+    var asstext = ''; 
+    var asstype = '';
+    var each = '';
+    for(var i = 0; i< asskeys.length; i++)
+    {
+       each = asskeys[i];
+       asstext = assdict[each][0] + ' (' + each + ')';
+       asstype = assdict[each][1];
+       assessmentInfo = assessmentInfo+'<a href=\"javascript:void(0);\" onclick=window.open("../../assessment/'+type+'/'+asstype+'/'+info['id']+'","_blank")><span style="color:#43AD2F">'+asstext+'</span></a><br/>'
+    }
+  } else {
+    assessmentInfo = 'No Programmes\' information yet.'
   }
 
   document.getElementById("assessment_info").innerHTML = '<div class="div-table">' +

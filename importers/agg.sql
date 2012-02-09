@@ -10,6 +10,28 @@ CREATE TABLE "tb_school_agg" (
   "num" integer
 );
 
+
+DROP TABLE IF EXISTS "tb_school_basic_assessment_info";
+CREATE TABLE "tb_school_basic_assessment_info" (
+  "sid" integer REFERENCES "tb_school" ("id") ON DELETE CASCADE,
+  "assid" integer REFERENCES "tb_assessment" ("id") ON DELETE CASCADE,
+  "clid" integer REFERENCES "tb_class" ("id") ON DELETE CASCADE,
+  "sex" sex,
+  "mt" school_moi,
+  "num" integer
+);
+
+
+DROP TABLE IF EXISTS "tb_preschool_basic_assessment_info";
+CREATE TABLE "tb_preschool_basic_assessment_info" (
+  "sid" integer REFERENCES "tb_school" ("id") ON DELETE CASCADE,
+  "assid" integer REFERENCES "tb_assessment" ("id") ON DELETE CASCADE,
+  "agegroup" varchar(50),
+  "sex" sex,
+  "mt" school_moi,
+  "num" integer
+);
+
 DROP TABLE IF EXISTS "tb_school_assessment_agg";
 CREATE TABLE "tb_school_assessment_agg" (
   "sid" integer REFERENCES "tb_school" ("id") ON DELETE CASCADE,
@@ -21,6 +43,20 @@ CREATE TABLE "tb_school_assessment_agg" (
   "aggval" numeric(6,2) DEFAULT 0
 );
 
+DROP TABLE IF EXISTS "tb_preschool_assessment_agg";
+CREATE TABLE "tb_preschool_assessment_agg" (
+  "sid" integer REFERENCES "tb_school" ("id") ON DELETE CASCADE,
+  "assid" integer REFERENCES "tb_assessment" ("id") ON DELETE CASCADE,
+  "agegroup" varchar(50),
+  "sex" sex,
+  "mt" school_moi,
+  "aggtext" varchar(100) NOT NULL,
+  "aggval" numeric(6,2) DEFAULT 0
+);
+
+
+
+/*
 DROP TABLE IF EXISTS "tb_school_weighted_assessment_agg";
 CREATE TABLE "tb_school_weighted_assessment_agg" (
   "sid" integer REFERENCES "tb_school" ("id") ON DELETE CASCADE,
@@ -142,6 +178,7 @@ begin
 end;
 $$ language plpgsql;
 
+*/
 
 
 
@@ -159,13 +196,59 @@ begin
 end;
 $$ language plpgsql;
 
+
+CREATE OR REPLACE function basic_assess_school(int,int) returns void as $$
+declare
+        schs RECORD;
+begin
+        for schs in SELECT s.id as id,ass.id as assid,cl.id as clid,c.sex as sex, c.mt as mt, count(distinct stu.id) AS count
+                 FROM tb_student_eval se,tb_question q,tb_assessment ass,tb_student stu, tb_class cl, tb_student_class sc, tb_child c, tb_school s,tb_programme p,tb_boundary b 
+                 WHERE se.stuid=stu.id and se.qid=q.id and q.assid=ass.id and ass.pid=p.id and sc.stuid=stu.id and sc.clid=cl.id AND cl.sid = s.id AND stu.cid = c.id AND sc.ayid = $1 and ass.id=$2 and sc.ayid=p.ayid and s.bid=b.id and p.type=b.type
+                 GROUP BY s.id, ass.id,cl.id,c.sex,c.mt
+        loop
+                insert into tb_school_basic_assessment_info values (schs.id, schs.assid, schs.clid ,schs.sex, schs.mt, schs.count);
+        end loop;
+end;
+$$ language plpgsql;
+
+
+CREATE OR REPLACE function basic_assess_preschool_morethan(inayid int,inassid int,inage int,intext text,intimestamp timestamp) returns void as $$
+declare
+        schs RECORD;
+begin
+        for schs in SELECT s.id as id,ass.id as assid,c.sex as sex, c.mt as mt, count(distinct stu.id) AS count
+                 FROM tb_student_eval se,tb_question q,tb_assessment ass,tb_student stu, tb_class cl, tb_student_class sc, tb_child c, tb_school s,tb_programme p,tb_boundary b 
+                 WHERE se.stuid=stu.id and se.qid=q.id and q.assid=ass.id and ass.pid=p.id and sc.stuid=stu.id and sc.clid=cl.id AND cl.sid = s.id AND stu.cid = c.id AND sc.ayid = inayid and ass.id=inassid and sc.ayid=p.ayid and s.bid=b.id and p.type=b.type and extract(year from age(intimestamp,c.dob))>=inage
+                 GROUP BY s.id, ass.id,c.sex,c.mt
+        loop
+                insert into tb_preschool_basic_assessment_info values (schs.id, schs.assid,intext,schs.sex, schs.mt, schs.count);
+        end loop;
+end;
+$$ language plpgsql;
+
+
+CREATE OR REPLACE function basic_assess_preschool_between(inayid int,inassid int,inlowerage int,inupperage int,intext text,intimestamp timestamp) returns void as $$
+declare
+        schs RECORD;
+begin
+        for schs in SELECT s.id as id,ass.id as assid,c.sex as sex, c.mt as mt, count(distinct stu.id) AS count
+                 FROM tb_student_eval se,tb_question q,tb_assessment ass,tb_student stu, tb_class cl, tb_student_class sc, tb_child c, tb_school s,tb_programme p,tb_boundary b 
+                 WHERE se.stuid=stu.id and se.qid=q.id and q.assid=ass.id and ass.pid=p.id and sc.stuid=stu.id and sc.clid=cl.id AND cl.sid = s.id AND stu.cid = c.id AND sc.ayid = inayid and ass.id=inassid and sc.ayid=p.ayid and s.bid=b.id and p.type=b.type and extract(year from age(intimestamp,c.dob))<inupperage and extract(year from age(intimestamp,c.dob))>=inlowerage
+                 GROUP BY s.id, ass.id,c.sex,c.mt
+        loop
+                insert into tb_preschool_basic_assessment_info values (schs.id, schs.assid,intext,schs.sex, schs.mt, schs.count);
+        end loop;
+end;
+$$ language plpgsql;
+
+
 CREATE OR REPLACE function agg_school_reading(int, int) returns void as $$
 declare
         stueval RECORD;
 begin
         for stueval in SELECT s.id as id, ass.id as assid, sc.clid as clid, c.sex as sex, c.mt as mt, se.grade as grade, cast(count(distinct stu.id) as float) as cnt
-                       FROM tb_student stu, tb_class cl, tb_student_class sc, tb_child c, tb_school s, tb_student_eval se,tb_question q, tb_assessment ass
-                       WHERE cl.sid = s.id AND sc.clid = cl.id AND sc.stuid = stu.id AND stu.cid = c.id AND stu.id = se.stuid AND se.qid=q.id and q.assid= ass.id AND ass.id = $1 AND sc.ayid = $2 AND se.grade IS NOT NULL
+                       FROM tb_student stu, tb_class cl, tb_student_class sc, tb_child c, tb_school s, tb_student_eval se,tb_question q, tb_assessment ass, tb_programme p,tb_boundary b
+                       WHERE cl.sid = s.id AND sc.clid = cl.id AND sc.stuid = stu.id AND stu.cid = c.id AND stu.id = se.stuid AND se.qid=q.id and q.assid= ass.id AND ass.pid=p.id AND  sc.ayid=p.ayid AND ass.id = $1 AND sc.ayid = $2 AND se.grade IS NOT NULL AND s.bid=b.id and p.type=b.type
                        GROUP BY s.id, ass.id, sc.clid, c.sex, c.mt, se.grade
         loop
                 insert into tb_school_assessment_agg values (stueval.id, stueval.assid, stueval.clid, stueval.sex, stueval.mt, stueval.grade, stueval.cnt);
@@ -186,8 +269,8 @@ begin
         count(case when mark between 60 and 80 then id else null end) as Rung4,
         count(case when mark > 80 then id else null end) as Rung5
         FROM ( SELECT se.stuid,s.id as id, ass.id as assid, sc.clid as clid, c.sex as sex, c.mt as mt, avg(se.mark/q.maxmarks*100) as mark 
-               FROM tb_student stu, tb_class cl, tb_student_class sc, tb_child c, tb_school s, tb_student_eval se, tb_assessment ass,tb_question q 
-               WHERE cl.sid = s.id AND sc.clid = cl.id AND sc.stuid = stu.id AND stu.cid = c.id AND stu.id = se.stuid AND se.qid=q.id and q.assid = ass.id AND ass.id = $1 AND sc.ayid =$2  
+               FROM tb_student stu, tb_class cl, tb_student_class sc, tb_child c, tb_school s, tb_student_eval se, tb_assessment ass,tb_question q,tb_programme p,tb_boundary b  
+               WHERE cl.sid = s.id AND sc.clid = cl.id AND sc.stuid = stu.id AND stu.cid = c.id AND stu.id = se.stuid AND se.qid=q.id and q.assid = ass.id AND ass.pid=p.id AND sc.ayid=p.ayid AND ass.id = $1 AND sc.ayid =$2  AND s.bid=b.id and p.type=b.type
                GROUP BY s.id, ass.id, sc.clid, c.sex, c.mt,se.stuid ) as output 
         GROUP BY id,assid,clid,sex,mt
         loop
@@ -218,8 +301,8 @@ begin
 
         for i in 1..7 loop
             for stueval in SELECT s.id as id, ass.id as assid, sc.clid as clid, c.sex as sex, c.mt as mt, avg(cast(se.grade as integer)) as dmarks
-                       FROM tb_student stu, tb_class cl, tb_student_class sc, tb_child c, tb_school s, tb_student_eval se, tb_assessment ass, tb_question q
-                       WHERE cl.sid = s.id AND sc.clid = cl.id AND sc.stuid = stu.id AND stu.cid = c.id AND stu.id = se.stuid AND se.qid=q.id and q.assid = ass.id AND ass.id = $1 AND sc.ayid = $2 AND se.qid = q.id AND ass.id = q.assid AND cast(q.desc as integer) between dqmin and dqmax[i]
+                       FROM tb_student stu, tb_class cl, tb_student_class sc, tb_child c, tb_school s, tb_student_eval se, tb_assessment ass, tb_question q,tb_programme p,tb_boundary b 
+                       WHERE cl.sid = s.id AND sc.clid = cl.id AND sc.stuid = stu.id AND stu.cid = c.id AND stu.id = se.stuid AND se.qid=q.id and q.assid = ass.id AND ass.pid=p.id AND sc.ayid=p.ayid AND ass.id = $1 AND sc.ayid = $2 AND se.qid = q.id AND ass.id = q.assid AND cast(q.desc as integer) between dqmin and dqmax[i] AND s.bid=b.id and p.type=b.type
                        GROUP BY s.id, ass.id, sc.clid, c.sex, c.mt
                        ORDER BY s.id
             loop
@@ -231,6 +314,7 @@ begin
 end;
 $$ language plpgsql;
 
+/*
 CREATE OR REPLACE function agg_school_eng_old(int, int) returns void as $$
 declare
         stueval RECORD;
@@ -258,7 +342,6 @@ begin
 
 end;
 $$ language plpgsql;
-
 
 CREATE OR REPLACE function agg_school_eng_119(int) returns void as $$
 declare
@@ -347,28 +430,259 @@ begin
 end;
 $$ language plpgsql;
  
+*/
+
+CREATE OR REPLACE function agg_school_ang_agemorethan(inyear int,inage int, inassid int,indomains varchar[] , inqset varchar[], inpmarks int[],innum int,intext text,intimestamp timestamp) returns void as $$
+declare
+  stueval RECORD;
+begin
+  for domaincount in 0..innum loop
+      for stueval in
+        SELECT sid, assid,sex,mt, count(case when domainskillcount =1 then stuid else null end) as stucount
+        from
+        (
+          select aggregates.stuid as stuid,aggregates.sid as sid,aggregates.assid as assid,aggregates.clid as clid, 
+          aggregates.sex as sex,aggregates.mt as mt,  case when domainagg <inpmarks[domaincount] then 0 else 1 end as domainskillcount
+          from
+          (  
+            select se.stuid as stuid,
+              q.assid as assid,
+              sg.id as clid,
+              sg.sid as sid,
+              c.sex as sex,
+              c.mt as mt,
+              sum(cast(se.grade as int))  as domainagg
+            from tb_student_eval se,tb_question q,tb_student stu,tb_student_class stusg,tb_class sg,tb_child c
+            where
+              se.qid=q.id
+              and q.assid=inassid
+              and q.desc= ANY(string_to_array(inqset[domaincount],','))
+              and se.stuid=stusg.stuid
+              and stusg.ayid=inyear
+              and stusg.clid=sg.id
+              and stu.id=se.stuid
+              and stu.cid=c.id
+              and extract(year from age(intimestamp,c.dob))>=inage
+            group by se.stuid,q.assid,sg.id,sg.sid,c.sex,c.mt
+          ) aggregates
+          group by sid,assid,clid,sex,mt,stuid,domainagg
+        )info group by sid, assid,sex,mt
+        loop
+          insert into tb_preschool_assessment_agg values (stueval.sid, stueval.assid,intext, stueval.sex, stueval.mt,indomains[domaincount], stueval.stucount);
+        end loop;
+   end loop;
+end;
+$$ language plpgsql;
+
+
+
+CREATE OR REPLACE function agg_school_ang_agebetween(inyear int,inlowerage int,inupperage int, inassid int,indomains varchar[] , inqset varchar[], inpmarks int[],innum int,intext text,intimestamp timestamp) returns void as $$
+declare
+  stueval RECORD;
+begin
+  for domaincount in 0..innum loop
+      for stueval in
+        SELECT sid, assid,sex,mt, count(case when domainskillcount =1 then stuid else null end) as stucount
+        from
+        (
+          select aggregates.stuid as stuid,aggregates.sid as sid,aggregates.assid as assid,aggregates.clid as clid, aggregates.sex as sex,aggregates.mt as mt,  case when domainagg <inpmarks[domaincount] then 0 else 1 end as domainskillcount
+          from
+          (  
+            select se.stuid as stuid,
+              q.assid as assid,
+              sg.id as clid,
+              sg.sid as sid,
+              c.sex as sex,
+              c.mt as mt,
+              sum(cast(se.grade as int))  as domainagg
+            from tb_student_eval se,tb_question q,tb_student stu,tb_student_class stusg,tb_class sg,tb_child c
+            where
+              se.qid=q.id
+              and q.assid=inassid
+              and q.desc= ANY(string_to_array(inqset[domaincount],','))
+              and se.stuid=stusg.stuid
+              and stusg.ayid=inyear
+              and stusg.clid=sg.id
+              and stu.id=se.stuid
+              and stu.cid=c.id
+              and extract(year from age(intimestamp,c.dob))<inupperage
+              and extract(year from age(intimestamp,c.dob))>=inlowerage
+            group by se.stuid,q.assid,sg.id,sg.sid,c.sex,c.mt
+          ) aggregates
+          group by sid,assid,clid,sex,mt,stuid,domainagg
+        )info group by sid,assid,sex,mt
+        loop
+          insert into tb_preschool_assessment_agg values (stueval.sid, stueval.assid,intext, stueval.sex, stueval.mt,indomains[domaincount], stueval.stucount);
+        end loop;
+   end loop;
+end;
+$$ language plpgsql;
+
+
+CREATE OR REPLACE function agg_school_assess_mark(inyear int,inclass text, inassid int,indomains varchar[] ,         inqset varchar[], inpmarks int[],innum int) returns void as $$
+declare
+  stueval RECORD;
+begin
+  for domaincount in 0..innum
+    loop
+      for stueval in
+        SELECT sid, assid,clid,sex,mt, count(case when domainskillcount =1 then stuid else null end) as stucount
+        from
+        (
+          select aggregates.stuid as stuid,aggregates.sid as sid,aggregates.assid as assid,aggregates.clid as clid, c.sex as sex,c.mt as mt,  case when domainagg <inpmarks[domaincount] then 0 else 1 end as domainskillcount
+          from
+          (  
+            select se.stuid as stuid,
+              q.assid as assid,
+              sg.id as clid,
+              sg.sid as sid,
+              sum(cast(se.mark as int))  as domainagg
+            from tb_student_eval se,tb_question q,tb_student_class stusg,tb_class sg
+            where
+              se.qid=q.id
+              and q.assid=inassid
+              and q.desc= ANY(string_to_array(inqset[domaincount],','))
+              and se.stuid=stusg.stuid
+              and stusg.ayid=inyear
+              and stusg.clid=sg.id
+              and sg.name=inclass
+            group by se.stuid,q.assid,sg.id,sg.sid
+          ) aggregates, tb_child c,tb_student stu
+          where
+            aggregates.stuid=stu.id
+            and stu.cid=c.id)info           
+          group by sid,assid,clid,sex,mt
+        loop
+          insert into tb_school_assessment_agg values (stueval.sid, stueval.assid, stueval.clid, stueval.sex, stueval.mt,indomains[domaincount], stueval.stucount);
+        end loop;
+   end loop;
+end;
+$$ language plpgsql;
+
+
+
+CREATE OR REPLACE function agg_school_assess_grade(inyear int,inclass text, inassid int,indomains varchar[] , inqset varchar[], inpmarks int[],innum int) returns void as $$
+declare
+  stueval RECORD;
+begin
+  for domaincount in 0..innum
+    loop
+      for stueval in
+        SELECT sid, assid,clid,sex,mt, count(case when domainskillcount =1 then stuid else null end) as stucount
+        from
+        (
+          select aggregates.stuid as stuid,aggregates.sid as sid,aggregates.assid as assid,aggregates.clid as clid, c.sex as sex,c.mt as mt,  case when domainagg <inpmarks[domaincount] then 0 else 1 end as domainskillcount
+          from
+          (  
+            select se.stuid as stuid,
+              q.assid as assid,
+              sg.id as clid,
+              sg.sid as sid,
+              sum(cast(se.grade as int))  as domainagg
+            from tb_student_eval se,tb_question q,tb_student_class stusg,tb_class sg
+            where
+              se.qid=q.id
+              and q.assid=inassid
+              and q.desc= ANY(string_to_array(inqset[domaincount],','))
+              and se.stuid=stusg.stuid
+              and stusg.ayid=inyear
+              and stusg.clid=sg.id
+              and sg.name=inclass
+            group by se.stuid,q.assid,sg.id,sg.sid
+          ) aggregates, tb_child c,tb_student stu
+          where
+            aggregates.stuid=stu.id
+            and stu.cid=c.id)info           
+          group by sid,assid,clid,sex,mt
+        loop
+          insert into tb_school_assessment_agg values (stueval.sid, stueval.assid, stueval.clid, stueval.sex, stueval.mt,indomains[domaincount], stueval.stucount);
+        end loop;
+   end loop;
+end;
+$$ language plpgsql;
+
 
 -- Populate tb_school_agg for the current academic year
 select agg_school(101);
+
+--Populate all years basic info
+select basic_assess_school(90,1);
+select basic_assess_school(90,2);
+select basic_assess_school(90,3);
+select basic_assess_school(90,4);
+select basic_assess_school(1,5);
+select basic_assess_school(1,6);
+select basic_assess_school(1,7);
+select basic_assess_school(1,8);
+select basic_assess_school(1,9);
+select basic_assess_school(1,10);
+select basic_assess_school(1,11);
+select basic_assess_school(1,12);
+select basic_assess_school(2,13);
+select basic_assess_school(2,14);
+select basic_assess_school(2,15);
+select basic_assess_school(2,16);
+select basic_assess_school(2,17);
+select basic_assess_school(2,18);
+select basic_assess_school(2,19);
+select basic_assess_school(2,20);
+select basic_assess_school(2,21);
+select basic_assess_school(2,22);
+select basic_assess_school(119,25);
+select basic_assess_school(119,26);
+select basic_assess_school(119,27);
+select basic_assess_school(119,28);
+select basic_assess_school(119,29);
+select basic_assess_school(119,30);
+select basic_assess_school(119,31);
+select basic_assess_school(119,32);
+select basic_assess_school(119,33);
+select basic_assess_school(119,34);
+select basic_assess_school(119,35);
+select basic_assess_school(119,36);
+select basic_assess_school(119,37);
+select basic_assess_school(119,38);
+select basic_assess_school(119,39);
+select basic_assess_school(119,40);
+select basic_assess_school(101,41);
+select basic_assess_school(101,42);
+select basic_assess_school(101,43);
+select basic_assess_school(101,44);
+select basic_assess_school(101,45);
+select basic_assess_school(101,46);
+select basic_assess_school(101,47);
+select basic_assess_school(101,48);
+select basic_assess_school(101,49);
+select basic_assess_school(101,50);
+select basic_assess_school(101,59);
+select basic_assess_school(101,60);
+select basic_assess_school(101,61);
+
+
+--Preschool basic assessessment
+select basic_assess_preschool_between(119,23,3,5,'Age between 3-5',cast('2009-01-01' as timestamp));
+select basic_assess_preschool_morethan(119,23,5,'Age >=5',cast('2009-01-01'as timestamp));
+select basic_assess_preschool_between(119,24,3,5,'Age between 3-5',cast('2009-01-01' as timestamp));
+select basic_assess_preschool_morethan(119,24,5,'Age >=5',cast('2009-01-01' as timestamp));
+select basic_assess_preschool_between(101,56,3,5,'Age between 3-5',cast('2010-01-01' as timestamp));
+select basic_assess_preschool_morethan(101,56,5,'Age >=5',cast('2010-01-01' as timestamp));
+select basic_assess_preschool_between(101,57,3,5,'Age between 3-5',cast('2010-01-01' as timestamp));
+select basic_assess_preschool_morethan(101,57,5,'Age >=5',cast('2010-01-01' as timestamp));
+
 -- 2006 Reading
 select agg_school_reading(1, 90);
 select agg_school_reading(2, 90);
 select agg_school_reading(3, 90);
 select agg_school_reading(4, 90);
 
---2008 Reading
-select agg_school_reading(21,2);
-select agg_school_reading(22,2);
-
 -- 2009 Reading
 select agg_school_reading(27, 119);
 select agg_school_reading(28, 119);
 select agg_school_reading(29, 119);
+select agg_school_reading(30, 119);
 select agg_school_reading(31, 119);
 select agg_school_reading(32, 119);
 
--- 2009 Target reading
-select agg_school_reading(40, 119);
 
 --2010 Reading
 select agg_school_reading(59, 101);
@@ -400,17 +714,6 @@ select agg_school_nng(20, 2);
 select agg_school_nng(33, 119);
 select agg_school_nng(34, 119);
 
--- 2009 Ramanagra NNG1
-select agg_school_nng(35, 119);
-select agg_school_nng(36, 119);
-
--- 2009 Ramanagra NNG2
-select agg_school_nng(37, 119);
-select agg_school_nng(38, 119);
-
--- 2009 Target NNG
-select agg_school_nng(39,119);
-
 
 --2010 NNG
 select agg_school_nng(41,101);
@@ -422,12 +725,7 @@ select agg_school_nng(46,101);
 select agg_school_nng(47,101);
 select agg_school_nng(48,101);
 
-select agg_school_nng(51,101);
-select agg_school_nng(52,101);
-select agg_school_nng(53,101);
-select agg_school_nng(54,101);
-
-
+/*
 --Anganwadi
 -- 2009 Anganwadi
 select agg_school_ang(23, 119);
@@ -438,20 +736,59 @@ select agg_school_ang(56, 101);
 select agg_school_ang(57, 101);
 select agg_school_ang(58, 101);
 select agg_school_ang(62, 101);
+*/
+--Anganwadi
+-- 2009 Anganwadi
+--Pretest
+select agg_school_ang_agebetween(119,3,5,23,ARRAY['Gross Motor','Fine Motor','Socio-Emotional','General Awareness'],ARRAY['6,7,8,9','10,11,12,13,14,15','53,54,55,56','1,2,3,4'],ARRAY[4,6,4,4],3,'Age between 3-5',cast('2009-01-01' as timestamp));
+select agg_school_ang_agemorethan(119,5,23,ARRAY['Language','Intellectual Development','Socio-Emotional','Pre-Academic'],ARRAY['16,17,18,19,20,21,22,23,24,25,26,27,28','29,30,31,32,33','53,54,55,56','34,35,36,37,38,39,40,41,42,43,44,45,46,47,48,49,50,51,52'],ARRAY[13,5,4,19],3,'Age >=5',cast('2009-01-01' as timestamp));
 
+--Posttest
+select agg_school_ang_agebetween(119,3,5,24,ARRAY['Gross Motor','Fine Motor','Socio-Emotional','General Awareness'],ARRAY['6,7,8,9','10,11,12,13,14,15','53,54,55,56','1,2,3,4'],ARRAY[4,6,4,4],3,'Age between 3-5',cast('2009-01-01' as timestamp));
+select agg_school_ang_agemorethan(119,5,24,ARRAY['Language','Intellectual Development','Socio-Emotional','Pre-Academic'],ARRAY['16,17,18,19,20,21,22,23,24,25,26,27,28','29,30,31,32,33','53,54,55,56','34,35,36,37,38,39,40,41,42,43,44,45,46,47,48,49,50,51,52'],ARRAY[13,5,4,19],3,'Age >=5',cast('2009-01-01' as timestamp));
+
+-- 2010 Anganwadi
+--Pretest
+select agg_school_ang_agebetween(101,3,5,56,ARRAY['Gross Motor','Fine Motor','Socio-Emotional','General Awareness'],ARRAY['6,7,8,9','10,11,12,13,14,15','53,54,55,56','1,2,3,4'],ARRAY[4,6,4,4],3,'Age between 3-5',cast('2010-01-01' as timestamp));
+select agg_school_ang_agemorethan(101,5,56,ARRAY['Language','Intellectual Development','Socio-Emotional','Pre-Academic'],ARRAY['16,17,18,19,20,21,22,23,24,25,26,27,28','29,30,31,32,33','53,54,55,56','34,35,36,37,38,39,40,41,42,43,44,45,46,47,48,49,50,51,52'],ARRAY[13,5,4,19],3,'Age >=5',cast('2010-01-01' as timestamp));
+
+--Posttest
+select agg_school_ang_agebetween(101,3,5,57,ARRAY['Gross Motor','Fine Motor','Socio-Emotional','General Awareness'],ARRAY['6,7,8,9','10,11,12,13,14,15','53,54,55,56','1,2,3,4'],ARRAY[4,6,4,4],3,'Age between 3-5',cast('2010-01-01' as timestamp));
+select agg_school_ang_agemorethan(101,5,57,ARRAY['Language','Intellectual Development','Socio-Emotional','Pre-Academic'],ARRAY['16,17,18,19,20,21,22,23,24,25,26,27,28','29,30,31,32,33','53,54,55,56','34,35,36,37,38,39,40,41,42,43,44,45,46,47,48,49,50,51,52'],ARRAY[13,5,4,19],3,'Age >=5',cast('2010-01-01' as timestamp));
 
 --English
 --2009 English
-select agg_school_eng_119(25);
-select agg_school_eng_119(26);
+--Pretest 5
+select agg_school_assess_mark(119,'5',25,ARRAY['Can recognizes the objects in picture','Picture Reading-Can construct  simple sentences','Can read words'],ARRAY['EngPilot1','EngPilot2','EngPilot3,EngPilot4,EngPilot5,EngPilot6'],ARRAY[3,3,8],2);
+select agg_school_assess_grade(119,'5',25,ARRAY['Can read simple passage','Can give one word  answer orally'],ARRAY['EngPilot7','EngPilot8,EngPilot9,EngPilot10'],ARRAY[1,3],1);
+--Posttest 5
+select agg_school_assess_mark(119,'5',26,ARRAY['Can recognizes the objects in picture','Picture Reading-Can construct  simple sentences','Can read words'],ARRAY['EngPilot1','EngPilot2','EngPilot3,EngPilot4,EngPilot5,EngPilot6'],ARRAY[3,3,8],2);
+select agg_school_assess_grade(119,'5',26,ARRAY['Can read simple passage','Can give one word  answer orally'],ARRAY['EngPilot7','EngPilot8,EngPilot9,EngPilot10'],ARRAY[1,3],1);
+
+
+--Pretest 6
+select agg_school_assess_mark(119,'6',25,ARRAY['Can recognizes the objects in picture','Picture Reading-Can construct  simple sentences','Can read words'],ARRAY['EngPilot1','EngPilot2','EngPilot3,EngPilot4,EngPilot5,EngPilot6'],ARRAY[3,3,8],2);
+select agg_school_assess_grade(119,'6',25,ARRAY['Can read simple passage','Can write one word  answers'],ARRAY['EngPilot7','EngPilot8,EngPilot9,EngPilot10'],ARRAY[1,3],1);
+--Posttest 6
+select agg_school_assess_mark(119,'6',26,ARRAY['Can recognizes the objects in picture','Picture Reading-Can construct  simple sentences','Can read words'],ARRAY['EngPilot1','EngPilot2','EngPilot3,EngPilot4,EngPilot5,EngPilot6'],ARRAY[3,3,8],2);
+select agg_school_assess_grade(119,'6',26,ARRAY['Can read simple passage','Can write one word  answers'],ARRAY['EngPilot7','EngPilot8,EngPilot9,EngPilot10'],ARRAY[1,3],1);
+
 
 --2010 English
-select agg_school_eng(49,101);
-select agg_school_eng(50,101);
+--Pretest 3
+select agg_school_assess_grade(101,'3',49,ARRAY['Can write alphabets','Can follow simple instruction','Can give one word answer'],ARRAY['Eng1,Eng2','Eng6','Eng7'],ARRAY[2,1,1],2);
+--Posttest 3
+select agg_school_assess_grade(101,'3',50,ARRAY['Can write alphabets','Can follow simple instruction','Can give one word answer'],ARRAY['Eng1,Eng2','Eng6','Eng7'],ARRAY[2,1,1],2);
+
+--Pretest 4
+select agg_school_assess_grade(101,'4',49,ARRAY['Picture reading','Can answer in sentence','Can read a simple sentence'],ARRAY['Eng10','Eng8','Eng9'],ARRAY[1,1,1],2);
+--Posttest 4
+select agg_school_assess_grade(101,'4',50,ARRAY['Picture reading','Can answer in sentence','Can read a simple sentence'],ARRAY['Eng10','Eng8','Eng9'],ARRAY[1,1,1],2);
 
 
 
 
+/*
 --For weighted assessment
 --For assessment with marks
 --NNG 2007-08
@@ -510,9 +847,9 @@ select assessment_agg(51);--4th pre test
 select assessment_agg(52);--4th post test
 select assessment_agg(53);--5th pre test
 select assessment_agg(54);--5th post test
-
+*/
 
 GRANT SELECT ON tb_school_agg,
                 tb_school_assessment_agg,
-                tb_school_weighted_assessment_agg
+                tb_school_basic_assessment_info
 TO web;

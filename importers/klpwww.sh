@@ -24,8 +24,15 @@ python klp-exp.py
 echo Loading data into ${DBNAME}
 sudo -u postgres psql -d ${DBNAME} -f load/load.sql
 
+
+#fixing ang repeat test
+python ang-repeat.py
+psql -U ${OWNER} -d ${DBNAME} -f fixang.sql
+
+
 echo Computing aggregates for ${DBNAME}
 psql -U ${OWNER} -d ${DBNAME} -f agg.sql 
 
 echo Running fixes for ${DBNAME}
 psql -U ${OWNER} -d ${DBNAME} -f fixes.sql 
+

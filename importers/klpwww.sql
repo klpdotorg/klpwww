@@ -13,13 +13,22 @@ CREATE TABLE "tb_bhierarchy" (
   PRIMARY KEY  ("id")
 );
 
+
+DROP TABLE IF EXISTS "tb_boundary_type" cascade;
+CREATE TABLE "tb_boundary_type" (
+  "id" integer unique, 
+  "name" varchar(300) NOT NULL,
+  PRIMARY KEY  ("id")
+);
+
+
 DROP TABLE IF EXISTS "tb_boundary" cascade;
 CREATE TABLE "tb_boundary" (
   "id" integer unique, -- 'Boundary id'
   "parent" integer default NULL,
   "name" varchar(300) NOT NULL,
   "hid" integer NOT NULL references "tb_bhierarchy" ("id") on delete cascade,
-  "type" integer, -- 'Hierarchy type id'
+  "type" integer NOT NULL references "tb_boundary_type" ("id") on delete cascade,
   PRIMARY KEY  ("id")
 );
 
@@ -66,7 +75,7 @@ CREATE TABLE "tb_school" (
 DROP TABLE IF EXISTS "tb_child" cascade;
 CREATE TABLE "tb_child" (
   "id" integer unique, -- 'School id'
-  "name" varchar(300) NOT NULL,
+  "name" varchar(300),
   "dob" date default NULL,
   "sex" sex NOT NULL default 'male',
   "mt" school_moi default 'kannada', -- Mother tongue
@@ -77,7 +86,7 @@ DROP TABLE IF EXISTS "tb_class" cascade;
 CREATE TABLE "tb_class" (
   "id" integer unique, -- 'Class id'
   "sid" integer, -- School id
-  "name" integer NOT NULL,
+  "name" char(50) NOT NULL,
   "section" char(1) default NULL,
   PRIMARY KEY ("id")
 );
@@ -121,6 +130,8 @@ CREATE TABLE "tb_programme" (
   "name" varchar(300) NOT NULL,
   "start" date default CURRENT_DATE,
   "end" date default CURRENT_DATE,
+  "type" integer NOT NULL references "tb_boundary_type" ("id") on delete cascade,
+  "ayid" integer  REFERENCES "tb_academic_year" ("id") ON DELETE CASCADE,
   PRIMARY KEY ("id")
 );
 

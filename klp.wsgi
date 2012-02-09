@@ -820,8 +820,7 @@ class schoolpage:
     except:
       traceback.print_exc(file=sys.stderr)
       connection.rollback()
-
-    print >> sys.stderr, data
+      print >> sys.stderr, data
     web.header('Content-Type','text/html; charset=utf-8')
     return render_plain.schoolpage(data)
 

@@ -239,8 +239,8 @@ function initialise(data)
     for( num in assessArr)
     {
        assessment = assessArr[num].split("|");
-       assdict[assessment[1]] = [assessment[3]+'-'+assessment[0],assessment[2]];
-       asskeys.push(assessment[1]);
+       assdict[assessment[1]+'-'+assessment[2]] = [assessment[3]+'-'+assessment[0],assessment[2]];
+       asskeys.push(assessment[1]+'-'+assessment[2]);
     }
     asskeys.sort();
     var asstext = ''; 
@@ -249,9 +249,9 @@ function initialise(data)
     for(var i = 0; i< asskeys.length; i++)
     {
        each = asskeys[i];
-       asstext = assdict[each][0] + ' (' + each + ')';
+       asstext = assdict[each][0] + ' (' + each.split("-")[0] + ')';
        asstype = assdict[each][1];
-       assessmentInfo = assessmentInfo+'<a href=\"javascript:void(0);\" onclick=window.open("../../assessment/'+type+'/'+asstype+'/'+info['id']+'","_blank")><span style="color:#43AD2F">'+asstext+'</span></a><br/>'
+       assessmentInfo = assessmentInfo+'<a href=\"javascript:void(0);\" onclick=window.open("../../assessment/'+type+'/'+asstype+'/'+info['id']+'","_blank")><span style="color:#43AD2F">'+asstext+'</span></a><br/><br/>'
     }
   } else {
     assessmentInfo = 'No Programmes\' information yet.'

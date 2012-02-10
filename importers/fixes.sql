@@ -10,3 +10,6 @@ UPDATE tb_programme set name='Remedial_Math-Level2' where id=3;
 UPDATE tb_programme set name='Remedial_Math-Level3' where id=9;
 UPDATE tb_programme set name='Akshara Ganitha' where id=14;
 UPDATE tb_programme set name='English' where id=15;
+update tb_assessment set start='2010-10-01' where id=43;
+update tb_assessment set start='2010-10-01' where id=45;
+update tb_assessment set start='2010-10-01' where id=47;

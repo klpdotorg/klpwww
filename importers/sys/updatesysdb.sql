@@ -8,3 +8,6 @@ delete from tb_sys_images where hash_file='43d772ff4beade58fad6fcf5d9a10179.jpg'
 delete from tb_sys_images where hash_file='1ecf2fe213b84a37feae635de05d3cd6.jpg';
 delete from tb_sys_images where hash_file='0983909b311f74d139de82d40fd3acdc.jpg';
 delete from tb_sys_images where hash_file='87da7c9cbe689e70812890fe67794897.jpg';
+-- trac ticket 389 fixing swapped pics 
+update tb_sys_images set schoolid=32912 where sysid=2348;
+update tb_sys_images set schoolid=32895 where sysid=2365;

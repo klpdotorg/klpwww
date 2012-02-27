@@ -1,0 +1,7 @@
+createdb: database creation failed: ERROR:  database "dise_blore" already exists
+psql:/usr/share/postgresql/8.4/contrib/dblink.sql:144: ERROR:  relation "dblink_pkey_results" already exists
+psql:dise_blore.sql:8: NOTICE:  drop cascades to 2 other objects
+DETAIL:  drop cascades to view vw_school_disedata
+drop cascades to table tb_school_dise column cat
+psql:dise_blore.sql:11: NOTICE:  drop cascades to table tb_school_dise column moi
+psql:dise_blore.sql:14: NOTICE:  drop cascades to table tb_dise_facility column status

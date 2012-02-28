@@ -1,0 +1,2 @@
+createdb: database creation failed: ERROR:  database "ang_infra" already exists
+psql:/usr/share/postgresql/8.4/contrib/dblink.sql:144: ERROR:  relation "dblink_pkey_results" already exists

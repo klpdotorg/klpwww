@@ -1,0 +1,35 @@
+psql:electrep_new.sql:8: NOTICE:  type "school_category" does not exist, skipping
+psql:electrep_new.sql:11: NOTICE:  type "gender" does not exist, skipping
+psql:electrep_new.sql:14: NOTICE:  type "school_moi" does not exist, skipping
+psql:electrep_new.sql:17: NOTICE:  type "sex" does not exist, skipping
+psql:electrep_new.sql:20: NOTICE:  type "statuses" does not exist, skipping
+psql:electrep_new.sql:23: NOTICE:  type "admin_heirarchy" does not exist, skipping
+psql:electrep_new.sql:26: NOTICE:  table "tb_electedrep_master" does not exist, skipping
+psql:electrep_new.sql:40: NOTICE:  CREATE TABLE will create implicit sequence "tb_electedrep_master_id_seq" for serial column "tb_electedrep_master.id"
+psql:electrep_new.sql:40: NOTICE:  CREATE TABLE / PRIMARY KEY will create implicit index "tb_electedrep_master_pkey" for table "tb_electedrep_master"
+psql:electrep_new.sql:49: NOTICE:  table "tb_school_electedrep" does not exist, skipping
+psql:electrep_new.sql:57: NOTICE:  CREATE TABLE / PRIMARY KEY will create implicit index "tb_school_electedrep_pkey" for table "tb_school_electedrep"
+psql:electrep_new.sql:60: NOTICE:  table "tb_school_stu_counts" does not exist, skipping
+Traceback (most recent call last):
+  File "../py_scripts/schoolagg.py", line 9, in <module>
+    connection = Utility.KLPDB.getConnection()
+  File "/home/megha/www/reports/mpmla_nov/py_scripts/Utility/KLPDB.py", line 9, in getConnection
+    db = config.get('Database','dbname')
+  File "/usr/lib/python2.6/ConfigParser.py", line 532, in get
+    raise NoSectionError(section)
+ConfigParser.NoSectionError: No section: 'Database'
+psql:electoral-coord.sql:16: NOTICE:  CREATE TABLE / PRIMARY KEY will create implicit index "electoral_coord_pkey" for table "electoral_coord"
+psql:load/load-electoral-coords.sql:47: ERROR:  duplicate key value violates unique constraint "electoral_coord_pkey"
+psql:load/load-electoral-coords.sql:92: ERROR:  duplicate key value violates unique constraint "electoral_coord_pkey"
+psql:load/load-electoral-coords.sql:104: ERROR:  duplicate key value violates unique constraint "electoral_coord_pkey"
+psql:load/load-electoral-coords.sql:156: ERROR:  duplicate key value violates unique constraint "electoral_coord_pkey"
+psql:load/load-electoral-coords.sql:190: ERROR:  duplicate key value violates unique constraint "electoral_coord_pkey"
+psql:load/load-electoral-coords.sql:214: ERROR:  duplicate key value violates unique constraint "electoral_coord_pkey"
+psql:load/load-electoral-coords.sql:215: ERROR:  duplicate key value violates unique constraint "electoral_coord_pkey"
+psql:load/load-electoral-coords.sql:223: ERROR:  duplicate key value violates unique constraint "electoral_coord_pkey"
+psql:load/load-electoral-coords.sql:238: ERROR:  duplicate key value violates unique constraint "electoral_coord_pkey"
+psql:load/load-electoral-coords.sql:241: ERROR:  duplicate key value violates unique constraint "electoral_coord_pkey"
+psql:load/load-electoral-coords.sql:365: ERROR:  duplicate key value violates unique constraint "electoral_coord_pkey"
+psql:load/load-electoral-coords.sql:370: ERROR:  duplicate key value violates unique constraint "electoral_coord_pkey"
+psql:load/load-electoral-coords.sql:382: ERROR:  duplicate key value violates unique constraint "electoral_coord_pkey"
+psql:load/load-electoral-coords.sql:415: ERROR:  duplicate key value violates unique constraint "electoral_coord_pkey"

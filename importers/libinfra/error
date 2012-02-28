@@ -1,0 +1,2 @@
+psql:libinfra.sql:1: NOTICE:  table "tb_libinfra" does not exist, skipping
+psql:libinfra.sql:14: NOTICE:  CREATE TABLE / PRIMARY KEY will create implicit index "tb_libinfra_pkey" for table "tb_libinfra"

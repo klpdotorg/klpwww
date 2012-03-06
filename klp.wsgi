@@ -1056,7 +1056,7 @@ class postSYS:
       config = SafeConfigParser()
       config.read(os.path.join(os.getcwd(),'config/klpconfig.ini'))
       savepath = config.get('Pictures','origpicpath')
-      hashpath = config.get('Pictures','hashpicpath')
+      #hashpath = config.get('Pictures','hashpicpath')
       hashed_filename = ''
       if selectedfile.filename != "":
         try:
@@ -1069,7 +1069,7 @@ class postSYS:
           wf.close()
           hashed_filename = hashlib.md5(open(savepath +savefilename,'r').read()).hexdigest() + '.jpg'
           import shutil
-          shutil.move(savepath + savefilename,hashpath + hashed_filename)
+          shutil.move(savepath + savefilename,savepath + hashed_filename)
         except IOError:
           traceback.print_exc(file=sys.stderr)
           print "Error occurred during processing this file: " + savefilename

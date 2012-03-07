@@ -1059,15 +1059,16 @@ class postSYS:
       #hashpath = config.get('Pictures','hashpicpath')
       hashed_filename = ''
       if selectedfile.filename != "":
+        ext = selectedfile.filename.split('.')[1]
         try:
           if(os.path.exists(savepath+selectedfile.filename)):
-            savefilename = selectedfile.filename.split('.')[0] + '-' + schoolid + '.jpg'
+            savefilename = selectedfile.filename.split('.')[0] + '-' + schoolid + '.' + ext 
           else:
             savefilename = selectedfile.filename
           wf=open(savepath + savefilename,'w')
           wf.write(selectedfile.file.read())
           wf.close()
-          hashed_filename = hashlib.md5(open(savepath +savefilename,'r').read()).hexdigest() + '.jpg'
+          hashed_filename = hashlib.md5(open(savepath +savefilename,'r').read()).hexdigest() + '.'+ ext
           import shutil
           shutil.move(savepath + savefilename,savepath + hashed_filename)
         except IOError:

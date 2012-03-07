@@ -1059,7 +1059,7 @@ class postSYS:
       #hashpath = config.get('Pictures','hashpicpath')
       hashed_filename = ''
       if selectedfile.filename != "":
-        ext = selectedfile.filename.split('.')[1]
+        ext = selectedfile.filename.rpartition('.')[2]
         try:
           if(os.path.exists(savepath+selectedfile.filename)):
             savefilename = selectedfile.filename.split('.')[0] + '-' + schoolid + '.' + ext 
@@ -1161,16 +1161,29 @@ class postSYS:
       sysconnection.rollback()
       success = False
  
+    cursor.execute(statements['get_school_info'],(schoolid,))
+    result = cursor.fetchall()
+    for row in result:
+      dist=row[0].capitalize()
+      blk=row[1].capitalize()
+      clust=row[2].capitalize()
+      sname=row[3].capitalize()
+    connection.commit()
     if success:
-      body = "Thank you for taking the time and sharing your experience. Your inputs have been successfully recorded."
-      body = body + "<br/><br/> We appreciate your continued help in ensuring that every"
-      body = body + " child is in school and learning well."
-      sub = "Thank you for sharing your story on KLP"
+      body = "Thank you for taking the time and sharing your experience when visiting " + sname 
+      body = body + " in " + blk + ", " + clust + ". Your inputs have been successfully recorded."
+      body = body + "<br/><br/> For future reference, information on the school you visited can be found here:" 
+      if type == 'school':
+        body = body + web.ctx.env['HTTP_HOST'] + "/schoolpage/school/" + str(schoolid) 
+      else:
+        body = body + web.ctx.env['HTTP_HOST'] + "/schoolpage/preschool/" + str(schoolid) 
+      body = body + "<br/><br/>It will take a little while for your comments and inputs to show up as they need to be approved by a moderator. We appreciate your continued help in ensuring that every child is in school and learning well. Thank you and please spread the word! <br/>~ Team KLP<br/><br/> PS: You can reply to this email and we will respond soonest!"
+      sub = "Your story on " + sname + " has been saved."
     else:
       body = "Thank you for taking the time and sharing your experience.<br/>However, there an error occurred because "
-      body = body + "of which you form did not get saved. It would be of great help if you could e-mail dev@klp.org.in "
-      body = body + "to notify them of this error immediately, if possible."
-      sub = "Error while sharing your story on KLP"
+      body = body + "of which you form did not get saved. It would be of great help if you could forward this e-mail to dev@klp.org.in "
+      body = body + "and notify us of this error immediately. Thanks again."
+      sub = "Error while sharing your story on " + sname + " (" + str(schoolid) + ")."
     if recipient != None:
       self.sendMail(recipient, sub, body)
       #pass

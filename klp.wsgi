@@ -1167,7 +1167,7 @@ class postSYS:
       dist=row[0].capitalize()
       blk=row[1].capitalize()
       clust=row[2].capitalize()
-      sname=row[3].capitalize()
+      sname=row[3].upper()
     connection.commit()
     if success:
       body = "Thank you for taking the time and sharing your experience when visiting " + sname 

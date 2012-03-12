@@ -1120,6 +1120,11 @@ class postSYS:
                 qdata[qiddict[iparr[0]]]=iparr[1]
               print >> sys.stderr, str(qdata)
 
+      if 'comments' in data.keys() and len(data['comments']) > 0:
+        data['verified'] = 'N'
+      else:
+        data['verified'] = 'Y'
+
       fields = ', '.join(data.keys())
       values = ', '.join(['%%(%s)s' % x for x in data])
       query=query+"("+fields+") values("+values+")"

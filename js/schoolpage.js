@@ -208,13 +208,12 @@ function initialise(data)
     school_pics='This school does not have a picture album yet.<br/><br/>'
   }
   document.getElementById("school_pics").innerHTML=school_pics;
-  //alert('mla' in info)
  
-  const_table = '<div class="div-table">' +
-                '<div class="div-table-row"><div id="div-col-125width" class="div-table-col">MLA Constituency</div>' + 
-                '<div class="div-table-col">:' + 'mla' in info == false ? '&nbsp;&nbsp;Not Available': info['mla'].toUpperCase() + '</div>' ;
+  const_table = '<div class="div-table">' 
   if ('mla' in info){
     const_table = const_table + '<div>' +
+                '<div class="div-table-row"><div id="div-col-125width" class="div-table-col">MLA Details</div>' + 
+                '<div class="div-table-col">:' + info['mla'].toUpperCase() + '</div><div>' +
                 '<div class="div-table-row"><div id="div-col-125width" class="div-table-col">MLA Details</div>' + 
                 '<div class="div-table-col">:' + info['mlaname'].toUpperCase() + '</div><div>' +
                 '<div class="div-table-row"><div id="div-col-125width" class="div-table-col">MP Constituency</div>' + 
@@ -225,9 +224,12 @@ function initialise(data)
     report_links = '<a href="" onclick="javascript:popwindow(\'/listFiles/3|'+info['mp'] +'|'+info['mla'] + '\')" style="color:#43AD2F">Please find Constituency Reports here.</a>';
   }
   else{
-    const_table = const_table + '</div>';
+    const_table = const_table + 
+                '<div class="div-table-row">' + 
+                '<div class="div-table-col">Not Available</div></div>' ;
     report_links = '';
   }
+  const_table = const_table + '</div>'
   document.getElementById("school_const").innerHTML = const_table;
   document.getElementById("reportlinks").innerHTML = report_links;
   if(info.assessments) {

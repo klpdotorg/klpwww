@@ -216,7 +216,7 @@ statements = {'get_district':"select bcoord.id_bndry,ST_AsText(bcoord.coord),ini
               'get_school_info':"select b.name, b1.name, b2.name, s.name,b.type,s.cat,s.sex,s.moi,s.mgmt,s.dise_code,s.status from tb_boundary b, tb_boundary b1, tb_boundary b2, tb_school s,tb_bhierarchy h where s.id = %s and b.id=b1.parent and b1.id=b2.parent and s.bid=b2.id and b.hid=h.id",
               'get_school_address_info':"select a.address,a.area,a.pincode,a.landmark,a.instidentification,a.instidentification2, a.bus from tb_address a,tb_school s where s.aid=a.id and s.id=%s",
               'get_sys_info':"select sys.dateofvisit,sys.comments,sys.id from tb_sys_data sys where sys.schoolid=%s",
-              'get_sys_qans':"select q.qtext,a.answer from tb_sys_questions q, tb_sys_qans a where a.qid = q.id and a.sysid in %s",
+              'get_sys_qans':"select q.qtext,a.answer from tb_sys_questions q, tb_sys_qans a , tb_sys_data sd where a.qid = q.id and a.sysid= sd.id and sd.verified='Y' and a.sysid in %s",
               'get_school_point':"select ST_AsText(inst.coord) from vw_inst_coord inst where inst.instid=%s",
               'get_sys_nums':"select count(*) from tb_sys_data",
               'get_sys_image_nums':"select count(*) from tb_sys_images",
@@ -805,8 +805,10 @@ class schoolpage:
             sysdata[row[0]] = "Yes" 
           else:
             sysdata[row[0]] = "No or Not known"
-      for (k,v) in sysdata.items():
-        data["sysdata"].append(k +'|'+v);
+      if len(sysdata.keys()) > 0:
+        data["sysdata"] = []
+        for (k,v) in sysdata.items():
+          data["sysdata"].append(k +'|'+v);
       sysconnection.commit()
 
       cursor.execute(statements['get_school_point'],(id,))

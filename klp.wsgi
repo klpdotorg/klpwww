@@ -1018,6 +1018,7 @@ class postSYS:
     config = SafeConfigParser()
     config.read(os.path.join(os.getcwd(),'config/klpconfig.ini'))
     sender = config.get('Mail','senderid')
+    senderpwd = config.get('Mail','senderpwd')
     smtpport = config.get('Mail','smtpport') 
     smtpserver = config.get('Mail','smtpserver')
 
@@ -1048,8 +1049,12 @@ class postSYS:
         emailMsg.attach(fileMsg)
 
     server = smtplib.SMTP(smtpserver,smtpport)
+    server.ehlo()
+    server.starttls()
+    server.ehlo
+    server.login(sender,senderpwd)
     server.sendmail(sender,to,emailMsg.as_string())
-    server.quit()
+    server.close()
 
   def populateImages(self,selectedfile,schoolid,sysid):
       #Getting path to picture files from the config file
@@ -1207,6 +1212,7 @@ class listFiles:
       mp = reqp[1]
       mla = reqp[2]
     path = ""
+    print type
     if (int(type) == 1 or int(type) == 3):
       mpfilenames = []
       mlafilenames = []

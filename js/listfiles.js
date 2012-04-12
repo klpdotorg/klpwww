@@ -85,7 +85,7 @@ function listFiles(fileList)
       var igfiletable = document.getElementById('ig_files');
       var fileNames = fileList["ig_files"].sort();
                     
-      var newTable = "&nbsp;&nbsp;<a href='/listFiles/1'>Click here for KLP's Reports</a><br/><form id='filter'>Search by Name:&nbsp;<input name='filter' onkeyup='filterTable(this, \"filterable\");' type='text'></form>";
+      var newTable = "&nbsp;&nbsp;<a href='/listFiles/1'>Click here for KLP's Reports</a><br/><form id='filter'>Search by Name:&nbsp;<input name='filter' onkeyup='filterTable(this, \"filterable\");' type='text'><br><a href='/text/reports#ig' target='_blank'>Click here</a> to know more about IndiaGoverns.</form>";
       newTable = newTable + "<table id='filterable' class='filterable'><thead><tr><th>Consitiuency</th><th>Year 1</th><th>Year 2</th><th>Year 3</th></tr></thead><tbody>";
       for ( each in fileNames) {
         newTable = newTable + "<tr><td>" + fileNames[each] + "</td>";

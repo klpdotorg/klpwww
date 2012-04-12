@@ -3,13 +3,14 @@ $def with (data)
   <head> 
   <meta charset="utf-8" /> 
     <link type="text/css" rel="stylesheet" href="/css/listfiles.css"/>
-    <script type="text/javascript" src="/js/klp.js"></script>
+    <script type="text/javascript" src="/js/listfiles.js"></script>
 
   </head>
   <body onload="listFiles($data)" class="yui3-skin-sam  yui-skin-sam">
     <div id="container">
       <div id="selections" style="display:none">
         &nbsp;&nbsp;Select the type of Report from options below: <br/>
+        &nbsp;&nbsp;Constituency-wise Reports from <a href="/text/reports" target="_blank">India Governs</a> is accessible <a href="/listFiles/4">here</a><br/>
         <select onchange='selectFiles();' id='filetype'>
           <option value="">---Select---</option>
           <option value="mp_files">MP Reports</option>
@@ -21,6 +22,8 @@ $def with (data)
       <div id="mla_files" style="display:none;"></div>
       <div id="corp_files" style="display:none;"></div>
       <div id="raw_files" style="display:none;"></div>
+      <div id="ig_files" style="display:none;">
+      </div>
     </div>
   </body>
 </html> 

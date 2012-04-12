@@ -654,73 +654,8 @@ function togglePanel(panelid)
 var newwindow;
 function popwindow(url)
 {
-  newwindow=window.open(url,'Downloads','height=620,width=400,scrollbars=1');
+  newwindow=window.open(url,'Downloads','height=620,width=600,scrollbars=1');
   if (window.focus) {newwindow.focus()}
 }
 
 
-function listFiles(fileList)
-{
-  var type = parseInt(fileList["listtype"])
-  if( type == 1 || type == 3) {
-    if( type == 1){
-      document.getElementById('selections').style.display = "block";
-    } else {
-      document.getElementById('selections').style.display = "none";
-      document.getElementById('mp_files').style.display = "block";
-      document.getElementById('mla_files').style.display = "block";
-    } 
-    var mptable = document.getElementById('mp_files');
-    var mlatable = document.getElementById('mla_files');
-    var fileNames = fileList["mpnames"].sort();
-    tableHTML = "<div class='div-table'>" + "<div class='div-table-caption'>List of Reports</div>" ;
-    for( each in fileNames) {
-      tableHTML = tableHTML + "<div class='div-table-row'>" + "<div class='div-table-col'>" + fileNames[each] + "</div>"+
-      "<div class='div-table-col'>" + "<a target='_blank' href='" + fileList["directory"] + fileList["subdir1"] + "/" + fileNames[each] + "'/>" + "Kannada</a></div>" +
-      "<div class='div-table-col'>" + "<a target='_blank' href='" + fileList["directory"] + fileList["subdir2"] + "/" + fileNames[each] + "'/>" + "English</a></div>" + 
-      "</div>";
-    }
-    mptable.innerHTML = tableHTML + '</div></div>'; 
-    tableHTML = "<div class='div-table'>" ;
-    if (type ==1 ) {
-      tableHTML = tableHTML + "<div class='div-table-caption'>List of Reports</div>" ;
-    }
-    fileNames = fileList["mlanames"].sort();
-    for( each in fileNames) {
-      tableHTML = tableHTML + "<div class='div-table-row'>" + "<div class='div-table-col'>" + fileNames[each] + "</div>"+
-      "<div class='div-table-col'>" + "<a target='_blank' href='" + fileList["directory"] + fileList["subdir1"] + "/" + fileNames[each] + "'/>" + "Kannada</a></div>" +
-      "<div class='div-table-col'>" + "<a target='_blank' href='" + fileList["directory"] + fileList["subdir2"] + "/" + fileNames[each] + "'/>" + "English</a></div>" + 
-      "</div>";
-    }
-    mlatable.innerHTML = tableHTML + "</div></div>"
-  } else if (type == 2) {
-    document.getElementById('raw_files').style.display = "block";
-    var rawfiletable = document.getElementById('raw_files');
-    var fileNames = fileList["rawfiles"].sort();
-    tableHTML = "<div class='div-table'>" + "<div class='div-table-caption'>List of Reports</div>" ;
-    tableHTML = tableHTML + "<div class='div-table-row'> Right click and use \"Save As\" to download files below:</div>";
-    for( each in fileNames) {
-      tableHTML = tableHTML + "<div class='div-table-row'>" +
-                              "<div class='div-table-col' style='width:200px;'>" + 
-                  "<a target='_blank' href='" + fileList["directory"] + "/" + fileNames[each] + "'/>" + 
-                  fileNames[each] + "</a></div></div>";
-    }
-    rawfiletable.innerHTML = tableHTML + "</div>"
-  }
-}
-function selectFiles()
-{
-  elm = document.getElementById('filetype').value;
-  if(elm.length != 0) {
-    div_ids=["mla_files","mp_files","corp_files"]
-    for (var i = 0; i < div_ids.length; i++) {
-      var layer = document.getElementById(div_ids[i]);
-      if (elm!= div_ids[i]) {
-        layer.style.display = "none";
-      }
-      else {
-        layer.style.display = "block";
-      }
-    }
-  }
-}

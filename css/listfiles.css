@@ -20,7 +20,8 @@
 .div-table-col{
   display:table-cell; 
   padding-left: 5px; 
-  /*border: 1px solid #43AD2F;*/
+  padding-right: 5px; 
+  border-right: 1px solid #43AD2F;
 }
 body
     {
@@ -30,3 +31,9 @@ body
       margin: 0;
       min-width: 960px;
     }
+
+#filter { margin-left:10px;margin-top:10px; }
+table { border: solid 1px #43AD2F; margin-left:10px; }
+table tr { margin: 2px; padding: 2px; border-bottom: solid 1px #43AD2F; }
+table th { margin: 2px; padding: 2px; /*border: solid 1px #43AD2F;*/ text-transform:uppercase; color:#43AD2F }
+table td { margin: 2px; padding: 2px; /*border: solid 1px #43AD2F*/ }

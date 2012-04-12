@@ -1234,7 +1234,7 @@ class listFiles:
           fileList["listtype"] = '3'
         else:
           for fname in dirList:
-            if '.ZIP' in fname:
+            if '.zip' in fname:
               pass
             else:
               if 'MP_' in fname:

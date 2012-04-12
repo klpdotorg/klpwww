@@ -86,12 +86,12 @@ function listFiles(fileList)
       var fileNames = fileList["ig_files"].sort();
                     
       var newTable = "&nbsp;&nbsp;<a href='/listFiles/1'>Click here for KLP's Reports</a><br/><form id='filter'>Search by Name:&nbsp;<input name='filter' onkeyup='filterTable(this, \"filterable\");' type='text'></form>";
-      newTable = newTable + "<table id='filterable' class='filterable'><thead><tr><th>Consitiuency</th><th>2008-09</th><th>2009-10</th><th>2010-11</th></tr></thead><tbody>";
+      newTable = newTable + "<table id='filterable' class='filterable'><thead><tr><th>Consitiuency</th><th>Year 1</th><th>Year 2</th><th>Year 3</th></tr></thead><tbody>";
       for ( each in fileNames) {
         newTable = newTable + "<tr><td>" + fileNames[each] + "</td>";
-        newTable = newTable + "<td><a target='_blank' href='" + fileList["directory"] + fileList["subdir"][0] + "/" + fileNames[each] + "'>Download</a></td>";
-        newTable = newTable + "<td><a target='_blank' href='" + fileList["directory"] + fileList["subdir"][1] + "/" + fileNames[each] + "'>Download</a></td>";
-        newTable = newTable + "<td><a target='_blank' href='" + fileList["directory"] + fileList["subdir"][2] + "/" + fileNames[each] + "'>Download</a></td>";
+        newTable = newTable + "<td><a target='_blank' href='" + fileList["directory"] + fileList["subdir"][0] + "/" + fileNames[each] + "'>2008-09</a></td>";
+        newTable = newTable + "<td><a target='_blank' href='" + fileList["directory"] + fileList["subdir"][1] + "/" + fileNames[each] + "'>2009-10</a></td>";
+        newTable = newTable + "<td><a target='_blank' href='" + fileList["directory"] + fileList["subdir"][2] + "/" + fileNames[each] + "'>2010-11</a></td>";
         newTable = newTable + "</td></tr>";
       }
       newTable = newTable + "</tbody></table>";

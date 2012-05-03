@@ -132,6 +132,7 @@ CREATE TABLE "tb_programme" (
   "end" date default CURRENT_DATE,
   "type" integer NOT NULL references "tb_boundary_type" ("id") on delete cascade,
   "ayid" integer  REFERENCES "tb_academic_year" ("id") ON DELETE CASCADE,
+  "partnerid" integer REFERENCES "tb_partner" ("id") ON DELETE CASCADE,
   PRIMARY KEY ("id")
 );
 

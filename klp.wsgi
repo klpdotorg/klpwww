@@ -1216,7 +1216,7 @@ class listFiles:
       mpfilenames = []
       mlafilenames = []
       path = "/reports"
-      fileList["reptype"] = ["demographics","finances","infra"]
+      fileList["reptype"] = ["demographics","finances","infrastructure"]
       fileList["subdir1"] = "/Kannada"
       fileList["subdir2"] = "/English"
       fileList["directory"] = path

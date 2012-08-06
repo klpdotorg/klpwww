@@ -215,7 +215,8 @@ statements = {'get_district':"select bcoord.id_bndry,ST_AsText(bcoord.coord),ini
               'get_assessmentinfo_circle':"select b.name,info.agegroup,ass.name,sum(info.num) from tb_preschool_basic_assessment_info info,tb_assessment ass,tb_boundary b, tb_boundary b1, tb_boundary b2,tb_school s where ass.pid=%s and info.assid=ass.id and info.sid=s.id and s.bid=b.id and b.parent=b1.id and b1.parent=b2.id and b.id=%s group by b.name,info.agegroup,ass.name",
               'get_school_info':"select b.name, b1.name, b2.name, s.name,b.type,s.cat,s.sex,s.moi,s.mgmt,s.dise_code,s.status from tb_boundary b, tb_boundary b1, tb_boundary b2, tb_school s,tb_bhierarchy h where s.id = %s and b.id=b1.parent and b1.id=b2.parent and s.bid=b2.id and b.hid=h.id",
               'get_school_address_info':"select a.address,a.area,a.pincode,a.landmark,a.instidentification,a.instidentification2, a.bus from tb_address a,tb_school s where s.aid=a.id and s.id=%s",
-              'get_sys_info':"select sys.dateofvisit,sys.comments,sys.id from tb_sys_data sys where sys.schoolid=%s",
+              'get_sys_info':"select sys.dateofvisit,sys.comments,sys.id,initcap(sys.name),to_char(sys.entered_timestamp, 'yyyy-mm-dd HH24:MI:SS') from tb_sys_data sys where sys.schoolid=%s and sys.verified='Y'",
+              'get_sys_images':"select distinct hash_file from tb_sys_images where sysid=%s and verified='Y'",
               'get_sys_qans':"select q.qtext,a.answer from tb_sys_questions q, tb_sys_qans a , tb_sys_data sd where a.qid = q.id and a.sysid= sd.id and sd.verified='Y' and a.sysid in %s",
               'get_school_point':"select ST_AsText(inst.coord) from vw_inst_coord inst where inst.instid=%s",
               'get_sys_nums':"select count(*) from tb_sys_data",
@@ -777,17 +778,23 @@ class schoolpage:
       syscursor.execute(statements['get_sys_info'],(id,))
       result = syscursor.fetchall()
       sysdates =  []
-      syscomments = []
+      syscomments = {}
       sysids = []
       data["syscount"]=0
+      count=0
       for row in result:
         if row[0] != None:
           if row[0].strip().replace('/','-') not in sysdates:
             sysdates.append(row[0].strip().replace('/','-'))
           data["syscount"]=data["syscount"]+1
         if row[1] != None:
-          syscomments.append(row[1].strip())
+          syscomments[count]={"name":row[3],"timestamp":row[4],"comments":row[1],"images":[],"id":row[2]}
+          syscursor.execute(statements['get_sys_images'],(row[2],))
+          imgresult = syscursor.fetchall()
+          for img in imgresult:
+            syscomments[count]["images"].append(img[0]) 
         sysids.append(row[2])
+        count=count+1
       data["sysdate"] = sysdates
       data["syscomment"] = syscomments
       sysconnection.commit()
@@ -822,9 +829,8 @@ class schoolpage:
       traceback.print_exc(file=sys.stderr)
       connection.rollback()
       sysconnection.rollback()
-      print >> sys.stderr, data
     web.header('Content-Type','text/html; charset=utf-8')
-    return render_plain.schoolpage(data)
+    return render_plain.schoolpage(jsonpickle.encode(data))
 
   def checkEmpty(self,data,rpldata):
     if data == None:
@@ -859,8 +865,6 @@ class text:
 
 class getBoundaryInfo:
   def GET(self,type,id):
-    print type
-    print id
     boundaryInfo ={}
     boundaryInfo["id"]=id
     boundaryInfo["numBoys"]=0
@@ -1010,8 +1014,9 @@ class postSYS:
       sysconnection.rollback()
       return None
 
-  def sendMail(self, recipient, sub, body, file = None):
-    #cc = [recipient]
+  def sendMail(self, recipient, sub, body,file = None):
+    #if ccrecipient!='':
+    cc = ['feedback@klp.org.in']
     to = [recipient]
     subject = sub
     from ConfigParser import SafeConfigParser
@@ -1032,7 +1037,7 @@ class postSYS:
     emailMsg['Subject'] = subject
     emailMsg['From'] = sender
     emailMsg['To'] = ', '.join(to)
-    #emailMsg['Cc'] = ", ".join(cc)
+    emailMsg['Cc'] = ", ".join(cc)
     emailMsg.attach(email.mime.text.MIMEText(html,'html'))
       
     if file != None: 
@@ -1053,7 +1058,7 @@ class postSYS:
     server.starttls()
     server.ehlo
     server.login(sender,senderpwd)
-    server.sendmail(sender,to,emailMsg.as_string())
+    server.sendmail(sender,to+cc,emailMsg.as_string())
     server.close()
 
   def populateImages(self,selectedfile,schoolid,sysid):
@@ -1080,7 +1085,6 @@ class postSYS:
           shutil.move(savepath + savefilename,savepath + hashed_filename)
         except IOError:
           traceback.print_exc(file=sys.stderr)
-          print "Error occurred during processing this file: " + savefilename
         imagequery = "insert into tb_sys_images(schoolid,original_file,hash_file,sysid,verified) values( %s , %s, %s, %s, %s)"
         try:
           syscursor.execute(imagequery,(schoolid,savefilename,hashed_filename,sysid,'N')) #Images coming in from this flow are yet to be verified
@@ -1192,9 +1196,9 @@ class postSYS:
       body = body + "<br/><br/>It will take a little while for your comments and inputs to show up as they need to be approved by a moderator. We appreciate your continued help in ensuring that every child is in school and learning well. Thank you and please spread the word! <br/>~ Team KLP<br/><br/> PS: You can reply to this email and we will respond soonest!"
       sub = "Your story on " + sname + " has been saved."
     else:
-      body = "Thank you for taking the time and sharing your experience.<br/>However, there an error occurred because "
-      body = body + "of which you form did not get saved. It would be of great help if you could forward this e-mail to dev@klp.org.in "
-      body = body + "and notify us of this error immediately. Thanks again."
+      body = "Thank you for taking the time and sharing your experience.<br/>However, there was an error because "
+      body = body + "of which your form did not get saved. It would be of great help if you could send the information to us by email. Our email address is: dev@klp.org.in "
+      body = body + ". Thanks again."
       sub = "Error while sharing your story on " + sname + " (" + str(schoolid) + ")."
     if recipient != None:
       self.sendMail(recipient, sub, body)

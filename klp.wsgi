@@ -799,24 +799,25 @@ class schoolpage:
       data["syscomment"] = syscomments
       sysconnection.commit()
 
-      syscursor.execute(statements['get_sys_qans'],[tuple(sysids)])
-      result = syscursor.fetchall()
       sysdata = {}
-      pos_ans = ["yes","available and functional","available but not functional"]
-      for row in result:
-        if row[0] in sysdata.keys():
-          if row[1].lower() not in pos_ans:
-            sysdata[row[0]] = "No or Not known"
-        else:
-          if row[1].lower() in pos_ans:
-            sysdata[row[0]] = "Yes" 
+      if count>0:
+        syscursor.execute(statements['get_sys_qans'],[tuple(sysids)])
+        result = syscursor.fetchall()
+        pos_ans = ["yes","available and functional","available but not functional"]
+        for row in result:
+          if row[0] in sysdata.keys():
+            if row[1].lower() not in pos_ans:
+              sysdata[row[0]] = "No or Not known"
           else:
-            sysdata[row[0]] = "No or Not known"
-      if len(sysdata.keys()) > 0:
-        data["sysdata"] = []
-        for (k,v) in sysdata.items():
-          data["sysdata"].append(k +'|'+v);
-      sysconnection.commit()
+            if row[1].lower() in pos_ans:
+              sysdata[row[0]] = "Yes" 
+            else:
+              sysdata[row[0]] = "No or Not known"
+        if len(sysdata.keys()) > 0:
+          data["sysdata"] = []
+          for (k,v) in sysdata.items():
+            data["sysdata"].append(k +'|'+v);
+        sysconnection.commit()
 
       cursor.execute(statements['get_school_point'],(id,))
       result = cursor.fetchall()

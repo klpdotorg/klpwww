@@ -6,7 +6,7 @@ CREATE TABLE "tb_sys_data" (
   "email" varchar(100),
   "telephone" varchar(50),
   "dateofvisit" varchar(50),
-  "comments" varchar(500),
+  "comments" varchar(2000),
   "entered_timestamp" timestamp with time zone not null default now(),
   "verified" varchar(1) default 'N'
 );

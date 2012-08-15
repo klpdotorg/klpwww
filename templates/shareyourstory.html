@@ -8,9 +8,19 @@ $def with (questions)
     <link type="text/css" rel="stylesheet" href="/css/sys.css"/>
     <link type="text/css" rel="stylesheet" href="/css/grid.css"/>
     <link type="text/css" rel="stylesheet" href="/css/style.css"/>
+    <link type="text/css" rel="stylesheet" href="/css/list.css"/>
     <link type="text/css" rel="stylesheet" href="/css/printsys.css" media="print"/>
     <link rel="stylesheet" type="text/css" href="/css/libs/ezcalendar_orange.css" />
-
+  <link rel="stylesheet" type="text/css" href="http://yui.yahooapis.com/2.9.0/build/assets/skins/sam/skin.css">
+  <!-- Utility Dependencies -->
+  <script src="http://yui.yahooapis.com/2.9.0/build/yahoo-dom-event/yahoo-dom-event.js"></script> 
+  <script src="http://yui.yahooapis.com/2.9.0/build/element/element-min.js"></script> 
+  <!-- Needed for Menus, Buttons and Overlays used in the Toolbar -->
+  <script src="http://yui.yahooapis.com/2.9.0/build/container/container_core-min.js"></script>
+  <script src="http://yui.yahooapis.com/2.9.0/build/menu/menu-min.js"></script>
+  <script src="http://yui.yahooapis.com/2.9.0/build/button/button-min.js"></script>
+  <!-- Source file for Rich Text Editor-->
+  <script src="http://yui.yahooapis.com/2.9.0/build/editor/editor-min.js"></script>
 
 <script type="text/javascript">
  var _gaq = _gaq || [];
@@ -96,10 +106,7 @@ $def with (questions)
     <div id="formclose" class="grid_12">
       <label>For additional comments/observations/notes, please use this space below:</label>
       <div id="commentspace">
-        <textarea name="comments" id="comments" style="width:100%" rows="5"
-           onKeyDown="textCounter(document.schoolform.comments,document.schoolform.remLen2,500)"
-           onKeyUp="textCounter(document.schoolform.comments,document.schoolform.remLen2,500)"></textarea>
-        <input readonly type="text" name="remLen2" size="3" maxlength="3" value="500"> characters left
+        <textarea name="comments" id="comments" style="width:100%" rows="5"></textarea>
       </div>
 
       <div id="submit" align="left">

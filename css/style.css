@@ -95,11 +95,11 @@ sub { bottom: -0.25em; }
 /* =============================================================================
    Lists
    ========================================================================== */
-
+/* Have put it in list.css
 ul, ol { margin: 1em 0; padding: 0 0 0 40px; }
 dd { margin: 0 0 0 40px; }
 nav ul, nav ol { list-style: none; margin: 0; padding: 0; }
-
+*/
 
 /* =============================================================================
    Embedded content
@@ -284,10 +284,15 @@ table { border-collapse: collapse; border-spacing: 0; }
   background-color: #43ad2f;
 }
 
+/* have put it in list.css
 ol, ul, li {background: transparent;border: 0;margin: 0; padding: 0; vertical-align: baseline;list-style:none}
+*/
 
 /* NAV BAR style */
+
+/*have put it in list.css
 ol, ul          {list-style: none;}
+*/
 #navigation{ background:none;height:180px;font-size:13px;font-color:#000;font-family:Arial, Helvetica, sans-serif; }
 #navigation ul{ margin-left:200px; padding-top:50px;}
 #navigation ul li{ background:none; display:inline; height: 32px; list-style:none; float:left;}
@@ -370,7 +375,6 @@ ol, ul          {list-style: none;}
   /*height:32px;*/
 }
 
-ol, ul          {list-style: none;}
 ul.bottomnav      {
   padding:0 400px;
   margin-top: 0px;

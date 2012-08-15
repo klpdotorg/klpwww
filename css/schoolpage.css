@@ -6,6 +6,10 @@
   margin-top: 55px;
 }
 
+#hrmod{
+  border-color: #F89400;
+}
+
 #school_info {
     margin-left: 200px;
 }
@@ -32,6 +36,48 @@
   display:block;
   margin-left:5px;
   margin-top:10px;
+}
+
+#sys_comments
+{
+  height:300px;
+  overflow:auto;
+  margin-left:10px;
+}
+
+#sys_images
+{
+  height:50px;
+  width:50px;
+  padding-left:5px;
+  padding-right:5px;
+}
+
+
+#sys_comments ol, ul, li
+{
+  list-style:disc;
+}
+
+#sys_comments ol, ul
+{
+  list_style:disc;
+}
+
+#name
+{
+ float:left;
+ width:50%;
+ font-weight:bold;
+ font-size:14px;
+}
+
+#timestamp
+{
+ float:right;
+ width:50%;
+ font-style:italic;
+ color:darkslategray;
 }
 
 img{

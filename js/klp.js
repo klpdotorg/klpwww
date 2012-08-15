@@ -2,14 +2,7 @@
 var map;
 var lastWindow;
 var geocoder;
-var districtMarkers ={};
-var preschooldistrictMarkers ={};
-var blockMarkers={};
-var clusterMarkers={};
-var schoolMarkers={};
-var preschoolMarkers={};
-var projectMarkers={};
-var circleMarkers={};
+var mapmarkers={"districtMarkers":{},"preschooldistrictMarkers":{},"blockMarkers":{},"clusterMarkers":{},"schoolMarkers":{},"preschoolMarkers":{},"projectMarkers":{},"circleMarkers":{}};
 var types = ["district","block","cluster","school","preschooldistrict","project","circle","preschool"];
 var zoomInfo = {"district":7,"preschooldistrict":7,"block":9,"cluster":11,"school":13,"project":9,"circle":11,"preschool":13};
 var images = {"district":"district.png","preschooldistrict":"district.png","block":"block.png","cluster":"cluster.png","circle":"circle.png","project":"project.png","school":"school.png","preschool":"preschool.png"};
@@ -19,53 +12,11 @@ var childInfo=[];
 var distanceWidget = null;
 
 
-function initializesys(){
-  YUI({base: 'yui/build/',
-    timeout: 50000}).use("io-base","json-parse",
-    function(Y, result) {
-      if (!result.success) {
-        Y.log('Load failure: ' + result.msg, 'warn', 'program');
-      }
-      var callback = {
-        on: { success: 
-          function(id, o) {
-            var sysinfo;
-            try {  
-              sysinfo= Y.JSON.parse(o.responseText);
-            } catch (e) {
-              Y.log('Could not parse json'+type, 'error', 'sysinfo');
-              return;
-            }
-            document.getElementById("systext").innerHTML='<p>Number of Stories Shared :'+sysinfo["numstories"]+'</p><p>Number of Photos Shared :'+sysinfo["numimages"]+'</p><br><a href="visualization?type=school">Please Share Your Experience</a>';
-          },
-          failure: function(id, o) {
-            Y.log('Could not retrieve sysinfo data ','error','sysinfo');
-          }  
-        }
-      };
-      url = "sysinfo";
-      var request = Y.io(url, callback);
-    });
-
-}
-
-
+/* Initialize map*/
 function initialiseSchool(){
-  var displayschooldiv="inline";
-  var displaypreschooldiv="none";
-  var query= window.location.search.substring(1);
-  var pos = query.indexOf('=');
-  var key = query.substring(0,pos);
-  type= query.substring(pos+1);
-  if( type=="preschool")
-  {
-    displayschooldiv="none";
-    displaypreschooldiv="inline";
-  }
-  document.getElementById("schooldiv").style.display=displayschooldiv;
-  document.getElementById("preschooldiv").style.display=displaypreschooldiv;
+  document.getElementById("schooldiv").style.display="inline";
+  document.getElementById("preschooldiv").style.display="none";
   var latlng = new google.maps.LatLng(center["lat"],center["lon"]);
-  //var latlng = new google.maps.LatLng(13.04583,77.62138);
   var myOptions = {
     zoom: 13,
     center: latlng,
@@ -79,53 +30,39 @@ function initialiseSchool(){
   google.maps.event.addListener(map, 'zoom_changed',zoomChanged);
       
   distanceWidget = new DistanceWidget(map)
-  google.maps.event.addListener(distanceWidget, 'distance_changed', function() {
-        displayInfo(distanceWidget);
+  google.maps.event.addListener(distanceWidget, 'distance_changed', function()
+  {
+    displayInfo(distanceWidget);
   });
-   google.maps.event.addListener(distanceWidget, 'position_changed', function() {
-        displayInfo(distanceWidget);
+  google.maps.event.addListener(distanceWidget, 'position_changed', function() 
+  {
+    displayInfo(distanceWidget);
   });
-
 }
 
-function initCap(str)
+function geocode() 
 {
-  str = str.substring(0,1).toUpperCase() + str.substring(1,str.length).toLowerCase(); 
- return str; 
-} 
-
-function geocode() {
-    var address = document.getElementById("address").value;
-    geocoder.geocode({
-      'address': address,
-      'partialmatch': true}, geocodeResult);
+  var address = document.getElementById("address").value;
+  geocoder.geocode({
+    'address': address,
+    'partialmatch': true}, geocodeResult);
 }
  
-function geocodeResult(results, status) {
-    if (status == 'OK' && results.length > 0) {
-      map.fitBounds(results[0].geometry.viewport);
-      map.setCenter(results[0].geometry.location);
-      distanceWidget.set('position', map.getCenter());
-      markers = preschoolMarkers;
-    for (var p in pointInfo[type]) {
-      var point = pointInfo[type][p];
-      var pos = new google.maps.LatLng(point.lat, point.lon);
-      markers[point.id] = new google.maps.Marker({
-        position: pos,
-        map: map,
-        title: point.name,
-        visible:visible,
-        icon:"images/"+image
-      });
-      displayPointInfo(markers[point.id],point.id,point.name,type)
-    
-    }
-    if( type=='district')
-      populateDistricts(pointInfo[type]);
-    if( type=='preschooldistrict')
-      populatePreSchoolDistricts(pointInfo[type]);
+
+function geocodeResult(results, status) 
+{
+  if (status == 'OK' && results.length > 0) 
+  {
+    map.fitBounds(results[0].geometry.viewport);
+    map.setCenter(results[0].geometry.location);
+    distanceWidget.set('position', map.getCenter());
+  }
+  else 
+  {
+    alert("Geocode was not successful for the following reason: " + status);
   }
 }
+
 function closeWindow()
 {
   if( typeof(lastWindow) == 'object' )
@@ -140,66 +77,41 @@ function zoomChanged()
   var zoom = map.getZoom();
   if (zoom < zoomInfo["block"] )
   {
-     makeVisible(districtMarkers);
-     makeVisible(preschooldistrictMarkers);
-     makeInvisible(blockMarkers);
-     makeInvisible(clusterMarkers);
-     makeInvisible(projectMarkers);
-     makeInvisible(schoolMarkers);
-     makeInvisible(preschoolMarkers);
-     makeInvisible(circleMarkers);
-   }
-   else if (zoom >= zoomInfo["block"] && zoom < zoomInfo["cluster"])
-   {
-     makeVisible(blockMarkers);
-     makeVisible(projectMarkers);
-     makeInvisible(clusterMarkers);
-     makeInvisible(circleMarkers);
-     makeInvisible(districtMarkers);
-     makeInvisible(preschooldistrictMarkers);
-     makeInvisible(schoolMarkers);
-     makeInvisible(preschoolMarkers);
-   }
-   else if (zoom >= zoomInfo["cluster"] && zoom < zoomInfo["school"])
-   {
-     makeVisible(clusterMarkers);
-     makeVisible(circleMarkers);
-     makeInvisible(preschooldistrictMarkers);
-     makeInvisible(blockMarkers);
-     makeInvisible(schoolMarkers);
-     makeInvisible(preschoolMarkers);
-   }
-   else if (map.getZoom() >= zoomInfo["school"])
-   {
-     makeVisible(schoolMarkers);
-     makeVisible(preschoolMarkers);
-     makeInvisible(districtMarkers);
-     makeInvisible(preschooldistrictMarkers);
-     makeInvisible(blockMarkers);
-     makeInvisible(clusterMarkers);
-     makeInvisible(projectMarkers);
-     makeInvisible(circleMarkers);
-   }
-}
-
-function makeVisible(markers)
-{
-  for (m in markers)
+    changeVisibility({"districtMarkers":0,"preschooldistrictMarkers":0});
+  }
+  else if (zoom >= zoomInfo["block"] && zoom < zoomInfo["cluster"])
   {
-    marker = markers[m];
-    if (marker.getVisible() == false){
-      marker.setVisible(true);
-    }
+    changeVisibility({"blockMarkers":0,"projectMarkers":0});
+  }
+  else if (zoom >= zoomInfo["cluster"] && zoom < zoomInfo["school"])
+  {
+    changeVisiblity({"clusterMarkers":0,"circleMarkers":0});
+  }
+  else if (map.getZoom() >= zoomInfo["school"])
+  {
+    changeVisibility({"schoolMarkers":0,"preschoolMarkers":0});
   }
 }
 
-function makeInvisible(markers)
+function changeVisibility(showmarkers)
 {
-  for (m in markers)
+  for(markertype in mapmarkers)
   {
-    marker = markers[m];
-    if (marker.getVisible() == true){
-      marker.setVisible(false);
+    if(markertype in showmarkers)
+    {
+      for (m in mapmarkers[markertype])
+      {
+        marker = mapmarkers[markertype][m];
+        marker.setVisible(true);
+      }
+    }
+    else
+    {
+      for (m in mapmarkers[markertype])
+      {
+        marker = mapmarkers[markertype][m];
+        marker.setVisible(false);
+      }
     }
   }
 }
@@ -245,21 +157,21 @@ function plotPoints(pointInfo)
     if(currentzoom == zoom)
       visible=true;
     if(type=="district")
-      markers = districtMarkers;
+      markers = mapmarkers["districtMarkers"];
     if(type=="block")
-      markers = blockMarkers;
+      markers = mapmarkers["blockMarkers"];
     if(type=="cluster")
-      markers = clusterMarkers;
+      markers = mapmarkers["clusterMarkers"];
     if(type=="school")
-      markers = schoolMarkers;
+      markers = mapmarkers["schoolMarkers"];
     if(type=="preschooldistrict")
-      markers = preschooldistrictMarkers;
+      markers = mapmarkers["preschooldistrictMarkers"];
     if(type=="project")
-      markers = projectMarkers;
+      markers = mapmarkers["projectMarkers"];
     if(type=="circle")
-      markers = circleMarkers;
+      markers = mapmarkers["circleMarkers"];
     if(type=="preschool")
-      markers = preschoolMarkers;
+      markers = mapmarkers["preschoolMarkers"];
     for (var p in pointInfo[type]) {
       var point = pointInfo[type][p];
       var pos = new google.maps.LatLng(point.lat, point.lon);

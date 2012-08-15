@@ -3,11 +3,12 @@ var handle;
 var cal1;
 var typeform="schoolform";
 var type;
+var myEditor;
 
 function initCap(str)
 {
   str = str.substring(0,1).toUpperCase() + str.substring(1,str.length).toLowerCase();
- return str;
+  return str;
 }
 
 
@@ -23,13 +24,6 @@ function isNumeric(str)
   return true;
 }
 
-function textCounter(field,cntfield,maxlimit) {
-  if (field.value.length > maxlimit) // if too long...trim it!
-    field.value = field.value.substring(0, maxlimit);
-  // otherwise, update 'characters left' counter
-  else
-    cntfield.value = maxlimit - field.value.length;
-}
 
 function initialise()
 {
@@ -40,6 +34,74 @@ function initialise()
    document.schoolform.action ="/postSYS/"+type
    getSchoolInfo();
    document.getElementById("schoolid").value = schoolid;
+   initialiseEditor()
+}
+
+function initialiseEditor() 
+{
+  //Setup some private variables
+  var Dom = YAHOO.util.Dom,
+  Event = YAHOO.util.Event;
+
+  //The SimpleEditor config
+  var myConfig = {
+    height: '300px',
+    width: '600px',
+    dompath: true,
+    focusAtStart: true,
+     toolbar: {
+        buttons: [
+            { group: 'textstyle', label:'Font Name and Size',
+               buttons:[
+                     { type: 'select', label: 'Arial', value: 'fontname',
+                        menu: [
+                            { text: 'Arial', checked: true },
+                            { text: 'Arial Black' },
+                            { text: 'Comic Sans MS' },
+                            { text: 'Courier New' },
+                            { text: 'Lucida Console' },
+                            { text: 'Tahoma' },
+                            { text: 'Times New Roman' },
+                            { text: 'Trebuchet MS' },
+                            { text: 'Verdana' }
+                        ]
+                    },
+                    { type: 'spin', label: '13', value: 'fontsize', range: [ 9, 75 ]},
+               ]
+            },
+            { type: 'separator' }, 
+            { group: 'textstyle', label: 'Font Style',
+                buttons: [
+                    { type: 'push', label: 'Bold', value: 'bold' },
+                    { type: 'push', label: 'Italic', value: 'italic' },
+                    { type: 'push', label: 'Underline', value: 'underline' },
+                ]
+            },
+            { type: 'separator' }, 
+            { group: 'alignment', label: 'Alignment', 
+	        buttons: [ 
+	            { type: 'push', label: 'Align Left CTRL + SHIFT + [', value: 'justifyleft' }, 
+	            { type: 'push', label: 'Align Center CTRL + SHIFT + |', value: 'justifycenter' }, 
+	            { type: 'push', label: 'Align Right CTRL + SHIFT + ]', value: 'justifyright' }, 
+	            { type: 'push', label: 'Justify', value: 'justifyfull' } 
+	        ] 
+	    }, 
+	    { type: 'separator' }, 
+            { group: 'indentlist', label: 'Indenting and Lists', 
+	        buttons: [ 
+	            { type: 'push', label: 'Indent', value: 'indent'}, 
+	            { type: 'push', label: 'Outdent', value: 'outdent'}, 
+	            { type: 'push', label: 'Create an Unordered List', value: 'insertunorderedlist' }, 
+	            { type: 'push', label: 'Create an Ordered List', value: 'insertorderedlist' } 
+	        ] 
+	    }
+        ]
+    }
+  };
+
+  myEditor = new YAHOO.widget.Editor('comments', myConfig);
+  myEditor.render();
+
 }
 
 
@@ -168,12 +230,10 @@ function submitData()
     }
     if( element.id == "comments")
     {
-      //alert(element.value);
-      var strSingleLineText = element.value.replace(
-        // Replace out the new line character.
-        new RegExp( "\\n", "g" )," "
-      );
-      element.value = strSingleLineText;
+      myEditor.saveHTML();
+      //The var html will now have the contents of the textarea
+      var textboxdata= myEditor.get('element').value;
+      element.value = textboxdata;
       //alert(element.value);
     } 
   }
@@ -195,7 +255,8 @@ var hash = {
 };
 
 function check_extension(filename,submitId) {
-      var re = /\..+$/;
+      //var re = /\..+$/;
+      var re=/\.[0-9a-z]+$/i;
       var ext = filename.match(re);
       //alert(ext);
       var submitEl = document.getElementById(submitId);

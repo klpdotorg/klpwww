@@ -264,10 +264,15 @@ function initialise(data)
                 '</div>';
 
   if(info["syscomment"]){
-    var syscomm = '<div class="div-table">';
+    var syscomm = '<br><hr id="hrmod"/>';
     for(entry in info["syscomment"]){
-      syscomm = syscomm + '<div class="div-table-row">\"' + info["syscomment"][entry] + '\"</div>';}
-    syscomm = syscomm + '</div>'
+      syscomm = syscomm +'<div id="name">'+info["syscomment"][entry]["name"] +'</div><div id="timestamp">'+"Posted on :"+info["syscomment"][entry]["timestamp"]+'</div><br><br>'+info["syscomment"][entry]["comments"]+'<br>';
+      for(i in info["syscomment"][entry]["images"])
+      {
+         syscomm=syscomm+'<a href=\"' + info["image_dir"] + info["syscomment"][entry]["images"][0]+'\"><img id=\"sys_images\" src=\"' + info["image_dir"] + info["syscomment"][entry]["images"][i]+'\"></img></a>'
+      }
+      syscomm = syscomm + '<br><hr id="hrmod"/></div>'
+    }
   } else {
     syscomm = "<div class='div-table'><div class='div-table-row'>No remarks yet.</div></div>"
   } 

@@ -71,28 +71,6 @@ function closeWindow()
   }
 }
 
-function zoomChanged()
-{
-  closeWindow();
-  var zoom = map.getZoom();
-  if (zoom < zoomInfo["block"] )
-  {
-    changeVisibility({"districtMarkers":0,"preschooldistrictMarkers":0});
-  }
-  else if (zoom >= zoomInfo["block"] && zoom < zoomInfo["cluster"])
-  {
-    changeVisibility({"blockMarkers":0,"projectMarkers":0});
-  }
-  else if (zoom >= zoomInfo["cluster"] && zoom < zoomInfo["school"])
-  {
-    changeVisiblity({"clusterMarkers":0,"circleMarkers":0});
-  }
-  else if (map.getZoom() >= zoomInfo["school"])
-  {
-    changeVisibility({"schoolMarkers":0,"preschoolMarkers":0});
-  }
-}
-
 function changeVisibility(showmarkers)
 {
   for(markertype in mapmarkers)
@@ -115,6 +93,29 @@ function changeVisibility(showmarkers)
     }
   }
 }
+
+function zoomChanged()
+{
+  closeWindow();
+  var zoom = map.getZoom();
+  if (zoom < zoomInfo["block"] )
+  {
+    changeVisibility({"districtMarkers":0,"preschooldistrictMarkers":0});
+  }
+  else if (zoom >= zoomInfo["block"] && zoom < zoomInfo["cluster"])
+  {
+    changeVisibility({"blockMarkers":0,"projectMarkers":0});
+  }
+  else if (zoom >= zoomInfo["cluster"] && zoom < zoomInfo["school"])
+  {
+    changeVisibility({"clusterMarkers":0,"circleMarkers":0});
+  }
+  else if (map.getZoom() >= zoomInfo["school"])
+  {
+    changeVisibility({"schoolMarkers":0,"preschoolMarkers":0});
+  }
+}
+
 
 function getPoints()
 {
@@ -378,7 +379,7 @@ function getOtherMarker(markers)
        return markers[b.id];
      }
   }
-  return districtMarkers[defaultid];
+  return mapmarkers["districtMarkers"][defaultid];
 }
 
 function changeFocus(parentType,childType)
@@ -387,65 +388,40 @@ function changeFocus(parentType,childType)
   var id= document.getElementById(parentType).value;
   if (parentType != "school" && parentType != "preschool")
     getBoundary(id,parentType,childType)
+  var markers;
+  var othermarkers;
   var marker;
-  if(parentType =="district")
-  {
-    if(id in districtMarkers)
-      marker = districtMarkers[id];
-    else
-      marker = getOtherMarker(blockMarkers);
+  if(parentType=="district"){
+    markers = mapmarkers["districtMarkers"];
+    othermarkers = mapmarkers["blockMarkers"];}
+  if(parentType=="block"){
+    markers = mapmarkers["blockMarkers"];
+    othermarkers = mapmarkers["clusterMarkers"];}
+  if(parentType=="cluster"){
+    markers = mapmarkers["clusterMarkers"];
+    othermarkers = mapmarkers["schoolMarkers"];}
+  if(parentType=="school"){
+    markers = mapmarkers["schoolMarkers"];
+    othermarkers = mapmarkers["schoolMarkers"];}
+  if(parentType=="preschooldistrict"){
+    markers = mapmarkers["preschooldistrictMarkers"];
+    othermarkers = mapmarkers["projectMarkers"];}
+  if(parentType=="project"){
+    markers = mapmarkers["projectMarkers"];
+    othermarkers = mapmarkers["circleMarkers"];}
+  if(parentType=="circle"){
+    markers = mapmarkers["circleMarkers"];
+    othermarkers = mapmarkers["preschoolMarkers"];}
+  if(parentType=="preschool"){
+    markers = mapmarkers["preschoolMarkers"];
+    othermarkers = mapmarkers["preschoolMarkers"];
+  } else {
+    marker=mapmarkers["districtMarkers"][defaultid]
   }
-  else if( parentType=="preschooldistrict")
-  {
-    if(id in preschooldistrictMarkers)
-      marker = preschooldistrictMarkers[id];
-    else
-      marker = getOtherMarker(projectMarkers);
-  }
-  else if(parentType =="block")
-  {
-    if(id in blockMarkers)
-      marker = blockMarkers[id];
-    else
-      marker = getOtherMarker(clusterMarkers);
-  }
-  else if(parentType =="project")
-  {
-    if( id in projectMarkers)
-      marker = projectMarkers[id];
-    else
-      marker = getOtherMarker(circleMarkers);
-  }
-  else if(parentType =="cluster")
-  {
-    if (id in clusterMarkers)
-      marker = clusterMarkers[id];
-    else
-      marker = getOtherMarker(schoolMarkers);
-  }
-  else if(parentType =="circle")
-  {
-    if( id in circleMarkers)
-      marker = circleMarkers[id];
-    else
-      marker = getOtherMarker(preschoolMarkers);
-  }
-  else if(parentType =="school")
-  {
-    if (id in schoolMarkers)
-      marker = schoolMarkers[id];
-    else
-      marker = getOtherMarker(schoolMarkers);
-  }
-  else if(parentType =="preschool")
-  {
-    if (id in preschoolMarkers)
-      marker = preschoolMarkers[id];
-    else
-      marker = getOtherMarker(preschoolMarkers);
-  }
+  if (id in markers)
+    marker = markers[id];
   else
-    marker=districtMarkers[defaultid]
+    marker = getOtherMarker(othermarkers);
   map.setCenter(marker.getPosition())
   if(parentType =="school" || parentType=="preschool")
     map.setZoom(zoomInfo["school"]+4);

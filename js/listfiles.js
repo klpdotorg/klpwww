@@ -28,6 +28,7 @@ function listFiles(fileList)
       document.getElementById('selections').style.display = "none";
       document.getElementById('mp_files').style.display = "block";
       document.getElementById('mla_files').style.display = "block";
+      document.getElementById('disclaimer').style.display = "block";
     }
     var mptable = document.getElementById('mp_files');
     var mlatable = document.getElementById('mla_files');
@@ -69,6 +70,7 @@ function listFiles(fileList)
     mlatable.innerHTML = tableHTML + "</div></div>"
   } else if (type == 2) {
       document.getElementById('raw_files').style.display = "block";
+      document.getElementById('license').style.display = "block";
       var rawfiletable = document.getElementById('raw_files');
       var fileNames = fileList["rawfiles"].sort();
       tableHTML = "<div class='div-table'>" + "<div class='div-table-caption'>List of Reports</div>" ;
@@ -110,6 +112,7 @@ function selectFiles()
               layer.style.display = "none";
             } else {
               layer.style.display = "block";
+      	      document.getElementById('disclaimer').style.display = "block";
             }
           }
       }

@@ -23,6 +23,22 @@
   padding-right: 5px; 
   border-right: 1px solid #43AD2F;
 }
+#disclaimer {
+  font-size:8pt;
+  padding-left:10px;
+  padding-top:5px;
+  color:#666;
+  width:55%;
+  text-align:justify;
+}
+#license {
+  font-size:8pt;
+  padding-left:10px;
+  padding-top:5px;
+  color:#666;
+  width:55%;
+  text-align:justify;
+}
 body
     {
       background-image: url("../images/parchment-tile.png");

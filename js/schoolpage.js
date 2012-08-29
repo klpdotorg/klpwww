@@ -197,7 +197,7 @@ function initialise(data)
             }
   document.getElementById("sys_info").innerHTML= systable;
 
-  if(info["images"])
+  if(info["images"] && info["images"].length>0)
   {
     school_pics= '<a href=\"' + info["image_dir"] + info["images"][0]+'\" rel=\"lightbox['+ info['id']+']\"><img class="album" src=\"' + info["image_dir"] + info["images"][0]+'\"></img></a>'
     for(i=1;i<info["images"].length;i++)
@@ -205,7 +205,7 @@ function initialise(data)
       school_pics = school_pics+'<a href=\"' + info["image_dir"] + info["images"][i] +'\" rel=\"lightbox['+ info['id']+']\"></a>' 
     }
   }else{
-    school_pics='This school does not have a picture album yet.<br/><br/>'
+    school_pics='&nbsp;&nbsp;&nbsp;&nbsp;This school does not have a picture album yet.<br/><br/>'
   }
   document.getElementById("school_pics").innerHTML=school_pics;
  

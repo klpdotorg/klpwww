@@ -19,3 +19,6 @@ echo Loading data...
 psql -U ${OWNER} -d ${DBNAME} -f load/load-klp-coord.sql && echo done.
 psql -U ${OWNER} -d ${DBNAME} -f load/update_inst_coords.sql && echo done.
 psql -U ${OWNER} -d ${DBNAME} -f load/update_circle.sql && echo done.
+
+echo -n running fixes 
+psql -U ${OWNER} -d ${DBNAME} -f fixes.sql && echo done.

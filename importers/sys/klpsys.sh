@@ -22,3 +22,6 @@ sudo -u postgres psql -d ${DBNAME} -f updatesysdb.sql
 
 echo Reset tb_sys_data seq into ${DBNAME}
 sudo -u postgres psql -d ${DBNAME} -f sysload/counter.sql
+
+echo Run fixes on ${DBNAME}
+sudo -u postgres psql -d ${DBNAME} -f fixes.sql

@@ -33,5 +33,5 @@ psql -U ${OWNER} -d ${DBNAME} -f fixang.sql
 echo Computing aggregates for ${DBNAME}
 psql -U ${OWNER} -d ${DBNAME} -f agg.sql 
 
-echo Running fixes for www
+echo Running fixes for ${DBNAME} 
 psql -U ${OWNER} -d ${DBNAME} -f fixes.sql 

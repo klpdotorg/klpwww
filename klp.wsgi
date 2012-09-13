@@ -724,10 +724,7 @@ class schoolpage:
       connection.commit()
 
       #Added to query images from tb_sys_images
-      from ConfigParser import SafeConfigParser
-      config = SafeConfigParser()
-      config.read(os.path.join(os.getcwd(),'config/klpconfig.ini'))
-      imgpath = config.get('Pictures','htmlpicpath')
+      imgpath = ConfigReader.getConfigValue('Pictures','htmlpicpath')
       data["image_dir"] = "/" + imgpath
       syscursor.execute(statements['get_school_images'],(id,))
       result = syscursor.fetchall()
@@ -998,9 +995,27 @@ class insertSYS:
       traceback.print_exc(file=sys.stderr)
       sysconnection.rollback()
 
+class ConfigReader:
+
+  @staticmethod
+  def getConfigValue(section,key):
+    from ConfigParser import SafeConfigParser
+    try:
+      config = SafeConfigParser()
+      config_fp = open(os.path.join(os.getcwd(),'config/klpconfig.ini'),'r')
+      config.readfp(config_fp)
+      value = config.get(section,key)
+      config_fp.close()
+      return value 
+    except:
+      print "Unexpected error:", sys.exc_info()
+      print "Exception in user code:"
+      print '-'*60
+      traceback.print_exc(file=sys.stdout)
+      print '-'*60
 
 class postSYS:
-
+ 
   def getQuestionDict(self):
     qidsdict = {}
     try:
@@ -1020,13 +1035,10 @@ class postSYS:
     cc = ['feedback@klp.org.in']
     to = [recipient]
     subject = sub
-    from ConfigParser import SafeConfigParser
-    config = SafeConfigParser()
-    config.read(os.path.join(os.getcwd(),'config/klpconfig.ini'))
-    sender = config.get('Mail','senderid')
-    senderpwd = config.get('Mail','senderpwd')
-    smtpport = config.get('Mail','smtpport') 
-    smtpserver = config.get('Mail','smtpserver')
+    sender = ConfigReader.getConfigValue('Mail','senderid')
+    senderpwd = ConfigReader.getConfigValue('Mail','senderpwd')
+    smtpport = ConfigReader.getConfigValue('Mail','smtpport') 
+    smtpserver = ConfigReader.getConfigValue('Mail','smtpserver')
 
     # create html email
     html = '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" '
@@ -1064,12 +1076,8 @@ class postSYS:
 
   def populateImages(self,selectedfile,schoolid,sysid):
       #Getting path to picture files from the config file
-      from ConfigParser import SafeConfigParser
       import hashlib
-      config = SafeConfigParser()
-      config.read(os.path.join(os.getcwd(),'config/klpconfig.ini'))
-      savepath = config.get('Pictures','origpicpath')
-      #hashpath = config.get('Pictures','hashpicpath')
+      savepath = ConfigReader.getConfigValue('Pictures','origpicpath')
       hashed_filename = ''
       if selectedfile.filename != "":
         ext = selectedfile.filename.rpartition('.')[2]

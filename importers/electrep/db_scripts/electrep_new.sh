@@ -37,7 +37,7 @@ python ../py_scripts/parse_school_rep.py
 sudo -u postgres psql -d ${DBNAME} -f load/tb_school_electedrep.sql
 echo Co-ord DB updated too...
 #AC, PC coordinates obtained from xmls
-./update-coord.sh
+#./update-coord.sh
 echo Updated ACs with Neighbours - bangalore
 #Neighbours determined by verifying against map on bbmpelections.in
 python ../py_scripts/parse_neighbours.py

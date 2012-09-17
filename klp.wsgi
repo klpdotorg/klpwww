@@ -43,9 +43,9 @@ syscursor = None
 
 try:
   connection = KLPDB.getConnection()
-  cursor = connection.cursor()
+  #cursor = connection.cursor()
   sysconnection = KLPDB.getSysConnection()
-  syscursor = sysconnection.cursor()
+  #syscursor = sysconnection.cursor()
 except:
   print "Unexpected error:", sys.exc_info()
   print "Exception in user code:"
@@ -240,6 +240,7 @@ class getPointInfo:
   def GET(self):
     pointInfo={"district":[],"block":[],"cluster":[],"project":[],"circle":[],"preschooldistrict":[],"school":[],"preschool":[]}
     try:
+      cursor = connection.cursor()
       for type in pointInfo:
         cursor.execute(statements['get_'+type])
         result = cursor.fetchall()
@@ -254,8 +255,10 @@ class getPointInfo:
           data={"lon":lon,"lat":lat,"name":row[2],"id":row[0]}
           pointInfo[type].append(data)
         connection.commit()
+      cursor.close()
     except:
       traceback.print_exc(file=sys.stderr)
+      cursor.close()
       connection.rollback()
     web.header('Content-Type', 'application/json')
     return jsonpickle.encode(pointInfo)
@@ -272,6 +275,7 @@ class getSYSInfo:
   def GET(self):
     sysinfo={"numstories":0,"numimages":0}
     try:
+      syscursor = sysconnection.cursor()
       syscursor.execute(statements['get_sys_nums'])
       result = syscursor.fetchall()
       for row in result:
@@ -280,9 +284,11 @@ class getSYSInfo:
       result = syscursor.fetchall()
       for row in result:
         sysinfo["numimages"]=int(row[0])
+      syscursor.close()
       sysconnection.commit()
     except:
       traceback.print_exc(file=sys.stderr)
+      syscursor.close()
       sysconnection.rollback()
     web.header('Content-Type', 'application/json')
     return jsonpickle.encode(sysinfo)
@@ -321,21 +327,25 @@ class baseAssessment:
 
     def getProgramInfo(self):
       try:
+        cursor = connection.cursor()
         cursor.execute(statements['get_programme_info'],(self.pid,))
         result = cursor.fetchall()
         for row in result:
           self.data["programme"]["name"]=row[0]
           self.data["programme"]["year"]=str(row[1]).split("-")[0]
           self.data["programme"]["partner"]=row[2]
+        cursor.close()
         connection.commit()
       except:
         traceback.print_exc(file=sys.stderr)
+        cursor.close()
         connection.rollback()
 
     def getBasicAssessmentInfo(self):
       try:
         qtype=self.type
         query='get_basic_assessmentinfo_'+qtype
+        cursor = connection.cursor()
         cursor.execute(statements[query],(self.pid,self.id,))
         result = cursor.fetchall()
         for row in result:
@@ -375,15 +385,18 @@ class baseAssessment:
         for classname in self.data["base"]:
           for gender in self.data["base"][classname]:
             self.data[gender]=self.data[gender]+self.data["base"][classname][gender]
+        cursor.close()
         connection.commit()
       except:
         traceback.print_exc(file=sys.stderr)
+        cursor.close()
         connection.rollback()
 
     def getBaselineGeneral(self):
       try:
         qtype=self.type
         query='get_assessmentpertext_'+qtype
+        cursor = connection.cursor()
         cursor.execute(statements[query],(self.pid,self.id,))
         result = cursor.fetchall()
         for row in result:
@@ -403,15 +416,18 @@ class baseAssessment:
         for classname in  self.data["assessPerText"]:
           for asstext in self.data["assessPerText"][classname]:
                self.data["assessPerText"][classname][asstext]=round((float(self.data["assessPerText"][classname][asstext])/float(self.total[classname]))*100.0,2)
+        cursor.close()
         connection.commit()
       except:
         traceback.print_exc(file=sys.stderr)
+        cursor.close()
         connection.rollback()
 
     def getBaselineGender(self):
       try:
         qtype=self.type
         query='get_assessmentgender_'+qtype
+        cursor = connection.cursor()
         cursor.execute(statements[query],(self.pid,self.id,))
         result = cursor.fetchall()
         for row in result:
@@ -440,15 +456,18 @@ class baseAssessment:
           for gender in self.data["baseline"]["gender"][classname]:
             for asstext in self.data["baseline"]["gender"][classname][gender]:
                 self.data["baseline"]["gender"][classname][gender][asstext]=round((float(self.data["baseline"]["gender"][classname][gender][asstext])/float(self.count[classname][gender]))*100.0,2)
+        cursor.close()
         connection.commit()
       except:
         traceback.print_exc(file=sys.stderr)
+        cursor.close()
         connection.rollback()
 
     def getBaselineMTCount(self,type):
       try:
         type=self.type
         query='get_assessmentmt_count_'+type
+        cursor = connection.cursor()
         cursor.execute(statements[query],(self.pid,self.id,))
         result = cursor.fetchall()
         for row in result:
@@ -463,9 +482,11 @@ class baseAssessment:
             self.count[classname][mt]=count
           else:
             self.count[classname][mt]=self.count[classname][mt]+count
+        cursor.close()
         connection.commit()
       except:
         traceback.print_exc(file=sys.stderr)
+        cursor.close()
         connection.rollback()
 
     def getBaselineMT(self,type=""):
@@ -473,6 +494,7 @@ class baseAssessment:
         qtype=self.type
         self.getBaselineMTCount(qtype)
         query='get_assessmentmt_'+qtype
+        cursor = connection.cursor()
         cursor.execute(statements[query],(self.pid,self.id,))
         result = cursor.fetchall()
         for row in result:
@@ -495,15 +517,18 @@ class baseAssessment:
           for mt in self.data["baseline"]["mt"][classname]:
             for asstext in self.data["baseline"]["mt"][classname][mt]:
                 self.data["baseline"]["mt"][classname][mt][asstext]=round((float(self.data["baseline"]["mt"][classname][mt][asstext])/float(self.count[classname][mt]))*100.0,2)
+        cursor.close()
         connection.commit()
       except:
         traceback.print_exc(file=sys.stderr)
+        cursor.close()
         connection.rollback()
 
     def getProgressCount(self,qtype):
       try:
         qtype=self.type
         query='get_progress_count_'+qtype
+        cursor = connection.cursor()
         cursor.execute(statements[query],(self.pid,self.id,))
         result = cursor.fetchall()
         for row in result:
@@ -513,9 +538,11 @@ class baseAssessment:
           if classname not in self.count:
             self.count[classname]={}
           self.count[classname][assname]=count
+        cursor.close()
         connection.commit()
       except:
         traceback.print_exc(file=sys.stderr)
+        cursor.close()
         connection.rollback()
 
     def getProgressInfo(self,type=""):
@@ -523,6 +550,7 @@ class baseAssessment:
         qtype=self.type
         self.getProgressCount(qtype)
         query='get_progress_'+qtype
+        cursor = connection.cursor()
         cursor.execute(statements[query],(self.pid,self.id,))
         result = cursor.fetchall()
         for row in result:
@@ -549,9 +577,11 @@ class baseAssessment:
             for assname in self.data["progress"][classname][starttime]:
               for aggtext in self.data["progress"][classname][starttime][assname]:
                   self.data["progress"][classname][starttime][assname][aggtext]=round((float(self.data["progress"][classname][starttime][assname][aggtext])/float(self.count[classname][assname]))*100.0,2)
+        cursor.close()
         connection.commit()
       except:
         traceback.print_exc(file=sys.stderr)
+        cursor.close()
         connection.rollback()
 
     def getAnalyticsInfo(self):
@@ -559,6 +589,7 @@ class baseAssessment:
       try:
         qtype=self.type
         query='get_progress_'+qtype
+        cursor = connection.cursor()
         cursor.execute(statements[query],(self.pid,self.id,))
         result = cursor.fetchall()
         for row in result:
@@ -642,9 +673,11 @@ class baseAssessment:
               else:
                 self.data["analytics"][classname][starttime][assname][boundary][aggtext]=round((float(aggsum)/float(boundarytotal[classname][assname]))*100,2)
 
+        cursor.close()
         connection.commit()
       except:
         traceback.print_exc(file=sys.stderr)
+        cursor.close()
         connection.rollback()
 
 
@@ -671,6 +704,7 @@ class schoolpage:
     data["type"]=str(type)
     data["id"]=int(id)
     try:
+      cursor = connection.cursor()
       cursor.execute(statements['get_school_info'],(id,))
       result = cursor.fetchall()
       for row in result:
@@ -726,6 +760,8 @@ class schoolpage:
       #Added to query images from tb_sys_images
       imgpath = ConfigReader.getConfigValue('Pictures','htmlpicpath')
       data["image_dir"] = "/" + imgpath
+
+      syscursor = sysconnection.cursor()
       syscursor.execute(statements['get_school_images'],(id,))
       result = syscursor.fetchall()
       data["images"]=[]
@@ -815,6 +851,7 @@ class schoolpage:
           for (k,v) in sysdata.items():
             data["sysdata"].append(k +'|'+v);
         sysconnection.commit()
+      syscursor.close()
 
       cursor.execute(statements['get_school_point'],(id,))
       result = cursor.fetchall()
@@ -822,10 +859,13 @@ class schoolpage:
         match = re.match(r"POINT\((.*)\s(.*)\)",row[0])
         data["lon"] = match.group(1)
         data["lat"] = match.group(2)
+      cursor.close()
       connection.commit()
     except:
       traceback.print_exc(file=sys.stderr)
+      cursor.close()
       connection.rollback()
+      syscursor.close()
       sysconnection.rollback()
     web.header('Content-Type','text/html; charset=utf-8')
     return render_plain.schoolpage(jsonpickle.encode(data))
@@ -840,12 +880,15 @@ class shareyourstory:
   def GET(self,type):
     questions=[]
     try:
+      syscursor = sysconnection.cursor()
       syscursor.execute(statements['get_sys_'+type+'_questions'])
       result = syscursor.fetchall()
       for row in result:
         questions.append({"id":row[0],"text":row[2],"field":row[3],"type":row[4],"options":row[5]})
+      syscursor.close()
       sysconnection.commit()
     except:
+      syscursor.close()
       sysconnection.rollback()
       traceback.print_exc(file=sys.stderr)
     web.header('Content-Type','text/html; charset=utf-8')
@@ -871,7 +914,7 @@ class getBoundaryInfo:
     boundaryInfo["assessments"]=""
 
     try:
-
+      cursor = connection.cursor()
       cursor.execute(statements['get_'+type+'_assessmentinfo'],(id,))
       result = cursor.fetchall()
       assessments= ""
@@ -883,23 +926,13 @@ class getBoundaryInfo:
         else:
           assessments=assessments+","+row[0]+"|"+str(row[1]).split("-")[0]+"|"+str(row[2])+"|"+str(row[3])
       boundaryInfo["assessments"]=str(assessments)
-      connection.commit()
-    except:
-      traceback.print_exc(file=sys.stderr)
-      connection.rollback()
 
-    try:
       cursor.execute(statements['get_'+type+'_info'],(id,))
       result = cursor.fetchall()
       for row in result:
         boundaryInfo["numSchools"]=str(row[0])
         boundaryInfo["name"]=str(row[1])
-      connection.commit()
-    except:
-      traceback.print_exc(file=sys.stderr)
-      connection.rollback()
    
-    try:
       cursor.execute(statements['get_'+type+'_gender'],(id,))
       result = cursor.fetchall()
       for row in result:
@@ -908,9 +941,11 @@ class getBoundaryInfo:
         if row[0] == "male":
           boundaryInfo["numBoys"]=row[1]
       boundaryInfo["numStudents"]= boundaryInfo["numBoys"]+boundaryInfo["numGirls"]
+      cursor.close()
       connection.commit()
     except:
       traceback.print_exc(file=sys.stderr)
+      cursor.close()
       connection.rollback()
     web.header('Content-Type', 'application/json')
     return jsonpickle.encode(boundaryInfo)
@@ -927,6 +962,7 @@ class getSchoolInfo:
 
 
     try:
+      cursor = connection.cursor()
       cursor.execute(statements['get_school_gender'],(id,))
       result = cursor.fetchall()
       for row in result:
@@ -937,19 +973,24 @@ class getSchoolInfo:
           schoolInfo["numBoys"]=row[2]
 
       schoolInfo["numStudents"]= schoolInfo["numBoys"]+schoolInfo["numGirls"]
+      cursor.close()
       connection.commit()
     except:
       traceback.print_exc(file=sys.stderr)
+      cursor.close()
       connection.rollback()
     
     try:
+      syscursor = sysconnection.cursor()
       syscursor.execute(statements['get_num_stories'],(id,))
       result = syscursor.fetchall()
       for row in result:
         schoolInfo["numStories"]=row[0]
+      syscursor.close()
       sysconnection.commit()
     except:
       traceback.print_exc(file=sys.stderr)
+      syscursor.close()
       sysconnection.rollback()
     web.header('Content-Type', 'application/json; charset=utf-8')
     return jsonpickle.encode(schoolInfo)
@@ -959,14 +1000,17 @@ class getBoundaryPoints:
   def GET(self,type,id):
     boundaryInfo =[]
     try:
+      cursor = connection.cursor()
       cursor.execute(statements['get_'+type+'_points'],(id,))
       result = cursor.fetchall()
       for row in result:
         data={"id":row[0],"name":row[1].capitalize()}
         boundaryInfo.append(data)
+      cursor.close()
       connection.commit()
     except:
       traceback.print_exc(file=sys.stderr)
+      cursor.close()
       connection.rollback()
     web.header('Content-Type', 'application/json')
     return jsonpickle.encode(boundaryInfo)
@@ -975,13 +1019,16 @@ class getSchoolBoundaryInfo:
   def GET(self,id):
     schoolInfo = {"district":"","block":"","cluster":"","schoolname":"","type":""}
     try:
+      cursor = connection.cursor()
       cursor.execute(statements['get_school_boundary_info'],(id,))
       result = cursor.fetchall()
       for row in result:
         schoolInfo ={"district":row[0].capitalize(),"block":row[1].capitalize(),"cluster":row[2].capitalize(),"schoolname":row[3].capitalize(),"type":row[4]}
+      cursor.close()
       connection.commit()
     except:
       traceback.print_exc(file=sys.stderr)
+      cursor.close()
       connection.rollback()
     web.header('Content-Type', 'application/json')
     return jsonpickle.encode(schoolInfo)
@@ -989,10 +1036,13 @@ class getSchoolBoundaryInfo:
 class insertSYS:
   def GET(self,query):
     try:
+      syscursor = sysconnection.cursor()
       syscursor.execute(query)
+      syscursor.close()
       sysconnection.commit()
     except:
       traceback.print_exc(file=sys.stderr)
+      syscursor.close()
       sysconnection.rollback()
 
 class ConfigReader:
@@ -1019,14 +1069,17 @@ class postSYS:
   def getQuestionDict(self):
     qidsdict = {}
     try:
+      syscursor = sysconnection.cursor()
       syscursor.execute(statements['get_sys_qids'])
       result = syscursor.fetchall()
       for row in result:
         qidsdict[row[1]] = row[0]
+      syscursor.close()
       sysconnection.commit()
       return qidsdict
     except:
       traceback.print_exc(file=sys.stderr)
+      syscursor.close()
       sysconnection.rollback()
       return None
 
@@ -1096,16 +1149,20 @@ class postSYS:
           traceback.print_exc(file=sys.stderr)
         imagequery = "insert into tb_sys_images(schoolid,original_file,hash_file,sysid,verified) values( %s , %s, %s, %s, %s)"
         try:
+          syscursor = sysconnection.cursor()
           syscursor.execute(imagequery,(schoolid,savefilename,hashed_filename,sysid,'N')) #Images coming in from this flow are yet to be verified
+          syscursor.close()
           sysconnection.commit()
         except:
           traceback.print_exc(file=sys.stderr)
+          syscursor.close()
           sysconnection.rollback()
 
   def POST(self,type):
     success = True
     recipient = None
     try:
+      syscursor = sysconnection.cursor()
       schoolid=0
       if type=="school":
         form = mySchoolform()
@@ -1159,15 +1216,16 @@ class postSYS:
         sysid=row[0]
       for q in qdata.keys():
         syscursor.execute(qansquery,{'sysid':sysid,'qid':q,'answer':qdata[q]})
+      syscursor.close()    
       sysconnection.commit()
     except:
       print >> sys.stderr, str(query)
       print >> sys.stderr, "Questions:-"+str(qdata)
       print >> sys.stderr, "Other:-"+str(data)
       traceback.print_exc(file=sys.stderr)
+      syscursor.close() 
       sysconnection.rollback()
       success = False
-   
     #add photos
     try:
       schoolid= form['schoolid'].value
@@ -1183,9 +1241,11 @@ class postSYS:
       self.populateImages(x.file5,schoolid,sysid)
     except:
       traceback.print_exc(file=sys.stderr)
+      syscursor.close() 
       sysconnection.rollback()
       success = False
  
+    cursor = connection.cursor()
     cursor.execute(statements['get_school_info'],(schoolid,))
     result = cursor.fetchall()
     for row in result:
@@ -1193,6 +1253,7 @@ class postSYS:
       blk=row[1].capitalize()
       clust=row[2].capitalize()
       sname=row[3].upper()
+    cursor.close()
     connection.commit()
     if success:
       body = "Thank you for taking the time and sharing your experience when visiting " + sname 

@@ -13,9 +13,17 @@ CREATE TABLE tb_ai_questions (
 DROP TABLE tb_ai_answers;
 CREATE TABLE tb_ai_answers (
   sid integer,
-  district varchar(30),
-  project varchar(30),
-  circle varchar(100),
-  name varchar(100),
-  ans_array varchar(220)
+  qid integer,
+  ans integer 
 );
+
+DROP TABLE tb_ang_info;
+CREATE TABLE tb_ang_info (
+   sid integer,
+   dist varchar(32),
+   proj varchar(32),
+   circ varchar(100),
+   name varchar(100)
+);
+
+

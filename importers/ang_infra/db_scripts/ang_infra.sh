@@ -9,7 +9,7 @@ OWNER=klp
 #sudo -u postgres dropdb ${DBNAME}
 sudo -u postgres createdb -O ${OWNER} -E UTF8 ${DBNAME}
 sudo -u postgres psql -d ${DBNAME} -f /usr/share/postgresql/8.4/contrib/dblink.sql
-
+sudo -u postgres createlang plpgsql ${DBNAME}
 # Create schema
 psql -U ${OWNER} -d ${DBNAME} -f ${DBNAME}.sql 
 
@@ -19,3 +19,4 @@ echo loading DB
 sudo -u postgres psql -d ${DBNAME} -f load/insertquestions.sql
 sudo -u postgres psql -d ${DBNAME} -f load/insertanswers.sql
 echo Done!
+psql -U ${OWNER} -d ${DBNAME} -f agg_infra.sql 

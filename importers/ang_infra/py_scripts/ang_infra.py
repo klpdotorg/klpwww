@@ -36,7 +36,8 @@ def getQuestionsSql():
 
 def getAnswersSql():
   datafile=open("../data/Infra-AWC.csv",'rb')
-  sqlfile=open("../db_scripts/load/insertanswers.sql",'w')
+  anssqlfile=open("../db_scripts/load/insertanswers.sql",'w')
+  angsqlfile=open("../db_scripts/load/insertanginfo.sql",'w')
   csvbuffer = csv.reader(datafile, delimiter='|') 
   header = csvbuffer.next()
   klpinfo = [] 
@@ -57,8 +58,17 @@ def getAnswersSql():
       print "In neither dict |" + row[4] + '|' + row[5]
       klpinfo = [] 
     if len(klpinfo) > 0:
-      sqlfile.write('INSERT INTO tb_ai_answers values(' + str(klpinfo[4]) + ',\'' + klpinfo[0] + '\',\'' + klpinfo[1] + '\',\'' + klpinfo[2] + '\',\'' + klpinfo[3].replace('\'','') + '\',\'' + ','.join(row[7:76]) + '\');\n')
-  sqlfile.close()
+      angsqlfile.write('INSERT INTO tb_ang_info values(' + str(klpinfo[4]) + ',\'' + klpinfo[0] + '\',\'' + klpinfo[1] + '\',\'' + klpinfo[2] + '\',\'' + klpinfo[3].replace('\'','') + '\');\n')
+      for i in range(0,69):
+        if str(row[i+7]).strip().lower() == 'NA'.lower():
+          ans = 2
+        elif len(str(row[i+7]).strip()) == 0:
+          ans = 2
+        else:
+          ans = row[i+7]
+        anssqlfile.write('INSERT INTO tb_ai_answers values(' + str(klpinfo[4]) + ',' + str(i+1) +','+ str(ans) + ');\n')
+  angsqlfile.close()
+  anssqlfile.close()
   datafile.close()
 
 try:

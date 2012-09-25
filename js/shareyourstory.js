@@ -24,6 +24,14 @@ function isNumeric(str)
   return true;
 }
 
+function textCounter(field,cntfield,maxlimit) {
+ if (field.value.length > maxlimit) // if too long...trim it!
+   field.value = field.value.substring(0, maxlimit);
+ // otherwise, update 'characters left' counter
+ else
+   cntfield.value = maxlimit - field.value.length;
+}
+
 
 function initialise()
 {
@@ -34,7 +42,7 @@ function initialise()
    document.schoolform.action ="/postSYS/"+type
    getSchoolInfo();
    document.getElementById("schoolid").value = schoolid;
-   initialiseEditor()
+   //initialiseEditor()
 }
 
 function initialiseEditor() 
@@ -230,10 +238,17 @@ function submitData()
     }
     if( element.id == "comments")
     {
-      myEditor.saveHTML();
+      //alert(element.value);
+      var strSingleLineText = element.value.replace(
+        // Replace out the new line character.
+        new RegExp( "\\n", "g" )," "
+      );
+      element.value = strSingleLineText;
+      //commenting rich text box
+      //myEditor.saveHTML();
       //The var html will now have the contents of the textarea
-      var textboxdata= myEditor.get('element').value;
-      element.value = textboxdata;
+      //var textboxdata= myEditor.get('element').value;
+      //element.value = textboxdata;
       //alert(element.value);
     } 
   }

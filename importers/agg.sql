@@ -203,7 +203,7 @@ declare
 begin
         for schs in SELECT s.id as id,ass.id as assid,cl.id as clid,c.sex as sex, c.mt as mt, count(distinct stu.id) AS count
                  FROM tb_student_eval se,tb_question q,tb_assessment ass,tb_student stu, tb_class cl, tb_student_class sc, tb_child c, tb_school s,tb_programme p,tb_boundary b 
-                 WHERE se.stuid=stu.id and se.qid=q.id and q.assid=ass.id and ass.pid=p.id and sc.stuid=stu.id and sc.clid=cl.id AND cl.sid = s.id AND stu.cid = c.id AND sc.ayid = $1 and ass.id=$2 and sc.ayid=p.ayid and s.bid=b.id and p.type=b.type
+                 WHERE se.stuid=stu.id and se.qid=q.id and q.assid=ass.id and ass.pid=p.id and sc.stuid=stu.id and sc.clid=cl.id AND cl.sid = s.id AND stu.cid = c.id AND sc.ayid = $1 and ass.id=$2 and sc.ayid=p.ayid and s.bid=b.id and p.type=b.type and (se.grade is not null or se.mark is not null)
                  GROUP BY s.id, ass.id,cl.id,c.sex,c.mt
         loop
                 insert into tb_school_basic_assessment_info values (schs.id, schs.assid, schs.clid ,schs.sex, schs.mt, schs.count);
@@ -218,7 +218,7 @@ declare
 begin
         for schs in SELECT s.id as id,ass.id as assid,c.sex as sex, c.mt as mt, count(distinct stu.id) AS count
                  FROM tb_student_eval se,tb_question q,tb_assessment ass,tb_student stu, tb_class cl, tb_student_class sc, tb_child c, tb_school s,tb_programme p,tb_boundary b 
-                 WHERE se.stuid=stu.id and se.qid=q.id and q.assid=ass.id and ass.pid=p.id and sc.stuid=stu.id and sc.clid=cl.id AND cl.sid = s.id AND stu.cid = c.id AND sc.ayid = inayid and ass.id=inassid and sc.ayid=p.ayid and s.bid=b.id and p.type=b.type and extract(year from age(intimestamp,c.dob))>=inage
+                 WHERE se.stuid=stu.id and se.qid=q.id and q.assid=ass.id and ass.pid=p.id and sc.stuid=stu.id and sc.clid=cl.id AND cl.sid = s.id AND stu.cid = c.id AND sc.ayid = inayid and ass.id=inassid and sc.ayid=p.ayid and s.bid=b.id and p.type=b.type and (extract(year from age(intimestamp,c.dob))*12+extract(month from age(intimestamp,c.dob)))>=inage
                  GROUP BY s.id, ass.id,c.sex,c.mt
         loop
                 insert into tb_preschool_basic_assessment_info values (schs.id, schs.assid,intext,schs.sex, schs.mt, schs.count);
@@ -233,7 +233,7 @@ declare
 begin
         for schs in SELECT s.id as id,ass.id as assid,c.sex as sex, c.mt as mt, count(distinct stu.id) AS count
                  FROM tb_student_eval se,tb_question q,tb_assessment ass,tb_student stu, tb_class cl, tb_student_class sc, tb_child c, tb_school s,tb_programme p,tb_boundary b 
-                 WHERE se.stuid=stu.id and se.qid=q.id and q.assid=ass.id and ass.pid=p.id and sc.stuid=stu.id and sc.clid=cl.id AND cl.sid = s.id AND stu.cid = c.id AND sc.ayid = inayid and ass.id=inassid and sc.ayid=p.ayid and s.bid=b.id and p.type=b.type and extract(year from age(intimestamp,c.dob))<inupperage and extract(year from age(intimestamp,c.dob))>=inlowerage
+                 WHERE se.stuid=stu.id and se.qid=q.id and q.assid=ass.id and ass.pid=p.id and sc.stuid=stu.id and sc.clid=cl.id AND cl.sid = s.id AND stu.cid = c.id AND sc.ayid = inayid and ass.id=inassid and sc.ayid=p.ayid and s.bid=b.id and p.type=b.type and (extract(year from age(intimestamp,c.dob))*12+extract(month from age(intimestamp,c.dob)))<inupperage and (extract(year from age(intimestamp,c.dob))*12+extract(month from age(intimestamp,c.dob)))>=inlowerage
                  GROUP BY s.id, ass.id,c.sex,c.mt
         loop
                 insert into tb_preschool_basic_assessment_info values (schs.id, schs.assid,intext,schs.sex, schs.mt, schs.count);
@@ -311,6 +311,53 @@ begin
             dqmin := dqmax[i] + 1;
         end loop;
 
+end;
+$$ language plpgsql;
+
+
+CREATE OR REPLACE function agg_school_assess_grade_eng(inyear int,inclass text, inassid int,indomains varchar[] , inqset varchar[], inpmarks int[],innum int) returns void as $$
+declare
+  stueval RECORD;
+  rung1 text;
+  rung2 text;
+  rung3 text;
+  rung4 text;
+begin
+  for domaincount in 0..innum
+    loop
+    rung1 :=indomains[domaincount]||' (0-25%)';
+    rung2 :=indomains[domaincount]||' (25-50%)';
+    rung3 :=indomains[domaincount]||' (50-75%)';
+    rung4 :=indomains[domaincount]||' (75-100%)';
+      for stueval in
+        SELECT sid, assid,clid,sex,mt, count(case when percentile<= 25 then stuid else null end) as Rung1,
+        count(case when percentile between 26 and 50 then stuid else null end) as Rung2,
+        count(case when percentile between 51 and 75 then stuid else null end) as Rung3,
+        count(case when percentile between 76 and 100 then stuid else null end) as Rung4
+        from
+        (          select aggregates.stuid as stuid,aggregates.sid as sid,aggregates.assid as assid,aggregates.clid as clid, c.sex as sex,c.mt as mt,  (domainagg*100/inpmarks[domaincount]) as percentile          from
+          (            select se.stuid as stuid,
+              q.assid as assid,              sg.id as clid,
+              sg.sid as sid,
+              sum(cast(se.grade as int))  as domainagg
+            from tb_student_eval se,tb_question q,tb_student_class stusg,tb_class sg
+            where
+              se.qid=q.id
+              and q.assid=inassid
+              and q.desc= ANY(string_to_array(inqset[domaincount],','))
+              and se.stuid=stusg.stuid
+              and se.grade is not null
+              and stusg.ayid=inyear
+              and stusg.clid=sg.id              and sg.name=inclass            group by se.stuid,q.assid,sg.id,sg.sid
+          ) aggregates, tb_child c,tb_student stu          where
+            aggregates.stuid=stu.id
+            and stu.cid=c.id)info          group by sid,assid,clid,sex,mt        loop
+          insert into tb_school_assessment_agg values (stueval.sid, stueval.assid, stueval.clid, stueval.sex, stueval.mt,rung1, stueval.Rung1);
+          insert into tb_school_assessment_agg values (stueval.sid, stueval.assid, stueval.clid, stueval.sex, stueval.mt,rung2, stueval.Rung2);
+          insert into tb_school_assessment_agg values (stueval.sid, stueval.assid, stueval.clid, stueval.sex, stueval.mt,rung3, stueval.Rung3);
+          insert into tb_school_assessment_agg values (stueval.sid, stueval.assid, stueval.clid, stueval.sex, stueval.mt,rung4, stueval.Rung4);
+        end loop;
+   end loop;
 end;
 $$ language plpgsql;
 
@@ -462,7 +509,7 @@ begin
               and stusg.clid=sg.id
               and stu.id=se.stuid
               and stu.cid=c.id
-              and extract(year from age(intimestamp,c.dob))>=inage
+              and (extract(year from age(intimestamp,c.dob))*12+extract(month from age(intimestamp,c.dob)))>=inage
             group by se.stuid,q.assid,sg.id,sg.sid,c.sex,c.mt
           ) aggregates
           group by sid,assid,clid,sex,mt,stuid,domainagg
@@ -505,8 +552,8 @@ begin
               and stusg.clid=sg.id
               and stu.id=se.stuid
               and stu.cid=c.id
-              and extract(year from age(intimestamp,c.dob))<inupperage
-              and extract(year from age(intimestamp,c.dob))>=inlowerage
+              and (extract(year from age(intimestamp,c.dob))*12+extract(month from age(intimestamp,c.dob)))<inupperage
+              and (extract(year from age(intimestamp,c.dob))*12+extract(month from age(intimestamp,c.dob)))>=inlowerage
             group by se.stuid,q.assid,sg.id,sg.sid,c.sex,c.mt
           ) aggregates
           group by sid,assid,clid,sex,mt,stuid,domainagg
@@ -657,17 +704,63 @@ select basic_assess_school(101,50);
 select basic_assess_school(101,59);
 select basic_assess_school(101,60);
 select basic_assess_school(101,61);
+select basic_assess_school(102,65);
+select basic_assess_school(102,66);
+select basic_assess_school(102,67);
+select basic_assess_school(102,68);
+select basic_assess_school(102,69);
+select basic_assess_school(102,71);
+select basic_assess_school(102,73);
+select basic_assess_school(102,74);
+select basic_assess_school(102,75);
+select basic_assess_school(102,76);
+select basic_assess_school(102,77);
+select basic_assess_school(102,78);
+select basic_assess_school(102,81);
+select basic_assess_school(102,82);
+select basic_assess_school(102,83);
+select basic_assess_school(102,84);
+select basic_assess_school(102,85);
+select basic_assess_school(102,86);
+select basic_assess_school(102,87);
+select basic_assess_school(102,88);
+select basic_assess_school(102,89);
+select basic_assess_school(102,90);
+select basic_assess_school(102,91);
+select basic_assess_school(102,92);
+select basic_assess_school(102,93);
+select basic_assess_school(102,94);
+select basic_assess_school(102,95);
+select basic_assess_school(102,96);
+select basic_assess_school(102,97);
+select basic_assess_school(102,98);
+select basic_assess_school(102,99);
+select basic_assess_school(102,100);
+select basic_assess_school(102,101);
+select basic_assess_school(102,102);
+select basic_assess_school(102,103);
+select basic_assess_school(102,104);
+select basic_assess_school(102,105);
+select basic_assess_school(102,106);
+select basic_assess_school(102,107);
+select basic_assess_school(102,108);
+select basic_assess_school(102,109);
+select basic_assess_school(102,110);
 
 
 --Preschool basic assessessment
-select basic_assess_preschool_between(119,23,3,5,'Age between 3-5',cast('2009-01-01' as timestamp));
-select basic_assess_preschool_morethan(119,23,5,'Age >=5',cast('2009-01-01'as timestamp));
-select basic_assess_preschool_between(119,24,3,5,'Age between 3-5',cast('2009-01-01' as timestamp));
-select basic_assess_preschool_morethan(119,24,5,'Age >=5',cast('2009-01-01' as timestamp));
-select basic_assess_preschool_between(101,56,3,5,'Age between 3-5',cast('2010-01-01' as timestamp));
-select basic_assess_preschool_morethan(101,56,5,'Age >=5',cast('2010-01-01' as timestamp));
-select basic_assess_preschool_between(101,57,3,5,'Age between 3-5',cast('2010-01-01' as timestamp));
-select basic_assess_preschool_morethan(101,57,5,'Age >=5',cast('2010-01-01' as timestamp));
+select basic_assess_preschool_between(119,23,36,60,'Age between 3-5',cast('2009-04-30' as timestamp));
+select basic_assess_preschool_morethan(119,23,60,'Age >=5',cast('2009-04-30'as timestamp));
+select basic_assess_preschool_between(119,24,36,60,'Age between 3-5',cast('2009-04-30' as timestamp));
+select basic_assess_preschool_morethan(119,24,60,'Age >=5',cast('2009-04-30' as timestamp));
+select basic_assess_preschool_between(101,56,36,60,'Age between 3-5',cast('2010-04-30' as timestamp));
+select basic_assess_preschool_morethan(101,56,60,'Age >=5',cast('2010-04-30' as timestamp));
+select basic_assess_preschool_between(101,57,36,60,'Age between 3-5',cast('2010-04-30' as timestamp));
+select basic_assess_preschool_morethan(101,57,60,'Age >=5',cast('2010-04-30' as timestamp));
+select basic_assess_preschool_between(102,70,36,60,'Age between 3-5',cast('2011-04-30' as timestamp));
+select basic_assess_preschool_morethan(102,70,60,'Age >=5',cast('2011-04-30' as timestamp));
+select basic_assess_preschool_between(102,79,36,60,'Age between 3-5',cast('2011-04-30' as timestamp));
+select basic_assess_preschool_morethan(102,79,60,'Age >=5',cast('2011-04-30' as timestamp));
 
 -- 2006 Reading
 select agg_school_reading(1, 90);
@@ -740,21 +833,31 @@ select agg_school_ang(62, 101);
 --Anganwadi
 -- 2009 Anganwadi
 --Pretest
-select agg_school_ang_agebetween(119,3,5,23,ARRAY['Gross Motor','Fine Motor','Socio-Emotional','General Awareness'],ARRAY['6,7,8,9','10,11,12,13,14,15','53,54,55,56','1,2,3,4'],ARRAY[4,6,4,4],3,'Age between 3-5',cast('2009-01-01' as timestamp));
-select agg_school_ang_agemorethan(119,5,23,ARRAY['Language','Intellectual Development','Socio-Emotional','Pre-Academic'],ARRAY['16,17,18,19,20,21,22,23,24,25,26,27,28','29,30,31,32,33','53,54,55,56','34,35,36,37,38,39,40,41,42,43,44,45,46,47,48,49,50,51,52'],ARRAY[13,5,4,19],3,'Age >=5',cast('2009-01-01' as timestamp));
+select agg_school_ang_agebetween(119,36,60,23,ARRAY['Gross Motor','Fine Motor','Socio-Emotional','General Awareness'],ARRAY['6,7,8,9','10,11,12,13,14,15','53,54,55,56','1,2,3,4'],ARRAY[4,6,4,4],3,'Age between 3-5',cast('2009-04-30' as timestamp));
+select agg_school_ang_agemorethan(119,60,23,ARRAY['Language','Intellectual Development','Socio-Emotional','Pre-Academic'],ARRAY['16,17,18,19,20,21,22,23,24,25,26,27,28','29,30,31,32,33','53,54,55,56','34,35,36,37,38,39,40,41,42,43,44,45,46,47,48,49,50,51,52'],ARRAY[13,5,4,19],3,'Age >=5',cast('2009-04-30' as timestamp));
 
 --Posttest
-select agg_school_ang_agebetween(119,3,5,24,ARRAY['Gross Motor','Fine Motor','Socio-Emotional','General Awareness'],ARRAY['6,7,8,9','10,11,12,13,14,15','53,54,55,56','1,2,3,4'],ARRAY[4,6,4,4],3,'Age between 3-5',cast('2009-01-01' as timestamp));
-select agg_school_ang_agemorethan(119,5,24,ARRAY['Language','Intellectual Development','Socio-Emotional','Pre-Academic'],ARRAY['16,17,18,19,20,21,22,23,24,25,26,27,28','29,30,31,32,33','53,54,55,56','34,35,36,37,38,39,40,41,42,43,44,45,46,47,48,49,50,51,52'],ARRAY[13,5,4,19],3,'Age >=5',cast('2009-01-01' as timestamp));
+select agg_school_ang_agebetween(119,36,60,24,ARRAY['Gross Motor','Fine Motor','Socio-Emotional','General Awareness'],ARRAY['6,7,8,9','10,11,12,13,14,15','53,54,55,56','1,2,3,4'],ARRAY[4,6,4,4],3,'Age between 3-5',cast('2009-04-30' as timestamp));
+select agg_school_ang_agemorethan(119,60,24,ARRAY['Language','Intellectual Development','Socio-Emotional','Pre-Academic'],ARRAY['16,17,18,19,20,21,22,23,24,25,26,27,28','29,30,31,32,33','53,54,55,56','34,35,36,37,38,39,40,41,42,43,44,45,46,47,48,49,50,51,52'],ARRAY[13,5,4,19],3,'Age >=5',cast('2009-04-30' as timestamp));
 
 -- 2010 Anganwadi
 --Pretest
-select agg_school_ang_agebetween(101,3,5,56,ARRAY['Gross Motor','Fine Motor','Socio-Emotional','General Awareness'],ARRAY['6,7,8,9','10,11,12,13,14,15','53,54,55,56','1,2,3,4'],ARRAY[4,6,4,4],3,'Age between 3-5',cast('2010-01-01' as timestamp));
-select agg_school_ang_agemorethan(101,5,56,ARRAY['Language','Intellectual Development','Socio-Emotional','Pre-Academic'],ARRAY['16,17,18,19,20,21,22,23,24,25,26,27,28','29,30,31,32,33','53,54,55,56','34,35,36,37,38,39,40,41,42,43,44,45,46,47,48,49,50,51,52'],ARRAY[13,5,4,19],3,'Age >=5',cast('2010-01-01' as timestamp));
+select agg_school_ang_agebetween(101,36,60,56,ARRAY['Gross Motor','Fine Motor','Socio-Emotional','General Awareness'],ARRAY['6,7,8,9','10,11,12,13,14,15','53,54,55,56','1,2,3,4'],ARRAY[4,6,4,4],3,'Age between 3-5',cast('2010-04-30' as timestamp));
+select agg_school_ang_agemorethan(101,60,56,ARRAY['Language','Intellectual Development','Socio-Emotional','Pre-Academic'],ARRAY['16,17,18,19,20,21,22,23,24,25,26,27,28','29,30,31,32,33','53,54,55,56','34,35,36,37,38,39,40,41,42,43,44,45,46,47,48,49,50,51,52'],ARRAY[13,5,4,19],3,'Age >=5',cast('2010-04-30' as timestamp));
 
 --Posttest
-select agg_school_ang_agebetween(101,3,5,57,ARRAY['Gross Motor','Fine Motor','Socio-Emotional','General Awareness'],ARRAY['6,7,8,9','10,11,12,13,14,15','53,54,55,56','1,2,3,4'],ARRAY[4,6,4,4],3,'Age between 3-5',cast('2010-01-01' as timestamp));
-select agg_school_ang_agemorethan(101,5,57,ARRAY['Language','Intellectual Development','Socio-Emotional','Pre-Academic'],ARRAY['16,17,18,19,20,21,22,23,24,25,26,27,28','29,30,31,32,33','53,54,55,56','34,35,36,37,38,39,40,41,42,43,44,45,46,47,48,49,50,51,52'],ARRAY[13,5,4,19],3,'Age >=5',cast('2010-01-01' as timestamp));
+select agg_school_ang_agebetween(101,36,60,57,ARRAY['Gross Motor','Fine Motor','Socio-Emotional','General Awareness'],ARRAY['6,7,8,9','10,11,12,13,14,15','53,54,55,56','1,2,3,4'],ARRAY[4,6,4,4],3,'Age between 3-5',cast('2010-04-30' as timestamp));
+select agg_school_ang_agemorethan(101,60,57,ARRAY['Language','Intellectual Development','Socio-Emotional','Pre-Academic'],ARRAY['16,17,18,19,20,21,22,23,24,25,26,27,28','29,30,31,32,33','53,54,55,56','34,35,36,37,38,39,40,41,42,43,44,45,46,47,48,49,50,51,52'],ARRAY[13,5,4,19],3,'Age >=5',cast('2010-04-30' as timestamp));
+
+
+-- 2011 Anganwadi
+--Pretest
+select agg_school_ang_agebetween(102,36,60,70,ARRAY['Gross Motor','Fine Motor','Socio-Emotional','General Awareness'],ARRAY['6,7,8,9','10,11,12,13,14,15','53,54,55,56','1,2,3,4'],ARRAY[4,6,4,4],3,'Age between 3-5',cast('2010-04-30' as timestamp));
+select agg_school_ang_agemorethan(102,60,70,ARRAY['Language','Intellectual Development','Socio-Emotional','Pre-Academic'],ARRAY['16,17,18,19,20,21,22,23,24,25,26,27,28','29,30,31,32,33','53,54,55,56','34,35,36,37,38,39,40,41,42,43,44,45,46,47,48,49,50,51,52'],ARRAY[13,5,4,19],3,'Age >=5',cast('2010-04-30' as timestamp));
+
+--Posttest
+select agg_school_ang_agebetween(102,36,60,79,ARRAY['Gross Motor','Fine Motor','Socio-Emotional','General Awareness'],ARRAY['6,7,8,9','10,11,12,13,14,15','53,54,55,56','1,2,3,4'],ARRAY[4,6,4,4],3,'Age between 3-5',cast('2010-04-30' as timestamp));
+select agg_school_ang_agemorethan(102,60,79,ARRAY['Language','Intellectual Development','Socio-Emotional','Pre-Academic'],ARRAY['16,17,18,19,20,21,22,23,24,25,26,27,28','29,30,31,32,33','53,54,55,56','34,35,36,37,38,39,40,41,42,43,44,45,46,47,48,49,50,51,52'],ARRAY[13,5,4,19],3,'Age >=5',cast('2010-04-30' as timestamp));
 
 --English
 --2009 English
@@ -786,6 +889,15 @@ select agg_school_assess_grade(101,'4',49,ARRAY['Picture reading','Can answer in
 select agg_school_assess_grade(101,'4',50,ARRAY['Picture reading','Can answer in sentence','Can read a simple sentence'],ARRAY['Eng10','Eng8','Eng9'],ARRAY[1,1,1],2);
 
 
+
+--2011-2012
+--English
+select agg_school_assess_grade_eng(102,'1',65,ARRAY['Oral'],ARRAY['1a,1b,1c,2a,2b,2c,2d,3a,3b,3c,4a'],ARRAY[11],1);
+select agg_school_assess_grade_eng(102,'2',66,ARRAY['Oral','Reading','Writing'],ARRAY['1a,1b,1c,2a,2b,2c,2d,3a,3b,3c,4a','5a,5b,5c','6a,6b,6c,6d,6e,7a,7b,7c'],ARRAY[11,3,8],3);
+select agg_school_assess_grade_eng(102,'3',67,ARRAY['Oral','Reading','Writing'],ARRAY['1a,1b,1c,2a,2b,2c,2d,3a,3b,3c,4a,4b,4c,5a,5b,5c,6a','7a,7b,7c,8a,8b,8c','9a,9b,9c,9d,10a,10b,10c'],ARRAY[17,6,7],3);
+select agg_school_assess_grade_eng(102,'1',75,ARRAY['Oral'],ARRAY['1a,1b,1c,2a,2b,2c,2d,3a,3b,3c,4a'],ARRAY[11],1);
+select agg_school_assess_grade_eng(102,'2',76,ARRAY['Oral','Reading','Writing'],ARRAY['1a,1b,1c,2a,2b,2c,2d,3a,3b,3c,4a','5a,5b,5c','6a,6b,6c,6d,6e,7a,7b,7c'],ARRAY[11,3,8],3);
+select agg_school_assess_grade_eng(102,'3',77,ARRAY['Oral','Reading','Writing'],ARRAY['1a,1b,1c,2a,2b,2c,2d,3a,3b,3c,4a,4b,4c,5a,5b,5c,6a','7a,7b,7c,8a,8b,8c','9a,9b,9c,9d,10a,10b,10c'],ARRAY[17,6,7],3);
 
 
 /*

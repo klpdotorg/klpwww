@@ -18,6 +18,7 @@ var classdomain={"Anganwadi":{"Age between 3-5":{"Gross Motor":0,"Fine Motor":1,
                                 "6":{'Can recognizes the objects in picture':0,'Picture Reading-Can construct  simple sentences':1,'Can read words':2,'Can read simple passage':3,'Can write one word  answers':4}},
                  "English2010":{"3":{'Can write alphabets':0,'Can follow simple instruction':1,'Can give one word answer':2},
                                 "4":{'Picture reading':0,'Can answer in sentence':1,'Can read a simple sentence':2}},
+                 "English2011":{"1":{'Oral (0-25%)':0,'Oral (25-50%)':1,'Oral (50-75%)':2,'Oral (75-100%)':3},"2":{'Oral (0-25%)':0,'Oral (25-50%)':1,'Oral (50-75%)':2,'Oral (75-100%)':3,'Reading (0-25%)':5,'Reading (25-50%)':6,'Reading (50-75%)':7,'Reading (75-100%)':8,'Writing (0-25%)':10,'Writing (25-50%)':11,'Writing (50-75%)':12,'Writing (75-100%)':13},"3":{'Oral (0-25%)':0,'Oral (25-50%)':1,'Oral (50-75%)':2,'Oral (75-100%)':3,'Reading (0-25%)':5,'Reading (25-50%)':6,'Reading (50-75%)':7,'Reading (75-100%)':8,'Writing (0-25%)':10,'Writing (25-50%)':11,'Writing (50-75%)':12,'Writing (75-100%)':13}},
                 };
 
 var levels={
@@ -33,6 +34,8 @@ var levels={
                "15":{"type":"classdomain","index":"English2010"},
                "18":{"type":"classdomain","index":"Anganwadi"},
                "19":{"type":"pdomain","index":"Reading"},
+               "23":{"type":"classdomain","index":"English2011"},
+               "25":{"type":"classdomain","index":"Anganwadi"},
             };
 
 
@@ -41,7 +44,7 @@ var color={"0":"red","O":"red","L":"orange","W":"#ffe438","S":"blue","P":"green"
 var preschooltypeIndex={"Preschooldistrict":0,"Project":1,"Circle":2,"School":3};
 var typeIndex={"District":0,"Block":1,"Cluster":2,"School":3};
 
-var generalChart={"Pie":{1:1,2:1,3:1,7:1,8:1,9:1,10:1,11:1,12:1,13:1,14:1,19:1},"Bar":{5:1,6:1,15:1,18:1}};
+var generalChart={"Pie":{1:1,2:1,3:1,7:1,8:1,9:1,10:1,11:1,12:1,13:1,14:1,19:1},"Bar":{5:1,6:1,15:1,18:1,23:1}};
 
 
 var tabberOptions = {
@@ -159,7 +162,7 @@ document.getElementById("programinfo").innerHTML='<br><hr/><br>The <a href=\"/te
   {
     document.getElementById("programinfo").innerHTML='<br><hr/><br>The <a href=\"/text/english\"><b>English program</b></a> measures the competency of a child using the following levels:<br><ul><b>For Class 3:</b><li>Can write letters of the alphabet</li><li>Can follow simple instruction</li><li>Can give one word answer</li></ul><br><ul><b>For Class 4:</b><li>Picture label Reading</li><li>Can answer in sentence</li><li>Can read a simple sentence</li></ul>';
   }
-  if(pid=="5" || pid=="18")
+  if(pid=="5" || pid=="18" || pid=="25")
   {
     document.getElementById("programinfo").innerHTML='<br><hr/><br>The <a href=\"/text/preschool\"><b>Anganwadi Program'+"'s</b></a> diagnostic test measures children's abilities across the following competencies:<br><ul><li>General awareness</li><li>Gross Motor</li><li>Fine Motor</li><li>Language</li><li>Intellectual</li><li>Socio-emotional</li><li>Pre-academic</li></ul>";
   }
@@ -277,6 +280,12 @@ function basegeneral(type,programme,graphtype)
        options['chartArea']['left']='350';
        options['chartArea']['width']='30%';
     }
+    if (info["programme"]["pid"]==23)
+    {
+       options['chartArea']['left']='150';
+       options['chartArea']['width']='35%';
+    }
+
     if(info['type']=="preschool"|| info['type']=='project' || info['type']=='circle' || info['type']=='preschooldistrict')
     {
        options['title']=classname;

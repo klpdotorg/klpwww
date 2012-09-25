@@ -107,7 +107,11 @@ $def with (questions)
     <div id="formclose" class="grid_12">
       <label>For additional comments/observations/notes, please use this space below:</label>
       <div id="commentspace">
-        <textarea name="comments" id="comments" style="width:100%" rows="5"></textarea>
+        <textarea name="comments" id="comments" style="width:100%" rows="5"
+         onKeyDown="textCounter(document.schoolform.comments,document.schoolform.remLen2,500)"
+         onKeyUp="textCounter(document.schoolform.comments,document.schoolform.remLen2,500)"></textarea>
+       <input readonly type="text" name="remLen2" size="3" maxlength="3" value="500"> characters left
+        <!--textarea name="comments" id="comments" style="width:100%" rows="5"></textarea-->
       </div>
 
       <div id="submit" align="left">

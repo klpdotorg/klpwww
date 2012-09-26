@@ -35,24 +35,29 @@ urls = (
      '/listFiles/(.*)','listFiles',
 )
 
-connection = None
-cursor = None
-sysconnection = None
-syscursor = None
+class DbManager:
 
+  con = None
+  cursor = None
+  syscon = None
+  syscursor = None
 
-try:
-  connection = KLPDB.getConnection()
-  #cursor = connection.cursor()
-  sysconnection = KLPDB.getSysConnection()
-  #syscursor = sysconnection.cursor()
-except:
-  print "Unexpected error:", sys.exc_info()
-  print "Exception in user code:"
-  print '-'*60
-  traceback.print_exc(file=sys.stdout)
-  print '-'*60
+  @classmethod
+  def getMainCon(cls):
+    if cls.con and cls.con.closed==0:
+      pass
+    else:
+      cls.con = KLPDB.getConnection()
+    return cls.con
 
+  @classmethod
+  def getSysCon(cls):
+    if cls.syscon and cls.syscon.closed==0:
+      pass
+    else:
+      cls.syscon = KLPDB.getSysConnection()
+    return cls.syscon
+   
 mySchoolform =form.Form(
                    form.Hidden('schoolid'),
                    form.Textbox('name'),
@@ -224,7 +229,15 @@ statements = {'get_district':"select bcoord.id_bndry,ST_AsText(bcoord.coord),ini
               'get_sys_nums':"select count(*) from tb_sys_data",
               'get_sys_image_nums':"select count(*) from tb_sys_images",
               'get_school_images':"select hash_file from tb_sys_images where schoolid=%s and verified='Y'",
-              'get_school_mpmla':"select mla.const_ward_name, mp.const_ward_name,mla.current_elected_rep, mla.current_elected_party, mp.current_elected_rep, mp.current_elected_party from vw_school_electedrep se, vw_electedrep_master mla, vw_electedrep_master mp where se.sid=%s and mla.id=se.mla_const_id and mp.id= se.mp_const_id;",
+              'get_school_mpmla':"select mla.const_ward_name, mp.const_ward_name,mla.current_elected_rep, mla.current_elected_party, mp.current_elected_rep, mp.current_elected_party, ward.const_ward_name,ward.current_elected_rep,ward.current_elected_party from vw_school_electedrep se, vw_electedrep_master mla, vw_electedrep_master mp, vw_electedrep_master ward where se.sid=%s and mla.id=se.mla_const_id and mp.id= se.mp_const_id and se.ward_id=ward.id;",
+              'get_tlmgrant_sch':"select vpd.grant_type,vpd.grant_amount,vpd.grant_amount* sum(vdf.teacher_count) as total_grant,vdf.tlm_recd,vdf.tlm_expnd from vw_paisa_data vpd, tb_school s, vw_dise_info vdf where s.dise_code=vdf.dise_code and vpd.criteria='teacher_count' and s.id=%s group by  vpd.grant_type, vpd.grant_amount, vdf.tlm_recd,vdf.tlm_expnd;",
+              'get_mtncgrant_sch':"select vpd2.grant_type, CASE WHEN mvdf.operator='gt' THEN 'With more than 3 classrooms ' ELSE 'With 3 classrooms or fewer ' END as classroom_count, vpd2.grant_amount as total_grant from (select vdf.dise_code as dise_code, CASE WHEN vdf.classroom_count <= CAST (vpd.factor AS INT) THEN 'lt' ELSE 'gt' END as operator from vw_paisa_data vpd, vw_dise_info vdf where vpd.criteria='classroom_count') AS mvdf, vw_paisa_data vpd2, tb_school s where s.dise_code = mvdf.dise_code and mvdf.operator = vpd2.operator and s.id=%s group by vpd2.grant_type, mvdf.operator, vpd2.grant_amount;",
+              'get_annualgrant_sch':"select s.cat, vpd.grant_type, vpd.grant_amount as total_grant,vdf.sg_recd,vdf.sg_expnd from tb_school s, vw_paisa_data vpd, vw_dise_info vdf where vpd.criteria='school_cat' and vpd.factor = s.cat::text and s.id=%s and vdf.dise_code=s.dise_code group by s.cat,vpd.grant_type,vpd.grant_amount,vdf.sg_recd,vdf.sg_expnd ;",
+              'get_dise_facility':"select distinct ddm.value, dfa.score,dfa.df_group from vw_dise_facility_agg dfa, tb_school s, vw_dise_display_master ddm where s.dise_code=dfa.dise_code and ddm.key=dfa.df_metric and s.id=%s;",
+	      'get_dise_ptr':"select vdi.teacher_count,vdi.boys_count,vdi.girls_count,vdi.classroom_count,vdi.acyear,vdi.lowest_class,vdi.highest_class from vw_dise_info vdi,tb_school s where s.dise_code=vdi.dise_code and s.id=%s;",
+              'get_dise_rte':"select distinct ddm.value, dra.status,dra.rte_group from vw_dise_rte_agg dra, tb_school s, vw_dise_display_master ddm where s.dise_code=dra.dise_code and ddm.key=dra.rte_metric and s.id=%s;",
+              'get_ang_infra':"select distinct adm.value, aia.perc_score,aia.ai_group from vw_anginfra_agg aia, tb_school s, vw_ang_display_master adm where s.id=aia.sid and adm.key=aia.ai_metric and s.id=%s;",
+              'get_lib_infra':"select libstatus,libtype,numbooks,numracks,numtables,numchairs,numcomputers,numups from tb_school s, vw_libinfra li where s.id=li.sid and s.id=%s;",
 }
 render = web.template.render('templates/', base='base')
 render_plain = web.template.render('templates/')
@@ -242,7 +255,7 @@ class getPointInfo:
   def GET(self):
     pointInfo={"district":[],"block":[],"cluster":[],"project":[],"circle":[],"preschooldistrict":[],"school":[],"preschool":[]}
     try:
-      cursor = connection.cursor()
+      cursor = DbManager.getMainCon().cursor()
       for type in pointInfo:
         cursor.execute(statements['get_'+type])
         result = cursor.fetchall()
@@ -256,12 +269,12 @@ class getPointInfo:
           lat = match.group(2)
           data={"lon":lon,"lat":lat,"name":row[2],"id":row[0]}
           pointInfo[type].append(data)
-        connection.commit()
+        DbManager.getMainCon().commit()
       cursor.close()
     except:
       traceback.print_exc(file=sys.stderr)
       cursor.close()
-      connection.rollback()
+      DbManager.getMainCon().rollback()
     web.header('Content-Type', 'application/json')
     return jsonpickle.encode(pointInfo)
 
@@ -277,7 +290,7 @@ class getSYSInfo:
   def GET(self):
     sysinfo={"numstories":0,"numimages":0}
     try:
-      syscursor = sysconnection.cursor()
+      syscursor = DbManager.getSysCon().cursor()
       syscursor.execute(statements['get_sys_nums'])
       result = syscursor.fetchall()
       for row in result:
@@ -287,11 +300,11 @@ class getSYSInfo:
       for row in result:
         sysinfo["numimages"]=int(row[0])
       syscursor.close()
-      sysconnection.commit()
+      DbManager.getSysCon().commit()
     except:
       traceback.print_exc(file=sys.stderr)
       syscursor.close()
-      sysconnection.rollback()
+      DbManager.getSysCon().rollback()
     web.header('Content-Type', 'application/json')
     return jsonpickle.encode(sysinfo)
 
@@ -306,10 +319,10 @@ class assessments:
          stype="preschool"
        assess = assessmentData(type,pid,id,stype)
        data = assess.getData()
-       connection.commit()
+       DbManager.getMainCon().commit()
     except:
       traceback.print_exc(file=sys.stderr)
-      connection.rollback()
+      DbManager.getMainCon().rollback()
     web.header('Content-Type','text/html; charset=utf-8')
     return render_plain.chart(data)
 
@@ -329,7 +342,7 @@ class baseAssessment:
 
     def getProgramInfo(self):
       try:
-        cursor = connection.cursor()
+        cursor = DbManager.getMainCon().cursor()
         cursor.execute(statements['get_programme_info'],(self.pid,))
         result = cursor.fetchall()
         for row in result:
@@ -337,17 +350,17 @@ class baseAssessment:
           self.data["programme"]["year"]=str(row[1]).split("-")[0]
           self.data["programme"]["partner"]=row[2]
         cursor.close()
-        connection.commit()
+        DbManager.getMainCon().commit()
       except:
         traceback.print_exc(file=sys.stderr)
         cursor.close()
-        connection.rollback()
+        DbManager.getMainCon().rollback()
 
     def getBasicAssessmentInfo(self):
       try:
         qtype=self.type
         query='get_basic_assessmentinfo_'+qtype
-        cursor = connection.cursor()
+        cursor = DbManager.getMainCon().cursor()
         cursor.execute(statements[query],(self.pid,self.id,))
         result = cursor.fetchall()
         for row in result:
@@ -388,17 +401,17 @@ class baseAssessment:
           for gender in self.data["base"][classname]:
             self.data[gender]=self.data[gender]+self.data["base"][classname][gender]
         cursor.close()
-        connection.commit()
+        DbManager.getMainCon().commit()
       except:
         traceback.print_exc(file=sys.stderr)
         cursor.close()
-        connection.rollback()
+        DbManager.getMainCon().rollback()
 
     def getBaselineGeneral(self):
       try:
         qtype=self.type
         query='get_assessmentpertext_'+qtype
-        cursor = connection.cursor()
+        cursor = DbManager.getMainCon().cursor()
         cursor.execute(statements[query],(self.pid,self.id,))
         result = cursor.fetchall()
         for row in result:
@@ -419,17 +432,17 @@ class baseAssessment:
           for asstext in self.data["assessPerText"][classname]:
                self.data["assessPerText"][classname][asstext]=round((float(self.data["assessPerText"][classname][asstext])/float(self.total[classname]))*100.0,2)
         cursor.close()
-        connection.commit()
+        DbManager.getMainCon().commit()
       except:
         traceback.print_exc(file=sys.stderr)
         cursor.close()
-        connection.rollback()
+        DbManager.getMainCon().rollback()
 
     def getBaselineGender(self):
       try:
         qtype=self.type
         query='get_assessmentgender_'+qtype
-        cursor = connection.cursor()
+        cursor = DbManager.getMainCon().cursor()
         cursor.execute(statements[query],(self.pid,self.id,))
         result = cursor.fetchall()
         for row in result:
@@ -459,17 +472,17 @@ class baseAssessment:
             for asstext in self.data["baseline"]["gender"][classname][gender]:
                 self.data["baseline"]["gender"][classname][gender][asstext]=round((float(self.data["baseline"]["gender"][classname][gender][asstext])/float(self.count[classname][gender]))*100.0,2)
         cursor.close()
-        connection.commit()
+        DbManager.getMainCon().commit()
       except:
         traceback.print_exc(file=sys.stderr)
         cursor.close()
-        connection.rollback()
+        DbManager.getMainCon().rollback()
 
     def getBaselineMTCount(self,type):
       try:
         type=self.type
         query='get_assessmentmt_count_'+type
-        cursor = connection.cursor()
+        cursor = DbManager.getMainCon().cursor()
         cursor.execute(statements[query],(self.pid,self.id,))
         result = cursor.fetchall()
         for row in result:
@@ -485,18 +498,18 @@ class baseAssessment:
           else:
             self.count[classname][mt]=self.count[classname][mt]+count
         cursor.close()
-        connection.commit()
+        DbManager.getMainCon().commit()
       except:
         traceback.print_exc(file=sys.stderr)
         cursor.close()
-        connection.rollback()
+        DbManager.getMainCon().rollback()
 
     def getBaselineMT(self,type=""):
       try:
         qtype=self.type
         self.getBaselineMTCount(qtype)
         query='get_assessmentmt_'+qtype
-        cursor = connection.cursor()
+        cursor = DbManager.getMainCon().cursor()
         cursor.execute(statements[query],(self.pid,self.id,))
         result = cursor.fetchall()
         for row in result:
@@ -520,17 +533,17 @@ class baseAssessment:
             for asstext in self.data["baseline"]["mt"][classname][mt]:
                 self.data["baseline"]["mt"][classname][mt][asstext]=round((float(self.data["baseline"]["mt"][classname][mt][asstext])/float(self.count[classname][mt]))*100.0,2)
         cursor.close()
-        connection.commit()
+        DbManager.getMainCon().commit()
       except:
         traceback.print_exc(file=sys.stderr)
         cursor.close()
-        connection.rollback()
+        DbManager.getMainCon().rollback()
 
     def getProgressCount(self,qtype):
       try:
         qtype=self.type
         query='get_progress_count_'+qtype
-        cursor = connection.cursor()
+        cursor = DbManager.getMainCon().cursor()
         cursor.execute(statements[query],(self.pid,self.id,))
         result = cursor.fetchall()
         for row in result:
@@ -541,18 +554,18 @@ class baseAssessment:
             self.count[classname]={}
           self.count[classname][assname]=count
         cursor.close()
-        connection.commit()
+        DbManager.getMainCon().commit()
       except:
         traceback.print_exc(file=sys.stderr)
         cursor.close()
-        connection.rollback()
+        DbManager.getMainCon().rollback()
 
     def getProgressInfo(self,type=""):
       try:
         qtype=self.type
         self.getProgressCount(qtype)
         query='get_progress_'+qtype
-        cursor = connection.cursor()
+        cursor = DbManager.getMainCon().cursor()
         cursor.execute(statements[query],(self.pid,self.id,))
         result = cursor.fetchall()
         for row in result:
@@ -580,18 +593,18 @@ class baseAssessment:
               for aggtext in self.data["progress"][classname][starttime][assname]:
                   self.data["progress"][classname][starttime][assname][aggtext]=round((float(self.data["progress"][classname][starttime][assname][aggtext])/float(self.count[classname][assname]))*100.0,2)
         cursor.close()
-        connection.commit()
+        DbManager.getMainCon().commit()
       except:
         traceback.print_exc(file=sys.stderr)
         cursor.close()
-        connection.rollback()
+        DbManager.getMainCon().rollback()
 
     def getAnalyticsInfo(self):
       name=self.data["name"].capitalize()+" (School)"
       try:
         qtype=self.type
         query='get_progress_'+qtype
-        cursor = connection.cursor()
+        cursor = DbManager.getMainCon().cursor()
         cursor.execute(statements[query],(self.pid,self.id,))
         result = cursor.fetchall()
         for row in result:
@@ -676,11 +689,11 @@ class baseAssessment:
                 self.data["analytics"][classname][starttime][assname][boundary][aggtext]=round((float(aggsum)/float(boundarytotal[classname][assname]))*100,2)
 
         cursor.close()
-        connection.commit()
+        DbManager.getMainCon().commit()
       except:
         traceback.print_exc(file=sys.stderr)
         cursor.close()
-        connection.rollback()
+        DbManager.getMainCon().rollback()
 
 
 class assessmentData(baseAssessment):
@@ -696,17 +709,129 @@ class assessmentData(baseAssessment):
       self.getProgressInfo()
       if self.type =="school" or self.type=="preschool":
         self.getAnalyticsInfo()
-      connection.commit()
+      DbManager.getMainCon().commit()
       return self.data
 
 
 class schoolpage:
+
+  def getLibraryData(self, klpid):
+    tabledata = {}
+    try:
+      cursor = DbManager.getMainCon().cursor()
+      cursor.execute(statements['get_lib_infra'],(klpid,))
+      result = cursor.fetchall()
+      for row in result:
+        tabledata['Status of the Library'] = self.checkEmpty(row[0],'-')
+        tabledata['Type in Hub-Spoke model'] = self.checkEmpty(row[1],'-')
+        tabledata['Number of Books'] = self.checkEmpty(row[2],'-')
+        tabledata['Number of Racks'] = self.checkEmpty(row[3],'-')
+        tabledata['Number of Tables'] = self.checkEmpty(row[4],'-')
+        tabledata['Number of Chairs'] = self.checkEmpty(row[5],'-')
+        tabledata['Number of Computers'] = self.checkEmpty(row[6],'-')
+        tabledata['Number of UPS(s)'] = self.checkEmpty(row[7],'-')
+      DbManager.getMainCon().commit()
+      cursor.close()
+      return {'lib_infra':tabledata};
+    except:
+      DbManager.getMainCon().rollback()
+      cursor.close()
+      traceback.print_exc(file=sys.stderr)
+      return tabledata;  
+
+  def getAngInfraData(self, klpid):
+    tabledata = {}
+    try:
+      cursor = DbManager.getMainCon().cursor()
+      cursor.execute(statements['get_ang_infra'],(klpid,))
+      result = cursor.fetchall()
+      facilities = {}
+      for row in result:
+        if row[2] in facilities:
+	  facilities[row[2]][row[0]]=int(str(row[1]))
+        else:
+          facilities[row[2]]={row[0]:int(str(row[1]))}
+      tabledata['ang_infra'] = facilities
+      DbManager.getMainCon().commit()
+      cursor.close()
+      return tabledata;
+    except:
+      DbManager.getMainCon().rollback()
+      cursor.close()
+      traceback.print_exc(file=sys.stderr)
+      return tabledata;  
+
+  def getDiseData(self, dise_code, klpid):
+    tabledata = {}
+    try:
+      cursor = DbManager.getMainCon().cursor()
+      cursor.execute(statements['get_tlmgrant_sch'],(klpid,))
+      result = cursor.fetchall()
+      for row in result:
+        tabledata['tlm_amount'] = str(row[2])
+        tabledata['tlm_recd'] = str(row[3])
+        tabledata['tlm_expnd'] = str(row[4])
+        tabledata['teacher_count'] = str(int(row[2])/int(row[1]))
+      DbManager.getMainCon().commit()
+      cursor.execute(statements['get_mtncgrant_sch'],(klpid,))
+      result = cursor.fetchall()
+      for row in result:
+        tabledata['smg_amount'] = str(row[2])
+        tabledata['classroom_count'] = str(row[1])
+      DbManager.getMainCon().commit()
+      cursor.execute(statements['get_annualgrant_sch'],(klpid,))
+      result = cursor.fetchall()
+      for row in result:
+        tabledata['sg_amount'] = str(row[2])
+        tabledata['sg_recd'] = str(row[3])
+        tabledata['sg_expnd'] = str(row[4])
+      DbManager.getMainCon().commit()
+      cursor.execute(statements['get_dise_ptr'],(klpid,))
+      result = cursor.fetchall()
+      for row in result:
+        tabledata['teacher_count'] = str(row[0])
+        tabledata['boys_count'] = str(row[1])
+        tabledata['girls_count'] = str(row[2])
+        tabledata['student_count'] = str(int(row[1]) + int(row[2]))
+        tabledata['classroom_count'] = str(row[3])
+        tabledata['acyear'] = str(row[4])
+        tabledata['lowest_class'] = str(row[5])
+        tabledata['highest_class'] = str(row[6])
+      DbManager.getMainCon().commit()
+      cursor.execute(statements['get_dise_facility'],(klpid,))
+      result = cursor.fetchall()
+      facilities = {}
+      for row in result:
+        if row[2] in facilities:
+	  facilities[row[2]][row[0]]=int(str(row[1]))
+        else:
+          facilities[row[2]]={row[0]:int(str(row[1]))}
+      tabledata['dise_facility'] = facilities
+      DbManager.getMainCon().commit()
+      cursor.execute(statements['get_dise_rte'],(klpid,))
+      result = cursor.fetchall()
+      rte = {}
+      for row in result:
+        if row[2] in rte:
+	  rte[row[2]][row[0]]=str(row[1])
+        else:
+          rte[row[2]]={row[0]:str(row[1])}
+      tabledata['dise_rte'] = rte 
+      DbManager.getMainCon().commit()
+      cursor.close()
+      return tabledata;
+    except:
+      DbManager.getMainCon().rollback()
+      cursor.close()
+      traceback.print_exc(file=sys.stderr)
+      return tabledata;  
+
   def GET(self,type,id):
     data={'name':'','type':'','id':'','sysdate':[]}
     data["type"]=str(type)
     data["id"]=int(id)
     try:
-      cursor = connection.cursor()
+      cursor = DbManager.getMainCon().cursor()
       cursor.execute(statements['get_school_info'],(id,))
       result = cursor.fetchall()
       for row in result:
@@ -721,7 +846,16 @@ class schoolpage:
         data["mgmt"]=self.checkEmpty(row[8],'-')
         data["dise_code"]=self.checkEmpty(row[9],'-')
         data["status"]=row[10]
-      connection.commit()
+      DbManager.getMainCon().commit()
+
+      if type=='school' and len(data["dise_code"]) > 2:
+        data.update(self.getDiseData(data["dise_code"],id))
+      
+      if type=='school':
+        data.update(self.getLibraryData(id))
+      
+      if type=='preschool':
+        data.update(self.getAngInfraData(id))
 
       cursor.execute(statements['get_school_address_info'],(id,))
       result = cursor.fetchall()
@@ -734,16 +868,18 @@ class schoolpage:
         data["inst_id_1"]=self.checkEmpty(row[4],'-')
         data["inst_id_2"]=self.checkEmpty(row[5],'-')
         data["bus_no"]=self.checkEmpty(row[6],'-')
-      connection.commit()
+      DbManager.getMainCon().commit()
 
       cursor.execute(statements['get_school_mpmla'],(id,))
       result = cursor.fetchall()
       for row in result:
         data["mla"] = self.checkEmpty(row[0],'Not available')
         data["mp"] = self.checkEmpty(row[1],'Not available')
+        data["ward"] = self.checkEmpty(row[6],'Not available')
         data["mlaname"] = self.checkEmpty(row[2]+' ('+row[3]+')','Not available')
         data["mpname"] = self.checkEmpty(row[4]+' ('+row[5]+')','Not available')
-      connection.commit()
+        data["wardname"] = self.checkEmpty(row[7]+' ('+row[8]+')','Not available')
+      DbManager.getMainCon().commit()
     
       query='get_assessmentinfo_'+type
       cursor.execute(statements[query],(id,))
@@ -757,19 +893,19 @@ class schoolpage:
         else:
           assessments=assessments+","+row[0]+"|"+str(row[1]).split("-")[0]+"|"+str(row[2])+"|"+str(row[3])
       data["assessments"]=assessments
-      connection.commit()
+      DbManager.getMainCon().commit()
 
       #Added to query images from tb_sys_images
       imgpath = ConfigReader.getConfigValue('Pictures','htmlpicpath')
       data["image_dir"] = "/" + imgpath
 
-      syscursor = sysconnection.cursor()
+      syscursor = DbManager.getSysCon().cursor()
       syscursor.execute(statements['get_school_images'],(id,))
       result = syscursor.fetchall()
       data["images"]=[]
       for row in result:
         data["images"].append(row[0])
-      sysconnection.commit()
+      DbManager.getSysCon().commit()
 
       cursor.execute(statements['get_school_gender'],(id,))
       result = cursor.fetchall()
@@ -783,7 +919,7 @@ class schoolpage:
       if "numBoys" not in data.keys():
         data["numBoys"] = 0
       data["numStudents"]= data["numBoys"]+data["numGirls"]
-      connection.commit()
+      DbManager.getMainCon().commit()
 
       cursor.execute(statements['get_school_mt'],(id,))
       result = cursor.fetchall()
@@ -808,7 +944,7 @@ class schoolpage:
       if len(tabledata.keys()) > 0:
         data["school_mt_tb"] = tabledata
         data["school_mt_ord"] = order_lst
-      connection.commit()
+      DbManager.getMainCon().commit()
 
       syscursor.execute(statements['get_sys_info'],(id,))
       result = syscursor.fetchall()
@@ -832,7 +968,7 @@ class schoolpage:
         count=count+1
       data["sysdate"] = sysdates
       data["syscomment"] = syscomments
-      sysconnection.commit()
+      DbManager.getSysCon().commit()
 
       sysdata = {}
       if count>0:
@@ -852,7 +988,7 @@ class schoolpage:
           data["sysdata"] = []
           for (k,v) in sysdata.items():
             data["sysdata"].append(k +'|'+v);
-        sysconnection.commit()
+        DbManager.getSysCon().commit()
       syscursor.close()
 
       cursor.execute(statements['get_school_point'],(id,))
@@ -862,13 +998,13 @@ class schoolpage:
         data["lon"] = match.group(1)
         data["lat"] = match.group(2)
       cursor.close()
-      connection.commit()
+      DbManager.getMainCon().commit()
     except:
       traceback.print_exc(file=sys.stderr)
       cursor.close()
-      connection.rollback()
+      DbManager.getMainCon().rollback()
       syscursor.close()
-      sysconnection.rollback()
+      DbManager.getSysCon().rollback()
     web.header('Content-Type','text/html; charset=utf-8')
     return render_plain.schoolpage(jsonpickle.encode(data))
 
@@ -882,16 +1018,16 @@ class shareyourstory:
   def GET(self,type):
     questions=[]
     try:
-      syscursor = sysconnection.cursor()
+      syscursor = DbManager.getSysCon().cursor()
       syscursor.execute(statements['get_sys_'+type+'_questions'])
       result = syscursor.fetchall()
       for row in result:
         questions.append({"id":row[0],"text":row[2],"field":row[3],"type":row[4],"options":row[5]})
       syscursor.close()
-      sysconnection.commit()
+      DbManager.getSysCon().commit()
     except:
       syscursor.close()
-      sysconnection.rollback()
+      DbManager.getSysCon().rollback()
       traceback.print_exc(file=sys.stderr)
     web.header('Content-Type','text/html; charset=utf-8')
     return render_plain.shareyourstory(questions)
@@ -916,7 +1052,7 @@ class getBoundaryInfo:
     boundaryInfo["assessments"]=""
 
     try:
-      cursor = connection.cursor()
+      cursor = DbManager.getMainCon().cursor()
       cursor.execute(statements['get_'+type+'_assessmentinfo'],(id,))
       result = cursor.fetchall()
       assessments= ""
@@ -944,11 +1080,11 @@ class getBoundaryInfo:
           boundaryInfo["numBoys"]=row[1]
       boundaryInfo["numStudents"]= boundaryInfo["numBoys"]+boundaryInfo["numGirls"]
       cursor.close()
-      connection.commit()
+      DbManager.getMainCon().commit()
     except:
       traceback.print_exc(file=sys.stderr)
       cursor.close()
-      connection.rollback()
+      DbManager.getMainCon().rollback()
     web.header('Content-Type', 'application/json')
     return jsonpickle.encode(boundaryInfo)
 
@@ -964,7 +1100,7 @@ class getSchoolInfo:
 
 
     try:
-      cursor = connection.cursor()
+      cursor = DbManager.getMainCon().cursor()
       cursor.execute(statements['get_school_gender'],(id,))
       result = cursor.fetchall()
       for row in result:
@@ -976,24 +1112,24 @@ class getSchoolInfo:
 
       schoolInfo["numStudents"]= schoolInfo["numBoys"]+schoolInfo["numGirls"]
       cursor.close()
-      connection.commit()
+      DbManager.getMainCon().commit()
     except:
       traceback.print_exc(file=sys.stderr)
       cursor.close()
-      connection.rollback()
+      DbManager.getMainCon().rollback()
     
     try:
-      syscursor = sysconnection.cursor()
+      syscursor = DbManager.getSysCon().cursor()
       syscursor.execute(statements['get_num_stories'],(id,))
       result = syscursor.fetchall()
       for row in result:
         schoolInfo["numStories"]=row[0]
       syscursor.close()
-      sysconnection.commit()
+      DbManager.getSysCon().commit()
     except:
       traceback.print_exc(file=sys.stderr)
       syscursor.close()
-      sysconnection.rollback()
+      DbManager.getSysCon().rollback()
     web.header('Content-Type', 'application/json; charset=utf-8')
     return jsonpickle.encode(schoolInfo)
 
@@ -1002,18 +1138,18 @@ class getBoundaryPoints:
   def GET(self,type,id):
     boundaryInfo =[]
     try:
-      cursor = connection.cursor()
+      cursor = DbManager.getMainCon().cursor()
       cursor.execute(statements['get_'+type+'_points'],(id,))
       result = cursor.fetchall()
       for row in result:
         data={"id":row[0],"name":row[1].capitalize()}
         boundaryInfo.append(data)
       cursor.close()
-      connection.commit()
+      DbManager.getMainCon().commit()
     except:
       traceback.print_exc(file=sys.stderr)
       cursor.close()
-      connection.rollback()
+      DbManager.getMainCon().rollback()
     web.header('Content-Type', 'application/json')
     return jsonpickle.encode(boundaryInfo)
  
@@ -1021,31 +1157,31 @@ class getSchoolBoundaryInfo:
   def GET(self,id):
     schoolInfo = {"district":"","block":"","cluster":"","schoolname":"","type":""}
     try:
-      cursor = connection.cursor()
+      cursor = DbManager.getMainCon().cursor()
       cursor.execute(statements['get_school_boundary_info'],(id,))
       result = cursor.fetchall()
       for row in result:
         schoolInfo ={"district":row[0].capitalize(),"block":row[1].capitalize(),"cluster":row[2].capitalize(),"schoolname":row[3].capitalize(),"type":row[4]}
       cursor.close()
-      connection.commit()
+      DbManager.getMainCon().commit()
     except:
       traceback.print_exc(file=sys.stderr)
       cursor.close()
-      connection.rollback()
+      DbManager.getMainCon().rollback()
     web.header('Content-Type', 'application/json')
     return jsonpickle.encode(schoolInfo)
 
 class insertSYS:
   def GET(self,query):
     try:
-      syscursor = sysconnection.cursor()
+      syscursor = DbManager.getSysCon().cursor()
       syscursor.execute(query)
       syscursor.close()
-      sysconnection.commit()
+      DbManager.getSysCon().commit()
     except:
       traceback.print_exc(file=sys.stderr)
       syscursor.close()
-      sysconnection.rollback()
+      DbManager.getSysCon().rollback()
 
 class ConfigReader:
 
@@ -1071,18 +1207,18 @@ class postSYS:
   def getQuestionDict(self):
     qidsdict = {}
     try:
-      syscursor = sysconnection.cursor()
+      syscursor = DbManager.getSysCon().cursor()
       syscursor.execute(statements['get_sys_qids'])
       result = syscursor.fetchall()
       for row in result:
         qidsdict[row[1]] = row[0]
       syscursor.close()
-      sysconnection.commit()
+      DbManager.getSysCon().commit()
       return qidsdict
     except:
       traceback.print_exc(file=sys.stderr)
       syscursor.close()
-      sysconnection.rollback()
+      DbManager.getSysCon().rollback()
       return None
 
   def sendMail(self, recipient, sub, body,file = None):
@@ -1151,20 +1287,20 @@ class postSYS:
           traceback.print_exc(file=sys.stderr)
         imagequery = "insert into tb_sys_images(schoolid,original_file,hash_file,sysid,verified) values( %s , %s, %s, %s, %s)"
         try:
-          syscursor = sysconnection.cursor()
+          syscursor = DbManager.getSysCon().cursor()
           syscursor.execute(imagequery,(schoolid,savefilename,hashed_filename,sysid,'N')) #Images coming in from this flow are yet to be verified
           syscursor.close()
-          sysconnection.commit()
+          DbManager.getSysCon().commit()
         except:
           traceback.print_exc(file=sys.stderr)
           syscursor.close()
-          sysconnection.rollback()
+          DbManager.getSysCon().rollback()
 
   def POST(self,type):
     success = True
     recipient = None
     try:
-      syscursor = sysconnection.cursor()
+      syscursor = DbManager.getSysCon().cursor()
       schoolid=0
       if type=="school":
         form = mySchoolform()
@@ -1219,14 +1355,14 @@ class postSYS:
       for q in qdata.keys():
         syscursor.execute(qansquery,{'sysid':sysid,'qid':q,'answer':qdata[q]})
       syscursor.close()    
-      sysconnection.commit()
+      DbManager.getSysCon().commit()
     except:
       print >> sys.stderr, str(query)
       print >> sys.stderr, "Questions:-"+str(qdata)
       print >> sys.stderr, "Other:-"+str(data)
       traceback.print_exc(file=sys.stderr)
       syscursor.close() 
-      sysconnection.rollback()
+      DbManager.getSysCon().rollback()
       success = False
     #add photos
     try:
@@ -1244,10 +1380,10 @@ class postSYS:
     except:
       traceback.print_exc(file=sys.stderr)
       syscursor.close() 
-      sysconnection.rollback()
+      DbManager.getSysCon().rollback()
       success = False
  
-    cursor = connection.cursor()
+    cursor = DbManager.getMainCon().cursor()
     cursor.execute(statements['get_school_info'],(schoolid,))
     result = cursor.fetchall()
     for row in result:
@@ -1256,7 +1392,7 @@ class postSYS:
       clust=row[2].capitalize()
       sname=row[3].upper()
     cursor.close()
-    connection.commit()
+    DbManager.getMainCon().commit()
     if success:
       body = "Thank you for taking the time and sharing your experience when visiting " + sname 
       body = body + " in " + blk + ", " + clust + ". Your inputs have been successfully recorded."

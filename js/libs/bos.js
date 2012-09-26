@@ -206,7 +206,7 @@ BarsOfStuff.prototype.draw = function(data, options) {
       var bar = bars[i];
       var td = document.getElementById(bar.domId);
       td.style.cursor = 'pointer';
-      td.onclick = this.createListener(bar.dataRow, bar.dataCol);
+      //td.onclick = this.createListener(bar.dataRow, bar.dataCol);
     }  
   }
 };

@@ -82,7 +82,7 @@ function populateHeadings()
 		document.getElementById("fin_dise_heading").innerHTML = "DISE Finance Reporting";
 		document.getElementById("infra_info_heading").innerHTML = "Infrastructure Summary";
 		document.getElementById("ptr_info_heading").innerHTML = "Academics Summary ( " + info['acyear'] + ')';
-		document.getElementById("lib_infra_heading").innerHTML = "Library Details";
+		document.getElementById("lib_infra_heading").innerHTML = "Akshara Library Details";
 		document.getElementById("rte_info_heading").innerHTML = "Additional RTE Information";
 		document.getElementById("dise_gender_heading").innerHTML = "DISE Student Profile";
 		document.getElementById("srcinfo1").innerHTML = 'Source : KLP Database (2011-12)';
@@ -513,7 +513,7 @@ function populatePTR()
              tabletxt += '<div class="div-table-col" style="width:30px;text-align:center"><img src="/images/green_round.png" width="15px"/>';
            }
            tabletxt += '(' + parseInt(info['student_count']/info['teacher_count']) + ':1)</div></div>';
-           tabletxt += '<div class="div-table-row"><div class="div-table-col" style="width:300px"><img src="/images/red_round.png"> - indicates that the ratio is lesser than 1:30,<br/> <img src="/images/green_round.png"> - indicates that the ratio is greater than 1:30.</div></div>';
+           tabletxt += '<div class="div-table-row"><div class="div-table-col" style="width:300px"><img src="/images/red_round.png"> - indicates that the ratio is greater than 30:1,<br/> <img src="/images/green_round.png"> - indicates that the ratio is lesser than 30:1.</div></div>';
         } else {
            tabletxt = 'Information currently unavailable'
         }

@@ -478,7 +478,7 @@ function populateInfra()
 	       tabletxt += '</div>';
              }
 	   }
-           tabletxt += '<div class="div-table-row"><div class="div-table-col" style="width:500px"><img src="/images/red_round.png"> - indicates that the infrastructure does not exist, <img src="/images/green_round.png"> - indicates that it exists and <img src="/images/grey_round.png"> - indicates that information is unavailable.</div></div>';
+           tabletxt += '<div class="div-table-row"><div class="div-table-col" style="width:500px"><img src="/images/red_round.png" style="width:15px"> - indicates that the infrastructure does not exist, <img src="/images/green_round.png" style="width:15px"> - indicates that it exists and <br/><img src="/images/grey_round.png" style="width:15px"> - indicates that information is unavailable.</div></div>';
            tabletxt += '</div>';
 	   infra_info=tabletxt;
         } else {
@@ -513,7 +513,7 @@ function populatePTR()
              tabletxt += '<div class="div-table-col" style="width:30px;text-align:center"><img src="/images/green_round.png" width="15px"/>';
            }
            tabletxt += '(' + parseInt(info['student_count']/info['teacher_count']) + ':1)</div></div>';
-           tabletxt += '<div class="div-table-row"><div class="div-table-col" style="width:300px"><img src="/images/red_round.png"> - indicates that the ratio is greater than 30:1,<br/> <img src="/images/green_round.png"> - indicates that the ratio is lesser than 30:1.</div></div>';
+           tabletxt += '<div class="div-table-row"><div class="div-table-col" style="width:300px"><img src="/images/red_round.png" style="width:15px"> - indicates that the ratio is greater than 30:1,<br/> <img src="/images/green_round.png" style="width:15px"> - indicates that the ratio is lesser than 30:1.</div></div>';
         } else {
            tabletxt = 'Information currently unavailable'
         }

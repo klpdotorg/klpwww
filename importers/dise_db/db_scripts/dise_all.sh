@@ -13,17 +13,17 @@ sudo -u postgres createlang plpgsql ${DBNAME}
 psql -U ${OWNER} -d ${DBNAME} -f ${DBNAME}.sql 
 
 echo parsing Dise csvs 
-python ../py_scripts/dise_all.py
+python ../py_scripts/${DBNAME}.py
 echo loading DB
-psql -u ${OWNER} -d ${DBNAME} -f alter_tables.sql
-psql -u ${OWNER} -d ${DBNAME} -f load/tb_dise_basic.sql
-psql -u ${OWNER} -d ${DBNAME} -f load/tb_dise_facility.sql
-psql -u ${OWNER} -d ${DBNAME} -f load/tb_dise_general.sql
-psql -u ${OWNER} -d ${DBNAME} -f load/tb_dise_teacher.sql
-psql -u ${OWNER} -d ${DBNAME} -f load/tb_dise_rte.sql
-psql -u ${OWNER} -d ${DBNAME} -f load/tb_dise_enrol.sql
+psql -U ${OWNER} -d ${DBNAME} -f alter_tables.sql
+psql -U ${OWNER} -d ${DBNAME} -f load/tb_dise_basic.sql
+psql -U ${OWNER} -d ${DBNAME} -f load/tb_dise_facility.sql
+psql -U ${OWNER} -d ${DBNAME} -f load/tb_dise_general.sql
+psql -U ${OWNER} -d ${DBNAME} -f load/tb_dise_teacher.sql
+psql -U ${OWNER} -d ${DBNAME} -f load/tb_dise_rte.sql
+psql -U ${OWNER} -d ${DBNAME} -f load/tb_dise_enrol.sql
 echo "Seeding data done!"
-psql -u ${OWNER} -d ${DBNAME} -f agg_dise.sql
+psql -U ${OWNER} -d ${DBNAME} -f agg_dise.sql
 echo "Aggregating data done!"
 echo "All done!"
 

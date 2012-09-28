@@ -13,12 +13,17 @@ filelist = {"All_basic.csv":"tb_dise_basic",
             "All_rte.csv":"tb_dise_rte",
             "All_teacher.csv":"tb_dise_teacher",
             "All_general.csv":"tb_dise_general",
-            "All_enrol.csv":"tb_dise_enrol"}
+            "All_enrol.csv":"tb_dise_enrol",
+            "All_basic2.csv":"tb_dise_basic",
+            "All_facility2.csv":"tb_dise_facility",
+            "All_rte2.csv":"tb_dise_rte",
+            "All_teacher2.csv":"tb_dise_teacher",
+            "All_general2.csv":"tb_dise_general",
+            "All_enrol2.csv":"tb_dise_enrol"}
 
-filelist = {"All_enrol.csv":"tb_dise_enrol"}
 try:
   for file in filelist.keys():
-    disedatafile=open("../db_scripts/load/" + filelist[file] + '.sql' ,'w')
+    disedatafile=open("../db_scripts/load/" + filelist[file] + '.sql' ,'a')
     csvbuffer = csv.reader(open('../data/'+file,'rb'), delimiter='|') 
     header = csvbuffer.next()
     headlen = len(header)

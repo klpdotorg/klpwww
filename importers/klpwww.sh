@@ -35,3 +35,8 @@ psql -U ${OWNER} -d ${DBNAME} -f agg.sql
 
 echo Running fixes for ${DBNAME} 
 psql -U ${OWNER} -d ${DBNAME} -f fixes.sql 
+
+echo Running inserts for pratham mysore
+psql -U ${OWNER} -d ${DBNAME} -f pratham/db_scripts/load/pratham_assessments.sql
+psql -U ${OWNER} -d ${DBNAME} -f pratham/db_scripts/load/pratham_assessment_agg.sql
+

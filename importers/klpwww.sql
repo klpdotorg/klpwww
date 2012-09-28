@@ -231,6 +231,17 @@ CREATE OR REPLACE VIEW vw_school_electedrep as
          mp_const_id integer,
          heirarchy integer);
 
+CREATE OR REPLACE VIEW vw_school_eval as
+select * from dblink('host=localhost dbname=pratham_mysore user=klp password=1q2w3e4r',
+       'select * from tb_school_eval')
+       as t (
+         sid integer,
+         disecode character varying(100),
+         domain character varying(100),
+         qid integer,
+         value character varying(50));
+
+
 
 -- The web user will query the DB
 GRANT SELECT ON tb_school, 
@@ -251,6 +262,7 @@ GRANT SELECT ON tb_school,
                 vw_boundary_coord, 
                 vw_inst_coord,
                 vw_electedrep_master,
-                vw_school_electedrep
+                vw_school_electedrep,
+                vw_school_eval
 TO web;
 

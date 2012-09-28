@@ -225,6 +225,8 @@ statements = {'get_district':"select bcoord.id_bndry,ST_AsText(bcoord.coord),ini
               'get_sys_image_nums':"select count(*) from tb_sys_images",
               'get_school_images':"select hash_file from tb_sys_images where schoolid=%s and verified='Y'",
               'get_school_mpmla':"select mla.const_ward_name, mp.const_ward_name,mla.current_elected_rep, mla.current_elected_party, mp.current_elected_rep, mp.current_elected_party from vw_school_electedrep se, vw_electedrep_master mla, vw_electedrep_master mp where se.sid=%s and mla.id=se.mla_const_id and mp.id= se.mp_const_id;",
+              'get_pratham_assessment_questions':'select distinct eval.domain,q."desc", eval.value,q.id from tb_question q,tb_school s,vw_school_eval eval where eval.sid=s.id and eval.qid=q.id and s.id=%s order by q.id',
+              'get_pratham_assessment_info':'select distinct p.name,partner.name,ay.name from tb_programme p,tb_academic_year ay,tb_partner partner where p.partnerid=partner.id and p.ayid=ay.id and p.id=%s',
 }
 render = web.template.render('templates/', base='base')
 render_plain = web.template.render('templates/')
@@ -304,14 +306,53 @@ class assessments:
        stype=""
        if pid in preschoolPids:
          stype="preschool"
-       assess = assessmentData(type,pid,id,stype)
-       data = assess.getData()
+       if pid=='1001':
+         assess=prathamData(id,pid)
+         data=assess.getData()
+       else:
+         assess = assessmentData(type,pid,id,stype)
+         data = assess.getData()
        connection.commit()
     except:
       traceback.print_exc(file=sys.stderr)
       connection.rollback()
     web.header('Content-Type','text/html; charset=utf-8')
+    if pid=='1001':
+      return render_plain.assessmenttable(data)
     return render_plain.chart(data)
+
+class prathamData:
+  def __init__(self,id,pid):
+    print id
+    print pid
+    self.id=id
+    self.pid=pid
+    self.data= {"programme":{"pid":int(self.pid),"name":"","year":"","partner":""},"assessment":{}}
+  def getData(self):
+    print self.pid
+    cursor = connection.cursor()
+    cursor.execute(statements['get_pratham_assessment_info'],(self.pid,))
+    result=cursor.fetchall()
+    for row in result:
+      self.data["programme"]["name"]=row[0]
+      self.data["programme"]["partner"]=row[1]
+      self.data["programme"]["year"]=row[2]
+    cursor.execute(statements['get_pratham_assessment_questions'],(self.id,))
+    result=cursor.fetchall()
+    print result
+    counter={}
+    for row in result:
+      if row[0] not in self.data["assessment"]:
+        counter[row[0]]=0
+        self.data["assessment"][row[0]]={0:{row[1]:row[2]}}
+      else:
+        counter[row[0]]=counter[row[0]]+1
+        self.data["assessment"][row[0]][counter[row[0]]]={row[1]:row[2]}
+    cursor.close()
+    return self.data
+    
+    
+    
 
 
 class baseAssessment:
@@ -681,7 +722,6 @@ class baseAssessment:
         traceback.print_exc(file=sys.stderr)
         cursor.close()
         connection.rollback()
-
 
 class assessmentData(baseAssessment):
     def getBaselineAssessmentInfo(self):

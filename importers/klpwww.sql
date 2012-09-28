@@ -375,7 +375,7 @@ GRANT SELECT ON tb_school,
                 vw_dise_facility_agg,
                 vw_dise_info,
 		vw_libinfra,
-                vw_anginfra,
-                vw_ang_display_master,
+                vw_anginfra_agg,
+                vw_ang_display_master
 TO web;
 

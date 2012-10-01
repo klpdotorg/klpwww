@@ -258,7 +258,8 @@ select * from dblink('host=localhost dbname=dise_all user=klp password=1q2w3e4r'
  to_number(dg.tlm_grant_recd,''99999''),
  to_number(dg.tlm_grant_expnd,''99999''),
  to_number(dg.funds_from_students_recd,''999999''),
- to_number(dg.funds_from_students_expnd,''999999'')
+ to_number(dg.funds_from_students_expnd,''999999''),
+ to_number(df.books_in_library,''999999'')
 from tb_dise_facility df,tb_dise_enrol de,tb_dise_general dg where de.school_code=df.school_code and de.school_code=dg.school_code')
 as t1 (
   dise_code character varying(32),
@@ -274,7 +275,8 @@ as t1 (
   tlm_recd integer,
   tlm_expnd integer,
   ffs_recd integer,
-  ffs_expnd integer
+  ffs_expnd integer,
+  books_in_library integer
 );
 
 DROP VIEW vw_dise_facility_agg;        
@@ -350,6 +352,17 @@ as t1 (
 		value character varying(200)
 );
 
+DROP VIEW vw_mdm_agg;
+CREATE OR REPLACE VIEW vw_mdm_agg as
+select * from dblink('host=localhost dbname=apmdm user=klp password=1q2w3e4r', 'select * from tb_mdm_agg')
+as t1 (
+   "id" integer,
+   "mon" varchar(15),
+   "wk" integer,
+   "indent" integer,
+   "attend" integer
+);
+
 -- The web user will query the DB
 GRANT SELECT ON tb_school, 
                 tb_student, 
@@ -376,6 +389,7 @@ GRANT SELECT ON tb_school,
                 vw_dise_info,
 		vw_libinfra,
                 vw_anginfra_agg,
-                vw_ang_display_master
+                vw_ang_display_master,
+                vw_mdm_agg
 TO web;
 

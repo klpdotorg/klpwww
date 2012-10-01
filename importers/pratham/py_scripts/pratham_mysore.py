@@ -46,7 +46,7 @@ domain={10001:'Students/Teachers',
         
 
 pratham_assessment.write("INSERT INTO tb_partner values(2,'Pratham Mysore',1,'Mysore');\n")
-pratham_assessment.write("INSERT INTO tb_programme values(1001,'School Information','1-6-2012','1-8-2012',1,121,2,2);\n")
+pratham_assessment.write("INSERT INTO tb_programme values(1001,'School Information','1-6-2012','1-8-2012',1,121,2);\n")
 pratham_assessment.write("INSERT INTO tb_assessment values(1001,'School Assessment',1001,'1-6-2012','1-8-2012');\n")
 
 questionid={'Number of Students':10001,

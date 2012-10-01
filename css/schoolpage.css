@@ -1,9 +1,21 @@
 #school_name {
   font-family: Arial,Helvetica,sans-serif;
-  font-size: 18px;
-  height: 180px;
-  margin-left: 200px;
-  margin-top: 55px;
+  /*color:#43AD2F;*/
+  font-size: 20px;
+  font-weight: bold;
+  margin-top: 10px;
+  margin-left: 10px;
+}
+
+.srcinfo4 {
+  margin-left:10px;
+  margin-top:20px;
+  font-size: 10pt;
+}
+.srcinfo5 {
+  margin-left:10px;
+  margin-top:20px;
+  font-size: 10pt;
 }
 
 #hrmod{
@@ -11,11 +23,11 @@
 }
 
 #school_info {
-    margin-left: 200px;
+    /*margin-left: 200px;*/
 }
 
 #school_info_heading {
-    margin-left: 200px;
+    /*margin-left: 200px;*/
 }
 #school_hier {
     /*margin-top: 50px;*/
@@ -24,6 +36,17 @@
 #school_hier_heading {
     margin-top: 50px;
 }
+
+#student_gend {
+  margin-left:5px;
+  margin-top:10px;
+}
+
+#finances_info {
+  margin-left:5px;
+  margin-top:10px;
+}
+
 #reportlinks {
     margin-left: 10px;
 }
@@ -147,4 +170,29 @@ img.album{
 }
 #div-row-border{
   border-bottom: 1px solid #F89400;
+}
+
+dl {
+/*border: 3px double #ccc;*/
+/*padding: 0.5em; */
+}
+
+dt {
+float: left;
+clear: left;
+width: 290px;
+text-align: left;
+color:  black;
+font-size: 8pt;
+font-weight: bold;
+}
+
+dd:before {
+content: ":";
+}
+
+dd {
+margin: 0 0 0 300px;
+padding: 0 0 0.5em 0;
+font-size: 8pt;
 }

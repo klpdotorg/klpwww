@@ -16,6 +16,7 @@ psql -U ${OWNER} -d ${DBNAME} -f ${DBNAME}.sql
 echo parsing ang infra  csvs 
 python ../py_scripts/ang_infra.py 1>log.txt 2.err.txt
 echo loading DB
+sudo -u postgres psql -d ${DBNAME} -f load/insertanginfo.sql
 sudo -u postgres psql -d ${DBNAME} -f load/insertquestions.sql
 sudo -u postgres psql -d ${DBNAME} -f load/insertanswers.sql
 echo Done!

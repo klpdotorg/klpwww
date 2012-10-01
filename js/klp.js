@@ -191,6 +191,7 @@ function plotPoints(pointInfo)
     if( type=='preschooldistrict')
       populatePreSchoolDistricts(pointInfo[type]);
   }
+  plotHighSchool();
 }
 
 function displayPointInfo(marker,id,name,type)
@@ -537,4 +538,33 @@ function togglePanel(panelid)
   else {
     ele.style.display = "block";
   }
+}
+
+function plotHighSchool() {
+ var pos = new google.maps.LatLng('12.923692337812845', '77.64972028650284');
+ var marker = new google.maps.Marker({
+   position: pos,
+   map: map,
+   title: 'Agara High School',
+   visible:visible,
+   icon:"images/highschool.png"
+ });
+ google.maps.event.addListener(marker, 'click', function(event) {
+    getHighSchoolInfo(marker);
+ });
+}
+
+function getHighSchoolInfo(marker)
+{
+   var tableContent= '<div style="display:block">' +
+      '<div><a href=\"javascript:void(0);\" onclick=window.open("sslc/agara_hs.html","mywindow")<span  style="color:#439C1E;font-size:10pt;font-weight:normal"><b>AGARA HIGH SCHOOL</b></span></a><span style="color:black"><i> Know more...</i></span></div>'+
+      '<div style="display:table;font-size:8pt;font-weight:normal;margin-bottom:-10px;">' +
+      '<div style="display:table-row">' +
+        '<div style="display:table-cell"> 24th Main Rd, HSR Layout, Bangalore, Karnataka </div>' +
+      '</div><div style="display:table-row">' +
+        '<div style="display:table-cell"> School Type: High School</div>' +
+        '</div></div><hr/>' +
+      '</div>'; //<div style="color:#222;font-size:7pt;font-weight:normal;float:left"> Source: SSLC Board</div>';
+   var message = new google.maps.InfoWindow({content:tableContent});
+   openInfoWindow(message,marker);
 }

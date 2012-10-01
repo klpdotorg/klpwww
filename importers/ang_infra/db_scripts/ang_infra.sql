@@ -26,4 +26,26 @@ CREATE TABLE tb_ang_info (
    name varchar(100)
 );
 
+drop table tb_display_master;
+create table tb_display_master(
+   key varchar(32),
+   value varchar(200)
+);
 
+insert into tb_display_master values ('progress',' Maintains Progress Records for Children');
+insert into tb_display_master values ('blackboard',' Has Blackboards for Teaching');
+insert into tb_display_master values ('floor',' Has Flooring Intact');
+insert into tb_display_master values ('roof',' Has Roofs Intact');
+insert into tb_display_master values ('walls',' Has Walls Intact');
+insert into tb_display_master values ('building',' Is in a Designated Building by DWCD');
+insert into tb_display_master values ('drinking_water',' Has Drinking Water Facilities');
+insert into tb_display_master values ('meal_served',' Has Clean and Timely Meals');
+insert into tb_display_master values ('waste_basket',' Has Waste Baskets');
+insert into tb_display_master values ('water_supply',' Has Water Supply');
+insert into tb_display_master values ('toilet_roof',' Has Shelters for Toilets');
+insert into tb_display_master values ('toilet',' Has Toilets');
+insert into tb_display_master values ('handwash',' Has Handwash Facilities');
+insert into tb_display_master values ('space',' Has Spacious Classrooms and Play Isas');
+insert into tb_display_master values ('akshara_kits',' Uses Akshara Foundation Teaching Kits');
+insert into tb_display_master values ('bvs',' Has Functional Bal Vikas Samithis');
+insert into tb_display_master values ('toilet_usable',' Has Usable Toilets');

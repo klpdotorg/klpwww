@@ -3,9 +3,6 @@ var map;
 var type;
 var image={"school":"school.png","preschool":"preschool.png"}
 
-// Load the Visualization API and the piechart package.
-//google.load('visualization', '1', {'packages':['table','piechart']});
-
 if (!Array.prototype.indexOf)
 {
   Array.prototype.indexOf = function(elt /*, from*/)
@@ -51,6 +48,7 @@ function initialise(data)
   populateRTE();
   populateLibrary();
   populatePTR();
+  populateMDM();
 }
 
 function populateHeadings() 
@@ -84,12 +82,14 @@ function populateHeadings()
 		document.getElementById("ptr_info_heading").innerHTML = "Academics Summary ( " + info['acyear'] + ')';
 		document.getElementById("lib_infra_heading").innerHTML = "Akshara Library Details";
 		document.getElementById("rte_info_heading").innerHTML = "Additional RTE Information";
+		document.getElementById("mdm_info_heading").innerHTML = "Mid day meal Summary";
 		document.getElementById("dise_gender_heading").innerHTML = "DISE Student Profile";
 		document.getElementById("srcinfo1").innerHTML = 'Source : KLP Database (2011-12)';
 		document.getElementById("srcinfo2").innerHTML = 'Source : KLP Database (2011-12), <a href="http://schoolreportcards.in" target="_blank"><span style="color:#43AD2F">NUEPA-DISE</span></a>(' + info['acyear'] + ')';
 		document.getElementById("srcinfo3").innerHTML = 'Source : KLP Partner Data (2011-12)';
 		document.getElementById("srcinfo4").innerHTML = '<br/><br/>Source : <a href="http://www.accountabilityindia.in/paisa-planning-allocations-and-expenditures-institutions-studies-accountability%22" target="_blank"><span style="color:#43AD2F">PAISA</span></a>, <a href="http://schoolreportcards.in" target="_blank"><span style="color:#43AD2F">NUEPA-DISE</span></a> ('+ info['acyear'] +')';
 		document.getElementById("srcinfo5").innerHTML = '<br/><br/>Source : KLP Database (2011-12), <a href="http://schoolreportcards.in" target="_blank"><span style="color:#43AD2F">NUEPA-DISE</span></a> (' + info['acyear'] + ')';
+		document.getElementById("srcinfo6").innerHTML = '<br/><br/>Source : <a href="http://www.akshayapatra.org/" target="_blank"><span style="color:#43AD2F">Akshaya Patra (2012)</span></a>';
 		document.title = "School Information";
 	}
 
@@ -287,7 +287,7 @@ function populateEReps()
                 '<div class="div-table-col">:' + info['mpname'].toUpperCase() + '</div>' +
                 '<div class="div-table-row"><div id="div-col-125width" class="div-table-col">Ward</div>' + 
                 '<div class="div-table-col">:' + info['ward'].toUpperCase() + '</div><div>' +
-                '<div class="div-table-row"><div id="div-col-125width" class="div-table-col">Ward Details</div>' + 
+                '<div class="div-table-row"><div id="div-col-125width" class="div-table-col">Corporator Details</div>' + 
                 '<div class="div-table-col">:' + info['wardname'].toUpperCase() + '</div>' +
                 '</div></div>';
     report_links = '<a href="" onclick="javascript:popwindow(\'/listFiles/3|'+info['mp'] +'|'+info['mla'] + '\')" style="color:#43AD2F">Please find Constituency Reports here.</a>';
@@ -524,7 +524,7 @@ function populateRTE()
 {
 	if (info["type"]==2) {
            tabletxt = "";
-        } else if (info.dise_rte) {
+        } else if (Object.keys(info.dise_rte).length > 0) {
            tabletxt = '<div class="div-table">';
            for(group in info["dise_rte"]){
              innerdict = info["dise_rte"][group];
@@ -549,11 +549,41 @@ function populateRTE()
 	document.getElementById("rte_info").innerHTML = tabletxt;
 }
 
+function populateMDM()
+{
+	if (info["type"]==2) {
+           tabletxt = "";
+        } else if (Object.keys(info.ap_mdm).length > 0) {
+           tabletxt = "";
+           var data = new google.visualization.DataTable();
+           data.addColumn('string', 'Month_Week');
+           data.addColumn('number', 'Food Indent');
+           data.addColumn('number', 'Attendance');
+           data.addColumn('number', 'DISE-enrollment');
+           data.addColumn('number', 'KLP-enrollment');
+           var months = ['January','February','March','April','May','June','July','August','September','October','November','December'] 
+           for (var each in months ){
+              if(months[each] in info["ap_mdm"]) {
+                mon = months[each];
+                for(var wk=1; wk<5;wk++) {
+                  data.addRow([mon + ' (Week ' + wk + ')', info["ap_mdm"][mon][wk][0], info["ap_mdm"][mon][wk][1], parseInt(info["student_count"]),parseInt(info["numGirls"])+ parseInt(info["numBoys"])]);
+                }
+              }
+	   }
+           var chart = new google.visualization.LineChart(document.getElementById('mdm_chart'));
+           chart.draw(data, {width: 750, height: 500, title:  'Food Indent vs. Attendance Tracking', backgroundColor: 'transparent', pieSliceText:'label', pointSize:5, colors: ['green','E35804','F49406','white'],vAxis:{title:'Number of Children'},hAxis:{slantedText:true, slantedTextAngle:45}});
+
+        } else {
+           tabletxt = 'Information currently unavailable'
+        }
+	document.getElementById("mdm_info").innerHTML = tabletxt;
+}
+
 function populateLibrary()
 {
 	if (info["type"]==2) {
            tabletxt = "";
-        } else if (info.lib_infra) {
+        } else if (Object.keys(info.lib_infra).length > 0) {
            tabletxt = '<div class="div-table">';
            for(key in info.lib_infra){
                tabletxt += '<div class="div-table-row" style="border-bottom:1px solid #F89400">';
@@ -561,7 +591,10 @@ function populateLibrary()
                tabletxt += '<div class="div-table-col" style="width:30px;text-align:center">' + info.lib_infra[key] + '</div>';
 	       tabletxt += '</div>';
 	   }
+
            tabletxt += '</div>';
+	   tabletxt += '<br/><br/>DISE reports Number of Books as : ';
+           tabletxt +=  info.dise_books 
         } else {
            tabletxt = 'Information currently unavailable'
         }

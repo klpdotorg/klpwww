@@ -234,10 +234,11 @@ statements = {'get_district':"select bcoord.id_bndry,ST_AsText(bcoord.coord),ini
               'get_mtncgrant_sch':"select vpd2.grant_type, CASE WHEN mvdf.operator='gt' THEN 'With more than 3 classrooms ' ELSE 'With 3 classrooms or fewer ' END as classroom_count, vpd2.grant_amount as total_grant from (select vdf.dise_code as dise_code, CASE WHEN vdf.classroom_count <= CAST (vpd.factor AS INT) THEN 'lt' ELSE 'gt' END as operator from vw_paisa_data vpd, vw_dise_info vdf where vpd.criteria='classroom_count') AS mvdf, vw_paisa_data vpd2, tb_school s where s.dise_code = mvdf.dise_code and mvdf.operator = vpd2.operator and s.id=%s group by vpd2.grant_type, mvdf.operator, vpd2.grant_amount;",
               'get_annualgrant_sch':"select s.cat, vpd.grant_type, vpd.grant_amount as total_grant,vdf.sg_recd,vdf.sg_expnd from tb_school s, vw_paisa_data vpd, vw_dise_info vdf where vpd.criteria='school_cat' and vpd.factor = s.cat::text and s.id=%s and vdf.dise_code=s.dise_code group by s.cat,vpd.grant_type,vpd.grant_amount,vdf.sg_recd,vdf.sg_expnd ;",
               'get_dise_facility':"select distinct ddm.value, dfa.score,dfa.df_group from vw_dise_facility_agg dfa, tb_school s, vw_dise_display_master ddm where s.dise_code=dfa.dise_code and ddm.key=dfa.df_metric and s.id=%s;",
-	      'get_dise_ptr':"select vdi.teacher_count,vdi.boys_count,vdi.girls_count,vdi.classroom_count,vdi.acyear,vdi.lowest_class,vdi.highest_class from vw_dise_info vdi,tb_school s where s.dise_code=vdi.dise_code and s.id=%s;",
+	      'get_dise_ptr':"select vdi.teacher_count,vdi.boys_count,vdi.girls_count,vdi.classroom_count,vdi.acyear,vdi.lowest_class,vdi.highest_class,vdi.books_in_library from vw_dise_info vdi,tb_school s where s.dise_code=vdi.dise_code and s.id=%s;",
               'get_dise_rte':"select distinct ddm.value, dra.status,dra.rte_group from vw_dise_rte_agg dra, tb_school s, vw_dise_display_master ddm where s.dise_code=dra.dise_code and ddm.key=dra.rte_metric and s.id=%s;",
               'get_ang_infra':"select distinct adm.value, aia.perc_score,aia.ai_group from vw_anginfra_agg aia, tb_school s, vw_ang_display_master adm where s.id=aia.sid and adm.key=aia.ai_metric and s.id=%s;",
               'get_lib_infra':"select libstatus,libtype,numbooks,numracks,numtables,numchairs,numcomputers,numups from tb_school s, vw_libinfra li where s.id=li.sid and s.id=%s;",
+              'get_apmdm':"select mon,wk,indent,attend from vw_mdm_agg where id=%s;",
 }
 render = web.template.render('templates/', base='base')
 render_plain = web.template.render('templates/')
@@ -714,6 +715,26 @@ class assessmentData(baseAssessment):
 
 
 class schoolpage:
+ 
+  def getMidDayMealData(self,klpid):
+    tabledata = {}
+    try:
+      cursor = DbManager.getMainCon().cursor()
+      cursor.execute(statements['get_apmdm'],(klpid,))
+      result = cursor.fetchall()
+      for row in result:
+        if row[0] in tabledata:
+	  tabledata[row[0]][row[1]]=[row[2],row[3]]
+        else:
+          tabledata[row[0]]={row[1]:[row[2],row[3]]}
+      DbManager.getMainCon().commit()
+      cursor.close()
+      return {'ap_mdm':tabledata};
+    except:
+      DbManager.getMainCon().rollback()
+      cursor.close()
+      traceback.print_exc(file=sys.stderr)
+      return tabledata;  
 
   def getLibraryData(self, klpid):
     tabledata = {}
@@ -797,6 +818,7 @@ class schoolpage:
         tabledata['acyear'] = str(row[4])
         tabledata['lowest_class'] = str(row[5])
         tabledata['highest_class'] = str(row[6])
+        tabledata['dise_books'] = str(row[7])
       DbManager.getMainCon().commit()
       cursor.execute(statements['get_dise_facility'],(klpid,))
       result = cursor.fetchall()
@@ -853,6 +875,7 @@ class schoolpage:
       
       if type=='school':
         data.update(self.getLibraryData(id))
+        data.update(self.getMidDayMealData(id))
       
       if type=='preschool':
         data.update(self.getAngInfraData(id))

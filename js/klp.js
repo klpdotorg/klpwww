@@ -557,7 +557,7 @@ function plotHighSchool() {
 function getHighSchoolInfo(marker)
 {
    var tableContent= '<div style="display:block">' +
-      '<div><a href=\"javascript:void(0);\" onclick=window.open("highschool/agara_hs.html","mywindow")<span  style="color:#439C1E;font-size:10pt;font-weight:normal"><b>AGARA HIGH SCHOOL</b></span></a><span style="color:black"><i> Know more...</i></span></div>'+
+      '<div><a href=\"javascript:void(0);\" onclick=window.open("sslc/agara_hs.html","mywindow")<span  style="color:#439C1E;font-size:10pt;font-weight:normal"><b>AGARA HIGH SCHOOL</b></span></a><span style="color:black"><i> Know more...</i></span></div>'+
       '<div style="display:table;font-size:8pt;font-weight:normal;margin-bottom:-10px;">' +
       '<div style="display:table-row">' +
         '<div style="display:table-cell"> 24th Main Rd, HSR Layout, Bangalore, Karnataka </div>' +

@@ -344,7 +344,7 @@ class prathamData:
     self.data= {"programme":{"pid":int(self.pid),"name":"","year":"","partner":""},"assessment":{}}
   def getData(self):
     print self.pid
-    cursor = connection.cursor()
+    cursor = DbManager.getMainCon().cursor()
     cursor.execute(statements['get_pratham_assessment_info'],(self.pid,))
     result=cursor.fetchall()
     for row in result:

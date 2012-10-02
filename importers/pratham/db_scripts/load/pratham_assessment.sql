@@ -1,5 +1,5 @@
 INSERT INTO tb_partner values(2,'Pratham Mysore',1,'Mysore');
-INSERT INTO tb_programme values(1001,'School Information','1-6-2012','1-8-2012',1,121,2,2);
+INSERT INTO tb_programme values(1001,'School Information','1-6-2012','1-8-2012',1,121,2);
 INSERT INTO tb_assessment values(1001,'School Assessment',1001,'1-6-2012','1-8-2012');
 insert into tb_question (id, "desc" , assid) values(10002,'Number of Teachers',1001);
 insert into tb_question (id, "desc" , assid) values(10020,'Girls Toilet Usable',1001);

@@ -197,13 +197,13 @@ CREATE TABLE "tb_teacher_class" (
 -- Remote views via dblink
 
 CREATE OR REPLACE VIEW vw_boundary_coord as 
-       select * from dblink('host=localhost dbname=klp-coord user=klp password=1q2w3e4r', 'select * from boundary_coord') 
+       select * from dblink('host=localhost dbname=klp-coord', 'select * from boundary_coord') 
        as t1 (id_bndry integer, 
               type varchar(20), 
               coord geometry);
 
 CREATE OR REPLACE VIEW vw_inst_coord as
-       select * from dblink('host=localhost dbname=klp-coord user=klp password=1q2w3e4r', 'select * from inst_coord') 
+       select * from dblink('host=localhost dbname=klp-coord', 'select * from inst_coord') 
        as t2 (instid integer,
               coord geometry);
 
@@ -211,7 +211,7 @@ DROP TYPE IF EXISTS admin_heirarchy cascade;
 CREATE TYPE admin_heirarchy as enum('Centre','State','District','Zone','MP Constituency','MLA Constituency','City Corporation','Ward','Gram Panchayat');
 
 CREATE OR REPLACE VIEW vw_electedrep_master as
-       select * from dblink('host=localhost dbname=electrep_new user=klp password=1q2w3e4r', 
+       select * from dblink('host=localhost dbname=electrep_new', 
        'select id,parent,elec_comm_code,const_ward_name,const_ward_type,neighbours,current_elected_rep,current_elected_party from tb_electedrep_master')
        as t7 ( id integer,
               parent integer,
@@ -223,7 +223,7 @@ CREATE OR REPLACE VIEW vw_electedrep_master as
               current_elected_party character varying(300));
 
 CREATE OR REPLACE VIEW vw_school_electedrep as
-       select * from dblink('host=localhost dbname=electrep_new user=klp password=1q2w3e4r', 
+       select * from dblink('host=localhost dbname=electrep_new', 
        'select * from tb_school_electedrep')
        as t8 ( sid integer,
          ward_id integer,
@@ -232,7 +232,7 @@ CREATE OR REPLACE VIEW vw_school_electedrep as
          heirarchy integer);
 
 CREATE OR REPLACE VIEW vw_school_eval as
-select * from dblink('host=localhost dbname=pratham_mysore user=klp password=1q2w3e4r',
+select * from dblink('host=localhost dbname=pratham_mysore',
        'select * from tb_school_eval')
        as t (
          sid integer,
@@ -244,7 +244,7 @@ select * from dblink('host=localhost dbname=pratham_mysore user=klp password=1q2
 
 DROP VIEW vw_dise_info;
 CREATE OR REPLACE VIEW vw_dise_info as
-select * from dblink('host=localhost dbname=dise_all user=klp password=1q2w3e4r', 'select df.school_code, to_number(df.tot_clrooms,''999''), to_number(df.male_tch,''999'') + to_number(df.female_tch,''999'') - to_number(df.noresp_tch,''999''), 
+select * from dblink('host=localhost dbname=dise_all', 'select df.school_code, to_number(df.tot_clrooms,''999''), to_number(df.male_tch,''999'') + to_number(df.female_tch,''999'') - to_number(df.noresp_tch,''999''), 
  to_number(de.class1_total_enr_boys,''999'') + 
  to_number(de. class2_total_enr_boys,''999'') + 
  to_number(de. class3_total_enr_boys,''999'') + 
@@ -292,7 +292,7 @@ as t1 (
 
 DROP VIEW vw_dise_facility_agg;        
 CREATE OR REPLACE VIEW vw_dise_facility_agg as
-select * from dblink('host=localhost dbname=dise_all user=klp password=1q2w3e4r', 'select * from tb_dise_facility_agg')
+select * from dblink('host=localhost dbname=dise_all', 'select * from tb_dise_facility_agg')
 as t1 (
 		dise_code character varying(32),
 		df_metric character varying(30),
@@ -302,7 +302,7 @@ as t1 (
 
 DROP VIEW vw_dise_rte_agg;        
 CREATE OR REPLACE VIEW vw_dise_rte_agg as
-select * from dblink('host=localhost dbname=dise_all user=klp password=1q2w3e4r', 'select * from tb_dise_rte_agg')
+select * from dblink('host=localhost dbname=dise_all', 'select * from tb_dise_rte_agg')
 as t1 (
 		dise_code character varying(32),
 		rte_metric character varying(36),
@@ -312,7 +312,7 @@ as t1 (
    
 DROP VIEW vw_dise_display_master;        
 CREATE OR REPLACE VIEW vw_dise_display_master as
-select * from dblink('host=localhost dbname=dise_all user=klp password=1q2w3e4r', 'select * from tb_display_master')
+select * from dblink('host=localhost dbname=dise_all', 'select * from tb_display_master')
 as t1 (
 		key character varying(36),
 		value character varying(200)
@@ -320,7 +320,7 @@ as t1 (
 
 DROP VIEW vw_paisa_data;
 CREATE OR REPLACE VIEW vw_paisa_data as
-			select * from dblink('host=localhost dbname=dise_all user=klp password=1q2w3e4r', 'select * from tb_paisa_data')
+			select * from dblink('host=localhost dbname=dise_all', 'select * from tb_paisa_data')
 			as t1 (
 		 grant_type character varying(32),
 		 grant_amount integer,
@@ -331,7 +331,7 @@ CREATE OR REPLACE VIEW vw_paisa_data as
 
 DROP VIEW vw_libinfra;
 CREATE OR REPLACE VIEW vw_libinfra as
-    select * from dblink('host=localhost dbname=libinfra user=klp password=1q2w3e4r', 'select * from tb_libinfra')
+    select * from dblink('host=localhost dbname=libinfra', 'select * from tb_libinfra')
          as t1 (
 		sid integer,
 		libstatus character varying(300),
@@ -347,7 +347,7 @@ CREATE OR REPLACE VIEW vw_libinfra as
 
 DROP VIEW vw_anginfra_agg;
 CREATE OR REPLACE VIEW vw_anginfra_agg as
-    select * from dblink('host=localhost dbname=ang_infra user=klp password=1q2w3e4r', 'select * from tb_ang_infra_agg')
+    select * from dblink('host=localhost dbname=ang_infra', 'select * from tb_ang_infra_agg')
          as t1 (
     sid integer,
     ai_metric character varying(30),
@@ -357,7 +357,7 @@ CREATE OR REPLACE VIEW vw_anginfra_agg as
 
 DROP VIEW vw_ang_display_master;        
 CREATE OR REPLACE VIEW vw_ang_display_master as
-select * from dblink('host=localhost dbname=ang_infra user=klp password=1q2w3e4r', 'select * from tb_display_master')
+select * from dblink('host=localhost dbname=ang_infra', 'select * from tb_display_master')
 as t1 (
 		key character varying(36),
 		value character varying(200)
@@ -365,7 +365,7 @@ as t1 (
 
 DROP VIEW vw_mdm_agg;
 CREATE OR REPLACE VIEW vw_mdm_agg as
-select * from dblink('host=localhost dbname=apmdm user=klp password=1q2w3e4r', 'select * from tb_mdm_agg')
+select * from dblink('host=localhost dbname=apmdm', 'select * from tb_mdm_agg')
 as t1 (
    "id" integer,
    "mon" varchar(15),

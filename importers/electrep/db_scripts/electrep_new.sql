@@ -68,7 +68,7 @@ CREATE TABLE "tb_school_stu_counts"(
 );
 
 CREATE OR REPLACE VIEW vw_school_chart_agg as
-       select * from dblink('host=localhost dbname=klpwww0 user=klp password=1q2w3e4r', 'select * from tb_school_chart_agg')
+       select * from dblink('host=localhost dbname=klpwww', 'select * from tb_school_chart_agg')
        as t1 (
   sid integer,
   assid integer,
@@ -81,13 +81,13 @@ CREATE OR REPLACE VIEW vw_school_chart_agg as
 );
 
 CREATE OR REPLACE VIEW vw_electoral_coord as
-       select * from dblink('host=localhost dbname=klp-coord user=klp password=1q2w3e4r', 'select * from electoral_coord')
+       select * from dblink('host=localhost dbname=klp-coord', 'select * from electoral_coord')
        as t1 (id_bndry integer,
               type varchar(20),
               coord geometry);
 
 CREATE OR REPLACE VIEW vw_dise_facility as
-select * from dblink('host=localhost dbname=dise_blore user=klp password=1q2w3e4r', 'select * from tb_dise_facility')
+select * from dblink('host=localhost dbname=dise_blore', 'select * from tb_dise_facility')
 as t1 (
   dise_id character varying(32),
   building_status integer,
@@ -128,7 +128,7 @@ as t1 (
 );
 
 CREATE OR REPLACE VIEW vw_paisa_data as
-       select * from dblink('host=localhost dbname=dise_blore user=klp password=1q2w3e4r', 'select * from tb_paisa_data')
+       select * from dblink('host=localhost dbname=dise_blore', 'select * from tb_paisa_data')
        as t1 (
   grant_type character varying(32),
   grant_amount integer,
@@ -138,7 +138,7 @@ CREATE OR REPLACE VIEW vw_paisa_data as
  );
 
 CREATE OR REPLACE VIEW vw_school_dise as
-       select * from dblink('host=localhost dbname=dise_blore user=klp password=1q2w3e4r', 'select * from tb_school_dise')
+       select * from dblink('host=localhost dbname=dise_blore', 'select * from tb_school_dise')
        as t1 (
   district character varying(100),
   block character varying(100),
@@ -151,7 +151,7 @@ CREATE OR REPLACE VIEW vw_school_dise as
  );
 
 CREATE OR REPLACE VIEW vw_libinfra as
-select * from dblink('host=localhost dbname=libinfra user=klp password=1q2w3e4r', 'select * from tb_libinfra')
+select * from dblink('host=localhost dbname=libinfra', 'select * from tb_libinfra')
 as t1 (
   sid integer,
   libstatus  character varying(300),
@@ -166,7 +166,7 @@ as t1 (
 );
 
 CREATE OR REPLACE VIEW vw_ang_infra_agg as
-select * from dblink('host=localhost dbname=ang_infra user=klp password=1q2w3e4r', 'select * from tb_ang_infra_agg')
+select * from dblink('host=localhost dbname=ang_infra', 'select * from tb_ang_infra_agg')
 as t1 (
    sid integer,
    ai_metric character varying(30),
@@ -175,14 +175,14 @@ as t1 (
 );
 
 CREATE OR REPLACE VIEW vw_ai_questions as
-select * from dblink('host=localhost dbname=ang_infra user=klp password=1q2w3e4r', 'select * from tb_ai_questions')
+select * from dblink('host=localhost dbname=ang_infra', 'select * from tb_ai_questions')
 as t1 (
   id integer,
   question character varying(200)
 );
 
 CREATE OR REPLACE VIEW vw_dise_facility_agg as
-select * from dblink('host=localhost dbname=dise_blore user=klp password=1q2w3e4r', 'select * from tb_dise_facility_agg')
+select * from dblink('host=localhost dbname=dise_blore', 'select * from tb_dise_facility_agg')
 as t1 (
    sid integer,
    df_metric character varying(30),

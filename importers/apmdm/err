@@ -1,4 +1,0 @@
-/usr/share/postgresql/8.4/contrib/dblink.sql: No such file or directory
-createlang: language "plpgsql" is already installed in database "apmdm"
-psql:apmdm.sql:6: ERROR:  table "tb_middaymeal" does not exist
-psql:agg_apmdm.sql:1: NOTICE:  table "tb_mdm_agg" does not exist, skipping

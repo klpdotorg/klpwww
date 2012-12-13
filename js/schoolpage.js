@@ -67,15 +67,17 @@ function getSchoolPages(id,type,tab)
 
 function initialise(data)
 {
+  info=data;
   document.getElementById("school_info").innerHTML ="Loading <img style='vertical-align:middle' src='/images/ajax-loader-bar.gif'/>";
   document.getElementById("student_gend").innerHTML = "Loading <img style='vertical-align:middle' src='/images/ajax-loader-bar.gif'/>";
   document.getElementById("assessment_info").innerHTML = "Loading <img style='vertical-align:middle' src='/images/ajax-loader-bar.gif'/>";
-  document.getElementById("finances_txt").innerHTML = "Loading <img style='vertical-align:middle' src='/images/ajax-loader-bar.gif'/>";
-  document.getElementById("infra_info").innerHTML = "Loading <img style='vertical-align:middle' src='/images/ajax-loader-bar.gif'/>";
   document.getElementById("mdm_info").innerHTML = "Loading <img style='vertical-align:middle' src='/images/ajax-loader-bar.gif'/>";
+  document.getElementById("infra_info").innerHTML = "Loading <img style='vertical-align:middle' src='/images/ajax-loader-bar.gif'/>";
   document.getElementById("sys_data").innerHTML = "Loading <img style='vertical-align:middle' src='/images/ajax-loader-bar.gif'/>";
-
-  info=data;
+  if(info["type"] == 1) {
+  	document.getElementById("finances_txt").innerHTML = "Loading <img style='vertical-align:middle' src='/images/ajax-loader-bar.gif'/>";
+  	document.getElementById("mdm_info").innerHTML = "Loading <img style='vertical-align:middle' src='/images/ajax-loader-bar.gif'/>";
+  }
   tab = info["tab"]
 
   document.getElementById("maintab").tabber.tabShow(tab-1);
@@ -373,7 +375,7 @@ function populatePrograms()
        each = asskeys[i];
        asstext = assdict[each][0] + ' (' + each.split("-")[0] + ')';
        asstype = assdict[each][1];
-       assessmentInfo = assessmentInfo+'<a href=\"javascript:void(0);\" onclick=window.open("../../assessment/'+type+'/'+asstype+'/'+info['id']+'","_blank")><span style="color:#43AD2F">'+asstext+'</span></a><br/><br/>'
+       assessmentInfo = assessmentInfo+'<a href=\"javascript:void(0);\" onclick=window.open("/assessment/'+type+'/'+asstype+'/'+info['id']+'","_blank")><span style="color:#43AD2F">'+asstext+'</span></a><br/><br/>'
     }
   } else {
     assessmentInfo = 'No Programmes\' information yet.'
@@ -448,14 +450,14 @@ function populateSYS()
 function populateFinances()
 {
 	fin_info = "";
-        document.getElementById("fin_info_heading").innerHTML = "SSA Grants Allocation";
-	document.getElementById("fin_dise_heading").innerHTML = "DISE Finance Reporting";
-	document.getElementById("srcinfo4").innerHTML = '<br/><br/>Source : <a href="http://www.accountabilityindia.in/paisa-planning-allocations-and-expenditures-institutions-studies-accountability%22" target="_blank"><span style="color:#43AD2F">PAISA</span></a>, <a href="http://schoolreportcards.in" target="_blank"><span style="color:#43AD2F">NUEPA-DISE</span></a> ('+ info['acyear'] +')';
 		
 
         if (info["type"]==2) {
            fin_info = "SSA Grants are not applicable to Preschools";
 	} else if (info.tlm_amount) {
+           document.getElementById("fin_info_heading").innerHTML = "SSA Grants Allocation";
+	   document.getElementById("fin_dise_heading").innerHTML = "DISE Finance Reporting";
+	   document.getElementById("srcinfo4").innerHTML = '<br/><br/>Source : <a href="http://www.accountabilityindia.in/paisa-planning-allocations-and-expenditures-institutions-studies-accountability%22" target="_blank"><span style="color:#43AD2F">PAISA</span></a>, <a href="http://schoolreportcards.in" target="_blank"><span style="color:#43AD2F">NUEPA-DISE</span></a> ('+ info['acyear'] +')';
 	   fin_info = "<dl><dt>School Maintenance Grant (SMG)</dt><dd><img src=\"/images/Rupee.png\"/> 5,000 for upto 3 classrooms " +
 	              "and <img src=\"/images/Rupee.png\"/> 10,000 for more than 3 classrooms. </dd><dt>School Grant (SG)</dt><dd>" +
 	              "<img src=\"/images/Rupee.png\"/> 5,000 for lower primary schools and <img src=\"/images/Rupee.png\"/> 7,000 " +
@@ -628,7 +630,7 @@ function populateRTE()
 function populateMDM()
 {
    if (info["type"]==2) {
-           tabletxt = "";
+           tabletxt = "Meal information for Anganwadis is not available";
         } else if (Object.keys(info.ap_mdm).length > 0) {
            document.getElementById("mdm_info_heading").innerHTML = "Mid day meal Summary";
            document.getElementById("srcinfo6").innerHTML = '<br/><br/>Source : <a href="http://www.akshayapatra.org/" target="_blank"><span style="color:#43AD2F">Akshaya Patra (2012)</span></a>';

@@ -1,4 +1,5 @@
 $def with (data)
+
 <!DOCTYPE HTML>
 <html lang="en">
 <head>
@@ -29,8 +30,8 @@ $def with (data)
 	var tabberOptions = {
 	  'manualStartup':true,
 	  'onLoad': function(argsObj) {
-		if (argsObj.tabber.id == 'basic') {
-		  alert('Finished loading basic!');
+		if (argsObj.tabber.id == '3') {
+		  alert('Finished loading tab 3!');
 		}
 	  },
 	  'onClick': function(argsObj) {
@@ -81,7 +82,7 @@ $def with (data)
    </script>
 
 </head>
-<body onload="initialise($data)">
+<body class="yui3-skin-sam" onLoad="initialise($data)">
 	<div class="container container_12">
 	   <div class="grid_12">
 	      <!--div id="header"></div-->
@@ -92,13 +93,13 @@ $def with (data)
 
             <div class="tabber" id="maintab">
 
-			  <div class="tabbertab" id="basic">
+			  <div class="tabbertab" id="1">
 				<h2><a name="basic">Basic Information</a></h2>
 
 				  <div class="grid_6">
 					<div class="sub_header"><div id="school_info_heading"></div></div>
 					<div id="school_info"></div>
-					<div class="sub_header">Address</div>
+					<div class="sub_header"><div id="address_heading"></div></div>
 					<div id="school_geo"></div>
 					<div class="sub_header"><div id="const_info_heading"></div></div>
 					<div id="school_const"></div>
@@ -112,7 +113,7 @@ $def with (data)
 			  </div>
 
 
-			  <div class="tabbertab" id="demograph">
+			  <div class="tabbertab" id="2">
 				<h2>Demographics</h2>
 					<div class="grid_6">
 					  <div class="sub_header"><div id="student_info_heading"></div></div>
@@ -129,7 +130,7 @@ $def with (data)
 				 <div class='grid_12'><div id='srcinfo2'></div></div>
 			  </div>
 
-			  <div class="tabbertab" id="assmt">
+			  <div class="tabbertab" id="6">
 				<h2>Programmes</h2>
 					<div class="grid_12">
 					  <div class="sub_header"><div id="assmt_info_heading"></div></div>
@@ -138,7 +139,7 @@ $def with (data)
 				 <div class='grid_12'><div id='srcinfo3'></div></div>
 			  </div>
 
-			  <div class="tabbertab" id="finances">
+			  <div class="tabbertab" id="5">
 				<h2>Finances</h2>
 					<div class="grid_12">
 					  <div class="sub_header"><div id="fin_info_heading"></div></div>
@@ -158,7 +159,7 @@ $def with (data)
 				 <div class='grid_12'><div id='srcinfo4'></div></div>
 			  </div>
 
-			  <div class="tabbertab" id="infra">
+			  <div class="tabbertab" id="4">
 				<h2>Infrastructure</h2>
 					<div class="grid_8">
 					  <div class="sub_header"><div id="infra_info_heading"></div></div>
@@ -179,7 +180,7 @@ $def with (data)
 				 <div class='grid_12'><div id='srcinfo5'></div></div>
 			  </div>
 			  
-			  <div class="tabbertab" id="mdm">
+			  <div class="tabbertab" id="3">
 				<h2>Nutrition</h2>
 					<div class="grid_12">
 					  <div class="sub_header"><div id="mdm_info_heading"></div></div>
@@ -191,7 +192,7 @@ $def with (data)
 				 <div class='grid_12'><div id='srcinfo6'></div></div>
 			  </div>
 
-			  <div class="tabbertab" id="sys">
+			  <div class="tabbertab" id="7">
 				<h2>Share your Experience</h2>
 					<div class="grid_6">
 					  <div class="sub_header"><div id="sys_data_heading"></div></div>

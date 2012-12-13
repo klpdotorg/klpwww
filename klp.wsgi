@@ -24,7 +24,7 @@ urls = (
      '/info/school/(.*)','getSchoolInfo',
      '/info/preschool/(.*)','getSchoolInfo',
      '/shareyourstory(.*)\?*','shareyourstory',
-     '/schoolpage/(.*)/(.*)','schoolpage',
+     '/schoolpage/(.*)/(.*)/(.*)\?*','SchoolPage',
      '/info/(.*)/(.*)','getBoundaryInfo',
      '/boundaryPoints/(.*)/(.*)','getBoundaryPoints',
      '/text/(.+)', 'text',
@@ -237,6 +237,7 @@ statements = {'get_district':"select bcoord.id_bndry,ST_AsText(bcoord.coord),ini
               'get_annualgrant_sch':"select s.cat, vpd.grant_type, vpd.grant_amount as total_grant,vdf.sg_recd,vdf.sg_expnd from tb_school s, vw_paisa_data vpd, vw_dise_info vdf where vpd.criteria='school_cat' and vpd.factor = s.cat::text and s.id=%s and vdf.dise_code=s.dise_code group by s.cat,vpd.grant_type,vpd.grant_amount,vdf.sg_recd,vdf.sg_expnd ;",
               'get_dise_facility':"select distinct ddm.value, dfa.score,dfa.df_group from vw_dise_facility_agg dfa, tb_school s, vw_dise_display_master ddm where s.dise_code=dfa.dise_code and ddm.key=dfa.df_metric and s.id=%s;",
 	      'get_dise_ptr':"select vdi.teacher_count,vdi.boys_count,vdi.girls_count,vdi.classroom_count,vdi.acyear,vdi.lowest_class,vdi.highest_class,vdi.books_in_library from vw_dise_info vdi,tb_school s where s.dise_code=vdi.dise_code and s.id=%s;",
+	      'get_dise_stuinfo':"select vdi.boys_count,vdi.girls_count from vw_dise_info vdi,tb_school s where s.dise_code=vdi.dise_code and s.id=%s;",
               'get_dise_rte':"select distinct ddm.value, dra.status,dra.rte_group from vw_dise_rte_agg dra, tb_school s, vw_dise_display_master ddm where s.dise_code=dra.dise_code and ddm.key=dra.rte_metric and s.id=%s;",
               'get_ang_infra':"select distinct adm.value, aia.perc_score,aia.ai_group from vw_anginfra_agg aia, tb_school s, vw_ang_display_master adm where s.id=aia.sid and adm.key=aia.ai_metric and s.id=%s;",
               'get_lib_infra':"select libstatus,libtype,numbooks,numracks,numtables,numchairs,numcomputers,numups from tb_school s, vw_libinfra li where s.id=li.sid and s.id=%s;",
@@ -753,8 +754,191 @@ class assessmentData(baseAssessment):
       DbManager.getMainCon().commit()
       return self.data
 
+class CommonSchoolUtil:
+  
+  @staticmethod
+  def getSchoolInfo(id):
+    data = {}
+    cursor = DbManager.getMainCon().cursor()
+    cursor.execute(statements['get_school_info'],(id,))
+    result = cursor.fetchall()
+    for row in result:
+      data["b"]=row[0].capitalize()
+      data["b1"]=row[1].capitalize()
+      data["b2"]=row[2].capitalize()
+      data["name"]=row[3].capitalize()
+      data["type"]=CommonSchoolUtil.checkEmpty(row[4],'-')
+      data["cat"]=CommonSchoolUtil.checkEmpty(row[5],'-')
+      data["sex"]=CommonSchoolUtil.checkEmpty(row[6],'-')
+      data["moi"]=CommonSchoolUtil.checkEmpty(row[7],'Kannada')
+      data["mgmt"]=CommonSchoolUtil.checkEmpty(row[8],'-')
+      data["dise_code"]=CommonSchoolUtil.checkEmpty(row[9],'-')
+      data["status"]=row[10]
+    DbManager.getMainCon().commit()
+    cursor.close()
+    return data;
+ 
+  @staticmethod 
+  def checkEmpty(data,rpldata):
+    if data == None:
+      return rpldata
+    else:
+      return str(data).capitalize()
 
-class schoolpage:
+class SchoolPage:
+  
+  def GET(self,type,id,tab_val=1):
+    data={'name':'','type':'','id':'','sysdate':[],'tab':''}
+    tab = int(tab_val)
+    data["type"]=str(type)
+    data["id"]=int(id)
+    data["tab"]=tab
+    i = web.input()
+    is_ajax = "false"
+    if 'is_ajax' in i.keys():
+      is_ajax = web.input()['is_ajax']
+    #print type + '|' + str(id) + '|' + str(tab)
+    try: 
+      data.update(CommonSchoolUtil.getSchoolInfo(id))
+      if tab == 1:
+        data.update(self.getBasicData(id))
+        data.update(self.getSYSImages(id))
+      elif tab == 2:
+      	data.update(self.getDemographicData(id))
+      elif tab == 3:
+        data.update(self.getProgrammeData(id,type))  
+      elif tab == 4:
+        if type=='school':
+          data.update(self.getFinData(id))
+      elif tab == 5:
+        if type=='school':
+          data.update(self.getDiseData(id))
+          data.update(self.getLibraryData(id))
+        if type=='preschool':
+          data.update(self.getAngInfraData(id))
+      elif tab == 6:
+        if type=='school':
+          data.update(self.getMidDayMealData(id))
+      elif tab == 7:
+        data.update(self.getSYSData(id))
+      else:
+        data.update(self.getBasicData(id))
+        data.update(self.getSYSImages(id))
+      if is_ajax == "true":
+        web.header('Content-Type', 'application/json; charset=utf-8')
+        return jsonpickle.encode(data)
+      else:
+        web.header('Content-Type','text/html; charset=utf-8')
+        return render_plain.schoolpage(jsonpickle.encode(data))
+    except:
+      traceback.print_exc(file=sys.stderr)
+      DbManager.getMainCon().rollback()
+      DbManager.getSysCon().rollback()
+
+  def getBasicData(self,id):
+    data = {}
+    cursor = DbManager.getMainCon().cursor()
+    cursor.execute(statements['get_school_address_info'],(id,))
+    result = cursor.fetchall()
+    data["address"]='-'
+    for row in result:
+      data["address"]=CommonSchoolUtil.checkEmpty(row[0],'-')
+      data["area"]=CommonSchoolUtil.checkEmpty(row[1],'-')
+      data["postcode"]=CommonSchoolUtil.checkEmpty(row[2],'-')
+      data["landmark_1"]=CommonSchoolUtil.checkEmpty(row[3],'-')
+      data["inst_id_1"]=CommonSchoolUtil.checkEmpty(row[4],'-')
+      data["inst_id_2"]=CommonSchoolUtil.checkEmpty(row[5],'-')
+      data["bus_no"]=CommonSchoolUtil.checkEmpty(row[6],'-')
+    DbManager.getMainCon().commit()
+
+    cursor.execute(statements['get_school_mpmla'],(id,))
+    result = cursor.fetchall()
+    for row in result:
+      data["mla"] = CommonSchoolUtil.checkEmpty(row[0],'Not available')
+      data["mp"] = CommonSchoolUtil.checkEmpty(row[1],'Not available')
+      data["ward"] = CommonSchoolUtil.checkEmpty(row[6],'Not available')
+      data["mlaname"] = CommonSchoolUtil.checkEmpty(row[2]+' ('+row[3]+')','Not available')
+      data["mpname"] = CommonSchoolUtil.checkEmpty(row[4]+' ('+row[5]+')','Not available')
+      data["wardname"] = CommonSchoolUtil.checkEmpty(row[7]+' ('+row[8]+')','Not available')
+    DbManager.getMainCon().commit()
+      
+    cursor.execute(statements['get_school_point'],(id,))
+    result = cursor.fetchall()
+    for row in result:
+      match = re.match(r"POINT\((.*)\s(.*)\)",row[0])
+      data["lon"] = match.group(1)
+      data["lat"] = match.group(2)
+    cursor.close()
+    DbManager.getMainCon().commit()
+    return data
+  
+  def getSYSImages(self,id):
+    data = {}
+    #Added to query images from tb_sys_images
+    imgpath = ConfigReader.getConfigValue('Pictures','htmlpicpath')
+    data["image_dir"] = "/" + imgpath
+    syscursor = DbManager.getSysCon().cursor()
+    syscursor.execute(statements['get_school_images'],(id,))
+    result = syscursor.fetchall()
+    data["images"]=[]
+    for row in result:
+      data["images"].append(row[0])
+    DbManager.getSysCon().commit()
+    syscursor.close()
+    return data
+ 
+  def getDemographicData(self,id):
+    data = {}
+    cursor = DbManager.getMainCon().cursor()
+    cursor.execute(statements['get_school_gender'],(id,))
+    result = cursor.fetchall()
+    for row in result:
+      if row[1] == "female":
+        data["numGirls"]=int(row[2])
+      if row[1] == "male":
+        data["numBoys"]=int(row[2])
+    if "numGirls" not in data.keys():
+      data["numGirls"] = 0
+    if "numBoys" not in data.keys():
+      data["numBoys"] = 0
+    data["numStudents"]= data["numBoys"]+data["numGirls"]
+    DbManager.getMainCon().commit()
+
+    cursor.execute(statements['get_school_mt'],(id,))
+    result = cursor.fetchall()
+    tabledata = {}
+    invertdata = {}
+    order_lst = []
+    for row in result:
+      invertdata[int(row[2])] = str(row[1].strip().title())
+    if len(invertdata.keys()) > 0:
+      checklist = sorted(invertdata)
+      others = 0
+      for i in checklist[0:len(checklist)-4]:
+        others = others + i
+        del invertdata[i]
+      invertdata[others] = 'Others'
+      tabledata = dict(zip(invertdata.values(),invertdata.keys()))
+      if 'Other' in tabledata.keys():
+        tabledata['Others'] = tabledata['Others'] + tabledata['Other']
+        del tabledata['Other']
+    for i in sorted(tabledata,key=tabledata.get,reverse=True):
+      order_lst.append(i)
+    if len(tabledata.keys()) > 0:
+      data["school_mt_tb"] = tabledata
+      data["school_mt_ord"] = order_lst
+    cursor.close()
+    DbManager.getMainCon().commit()
+    
+    cursor = DbManager.getMainCon().cursor()
+    cursor.execute(statements['get_dise_stuinfo'],(id,))
+    result = cursor.fetchall()
+    for row in result:
+      data['boys_count'] = str(row[0])
+      data['girls_count'] = str(row[1])
+      data['student_count'] = str(int(row[1]) + int(row[0]))
+    DbManager.getMainCon().commit()
+    return data
  
   def getMidDayMealData(self,klpid):
     tabledata = {}
@@ -783,14 +967,14 @@ class schoolpage:
       cursor.execute(statements['get_lib_infra'],(klpid,))
       result = cursor.fetchall()
       for row in result:
-        tabledata['Status of the Library'] = self.checkEmpty(row[0],'-')
-        tabledata['Type in Hub-Spoke model'] = self.checkEmpty(row[1],'-')
-        tabledata['Number of Books'] = self.checkEmpty(row[2],'-')
-        tabledata['Number of Racks'] = self.checkEmpty(row[3],'-')
-        tabledata['Number of Tables'] = self.checkEmpty(row[4],'-')
-        tabledata['Number of Chairs'] = self.checkEmpty(row[5],'-')
-        tabledata['Number of Computers'] = self.checkEmpty(row[6],'-')
-        tabledata['Number of UPS(s)'] = self.checkEmpty(row[7],'-')
+        tabledata['Status of the Library'] = CommonSchoolUtil.checkEmpty(row[0],'-')
+        tabledata['Type in Hub-Spoke model'] = CommonSchoolUtil.checkEmpty(row[1],'-')
+        tabledata['Number of Books'] = CommonSchoolUtil.checkEmpty(row[2],'-')
+        tabledata['Number of Racks'] = CommonSchoolUtil.checkEmpty(row[3],'-')
+        tabledata['Number of Tables'] = CommonSchoolUtil.checkEmpty(row[4],'-')
+        tabledata['Number of Chairs'] = CommonSchoolUtil.checkEmpty(row[5],'-')
+        tabledata['Number of Computers'] = CommonSchoolUtil.checkEmpty(row[6],'-')
+        tabledata['Number of UPS(s)'] = CommonSchoolUtil.checkEmpty(row[7],'-')
       DbManager.getMainCon().commit()
       cursor.close()
       return {'lib_infra':tabledata};
@@ -799,6 +983,45 @@ class schoolpage:
       cursor.close()
       traceback.print_exc(file=sys.stderr)
       return tabledata;  
+
+  def getDiseData(self, klpid):
+    tabledata = {}
+    cursor = DbManager.getMainCon().cursor()
+    cursor.execute(statements['get_dise_ptr'],(klpid,))
+    result = cursor.fetchall()
+    for row in result:
+      tabledata['teacher_count'] = str(row[0])
+      tabledata['boys_count'] = str(row[1])
+      tabledata['girls_count'] = str(row[2])
+      tabledata['student_count'] = str(int(row[1]) + int(row[2]))
+      tabledata['classroom_count'] = str(row[3])
+      tabledata['acyear'] = str(row[4])
+      tabledata['lowest_class'] = str(row[5])
+      tabledata['highest_class'] = str(row[6])
+      tabledata['dise_books'] = str(row[7])
+    DbManager.getMainCon().commit()
+    cursor.execute(statements['get_dise_facility'],(klpid,))
+    result = cursor.fetchall()
+    facilities = {}
+    for row in result:
+      if row[2] in facilities:
+        facilities[row[2]][row[0]]=int(str(row[1]))
+      else:
+        facilities[row[2]]={row[0]:int(str(row[1]))}
+    tabledata['dise_facility'] = facilities
+    DbManager.getMainCon().commit()
+    cursor.execute(statements['get_dise_rte'],(klpid,))
+    result = cursor.fetchall()
+    rte = {}
+    for row in result:
+      if row[2] in rte:
+        rte[row[2]][row[0]]=str(row[1])
+      else:
+        rte[row[2]]={row[0]:str(row[1])}
+    tabledata['dise_rte'] = rte 
+    DbManager.getMainCon().commit()
+    cursor.close()
+    return tabledata;
 
   def getAngInfraData(self, klpid):
     tabledata = {}
@@ -822,260 +1045,102 @@ class schoolpage:
       traceback.print_exc(file=sys.stderr)
       return tabledata;  
 
-  def getDiseData(self, dise_code, klpid):
+  def getFinData(self, klpid):
     tabledata = {}
-    try:
-      cursor = DbManager.getMainCon().cursor()
-      cursor.execute(statements['get_tlmgrant_sch'],(klpid,))
-      result = cursor.fetchall()
-      for row in result:
-        tabledata['tlm_amount'] = str(row[2])
-        tabledata['tlm_recd'] = str(row[3])
-        tabledata['tlm_expnd'] = str(row[4])
-        tabledata['teacher_count'] = str(int(row[2])/int(row[1]))
-      DbManager.getMainCon().commit()
-      cursor.execute(statements['get_mtncgrant_sch'],(klpid,))
-      result = cursor.fetchall()
-      for row in result:
-        tabledata['smg_amount'] = str(row[2])
-        tabledata['classroom_count'] = str(row[1])
-      DbManager.getMainCon().commit()
-      cursor.execute(statements['get_annualgrant_sch'],(klpid,))
-      result = cursor.fetchall()
-      for row in result:
-        tabledata['sg_amount'] = str(row[2])
-        tabledata['sg_recd'] = str(row[3])
-        tabledata['sg_expnd'] = str(row[4])
-      DbManager.getMainCon().commit()
-      cursor.execute(statements['get_dise_ptr'],(klpid,))
-      result = cursor.fetchall()
-      for row in result:
-        tabledata['teacher_count'] = str(row[0])
-        tabledata['boys_count'] = str(row[1])
-        tabledata['girls_count'] = str(row[2])
-        tabledata['student_count'] = str(int(row[1]) + int(row[2]))
-        tabledata['classroom_count'] = str(row[3])
-        tabledata['acyear'] = str(row[4])
-        tabledata['lowest_class'] = str(row[5])
-        tabledata['highest_class'] = str(row[6])
-        tabledata['dise_books'] = str(row[7])
-      DbManager.getMainCon().commit()
-      cursor.execute(statements['get_dise_facility'],(klpid,))
-      result = cursor.fetchall()
-      facilities = {}
-      for row in result:
-        if row[2] in facilities:
-	  facilities[row[2]][row[0]]=int(str(row[1]))
-        else:
-          facilities[row[2]]={row[0]:int(str(row[1]))}
-      tabledata['dise_facility'] = facilities
-      DbManager.getMainCon().commit()
-      cursor.execute(statements['get_dise_rte'],(klpid,))
-      result = cursor.fetchall()
-      rte = {}
-      for row in result:
-        if row[2] in rte:
-	  rte[row[2]][row[0]]=str(row[1])
-        else:
-          rte[row[2]]={row[0]:str(row[1])}
-      tabledata['dise_rte'] = rte 
-      DbManager.getMainCon().commit()
-      cursor.close()
-      return tabledata;
-    except:
-      DbManager.getMainCon().rollback()
-      cursor.close()
-      traceback.print_exc(file=sys.stderr)
-      return tabledata;  
-
-  def GET(self,type,id):
-    data={'name':'','type':'','id':'','sysdate':[]}
-    data["type"]=str(type)
-    data["id"]=int(id)
-    try:
-      cursor = DbManager.getMainCon().cursor()
-      cursor.execute(statements['get_school_info'],(id,))
-      result = cursor.fetchall()
-      for row in result:
-        data["b"]=row[0].capitalize()
-        data["b1"]=row[1].capitalize()
-        data["b2"]=row[2].capitalize()
-        data["name"]=row[3].capitalize()
-        data["type"]=self.checkEmpty(row[4],'-')
-        data["cat"]=self.checkEmpty(row[5],'-')
-        data["sex"]=self.checkEmpty(row[6],'-')
-        data["moi"]=self.checkEmpty(row[7],'Kannada')
-        data["mgmt"]=self.checkEmpty(row[8],'-')
-        data["dise_code"]=self.checkEmpty(row[9],'-')
-        data["status"]=row[10]
-      DbManager.getMainCon().commit()
-
-      if type=='school' and len(data["dise_code"]) > 2:
-        data.update(self.getDiseData(data["dise_code"],id))
-      
-      if type=='school':
-        data.update(self.getLibraryData(id))
-        data.update(self.getMidDayMealData(id))
-      
-      if type=='preschool':
-        data.update(self.getAngInfraData(id))
-
-      cursor.execute(statements['get_school_address_info'],(id,))
-      result = cursor.fetchall()
-      data["address"]='-'
-      for row in result:
-        data["address"]=self.checkEmpty(row[0],'-')
-        data["area"]=self.checkEmpty(row[1],'-')
-        data["postcode"]=self.checkEmpty(row[2],'-')
-        data["landmark_1"]=self.checkEmpty(row[3],'-')
-        data["inst_id_1"]=self.checkEmpty(row[4],'-')
-        data["inst_id_2"]=self.checkEmpty(row[5],'-')
-        data["bus_no"]=self.checkEmpty(row[6],'-')
-      DbManager.getMainCon().commit()
-
-      cursor.execute(statements['get_school_mpmla'],(id,))
-      result = cursor.fetchall()
-      for row in result:
-        data["mla"] = self.checkEmpty(row[0],'Not available')
-        data["mp"] = self.checkEmpty(row[1],'Not available')
-        data["ward"] = self.checkEmpty(row[6],'Not available')
-        data["mlaname"] = self.checkEmpty(row[2]+' ('+row[3]+')','Not available')
-        data["mpname"] = self.checkEmpty(row[4]+' ('+row[5]+')','Not available')
-        data["wardname"] = self.checkEmpty(row[7]+' ('+row[8]+')','Not available')
-      DbManager.getMainCon().commit()
+    cursor = DbManager.getMainCon().cursor()
+    cursor.execute(statements['get_tlmgrant_sch'],(klpid,))
+    result = cursor.fetchall()
+    for row in result:
+      tabledata['tlm_amount'] = str(row[2])
+      tabledata['tlm_recd'] = str(row[3])
+      tabledata['tlm_expnd'] = str(row[4])
+      tabledata['teacher_count'] = str(int(row[2])/int(row[1]))
+    DbManager.getMainCon().commit()
+    cursor.execute(statements['get_mtncgrant_sch'],(klpid,))
+    result = cursor.fetchall()
+    for row in result:
+      tabledata['smg_amount'] = str(row[2])
+      tabledata['classroom_count'] = str(row[1])
+    DbManager.getMainCon().commit()
+    cursor.execute(statements['get_annualgrant_sch'],(klpid,))
+    result = cursor.fetchall()
+    for row in result:
+      tabledata['sg_amount'] = str(row[2])
+      tabledata['sg_recd'] = str(row[3])
+      tabledata['sg_expnd'] = str(row[4])
+    DbManager.getMainCon().commit()
+    #tabledata['dise_fin'] = tabledata
+    cursor.close()
+    return tabledata;
     
-      query='get_assessmentinfo_'+type
-      cursor.execute(statements[query],(id,))
-      result = cursor.fetchall()
-      assessments= ""
-      first=1
+  def getProgrammeData(self,id,type):
+    data = {}
+    query='get_assessmentinfo_'+type
+    cursor = DbManager.getMainCon().cursor()
+    cursor.execute(statements[query],(id,))
+    result = cursor.fetchall()
+    assessments= ""
+    first=1
+    for row in result:
+      if first:
+        assessments=assessments+row[0]+"|"+str(row[1]).split("-")[0]+"|"+str(row[2])+"|"+str(row[3])
+        first=0
+      else:
+        assessments=assessments+","+row[0]+"|"+str(row[1]).split("-")[0]+"|"+str(row[2])+"|"+str(row[3])
+    data["assessments"]=assessments
+    cursor.close()
+    DbManager.getMainCon().commit()
+    return data
+      
+  def getSYSData(self,id):
+    data = {}
+    syscursor = DbManager.getSysCon().cursor()
+    syscursor.execute(statements['get_sys_info'],(id,))
+    result = syscursor.fetchall()
+    sysdates =  []
+    syscomments = {}
+    sysids = []
+    data["syscount"]=0
+    count=0
+    for row in result:
+      if row[0] != None:
+        if row[0].strip().replace('/','-') not in sysdates:
+          sysdates.append(row[0].strip().replace('/','-'))
+        data["syscount"]=data["syscount"]+1
+      if row[1] != None:
+        syscomments[count]={"name":row[3],"timestamp":row[4],"comments":row[1],"images":[],"id":row[2]}
+        syscursor.execute(statements['get_sys_images'],(row[2],))
+        imgresult = syscursor.fetchall()
+        for img in imgresult:
+          syscomments[count]["images"].append(img[0]) 
+      sysids.append(row[2])
+      count=count+1
+    data["sysdate"] = sysdates
+    data["syscomment"] = syscomments
+    DbManager.getSysCon().commit()
+
+    sysdata = {}
+    if count>0:
+      syscursor.execute(statements['get_sys_qans'],[tuple(sysids)])
+      result = syscursor.fetchall()
+      pos_ans = ["yes","available and functional","available but not functional"]
       for row in result:
-        if first:
-          assessments=assessments+row[0]+"|"+str(row[1]).split("-")[0]+"|"+str(row[2])+"|"+str(row[3])
-          first=0
+        if row[0] in sysdata.keys():
+          if row[1].lower() not in pos_ans:
+            sysdata[row[0]] = "No or Not known"
         else:
-          assessments=assessments+","+row[0]+"|"+str(row[1]).split("-")[0]+"|"+str(row[2])+"|"+str(row[3])
-      data["assessments"]=assessments
-      DbManager.getMainCon().commit()
-
-      #Added to query images from tb_sys_images
-      imgpath = ConfigReader.getConfigValue('Pictures','htmlpicpath')
-      data["image_dir"] = "/" + imgpath
-
-      syscursor = DbManager.getSysCon().cursor()
-      syscursor.execute(statements['get_school_images'],(id,))
-      result = syscursor.fetchall()
-      data["images"]=[]
-      for row in result:
-        data["images"].append(row[0])
-      DbManager.getSysCon().commit()
-
-      cursor.execute(statements['get_school_gender'],(id,))
-      result = cursor.fetchall()
-      for row in result:
-        if row[1] == "female":
-          data["numGirls"]=int(row[2])
-        if row[1] == "male":
-          data["numBoys"]=int(row[2])
-      if "numGirls" not in data.keys():
-        data["numGirls"] = 0
-      if "numBoys" not in data.keys():
-        data["numBoys"] = 0
-      data["numStudents"]= data["numBoys"]+data["numGirls"]
-      DbManager.getMainCon().commit()
-
-      cursor.execute(statements['get_school_mt'],(id,))
-      result = cursor.fetchall()
-      tabledata = {}
-      invertdata = {}
-      order_lst = []
-      for row in result:
-        invertdata[int(row[2])] = str(row[1].strip().title())
-      if len(invertdata.keys()) > 0:
-        checklist = sorted(invertdata)
-        others = 0
-        for i in checklist[0:len(checklist)-4]:
-          others = others + i
-          del invertdata[i]
-        invertdata[others] = 'Others'
-        tabledata = dict(zip(invertdata.values(),invertdata.keys()))
-        if 'Other' in tabledata.keys():
-          tabledata['Others'] = tabledata['Others'] + tabledata['Other']
-          del tabledata['Other']
-      for i in sorted(tabledata,key=tabledata.get,reverse=True):
-        order_lst.append(i)
-      if len(tabledata.keys()) > 0:
-        data["school_mt_tb"] = tabledata
-        data["school_mt_ord"] = order_lst
-      DbManager.getMainCon().commit()
-
-      syscursor.execute(statements['get_sys_info'],(id,))
-      result = syscursor.fetchall()
-      sysdates =  []
-      syscomments = {}
-      sysids = []
-      data["syscount"]=0
-      count=0
-      for row in result:
-        if row[0] != None:
-          if row[0].strip().replace('/','-') not in sysdates:
-            sysdates.append(row[0].strip().replace('/','-'))
-          data["syscount"]=data["syscount"]+1
-        if row[1] != None:
-          syscomments[count]={"name":row[3],"timestamp":row[4],"comments":row[1],"images":[],"id":row[2]}
-          syscursor.execute(statements['get_sys_images'],(row[2],))
-          imgresult = syscursor.fetchall()
-          for img in imgresult:
-            syscomments[count]["images"].append(img[0]) 
-        sysids.append(row[2])
-        count=count+1
-      data["sysdate"] = sysdates
-      data["syscomment"] = syscomments
-      DbManager.getSysCon().commit()
-
-      sysdata = {}
-      if count>0:
-        syscursor.execute(statements['get_sys_qans'],[tuple(sysids)])
-        result = syscursor.fetchall()
-        pos_ans = ["yes","available and functional","available but not functional"]
-        for row in result:
-          if row[0] in sysdata.keys():
-            if row[1].lower() not in pos_ans:
-              sysdata[row[0]] = "No or Not known"
+          if row[1].lower() in pos_ans:
+            sysdata[row[0]] = "Yes" 
           else:
-            if row[1].lower() in pos_ans:
-              sysdata[row[0]] = "Yes" 
-            else:
-              sysdata[row[0]] = "No or Not known"
-        if len(sysdata.keys()) > 0:
-          data["sysdata"] = []
-          for (k,v) in sysdata.items():
-            data["sysdata"].append(k +'|'+v);
-        DbManager.getSysCon().commit()
-      syscursor.close()
+            sysdata[row[0]] = "No or Not known"
+      if len(sysdata.keys()) > 0:
+        data["sysdata"] = []
+        for (k,v) in sysdata.items():
+          data["sysdata"].append(k +'|'+v);
+    DbManager.getSysCon().commit()
+    syscursor.close()
+    return data
 
-      cursor.execute(statements['get_school_point'],(id,))
-      result = cursor.fetchall()
-      for row in result:
-        match = re.match(r"POINT\((.*)\s(.*)\)",row[0])
-        data["lon"] = match.group(1)
-        data["lat"] = match.group(2)
-      cursor.close()
-      DbManager.getMainCon().commit()
-    except:
-      traceback.print_exc(file=sys.stderr)
-      cursor.close()
-      DbManager.getMainCon().rollback()
-      syscursor.close()
-      DbManager.getSysCon().rollback()
-    web.header('Content-Type','text/html; charset=utf-8')
-    return render_plain.schoolpage(jsonpickle.encode(data))
-
-  def checkEmpty(self,data,rpldata):
-    if data == None:
-      return rpldata
-    else:
-      return str(data).capitalize()
 
 class shareyourstory:
   def GET(self,type):
@@ -1461,9 +1526,9 @@ class postSYS:
       body = body + " in " + blk + ", " + clust + ". Your inputs have been successfully recorded."
       body = body + "<br/><br/> For future reference, information on the school you visited can be found here:" 
       if type == 'school':
-        body = body + web.ctx.env['HTTP_HOST'] + "/schoolpage/school/" + str(schoolid) 
+        body = body + web.ctx.env['HTTP_HOST'] + "/schoolpage/school/" + str(schoolid) + "/1"
       else:
-        body = body + web.ctx.env['HTTP_HOST'] + "/schoolpage/preschool/" + str(schoolid) 
+        body = body + web.ctx.env['HTTP_HOST'] + "/schoolpage/preschool/" + str(schoolid) + "/1"
       body = body + "<br/><br/>It will take a little while for your comments and inputs to show up as they need to be approved by a moderator. We appreciate your continued help in ensuring that every child is in school and learning well. Thank you and please spread the word! <br/>~ Team KLP<br/><br/> PS: You can reply to this email and we will respond soonest!"
       sub = "Your story on " + sname + " has been saved."
     else:

@@ -1,6 +1,7 @@
 var info;
 var map;
 var type;
+var tab;
 var image={"school":"school.png","preschool":"preschool.png"}
 
 if (!Array.prototype.indexOf)
@@ -27,76 +28,94 @@ if (!Array.prototype.indexOf)
 }
 
 
-function initialise(data)
+function getSchoolPages(id,type,tab)
 {
-  info=data;
-  //alert(document.location.href);
-  //alert(document.location.host);
-  info["name"]=info["name"].toUpperCase();
-  populateHeadings();
-  showMap();
-  populateHeader();
-  populateAddress();
-  populateSchoolInfo();
-  populateDemographics();
-  populatePics();
-  populateSYS();
-  populateEReps();
-  populatePrograms();
-  populateFinances();
-  populateInfra();
-  populateRTE();
-  populateLibrary();
-  populatePTR();
-  populateMDM();
+    YUI({base: '/yui/build/',timeout: 50000}).use("io-base","json-parse",
+    function(Y, result) {
+      if (!result.success) {
+        Y.log('Load failure: ' + result.msg, 'warn', 'program');
+      }
+      var callback = {
+        on: { success:
+          function(id, o) {
+            var info;
+            try {
+              info= Y.JSON.parse(o.responseText); 
+            } catch (e) {
+              Y.log('Could not parse json', 'error', 'info');
+              return;
+            }
+            continueBuildUp(info);  
+          },
+          failure: function(id, o) {
+            Y.log('Could not retrieve school page data ','error','info');
+          }
+        }
+      };
+      var url = '';
+      url = "/schoolpage/";
+      if (type == 1)
+        url = url + "school/";
+      else
+        url = url + "preschool/";
+      url = url + id ;
+      url = url + "/" + tab;
+      url = url + "?is_ajax=true";
+      var request = Y.io(url, callback);
+    });
 }
 
-function populateHeadings() 
+function initialise(data)
 {
-	if (info["type"]==2)
-	{
-		type="preschool";
-		document.getElementById("school_info_heading").innerHTML = "Preschool Information";
-		//document.getElementById("school_hier_heading").innerHTML = "Preschool District Information";
-		document.getElementById("school_visits_heading").innerHTML = "Preschool Visits";
-		document.getElementById("sys_data_heading").innerHTML = "Information from Preschool Visits";
-		document.getElementById("fin_info_heading").innerHTML = "SSA Grants Allocation";
-		document.getElementById("infra_info_heading").innerHTML = "Infrastructure Summary";
-		document.getElementById("srcinfo1").innerHTML = 'Source : KLP Database (2011-12)';
-		document.getElementById("srcinfo2").innerHTML = 'Source : KLP Database (2011-12)';
-		document.getElementById("srcinfo3").innerHTML = 'Source : KLP Partner Data (2011-12)';
-		document.getElementById("srcinfo4").innerHTML = 'Source : KLP Database (2011-12)';
-		document.getElementById("srcinfo5").innerHTML = 'Source : KLP Database (2011-12)';
-		document.title = "Preschool Information";
-	}
-	else
-	{
-		type="school";
-		document.getElementById("school_info_heading").innerHTML = "School Information";
-		//document.getElementById("school_hier_heading").innerHTML = "School District Information";
-		document.getElementById("school_visits_heading").innerHTML = "School Visits";
-		document.getElementById("sys_data_heading").innerHTML = "Information from School Visits";
-		document.getElementById("fin_info_heading").innerHTML = "SSA Grants Allocation";
-		document.getElementById("fin_dise_heading").innerHTML = "DISE Finance Reporting";
-		document.getElementById("infra_info_heading").innerHTML = "Infrastructure Summary";
-		document.getElementById("ptr_info_heading").innerHTML = "Academics Summary ( " + info['acyear'] + ')';
-		document.getElementById("lib_infra_heading").innerHTML = "Akshara Library Details";
-		document.getElementById("rte_info_heading").innerHTML = "Additional RTE Information";
-		document.getElementById("mdm_info_heading").innerHTML = "Mid day meal Summary";
-		document.getElementById("dise_gender_heading").innerHTML = "DISE Student Profile";
-		document.getElementById("srcinfo1").innerHTML = 'Source : KLP Database (2011-12)';
-		document.getElementById("srcinfo2").innerHTML = 'Source : KLP Database (2011-12), <a href="http://schoolreportcards.in" target="_blank"><span style="color:#43AD2F">NUEPA-DISE</span></a>(' + info['acyear'] + ')';
-		document.getElementById("srcinfo3").innerHTML = 'Source : KLP Partner Data (2011-12)';
-		document.getElementById("srcinfo4").innerHTML = '<br/><br/>Source : <a href="http://www.accountabilityindia.in/paisa-planning-allocations-and-expenditures-institutions-studies-accountability%22" target="_blank"><span style="color:#43AD2F">PAISA</span></a>, <a href="http://schoolreportcards.in" target="_blank"><span style="color:#43AD2F">NUEPA-DISE</span></a> ('+ info['acyear'] +')';
-		document.getElementById("srcinfo5").innerHTML = '<br/><br/>Source : KLP Database (2011-12), <a href="http://schoolreportcards.in" target="_blank"><span style="color:#43AD2F">NUEPA-DISE</span></a> (' + info['acyear'] + ')';
-		document.getElementById("srcinfo6").innerHTML = '<br/><br/>Source : <a href="http://www.akshayapatra.org/" target="_blank"><span style="color:#43AD2F">Akshaya Patra (2012)</span></a>';
-		document.title = "School Information";
-	}
+  document.getElementById("school_info").innerHTML ="Loading <img style='vertical-align:middle' src='/images/ajax-loader-bar.gif'/>";
+  document.getElementById("student_gend").innerHTML = "Loading <img style='vertical-align:middle' src='/images/ajax-loader-bar.gif'/>";
+  document.getElementById("assessment_info").innerHTML = "Loading <img style='vertical-align:middle' src='/images/ajax-loader-bar.gif'/>";
+  document.getElementById("finances_txt").innerHTML = "Loading <img style='vertical-align:middle' src='/images/ajax-loader-bar.gif'/>";
+  document.getElementById("infra_info").innerHTML = "Loading <img style='vertical-align:middle' src='/images/ajax-loader-bar.gif'/>";
+  document.getElementById("mdm_info").innerHTML = "Loading <img style='vertical-align:middle' src='/images/ajax-loader-bar.gif'/>";
+  document.getElementById("sys_data").innerHTML = "Loading <img style='vertical-align:middle' src='/images/ajax-loader-bar.gif'/>";
 
-	document.getElementById("sys_comments_heading").innerHTML = "Visitors' Comments";
-	document.getElementById("student_info_heading").innerHTML = "Student Information";
-	document.getElementById("const_info_heading").innerHTML = "Constituency Information";
-	document.getElementById("assmt_info_heading").innerHTML = "Programme Information";
+  info=data;
+  tab = info["tab"]
+
+  document.getElementById("maintab").tabber.tabShow(tab-1);
+  for(var i=1;i<=7;i++) {
+   if (tab != i)
+     getSchoolPages(info["id"],info["type"],i);
+  }
+  info["name"]=info["name"].toUpperCase();
+  populateHeader();
+  continueBuildUp(info);
+}
+
+
+function continueBuildUp(data)
+{
+  info=data;
+  tab = info["tab"]
+  if (tab == 1) {
+    	showMap();
+    	populateAddress();
+    	populateSchoolInfo();
+    	populatePics();
+  	populateEReps();
+  } else if (tab == 2) { 
+    populateDemographics();
+  } else if (tab == 3) {
+    populatePrograms();
+  } else if (tab == 4) {
+    populateFinances();
+  } else if (tab == 5) {
+    populateInfra();
+    populateRTE();
+    populateLibrary();
+    populatePTR();
+  } else if (tab == 6) {
+    populateMDM();
+  } else if (tab == 7) {
+    populateSYS();
+  } else {}
+
 }
 
 function showMap()
@@ -121,8 +140,12 @@ function showMap()
 function populateHeader()
 {
   
+  if(info["type"] != 2)
+  	document.title = "School Information"; 
+  else
+  	document.title = "Preschool Information"; 
+
   document.getElementById("school_name").innerHTML= info["name"];
-  
   add = '<div class="div-table">'
   if (info["address"] != "-")
   {
@@ -187,6 +210,19 @@ function populateAddress()
 
 function populateSchoolInfo()
 {
+   if (info["type"]==2)
+   {
+	type="preschool";
+	document.getElementById("school_info_heading").innerHTML = "Preschool Information";
+   }
+   else
+   {
+	type="school";
+	document.getElementById("school_info_heading").innerHTML = "School Information";
+   }
+  document.getElementById("const_info_heading").innerHTML = "Constituency Information";
+  document.getElementById("address_heading").innerHTML = "Address";
+  document.getElementById("srcinfo1").innerHTML = 'Source : KLP Database (2011-12)';
   infotable = '<div class="div-table">'
   if(info["status"] == 0){
     if(info["type"] != 2) {
@@ -218,6 +254,13 @@ function populateSchoolInfo()
 
 function populateDemographics()
 {
+  document.getElementById("student_info_heading").innerHTML = "Student Information";
+  if (info["type"]==2)
+    document.getElementById("srcinfo2").innerHTML = 'Source : KLP Database (2011-12)';
+  else {
+    document.getElementById("dise_gender_heading").innerHTML = "DISE Student Profile";
+    document.getElementById("srcinfo2").innerHTML = 'Source : KLP Database (2011-12), <a href="http://schoolreportcards.in" target="_blank"><span style="color:#43AD2F">NUEPA-DISE</span></a>(' + info['acyear'] + ')';
+  }
   var data = new google.visualization.DataTable();
   data.addColumn('string', "Gender");
   data.addColumn('number', "Count");
@@ -255,6 +298,7 @@ function populateDemographics()
   //table.draw(data,{width: 400});
   var chart2 = new google.visualization.PieChart(document.getElementById('student_mt'));
   chart2.draw(data, {width: 550, height: 260, title:  'Mother Tongue Profile', backgroundColor: 'transparent', pieSliceText:'label', colors: ['D78103','F49406','E35804','F7AA33','FBBC59']});
+
 }
 
 function populatePics()
@@ -307,6 +351,8 @@ function populateEReps()
 function populatePrograms()
 {
   if(info.assessments) {
+    document.getElementById("assmt_info_heading").innerHTML = "Programme Information";
+    document.getElementById("srcinfo3").innerHTML = 'Source : KLP Partner Data (2011-12)';
     var assessArr = info.assessments.split(",");
     var assdict = {};
     var asskeys = [];
@@ -340,6 +386,17 @@ function populatePrograms()
 
 function populateSYS()
 {
+  if (info["type"]==2)
+  {
+	document.getElementById("school_visits_heading").innerHTML = "Preschool Visits";
+	document.getElementById("sys_data_heading").innerHTML = "Information from Preschool Visits";	
+  }
+  else
+  {
+	document.getElementById("school_visits_heading").innerHTML = "School Visits";
+	document.getElementById("sys_data_heading").innerHTML = "Information from School Visits";		
+  }
+  document.getElementById("sys_comments_heading").innerHTML = "Visitors' Comments";
   systable = '<div class="div-table">' +
              '<div class="div-table-row">No. of Visits:' + info["syscount"] + '</div>';
   systable = systable+ 'If you have visited this school, please' + '<div class="div-table-row"><b><a href=\"javascript:void(0);\" onclick=window.open("../../shareyourstory'+type+'?type='+type+'?id='+info["id"]+'","_blank") style="color:#43AD2F">share your experience </a></b>here.</div>';
@@ -391,6 +448,11 @@ function populateSYS()
 function populateFinances()
 {
 	fin_info = "";
+        document.getElementById("fin_info_heading").innerHTML = "SSA Grants Allocation";
+	document.getElementById("fin_dise_heading").innerHTML = "DISE Finance Reporting";
+	document.getElementById("srcinfo4").innerHTML = '<br/><br/>Source : <a href="http://www.accountabilityindia.in/paisa-planning-allocations-and-expenditures-institutions-studies-accountability%22" target="_blank"><span style="color:#43AD2F">PAISA</span></a>, <a href="http://schoolreportcards.in" target="_blank"><span style="color:#43AD2F">NUEPA-DISE</span></a> ('+ info['acyear'] +')';
+		
+
         if (info["type"]==2) {
            fin_info = "SSA Grants are not applicable to Preschools";
 	} else if (info.tlm_amount) {
@@ -447,6 +509,20 @@ function populateInfra()
         var outer_dict;
 
 	infra_info = "";
+        if (info["type"]==2)
+	{
+  	  document.getElementById("infra_info_heading").innerHTML = "Infrastructure Summary";
+   	  document.getElementById("srcinfo5").innerHTML = 'Source : KLP Database (2011-12)';
+   	}
+	else
+	{	
+  	  document.getElementById("infra_info_heading").innerHTML = "Infrastructure Summary";
+  	  document.getElementById("ptr_info_heading").innerHTML = "Academics Summary ( " + info['acyear'] + ')';
+  	  document.getElementById("lib_infra_heading").innerHTML = "Akshara Library Details";
+  	  document.getElementById("rte_info_heading").innerHTML = "Additional RTE Information";
+  	  document.getElementById("srcinfo5").innerHTML = '<br/><br/>Source : KLP Database (2011-12), <a href="http://schoolreportcards.in" target="_blank"><span style="color:#43AD2F">NUEPA-DISE</span></a> (' + info['acyear'] + ')';
+	}
+
 	if (info["type"]==2 && info.ang_infra) {
           outer_dict = info["ang_infra"]
 	} else if (info.dise_facility) {
@@ -551,9 +627,12 @@ function populateRTE()
 
 function populateMDM()
 {
-	if (info["type"]==2) {
+   if (info["type"]==2) {
            tabletxt = "";
         } else if (Object.keys(info.ap_mdm).length > 0) {
+           document.getElementById("mdm_info_heading").innerHTML = "Mid day meal Summary";
+           document.getElementById("srcinfo6").innerHTML = '<br/><br/>Source : <a href="http://www.akshayapatra.org/" target="_blank"><span style="color:#43AD2F">Akshaya Patra (2012)</span></a>';
+
            tabletxt = "";
            var data = new google.visualization.DataTable();
            data.addColumn('string', 'Month_Week');

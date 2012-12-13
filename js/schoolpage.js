@@ -1,8 +1,6 @@
 var info;
 var map;
-var type;
 var tab;
-var image={"school":"school.png","preschool":"preschool.png"}
 
 if (!Array.prototype.indexOf)
 {
@@ -129,13 +127,17 @@ function showMap()
       mapTypeId: google.maps.MapTypeId.ROADMAP,
       disableDoubleClickZoom:false
   };
+
+  marker_name = "school.png";
+  if(info['type'] == 2)
+  	marker_name = "preschool.png";
+
   map = new google.maps.Map(document.getElementById("map"),myOptions);
   var marker = new google.maps.Marker({
         position: latlng,
         title:info["name"],
-        icon:"/images/"+image[type]
+        icon:"/images/"+marker_name
       });
-                  
   marker.setMap(map);  
 }
 
@@ -214,12 +216,10 @@ function populateSchoolInfo()
 {
    if (info["type"]==2)
    {
-	type="preschool";
 	document.getElementById("school_info_heading").innerHTML = "Preschool Information";
    }
    else
    {
-	type="school";
 	document.getElementById("school_info_heading").innerHTML = "School Information";
    }
   document.getElementById("const_info_heading").innerHTML = "Constituency Information";

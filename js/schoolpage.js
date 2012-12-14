@@ -353,6 +353,9 @@ function populateEReps()
 function populatePrograms()
 {
   if(info.assessments) {
+    type="school";
+    if(info['type'] == 2)
+      type="preschool";
     document.getElementById("assmt_info_heading").innerHTML = "Programme Information";
     document.getElementById("srcinfo3").innerHTML = 'Source : KLP Partner Data (2011-12)';
     var assessArr = info.assessments.split(",");
@@ -398,6 +401,9 @@ function populateSYS()
 	document.getElementById("school_visits_heading").innerHTML = "School Visits";
 	document.getElementById("sys_data_heading").innerHTML = "Information from School Visits";		
   }
+  type="school";
+  if(info['type'] == 2)
+      type="preschool";
   document.getElementById("sys_comments_heading").innerHTML = "Visitors' Comments";
   systable = '<div class="div-table">' +
              '<div class="div-table-row">No. of Visits:' + info["syscount"] + '</div>';

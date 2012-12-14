@@ -1526,9 +1526,9 @@ class postSYS:
       body = body + " in " + blk + ", " + clust + ". Your inputs have been successfully recorded."
       body = body + "<br/><br/> For future reference, information on the school you visited can be found here:" 
       if type == 'school':
-        body = body + web.ctx.env['HTTP_HOST'] + "/schoolpage/school/" + str(schoolid) 
+        body = body + web.ctx.env['HTTP_HOST'] + "/schoolpage/school/" + str(schoolid) + "/1"
       else:
-        body = body + web.ctx.env['HTTP_HOST'] + "/schoolpage/preschool/" + str(schoolid) 
+        body = body + web.ctx.env['HTTP_HOST'] + "/schoolpage/preschool/" + str(schoolid) + "/1"
       body = body + "<br/><br/>It will take a little while for your comments and inputs to show up as they need to be approved by a moderator. We appreciate your continued help in ensuring that every child is in school and learning well. Thank you and please spread the word! <br/>~ Team KLP<br/><br/> PS: You can reply to this email and we will respond soonest!"
       sub = "Your story on " + sname + " has been saved."
     else:

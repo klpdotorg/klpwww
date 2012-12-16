@@ -321,7 +321,7 @@ function createSchoolInfo(type,info,schoolId,name)
    }
    var numStudents = info.numStudents;
    var tableContent= '<div style="display:block">' +
-      '<div><a href=\"javascript:void(0);\" onclick=window.open("schoolpage/'+type+'/'+schoolId","mywindow")<span  style="color:#439C1E;font-size:10pt;font-weight:normal"><b>' + name.toUpperCase() + '</b></span></a><span style="color:black"><i> Know more...</i></span></div>'+
+      '<div><a href=\"javascript:void(0);\" onclick=window.open("schoolpage/'+type+'/'" + schoolId + ","mywindow")<span  style="color:#439C1E;font-size:10pt;font-weight:normal"><b>' + name.toUpperCase() + '</b></span></a><span style="color:black"><i> Know more...</i></span></div>'+
       '<div style="display:table;font-size:8pt;font-weight:normal;margin-bottom:-10px;">' +
       '<div style="display:table-row">' +
         '<div style="display:table-cell"> Number of Students: ' + numStudents + '</div>' +

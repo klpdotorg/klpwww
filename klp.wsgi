@@ -24,7 +24,7 @@ urls = (
      '/info/school/(.*)','getSchoolInfo',
      '/info/preschool/(.*)','getSchoolInfo',
      '/shareyourstory(.*)\?*','shareyourstory',
-     '/schoolpage/(.*)/(.*)/(.*)\?*','SchoolPage',
+     '/schoolpage/(.*)/(.*)\?*','SchoolPage',
      '/info/(.*)/(.*)','getBoundaryInfo',
      '/boundaryPoints/(.*)/(.*)','getBoundaryPoints',
      '/text/(.+)', 'text',
@@ -787,16 +787,18 @@ class CommonSchoolUtil:
 
 class SchoolPage:
   
-  def GET(self,type,id,tab_val=1):
+  def GET(self,type,id):
     data={'name':'','type':'','id':'','sysdate':[],'tab':''}
-    tab = int(tab_val)
     data["type"]=str(type)
     data["id"]=int(id)
-    data["tab"]=tab
     i = web.input()
     is_ajax = "false"
     if 'is_ajax' in i.keys():
       is_ajax = web.input()['is_ajax']
+    tab = 1
+    if 'tab' in i.keys():
+      tab = int(web.input()['tab'])
+    data["tab"] = tab
     #print type + '|' + str(id) + '|' + str(tab)
     try: 
       data.update(CommonSchoolUtil.getSchoolInfo(id))
@@ -1526,9 +1528,9 @@ class postSYS:
       body = body + " in " + blk + ", " + clust + ". Your inputs have been successfully recorded."
       body = body + "<br/><br/> For future reference, information on the school you visited can be found here:" 
       if type == 'school':
-        body = body + web.ctx.env['HTTP_HOST'] + "/schoolpage/school/" + str(schoolid) + "/1"
+        body = body + web.ctx.env['HTTP_HOST'] + "/schoolpage/school/" + str(schoolid) 
       else:
-        body = body + web.ctx.env['HTTP_HOST'] + "/schoolpage/preschool/" + str(schoolid) + "/1"
+        body = body + web.ctx.env['HTTP_HOST'] + "/schoolpage/preschool/" + str(schoolid) 
       body = body + "<br/><br/>It will take a little while for your comments and inputs to show up as they need to be approved by a moderator. We appreciate your continued help in ensuring that every child is in school and learning well. Thank you and please spread the word! <br/>~ Team KLP<br/><br/> PS: You can reply to this email and we will respond soonest!"
       sub = "Your story on " + sname + " has been saved."
     else:

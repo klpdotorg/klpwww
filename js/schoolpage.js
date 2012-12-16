@@ -57,8 +57,8 @@ function getSchoolPages(id,type,tab)
       else
         url = url + "preschool/";
       url = url + id ;
-      url = url + "/" + tab;
-      url = url + "?is_ajax=true";
+      url = url +  "?tab=" + tab;
+      url = url + "&is_ajax=true";
       var request = Y.io(url, callback);
     });
 }

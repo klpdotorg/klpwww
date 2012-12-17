@@ -76,12 +76,17 @@ function initialise(data)
   	document.getElementById("finances_txt").innerHTML = "Loading <img style='vertical-align:middle' src='/images/ajax-loader-bar.gif'/>";
   	document.getElementById("mdm_info").innerHTML = "Loading <img style='vertical-align:middle' src='/images/ajax-loader-bar.gif'/>";
   }
-  tab = info["tab"]
-
-  document.getElementById("maintab").tabber.tabShow(tab-1);
-  for(var i=1;i<=7;i++) {
+  tab_str = info["tab"];
+  tab_names = ['basics','demographics','programmes','finances','infrastructure','nutrition','stories'];
+  tab = 0;
+  for(var i=0;i<7;i++) {
+    if (tab_names[i] == tab_str)
+      tab = i;
+  }
+  document.getElementById("maintab").tabber.tabShow(tab);
+  for(var i=0;i<7;i++) {
    if (tab != i)
-     getSchoolPages(info["id"],info["type"],i);
+     getSchoolPages(info["id"],info["type"],tab_names[i]);
   }
   info["name"]=info["name"].toUpperCase();
   populateHeader();
@@ -93,26 +98,26 @@ function continueBuildUp(data)
 {
   info=data;
   tab = info["tab"]
-  if (tab == 1) {
+  if (tab == 'basics') {
     	showMap();
     	populateAddress();
     	populateSchoolInfo();
     	populatePics();
   	populateEReps();
-  } else if (tab == 2) { 
+  } else if (tab == 'demographics') { 
     populateDemographics();
-  } else if (tab == 3) {
+  } else if (tab == 'programmes') {
     populatePrograms();
-  } else if (tab == 4) {
+  } else if (tab == 'finances') {
     populateFinances();
-  } else if (tab == 5) {
+  } else if (tab == 'infrastructure') {
     populateInfra();
     populateRTE();
     populateLibrary();
     populatePTR();
-  } else if (tab == 6) {
+  } else if (tab == 'nutrition') {
     populateMDM();
-  } else if (tab == 7) {
+  } else if (tab == 'stories') {
     populateSYS();
   } else {}
 

@@ -795,33 +795,33 @@ class SchoolPage:
     is_ajax = "false"
     if 'is_ajax' in i.keys():
       is_ajax = web.input()['is_ajax']
-    tab = 1
+    tab = 'basics' 
     if 'tab' in i.keys():
-      tab = int(web.input()['tab'])
+      tab = web.input()['tab']
     data["tab"] = tab
     #print type + '|' + str(id) + '|' + str(tab)
     try: 
       data.update(CommonSchoolUtil.getSchoolInfo(id))
-      if tab == 1:
+      if tab == 'basics':
         data.update(self.getBasicData(id))
         data.update(self.getSYSImages(id))
-      elif tab == 2:
+      elif tab == 'demographics':
       	data.update(self.getDemographicData(id))
-      elif tab == 3:
+      elif tab == 'programmes':
         data.update(self.getProgrammeData(id,type))  
-      elif tab == 4:
+      elif tab == 'finances':
         if type=='school':
           data.update(self.getFinData(id))
-      elif tab == 5:
+      elif tab == 'infrastructure':
         if type=='school':
           data.update(self.getDiseData(id))
           data.update(self.getLibraryData(id))
         if type=='preschool':
           data.update(self.getAngInfraData(id))
-      elif tab == 6:
+      elif tab == 'nutrition':
         if type=='school':
           data.update(self.getMidDayMealData(id))
-      elif tab == 7:
+      elif tab == 'stories' :
         data.update(self.getSYSData(id))
       else:
         data.update(self.getBasicData(id))

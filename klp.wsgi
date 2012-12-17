@@ -777,7 +777,40 @@ class CommonSchoolUtil:
     DbManager.getMainCon().commit()
     cursor.close()
     return data;
- 
+  
+  @staticmethod
+  def getKlpEnrolment(id):
+    data = {}
+    cursor = DbManager.getMainCon().cursor()
+    cursor.execute(statements['get_school_gender'],(id,))
+    result = cursor.fetchall()
+    for row in result:
+      if row[1] == "female":
+        data["numGirls"]=int(row[2])
+      if row[1] == "male":
+        data["numBoys"]=int(row[2])
+    if "numGirls" not in data.keys():
+      data["numGirls"] = 0
+    if "numBoys" not in data.keys():
+      data["numBoys"] = 0
+    data["numStudents"]= data["numBoys"]+data["numGirls"]
+    DbManager.getMainCon().commit()
+    return data;
+
+
+  @staticmethod
+  def getDiseEnrolment(id):
+    data = {}
+    cursor = DbManager.getMainCon().cursor()
+    cursor.execute(statements['get_dise_stuinfo'],(id,))
+    result = cursor.fetchall()
+    for row in result:
+      data['boys_count'] = str(row[0])
+      data['girls_count'] = str(row[1])
+      data['student_count'] = str(int(row[1]) + int(row[0]))
+    DbManager.getMainCon().commit()
+    return data;
+
   @staticmethod 
   def checkEmpty(data,rpldata):
     if data == None:
@@ -806,7 +839,10 @@ class SchoolPage:
         data.update(self.getBasicData(id))
         data.update(self.getSYSImages(id))
       elif tab == 'demographics':
+        data.update(CommonSchoolUtil.getKlpEnrolment(id))
       	data.update(self.getDemographicData(id))
+        if type=='school':
+          data.update(CommonSchoolUtil.getDiseEnrolment(id))
       elif tab == 'programmes':
         data.update(self.getProgrammeData(id,type))  
       elif tab == 'finances':
@@ -821,6 +857,8 @@ class SchoolPage:
       elif tab == 'nutrition':
         if type=='school':
           data.update(self.getMidDayMealData(id))
+          data.update(CommonSchoolUtil.getKlpEnrolment(id))
+          data.update(CommonSchoolUtil.getDiseEnrolment(id))
       elif tab == 'stories' :
         data.update(self.getSYSData(id))
       else:
@@ -892,20 +930,6 @@ class SchoolPage:
   def getDemographicData(self,id):
     data = {}
     cursor = DbManager.getMainCon().cursor()
-    cursor.execute(statements['get_school_gender'],(id,))
-    result = cursor.fetchall()
-    for row in result:
-      if row[1] == "female":
-        data["numGirls"]=int(row[2])
-      if row[1] == "male":
-        data["numBoys"]=int(row[2])
-    if "numGirls" not in data.keys():
-      data["numGirls"] = 0
-    if "numBoys" not in data.keys():
-      data["numBoys"] = 0
-    data["numStudents"]= data["numBoys"]+data["numGirls"]
-    DbManager.getMainCon().commit()
-
     cursor.execute(statements['get_school_mt'],(id,))
     result = cursor.fetchall()
     tabledata = {}
@@ -932,14 +956,6 @@ class SchoolPage:
     cursor.close()
     DbManager.getMainCon().commit()
     
-    cursor = DbManager.getMainCon().cursor()
-    cursor.execute(statements['get_dise_stuinfo'],(id,))
-    result = cursor.fetchall()
-    for row in result:
-      data['boys_count'] = str(row[0])
-      data['girls_count'] = str(row[1])
-      data['student_count'] = str(int(row[1]) + int(row[0]))
-    DbManager.getMainCon().commit()
     return data
  
   def getMidDayMealData(self,klpid):

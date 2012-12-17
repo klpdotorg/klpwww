@@ -27,7 +27,7 @@
 
 ## Installation
 
-  This is hosted site content. Providing installation notes is not applicable
+  https://github.com/klpdotorg/klpwww_ver2/wiki/Setting-up-klpwww-for-development 
 
 
 ## Contacts

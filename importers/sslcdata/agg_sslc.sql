@@ -163,3 +163,133 @@ select agg_sslc_results('l3_marks','l3_result');
 select agg_sslc_results('s1_marks','s1_result');
 select agg_sslc_results_s2();
 select agg_sslc_results('s3_marks','s3_result');
+
+
+-- Aggregating to have 34 rows per criteria for charting reading from the first aggregate table
+
+DROP TABLE tb_agg_mgmt_acadyr;
+CREATE TABLE tb_agg_mgmt_acadyr (
+dist_code character varying(3),
+"04_05g" numeric(3),
+"04_05n" numeric(3),
+"05_06g" numeric(3),
+"05_06n" numeric(3),
+"06_07g" numeric(3),
+"06_07n" numeric(3),
+"07_08g" numeric(3),
+"07_08n" numeric(3),
+"08_09g" numeric(3),
+"08_09n" numeric(3),
+"09_10g" numeric(3),
+"09_10n" numeric(3),
+"10_11g" numeric(3),
+"10_11n" numeric(3)
+);
+
+CREATE OR REPLACE function agg_mgmt_by_acad_yr() returns void as $$
+declare
+		datarecord RECORD;
+begin
+		for datarecord in
+				select ay.name, g.dist_code, (cast(sum(g.pass_stu_count) AS float)*100/cast(sum(g.tot_stu_count) AS float))::int as govt_pass, (cast(sum(n.pass_stu_count) AS float)*100/cast(sum(n.tot_stu_count) AS float))::int as pvt_pass from tb_academic_year ay, tb_sslc_agg g, tb_sslc_agg n where g.dist_code=n.dist_code and g.is_govt='G' and n.is_govt='N' and n.ayid = ay.id and g.ayid=101 and n.ayid=101 group by g.dist_code,ay.name order by ay.name,g.dist_code
+		loop
+				insert into tb_agg_mgmt_acadyr (dist_code, "10_11g", "10_11n") values (datarecord.dist_code, datarecord.govt_pass, datarecord.pvt_pass);         
+		end loop;
+		for datarecord in
+				select ay.name, g.dist_code, (cast(sum(g.pass_stu_count) AS float)*100/cast(sum(g.tot_stu_count) AS float))::int as govt_pass, (cast(sum(n.pass_stu_count) AS float)*100/cast(sum(n.tot_stu_count) AS float))::int as pvt_pass from tb_academic_year ay, tb_sslc_agg g, tb_sslc_agg n where g.dist_code=n.dist_code and g.is_govt='G' and n.is_govt='N' and n.ayid = ay.id and g.ayid=7 and n.ayid=7 group by g.dist_code,ay.name order by ay.name,g.dist_code
+                loop
+				update tb_agg_mgmt_acadyr set "04_05g" = datarecord.govt_pass , "04_05n" = datarecord.pvt_pass where dist_code= datarecord.dist_code;         
+		end loop;
+		for datarecord in
+				select ay.name, g.dist_code, (cast(sum(g.pass_stu_count) AS float)*100/cast(sum(g.tot_stu_count) AS float))::int as govt_pass, (cast(sum(n.pass_stu_count) AS float)*100/cast(sum(n.tot_stu_count) AS float))::int as pvt_pass from tb_academic_year ay, tb_sslc_agg g, tb_sslc_agg n where g.dist_code=n.dist_code and g.is_govt='G' and n.is_govt='N' and n.ayid = ay.id and g.ayid=6 and n.ayid=6 group by g.dist_code,ay.name order by ay.name,g.dist_code
+		loop
+				update tb_agg_mgmt_acadyr set "05_06g" = datarecord.govt_pass , "05_06n" = datarecord.pvt_pass where dist_code= datarecord.dist_code;         
+		end loop;
+		for datarecord in
+				select ay.name, g.dist_code, (cast(sum(g.pass_stu_count) AS float)*100/cast(sum(g.tot_stu_count) AS float))::int as govt_pass, (cast(sum(n.pass_stu_count) AS float)*100/cast(sum(n.tot_stu_count) AS float))::int as pvt_pass from tb_academic_year ay, tb_sslc_agg g, tb_sslc_agg n where g.dist_code=n.dist_code and g.is_govt='G' and n.is_govt='N' and n.ayid = ay.id and g.ayid=90 and n.ayid=90 group by g.dist_code,ay.name order by ay.name,g.dist_code
+		loop
+				update tb_agg_mgmt_acadyr set "06_07g" = datarecord.govt_pass , "06_07n" = datarecord.pvt_pass where dist_code= datarecord.dist_code;         
+		end loop;
+		for datarecord in
+				select ay.name, g.dist_code, (cast(sum(g.pass_stu_count) AS float)*100/cast(sum(g.tot_stu_count) AS float))::int as govt_pass, (cast(sum(n.pass_stu_count) AS float)*100/cast(sum(n.tot_stu_count) AS float))::int as pvt_pass from tb_academic_year ay, tb_sslc_agg g, tb_sslc_agg n where g.dist_code=n.dist_code and g.is_govt='G' and n.is_govt='N' and n.ayid = ay.id and g.ayid=1 and n.ayid=1 group by g.dist_code,ay.name order by ay.name,g.dist_code
+		loop
+				update tb_agg_mgmt_acadyr set "07_08g" = datarecord.govt_pass , "07_08n" = datarecord.pvt_pass where dist_code= datarecord.dist_code;         
+		end loop;
+		for datarecord in
+				select ay.name, g.dist_code, (cast(sum(g.pass_stu_count) AS float)*100/cast(sum(g.tot_stu_count) AS float))::int as govt_pass, (cast(sum(n.pass_stu_count) AS float)*100/cast(sum(n.tot_stu_count) AS float))::int as pvt_pass from tb_academic_year ay, tb_sslc_agg g, tb_sslc_agg n where g.dist_code=n.dist_code and g.is_govt='G' and n.is_govt='N' and n.ayid = ay.id and g.ayid=2 and n.ayid=2 group by g.dist_code,ay.name order by ay.name,g.dist_code
+		loop
+				update tb_agg_mgmt_acadyr set "08_09g" = datarecord.govt_pass , "08_09n" = datarecord.pvt_pass where dist_code= datarecord.dist_code;         
+		end loop;
+		for datarecord in
+				select ay.name, g.dist_code, (cast(sum(g.pass_stu_count) AS float)*100/cast(sum(g.tot_stu_count) AS float))::int as govt_pass, (cast(sum(n.pass_stu_count) AS float)*100/cast(sum(n.tot_stu_count) AS float))::int as pvt_pass from tb_academic_year ay, tb_sslc_agg g, tb_sslc_agg n where g.dist_code=n.dist_code and g.is_govt='G' and n.is_govt='N' and n.ayid = ay.id and g.ayid=119 and n.ayid=119 group by g.dist_code,ay.name order by ay.name,g.dist_code
+		loop
+				update tb_agg_mgmt_acadyr set "09_10g" = datarecord.govt_pass , "09_10n" = datarecord.pvt_pass where dist_code= datarecord.dist_code;         
+		end loop;
+end;
+$$ language plpgsql;
+
+select agg_mgmt_by_acad_yr();
+
+DROP TABLE tb_agg_gender_acadyr;
+CREATE TABLE tb_agg_gender_acadyr (
+dist_code character varying(3),
+is_govt character varying(3),
+"04_05g" numeric(3),
+"04_05b" numeric(3),
+"05_06g" numeric(3),
+"05_06b" numeric(3),
+"06_07g" numeric(3),
+"06_07b" numeric(3),
+"07_08g" numeric(3),
+"07_08b" numeric(3),
+"08_09g" numeric(3),
+"08_09b" numeric(3),
+"09_10g" numeric(3),
+"09_10b" numeric(3),
+"10_11g" numeric(3),
+"10_11b" numeric(3)
+);
+
+CREATE OR REPLACE function agg_gender_by_acad_yr() returns void as $$
+declare
+		datarecord RECORD;
+begin
+		for datarecord in
+				select ay.name, g.dist_code, g.is_govt, (cast(sum(g.pass_stu_count) AS float)*100/cast(sum(g.tot_stu_count) AS float))::int as girl_pass, (cast(sum(b.pass_stu_count) AS float)*100/cast(sum(b.tot_stu_count) AS float))::int as boy_pass from tb_academic_year ay, tb_sslc_agg g, tb_sslc_agg b where g.dist_code=b.dist_code and g.gender_code='G' and b.gender_code='B' and b.ayid = ay.id and g.ayid=101 and b.ayid=101 group by g.dist_code, g.is_govt,ay.name order by ay.name,g.dist_code
+		loop
+				insert into tb_agg_gender_acadyr (dist_code,is_govt, "10_11g", "10_11b") values (datarecord.dist_code, datarecord.is_govt,datarecord.girl_pass, datarecord.boy_pass);         
+		end loop;
+		for datarecord in
+				select ay.name, g.dist_code, g.is_govt, (cast(sum(g.pass_stu_count) AS float)*100/cast(sum(g.tot_stu_count) AS float))::int as girl_pass, (cast(sum(b.pass_stu_count) AS float)*100/cast(sum(b.tot_stu_count) AS float))::int as boy_pass from tb_academic_year ay, tb_sslc_agg g, tb_sslc_agg b where g.dist_code=b.dist_code and g.gender_code='G' and b.gender_code='B' and b.ayid = ay.id and g.ayid=7 and b.ayid=7 group by g.dist_code, g.is_govt,ay.name order by ay.name,g.dist_code
+                loop
+				update tb_agg_gender_acadyr set "04_05g" = datarecord.girl_pass , "04_05b" = datarecord.boy_pass where dist_code= datarecord.dist_code and is_govt=datarecord.is_govt;         
+		end loop;
+		for datarecord in
+				select ay.name, g.dist_code, g.is_govt, (cast(sum(g.pass_stu_count) AS float)*100/cast(sum(g.tot_stu_count) AS float))::int as girl_pass, (cast(sum(b.pass_stu_count) AS float)*100/cast(sum(b.tot_stu_count) AS float))::int as boy_pass from tb_academic_year ay, tb_sslc_agg g, tb_sslc_agg b where g.dist_code=b.dist_code and g.gender_code='G' and b.gender_code='B' and b.ayid = ay.id and g.ayid=6 and b.ayid=6 group by g.dist_code, g.is_govt,ay.name order by ay.name,g.dist_code
+		loop
+				update tb_agg_gender_acadyr set "05_06g" = datarecord.girl_pass , "05_06b" = datarecord.boy_pass where dist_code= datarecord.dist_code and is_govt=datarecord.is_govt;         
+		end loop;
+		for datarecord in
+				select ay.name, g.dist_code, g.is_govt, (cast(sum(g.pass_stu_count) AS float)*100/cast(sum(g.tot_stu_count) AS float))::int as girl_pass, (cast(sum(b.pass_stu_count) AS float)*100/cast(sum(b.tot_stu_count) AS float))::int as boy_pass from tb_academic_year ay, tb_sslc_agg g, tb_sslc_agg b where g.dist_code=b.dist_code and g.gender_code='G' and b.gender_code='B' and b.ayid = ay.id and g.ayid=90 and b.ayid=90 group by g.dist_code, g.is_govt,ay.name order by ay.name,g.dist_code
+		loop
+				update tb_agg_gender_acadyr set "06_07g" = datarecord.girl_pass , "06_07b" = datarecord.boy_pass where dist_code= datarecord.dist_code and is_govt=datarecord.is_govt;         
+		end loop;
+		for datarecord in
+				select ay.name, g.dist_code, g.is_govt, (cast(sum(g.pass_stu_count) AS float)*100/cast(sum(g.tot_stu_count) AS float))::int as girl_pass, (cast(sum(b.pass_stu_count) AS float)*100/cast(sum(b.tot_stu_count) AS float))::int as boy_pass from tb_academic_year ay, tb_sslc_agg g, tb_sslc_agg b where g.dist_code=b.dist_code and g.gender_code='G' and b.gender_code='B' and b.ayid = ay.id and g.ayid=1 and b.ayid=1 group by g.dist_code, g.is_govt,ay.name order by ay.name,g.dist_code
+		loop
+				update tb_agg_gender_acadyr set "07_08g" = datarecord.girl_pass , "07_08b" = datarecord.boy_pass where dist_code= datarecord.dist_code and is_govt=datarecord.is_govt;         
+		end loop;
+		for datarecord in
+				select ay.name, g.dist_code, g.is_govt, (cast(sum(g.pass_stu_count) AS float)*100/cast(sum(g.tot_stu_count) AS float))::int as girl_pass, (cast(sum(b.pass_stu_count) AS float)*100/cast(sum(b.tot_stu_count) AS float))::int as boy_pass from tb_academic_year ay, tb_sslc_agg g, tb_sslc_agg b where g.dist_code=b.dist_code and g.gender_code='G' and b.gender_code='B' and b.ayid = ay.id and g.ayid=2 and b.ayid=2 group by g.dist_code, g.is_govt,ay.name order by ay.name,g.dist_code
+		loop
+				update tb_agg_gender_acadyr set "08_09g" = datarecord.girl_pass , "08_09b" = datarecord.boy_pass where dist_code= datarecord.dist_code and is_govt=datarecord.is_govt;         
+		end loop;
+		for datarecord in
+				select ay.name, g.dist_code, g.is_govt, (cast(sum(g.pass_stu_count) AS float)*100/cast(sum(g.tot_stu_count) AS float))::int as girl_pass, (cast(sum(b.pass_stu_count) AS float)*100/cast(sum(b.tot_stu_count) AS float))::int as boy_pass from tb_academic_year ay, tb_sslc_agg g, tb_sslc_agg b where g.dist_code=b.dist_code and g.gender_code='G' and b.gender_code='B' and b.ayid = ay.id and g.ayid=119 and b.ayid=119 group by g.dist_code, g.is_govt,ay.name order by ay.name,g.dist_code
+		loop
+				update tb_agg_gender_acadyr set "09_10g" = datarecord.girl_pass , "09_10b" = datarecord.boy_pass where dist_code= datarecord.dist_code and is_govt=datarecord.is_govt;         
+		end loop;
+end;
+$$ language plpgsql;
+
+select agg_gender_by_acad_yr();

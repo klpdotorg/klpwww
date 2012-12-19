@@ -97,30 +97,49 @@ function initialise(data)
 function continueBuildUp(data)
 {
   info=data;
-  tab = info["tab"]
+  tab = info["tab"];
+  dirlink = "dirlink1";
   if (tab == 'basics') {
     	showMap();
     	populateAddress();
     	populateSchoolInfo();
     	populatePics();
   	populateEReps();
+        dirlink = "dirlink1";
   } else if (tab == 'demographics') { 
     populateDemographics();
+    dirlink = "dirlink2";
   } else if (tab == 'programmes') {
     populatePrograms();
+    dirlink = "dirlink3";
   } else if (tab == 'finances') {
     populateFinances();
+    dirlink = "dirlink4";
   } else if (tab == 'infrastructure') {
     populateInfra();
     populateRTE();
     populateLibrary();
     populatePTR();
+    dirlink = "dirlink5";
   } else if (tab == 'nutrition') {
     populateMDM();
+    dirlink = "dirlink6";
   } else if (tab == 'stories') {
     populateSYS();
+    dirlink = "dirlink7";
   } else {}
-
+  populateDirLink(dirlink,tab);
+}
+ 
+function populateDirLink(dirlink,tab)
+{
+  link_txt = document.URL;
+  if (link_txt.indexOf('?') > 0)
+    link_txt = document.URL.split('?')[0];
+  dirlink_txt = "Directly access this page from here <a href='";
+  link_txt = link_txt + '?tab=' + tab;
+  dirlink_txt = dirlink_txt + link_txt + '\'>' + '<span style="color:#43AD2F">' + link_txt + '</span></a>';
+  document.getElementById(dirlink).innerHTML = dirlink_txt;
 }
 
 function showMap()

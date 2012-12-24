@@ -285,7 +285,7 @@ function populateDemographics()
     document.getElementById("srcinfo2").innerHTML = 'Source : KLP Database (2011-12)';
   else {
     document.getElementById("dise_gender_heading").innerHTML = "DISE Student Profile";
-    document.getElementById("srcinfo2").innerHTML = 'Source : KLP Database (2011-12), <a href="http://schoolreportcards.in" target="_blank"><span style="color:#43AD2F">NUEPA-DISE</span></a>(' + info['acyear'] + ')';
+    document.getElementById("srcinfo2").innerHTML = 'Source : KLP Database (2011-12), <a href="http://schoolreportcards.in" target="_blank"><span style="color:#43AD2F">NUEPA-DISE</span></a>';
   }
   var data = new google.visualization.DataTable();
   data.addColumn('string', "Gender");
@@ -487,7 +487,7 @@ function populateFinances()
 	} else if (info.tlm_amount) {
            document.getElementById("fin_info_heading").innerHTML = "SSA Grants Allocation";
 	   document.getElementById("fin_dise_heading").innerHTML = "DISE Finance Reporting";
-	   document.getElementById("srcinfo4").innerHTML = '<br/><br/>Source : <a href="http://www.accountabilityindia.in/paisa-planning-allocations-and-expenditures-institutions-studies-accountability%22" target="_blank"><span style="color:#43AD2F">PAISA</span></a>, <a href="http://schoolreportcards.in" target="_blank"><span style="color:#43AD2F">NUEPA-DISE</span></a> ('+ info['acyear'] +')';
+	   document.getElementById("srcinfo4").innerHTML = '<br/><br/>Source : <a href="http://www.accountabilityindia.in/paisa-planning-allocations-and-expenditures-institutions-studies-accountability%22" target="_blank"><span style="color:#43AD2F">PAISA</span></a>, <a href="http://schoolreportcards.in" target="_blank"><span style="color:#43AD2F">NUEPA-DISE</span></a> ';
 	   fin_info = "<dl><dt>School Maintenance Grant (SMG)</dt><dd><img src=\"/images/Rupee.png\"/> 5,000 for upto 3 classrooms " +
 	              "and <img src=\"/images/Rupee.png\"/> 10,000 for more than 3 classrooms. </dd><dt>School Grant (SG)</dt><dd>" +
 	              "<img src=\"/images/Rupee.png\"/> 5,000 for lower primary schools and <img src=\"/images/Rupee.png\"/> 7,000 " +

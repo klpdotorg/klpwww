@@ -17,6 +17,7 @@ rm load/tb_middaymeal.sql
 python ${DBNAME}.py
 echo loading DB
 psql -U ${OWNER} -d ${DBNAME} -f load/tb_middaymeal.sql
+psql -U ${OWNER} -d ${DBNAME} -f fixes.sql
 echo "Seeding data done!"
 psql -U ${OWNER} -d ${DBNAME} -f agg_apmdm.sql
 echo "All done!"

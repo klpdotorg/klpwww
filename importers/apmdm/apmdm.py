@@ -14,7 +14,9 @@ def checkEmpty(value):
        return 'null'
 
 filelist = {"ap_data1.csv":"tb_middaymeal",
-            "ap_data2.csv":"tb_middaymeal"}
+            "ap_data2.csv":"tb_middaymeal",
+            "ap_data3.csv":"tb_middaymeal"}
+#filelist = {"ap_data3.csv":"tb_middaymeal"}
 
 try:
   for file in filelist.keys():

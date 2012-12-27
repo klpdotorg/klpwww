@@ -25,6 +25,11 @@ if (!Array.prototype.indexOf)
   };
 }
 
+function popDisclaimer()
+{
+    disc_window = window.open("/text/disclaimer.html", "Data Disclaimer", "status=1,width=450,height=350,scrollbars=1");
+    if (window.focus) {disc_window.focus()}
+}
 
 function getSchoolPages(id,type,tab)
 {
@@ -79,66 +84,67 @@ function initialise(data)
   tab_str = info["tab"];
   tab_names = ['basics','demographics','programmes','finances','infrastructure','nutrition','stories'];
   tab = 0;
-  for(var i=0;i<7;i++) {
-    if (tab_names[i] == tab_str)
-      tab = i;
-  }
-  document.getElementById("maintab").tabber.tabShow(tab);
-  for(var i=0;i<7;i++) {
-   if (tab != i)
-     getSchoolPages(info["id"],info["type"],tab_names[i]);
-  }
-  info["name"]=info["name"].toUpperCase();
-  populateHeader();
-  continueBuildUp(info);
+for(var i=0;i<7;i++) {
+if (tab_names[i] == tab_str)
+tab = i;
+}
+document.getElementById("maintab").tabber.tabShow(tab);
+for(var i=0;i<7;i++) {
+if (tab != i)
+getSchoolPages(info["id"],info["type"],tab_names[i]);
+}
+info["name"]=info["name"].toUpperCase();
+populateHeader();
+continueBuildUp(info);
 }
 
 
 function continueBuildUp(data)
 {
-  info=data;
-  tab = info["tab"];
-  dirlink = "dirlink1";
-  if (tab == 'basics') {
-    	showMap();
-    	populateAddress();
-    	populateSchoolInfo();
-    	populatePics();
-  	populateEReps();
-        dirlink = "dirlink1";
-  } else if (tab == 'demographics') { 
-    populateDemographics();
-    dirlink = "dirlink2";
-  } else if (tab == 'programmes') {
-    populatePrograms();
-    dirlink = "dirlink3";
-  } else if (tab == 'finances') {
-    populateFinances();
-    dirlink = "dirlink4";
-  } else if (tab == 'infrastructure') {
-    populateInfra();
-    populateRTE();
-    populateLibrary();
-    populatePTR();
-    dirlink = "dirlink5";
-  } else if (tab == 'nutrition') {
-    populateMDM();
-    dirlink = "dirlink6";
-  } else if (tab == 'stories') {
-    populateSYS();
-    dirlink = "dirlink7";
-  } else {}
-  populateDirLink(dirlink,tab);
+info=data;
+tab = info["tab"];
+dirlink = "dirlink1";
+if (tab == 'basics') {
+showMap();
+populateAddress();
+populateSchoolInfo();
+populatePics();
+populateEReps();
+dirlink = "dirlink1";
+} else if (tab == 'demographics') { 
+populateDemographics();
+dirlink = "dirlink2";
+} else if (tab == 'programmes') {
+populatePrograms();
+dirlink = "dirlink3";
+} else if (tab == 'finances') {
+populateFinances();
+dirlink = "dirlink4";
+} else if (tab == 'infrastructure') {
+populateInfra();
+populateRTE();
+populateLibrary();
+populatePTR();
+dirlink = "dirlink5";
+} else if (tab == 'nutrition') {
+populateMDM();
+dirlink = "dirlink6";
+} else if (tab == 'stories') {
+populateSYS();
+dirlink = "dirlink7";
+} else {}
+populateDirLink(dirlink,tab);
 }
- 
+
 function populateDirLink(dirlink,tab)
 {
-  link_txt = document.URL;
-  if (link_txt.indexOf('?') > 0)
-    link_txt = document.URL.split('?')[0];
-  dirlink_txt = "Directly access this page from here <a href='";
-  link_txt = link_txt + '?tab=' + tab;
-  dirlink_txt = dirlink_txt + link_txt + '\'>' + '<span style="color:#43AD2F">' + link_txt + '</span></a>';
+link_txt = document.URL;
+if (link_txt.indexOf('?') > 0)
+link_txt = document.URL.split('?')[0];
+dirlink_txt = "Directly access this page from here <a href='";
+link_txt = link_txt + '?tab=' + tab;
+dirlink_txt = dirlink_txt + link_txt + '\'>' + '<span style="color:#43AD2F">' + link_txt + '</span></a><br/><br/>';
+dirlink_txt = dirlink_txt + "Please read KLP's <a href='/text/disclaimer' target='_blank'><span style='color:#43AD2F'> data-related disclaimer </span></a>. If you notice any errors or inaccuracies related to data or any other content found on this page, please click <a href='mailto:dev@klp.org.in?subject=%5BIssue%5D%20KLP%20Website&body=On%20webpage%3A" + link_txt + "'><span style='color:#43AD2F'>here</span></a> to send us an email."
   document.getElementById(dirlink).innerHTML = dirlink_txt;
 }
 
@@ -682,7 +688,7 @@ function populateMDM()
               }
 	   }
            var chart = new google.visualization.LineChart(document.getElementById('mdm_chart'));
-           chart.draw(data, {width: 750, height: 500, title:  'Food Indent vs. Attendance Tracking', backgroundColor: 'transparent', pieSliceText:'label', pointSize:5, colors: ['green','E35804','F49406','white'],vAxis:{title:'Number of Children'},hAxis:{slantedText:true, slantedTextAngle:45}});
+           chart.draw(data, {width: 800, height: 500, title:  'Food Indent vs. Attendance Tracking', backgroundColor: 'transparent', pieSliceText:'label', pointSize:5, colors: ['green','E35804','F49406','white'],vAxis:{title:'Number of Children'},hAxis:{slantedText:true, slantedTextAngle:45}});
 
         } else {
            tabletxt = 'Information currently unavailable'

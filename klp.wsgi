@@ -1181,7 +1181,7 @@ class shareyourstory:
 class text:
   def GET(self, name):
     web.header('Content-Type','text/html; charset=utf-8')
-    textlinks = {'library': 'library', 'maths': 'maths', 'preschool': 'preschool', 'reading': 'reading', 'partners': 'partners','aboutus':'aboutus','credits':'credits', 'reports':'reports'}
+    textlinks = {'library': 'library', 'maths': 'maths', 'preschool': 'preschool', 'reading': 'reading', 'partners': 'partners','aboutus':'aboutus','credits':'credits', 'reports':'reports', 'disclaimer':'disclaimer'}
 
     try:
       return eval('render.' + textlinks[name] + '()')

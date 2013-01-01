@@ -86,7 +86,7 @@ var tabberOptions = {
       <div id="maintab" class="tabber">
         <div id="enrollment" class="tabbertab" >
           <h2>Enrollment</h2>
-          <div id="school-enrollment" style="height:500px" class="grid_12">
+          <div id="enrollment" style="height:500px" class="grid_12">
             <div id="program-school_name"></div>
             <div id="numchild"></div>
             <div id="programinfo"></div>
@@ -94,50 +94,22 @@ var tabberOptions = {
         </div>
         <div id="baseline" class="tabbertab" title="BaseLine Data">
           <h2>BaseLine Data</h2>
-          <div id="school-baselinedata" style="height:2000px">
+          <div id="baselinedata" style="height:2000px">
             <br>
             <br>
-            <ul>
-              <li><a href="#school-baseline-general">General</a></li>
-              <br>
-              <li><a href="#school-baseline-gender">By Gender</a></li>
-              <br>
-              <li><a href="#school-baseline-mt">By Mother Tongue</a></li>
-            </ul>
-            <br>
-            <hr/>
-            <div class="grid_12 suffix_6"><p align="center"><a href="#top">Back to Top</a></p></div>
-            <br>
-            <div id="school-baseline-general" class="grid_12">
+            <div id="baseline-general" class="grid_12">
               <div class="grid_1 suffix_11"><p><b>General</b></p></div>
-              <div id="school-general-content"></div>
-            </div> 
-            <br>
-
-            <br>
-            <div class="grid_12 suffix_6"><p align="center"><a href="#top">Back to Top</a></p></div>
-            <br>
-            <div id="school-baseline-gender" class="grid_12">
-              <div class="grid_1 suffix_11"><p><b>Gender</b></p></div>
-              <div id="school-gender-content"></div>
-            </div> 
-            <br>
-
-            <br>
-            <div class="grid_12 suffix_6"><p align="center"><a href="#top">Back to Top</a></p></div>
-            <br>
-            <div id="school-baseline-mt" class="grid_12">
-              <div class="grid_1 suffix_11"><p><b>Mother Tongue</b></p></div>
-              <div id="school-mt-content"></div>
+              <div id="general-content"></div>
             </div> 
             <br>
           </div>
+          <div id="fade" class="black_overlay" style="display:none;"></div>
         </div>
         <div id="progress" class="tabbertab" title="Progress Data">
           <h2>Progress Data</h2>
-          <div id="school-progress">
-            <div id="school-progress-info"></div>
-            <div id="school-progress-content"></div>
+          <div id="progress">
+            <div id="progress-info"></div>
+            <div id="progress-content"></div>
           </div>
         </div>
       </div>

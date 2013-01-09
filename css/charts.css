@@ -42,7 +42,7 @@ div.midcontent{
 	left: 0%;
 	width: 100%;
 	height: 100%;
-	background-color: black;
+	background-color: grey;
 	z-index:1001;
 	-moz-opacity: 0.8;
 	opacity:.80;
@@ -53,9 +53,9 @@ div.midcontent{
 	display: none;
 	position: absolute;
 	top: 5%;
-	left: 10%;
-	padding: 5px;
-	border: 5px solid green;
+	left: 5%;
+	padding: 2px;
+	border: 2px solid green;
 	background-color: white;
 	z-index:1002;
 	overflow: auto;

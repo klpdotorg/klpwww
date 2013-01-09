@@ -16,6 +16,7 @@ var progtext={"readingprogram":'<br><hr/><br>The <a href=\"/text/reading\"><b>Re
               "mathprogram":'<br><hr/><br>The <a href=\"/text/maths\"><b>Math program</b></a> measures the competency of a child using the following levels:<br><ul><li>Rung1:- 0-20</li><li>Rung2:- 21-40 </li><li>Rung3: -41-60 </li><li>Rung4:- 61-80 </li><li>Rung5:- 81-100</li></ul>',
                "englishprogram_5_6": '<br><hr/><br>The <a href=\"/text/english\"><b>English program</b></a> measures the competency of a child using the following levels:<br><ul><b>For Class 5:</b><li>Can recognizes the objects in picture</li><li>Picture Reading-Can construct simple sentences</li><li>Can read words</li><li>Can read simple passage</li><li>Can give one word answer orally</li></ul><br><ul><b>For Class 6:</b><li>Can recognizes the objects in picture</li><li>Picture Reading-Can construct simple sentences</li><li>Can read words</li><li>Can read simple passage</li><li>Can write one word answers</li></ul>',
                "englishprogram_3_4":'<br><hr/><br>The <a href=\"/text/english\"><b>English program</b></a> measures the competency of a child using the following levels:<br><ul><b>For Class 3:</b><li>Can write letters of the alphabet</li><li>Can follow simple instruction</li><li>Can give one word answer</li></ul><br><ul><b>For Class 4:</b><li>Picture label Reading</li><li>Can answer in sentence</li><li>Can read a simple sentence</li></ul>',
+               "englishprogram_1_2_3":'<br><hr/><br>The <a href=\"/text/english\"><b>English program</b></a> Measures the competency of a child in Oral, Reading and Writing capabilities.',
                "anganwadiprogram":'<br><hr/><br>The <a href=\"/text/preschool\"><b>Anganwadi Program'+"'s</b></a> diagnostic test measures children's abilities across the following competencies:<br><ul><li>General awareness</li><li>Gross Motor</li><li>Fine Motor</li><li>Language</li><li>Intellectual</li><li>Socio-emotional</li><li>Pre-academic</li></ul>"
 }
  
@@ -39,6 +40,7 @@ var programinfo={
   16:progtext["mathprogram"],
   18:progtext["anganwadiprogram"],
   19:progtext["readingprogram"],
+  23:progtext["englishprogram_1_2_3"],
   25:progtext["anganwadiprogram"]
 }
 

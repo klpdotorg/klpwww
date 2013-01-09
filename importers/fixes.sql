@@ -13,3 +13,5 @@ UPDATE tb_programme set name='English' where id=15;
 update tb_assessment set start='2010-10-01' where id=43;
 update tb_assessment set start='2010-10-01' where id=45;
 update tb_assessment set start='2010-10-01' where id=47;
+
+update tb_student_eval set grade='O' where grade='0' and qid in (select distinct q.id from tb_question q,tb_assessment ass where qid=q.id and q.assid=ass.id and ass.pid=1);

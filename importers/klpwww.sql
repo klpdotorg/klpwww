@@ -394,7 +394,7 @@ GRANT SELECT ON tb_school,
                 vw_inst_coord,
                 vw_electedrep_master,
                 vw_school_electedrep,
-                vw_school_eval
+                vw_school_eval,
                 vw_paisa_data,
                 vw_dise_display_master,
                 vw_dise_facility_agg,

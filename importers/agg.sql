@@ -646,7 +646,7 @@ $$ language plpgsql;
 
 
 -- Populate tb_school_agg for the current academic year
-select agg_institution(101);
+select agg_institution(102);
 
 --Populate all years basic info
 select basic_assess_school(90,1);

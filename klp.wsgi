@@ -1610,13 +1610,13 @@ class listFiles:
     if (int(type) == 1 or int(type) == 3):
       mpfilenames = []
       mlafilenames = []
-      path = "/reports"
+      path = ConfigReader.getConfigValue('Reports','klpreports')
       fileList["reptype"] = ["demographics","finances","infrastructure"]
       fileList["subdir1"] = "/Kannada"
       fileList["subdir2"] = "/English"
       fileList["directory"] = path
       try:
-        dirList=os.listdir(os.getcwd() + path + "/demographics/English")
+        dirList=os.listdir(os.path.dirname(os.getcwd()) + path + "/demographics/English")
         if int(type) == 3:
           ucList = {}
           for fn in dirList:
@@ -1642,10 +1642,10 @@ class listFiles:
       except:
         traceback.print_exc(file=sys.stderr)
     if (int(type) == 2):
-      path = "/rawdata"
+      path = ConfigReader.getConfigValue('Reports','rawdata')
       rawfilenames =[]
       try:
-        dirList=os.listdir(os.getcwd() + path)
+        dirList=os.listdir(os.path.dirname(os.getcwd()) + path)
         for fname in dirList:
           rawfilenames.append(fname)
         fileList["directory"] = path
@@ -1654,11 +1654,11 @@ class listFiles:
       except:
         traceback.print_exc(file=sys.stderr)
     if int(type) == 4:
-      path = "/reports/ig"
+      path = ConfigReader.getConfigValue('Reports','igreports')
       subdir = ["/2008_09","/2009_10","/2010_11"]
       filenames =[]
       try:
-        dirList=os.listdir(os.getcwd() + path + subdir[0])
+        dirList=os.listdir(os.path.dirname(os.getcwd()) + path + subdir[0])
         for fname in dirList:
           filenames.append(fname)
         fileList["directory"] = path

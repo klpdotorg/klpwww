@@ -901,6 +901,7 @@ class SchoolPage:
           data.update(CommonSchoolUtil.getDiseEnrolment(id))
       elif tab == 'stories' :
         data.update(self.getSYSData(id))
+        data.update(self.getSYSImages(id))
       else:
         data.update(self.getBasicData(id))
         data.update(self.getSYSImages(id))

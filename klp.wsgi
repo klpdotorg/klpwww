@@ -688,6 +688,9 @@ class baseAssessment:
             self.data["analytics"][classname][starttime][assname][domain][aggtext]={"order":aggtext_order,"value":{}}
           self.data["analytics"][classname][starttime][assname][domain][aggtext]["value"][qtype]={"name":sname,"value":round(float(aggsum/float(self.count[classname][assname]))*100.0,2),"type":qtype.capitalize()}
 
+          if classname not in self.data["base"]["classes"]:
+            self.data["base"]["classes"][classname]={"Boys":0,"Girls":0}
+
           if classname not in self.assesstext:
              self.assesstext[classname]={}
           if aggtext_order not in self.assesstext[classname]:
@@ -750,6 +753,9 @@ class baseAssessment:
             if aggtext not in self.data["analytics"][classname][starttime][assname][domain]:
               self.data["analytics"][classname][starttime][assname][domain][aggtext]={"order":aggtext_order,"value":{}}
             self.data["analytics"][classname][starttime][assname][domain][aggtext]["value"][boundary["type"]]={"name":bname,"value":round((float(aggsum)/float(boundarytotal[boundary["id"]][classname][assname]))*100,2),"type":boundarytype}
+
+            if classname not in self.data["base"]["classes"]:
+              self.data["base"]["classes"][classname]={"Boys":0,"Girls":0}
 
             if classname not in self.assesstext:
                self.assesstext[classname]={}
@@ -895,6 +901,7 @@ class SchoolPage:
           data.update(CommonSchoolUtil.getDiseEnrolment(id))
       elif tab == 'stories' :
         data.update(self.getSYSData(id))
+        data.update(self.getSYSImages(id))
       else:
         data.update(self.getBasicData(id))
         data.update(self.getSYSImages(id))

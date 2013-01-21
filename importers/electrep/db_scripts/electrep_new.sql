@@ -189,3 +189,25 @@ as t1 (
    score numeric(5,0),
    df_group character varying(30)
 );
+
+CREATE OR REPLACE VIEW vw_lib_lang_agg as
+select * from dblink('host=localhost dbname=library user=klp password=1q2w3e4r', 'select * from lang_agg')
+as t1 (
+   sid integer,
+   class integer,
+   month character varying(10),
+   year character varying(10),
+   book_lang character varying(50),
+   child_count integer
+);
+
+CREATE OR REPLACE VIEW vw_lib_level_agg as
+select * from dblink('host=localhost dbname=library user=klp password=1q2w3e4r', 'select * from level_agg')
+as t1 (
+   sid integer,
+   class integer,
+   month character varying(10),
+   year character varying(10),
+   book_level character varying(50),
+   child_count integer
+);

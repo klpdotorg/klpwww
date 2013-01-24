@@ -5,6 +5,7 @@ import jsonpickle
 import csv
 import re
 import difflib
+import geojson
 import smtplib,email,email.encoders,email.mime.text,email.mime.base,mimetypes
 from web import form
 
@@ -215,18 +216,25 @@ class getPointInfo:
     try:
       cursor = DbManager.getMainCon().cursor()
       for type in pointInfo:
+        features = []
         cursor.execute(statements['get_'+type])
         result = cursor.fetchall()
+        # print result
         for row in result:
           try:
             match = re.match(r"POINT\((.*)\s(.*)\)",row[1])
           except:
             traceback.print_exc(file=sys.stderr)
             continue
-          lon = match.group(1)
-          lat = match.group(2)
-          data={"lon":lon,"lat":lat,"name":row[2],"id":row[0]}
-          pointInfo[type].append(data)
+          # lon = match.group(1)
+          # lat = match.group(2)
+          coord = [float(match.group(1)), float(match.group(2))]
+          feature = geojson.Feature(id=row[0], geometry=geojson.Point(coord), properties={"name":row[2]})
+          # print feature
+          features.append(feature)
+          # data={"lon":lon,"lat":lat,"name":row[2],"id":row[0]}
+        feature_collection = geojson.FeatureCollection(features)
+        pointInfo[type].append(geojson.dumps(feature_collection))
         DbManager.getMainCon().commit()
       cursor.close()
     except:
@@ -234,7 +242,8 @@ class getPointInfo:
       cursor.close()
       DbManager.getMainCon().rollback()
     web.header('Content-Type', 'application/json')
-    return jsonpickle.encode(pointInfo)
+    # return jsonpickle.encode(pointInfo)
+    return pointInfo
 
 
 class visualization:

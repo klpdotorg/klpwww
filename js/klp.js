@@ -383,7 +383,7 @@ function getOtherMarker(markers)
   return mapmarkers["districtMarkers"][defaultid];
 }
 
-/*
+
 function changeFocus(parentType,childType)
 {
   closeWindow();
@@ -430,7 +430,7 @@ function changeFocus(parentType,childType)
   else
     map.setZoom(zoomInfo[childType])
 }
-*/
+
 
 
 function clearSelection(type)

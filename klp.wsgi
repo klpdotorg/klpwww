@@ -26,6 +26,7 @@ urls = (
      '/shareyourstory(.*)\?*','shareyourstory',
      '/schoolpage/(.*)/(.*)\?*','SchoolPage',
      '/info/(.*)/(.*)','getBoundaryInfo',
+     '/boundaryPoints/(.*)/(.*)','getBoundaryPoints',
      '/text/(.+)', 'text',
      '/schoolInfo/(.*)','getSchoolBoundaryInfo',
      '/insertsys/(.*)','insertSYS',
@@ -124,6 +125,12 @@ statements = {'get_district':"select bcoord.id_bndry,ST_AsText(bcoord.coord),ini
               'get_circle':"select bcoord.id_bndry,ST_AsText(bcoord.coord),initcap(b.name) from vw_boundary_coord bcoord, tb_boundary b where bcoord.type='Circle' and b.id=bcoord.id_bndry order by b.name",
               'get_school':"select inst.instid ,ST_AsText(inst.coord),upper(s.name) from vw_inst_coord inst, tb_school s,tb_boundary b where s.id=inst.instid and s.bid=b.id and b.type='1' order by s.name",
               'get_preschool':"select inst.instid ,ST_AsText(inst.coord),upper(s.name) from vw_inst_coord inst, tb_school s,tb_boundary b where s.id=inst.instid and s.bid=b.id and b.type='2' order by s.name",
+              'get_district_points':"select distinct b1.id, b1.name from tb_boundary b, tb_boundary b1, tb_boundary b2,tb_bhierarchy hier where b.id=b1.parent and b1.id=b2.parent and b.hid=hier.id and b.type=1 and b.id=%s order by b1.name",
+              'get_preschooldistrict_points':"select distinct b1.id, b1.name from tb_boundary b, tb_boundary b1,tb_boundary b2,tb_bhierarchy hier where b2.parent=b1.id and b1.parent = b.id and b.hid = hier.id and b.type=2 and b.id=%s",
+              'get_block_points':"select distinct b2.id, b2.name from tb_boundary b, tb_boundary b1, tb_boundary b2,tb_bhierarchy hier where b.id=b1.parent and b1.id=b2.parent  and b.hid = hier.id and b.type=1 and b1.id=%s order by b2.name",
+              'get_cluster_points':"select distinct s.id, s.name from tb_boundary b, tb_boundary b1, tb_boundary b2,tb_school s,tb_bhierarchy hier where b.id=b1.parent and b1.id=b2.parent and s.bid=b2.id and b.hid = hier.id and b.type=1 and b2.id=%s order by s.name",
+              'get_project_points':"select distinct b2.id, b2.name from tb_boundary b, tb_boundary b1, tb_boundary b2,tb_bhierarchy hier where b.id=b1.parent and b1.id=b2.parent  and b.hid = hier.id and b.type=2 and b1.id=%s order by b2.name",
+              'get_circle_points':"select distinct s.id, s.name from tb_boundary b, tb_boundary b1, tb_boundary b2,tb_school s,tb_bhierarchy hier where b.id=b1.parent and b1.id=b2.parent and s.bid=b2.id and b.hid = hier.id and b.type=2 and b2.id=%s order by s.name",
               'get_district_gender':"select sv.sex, sum(sv.num) from tb_institution_agg sv, tb_boundary b, tb_boundary b1, tb_boundary b2 where sv.bid = b.id and b.parent = b1.id and b1.parent = b2.id and b2.id = %s group by sv.sex",
               'get_district_info':"select count(distinct sv.id),b2.name from tb_institution_agg sv, tb_boundary b, tb_boundary b1, tb_boundary b2 where sv.bid = b.id and b.parent = b1.id and b1.parent = b2.id and b2.id = %s group by b2.name",
               'get_block_gender':"select sv.sex, sum(sv.num) from tb_institution_agg sv, tb_boundary b, tb_boundary b1, tb_boundary b2 where sv.bid = b.id and b.parent = b1.id and b1.parent = b2.id and b1.id = %s group by sv.sex",
@@ -1322,7 +1329,6 @@ class getSchoolInfo:
     return jsonpickle.encode(schoolInfo)
 
 
-"""
 class getBoundaryPoints: 
   def GET(self,type,id):
     boundaryInfo =[]
@@ -1341,7 +1347,6 @@ class getBoundaryPoints:
       DbManager.getMainCon().rollback()
     web.header('Content-Type', 'application/json')
     return jsonpickle.encode(boundaryInfo)
-"""
  
 class getSchoolBoundaryInfo:
   def GET(self,id):

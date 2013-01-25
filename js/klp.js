@@ -383,7 +383,6 @@ function getOtherMarker(markers)
   return mapmarkers["districtMarkers"][defaultid];
 }
 
-
 function changeFocus(parentType,childType)
 {
   closeWindow();
@@ -432,7 +431,6 @@ function changeFocus(parentType,childType)
 }
 
 
-
 function clearSelection(type)
 {
   var select = document.getElementById(type);
@@ -472,7 +470,7 @@ function populateBoundary(boundaryInfo, type)
 }
 
 
-/*function getBoundary(parentId,parentType,childType)
+function getBoundary(parentId,parentType,childType)
 {
   YUI({base: 'yui/build/',
     timeout: 50000}).use("io-base","json-parse",
@@ -502,7 +500,7 @@ function populateBoundary(boundaryInfo, type)
     });
 
 }
-*/
+
 
 function displayInfo(widget) {
     var info = document.getElementById('circleinfo');

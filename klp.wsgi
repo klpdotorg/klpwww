@@ -244,13 +244,13 @@ class getPointInfo:
       cursor.close()
       DbManager.getMainCon().rollback()
     web.header('Content-Type', 'application/json')
-    return pointInfo
+    return jsonpickle.encode(pointInfo)
 
 
 class visualization:
   def GET(self):
     web.header('Content-Type','text/html; charset=utf-8')
-    return render.visualization()
+    return render.map()
 
 
 

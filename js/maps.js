@@ -49,7 +49,7 @@ function setup_layers() {
 	district_layer = L.geoJson(district, {onEachFeature: onEachFeature});
 	block_layer = L.geoJson(block, {onEachFeature: onEachFeature});
 	cluster_layer = L.geoJson(cluster, {onEachFeature: onEachFeature}).addTo(cluster_cluster);
-	circle_layer = L.geoJson(circle, {onEachFeature: onEachFeature}).addTo(circle_cluster);
+	circle_layer = L.geoJson(circle, {onEachFeature: onEachCircle}).addTo(circle_cluster);
 	project_layer = L.geoJson(project, {onEachFeature: onEachFeature});
 
 
@@ -100,9 +100,10 @@ function update_map() {
 		current_layers.addLayer(project_layer);
 	}
 
-	else if (zoom_level == 12) {
+	else if (zoom_level >= 12) {
 		current_layers.clearLayers();
 		current_layers.addLayer(school_cluster);
+		current_layers.addLayer(preschool_cluster);
 	}
 
 		
@@ -120,6 +121,12 @@ function onEachSchool(feature, layer) {
 	}
 }
 
+function onEachCircle(feature, layer) {
+	if (feature.properties) {
+		layer.on('click', circlePopup);
+	}
+}
+
 function schoolPopup () {
 	marker = this;
 	$.getJSON('/info/school/'+marker.feature.id, function(data) {
@@ -130,4 +137,15 @@ function schoolPopup () {
 		
 		marker.bindPopup(popupContent).openPopup();
 	});
+}
+
+function circlePopup() {
+	marker = this;
+	$.getJSON('/info/circle/'+marker.feature.id, function(data) {
+
+		popupContent = "<b>"+marker.feature.properties.name+"</a></b>"+"<hr> Boys: "+
+		String(data['numBoys'])+" | Girls: "+String(data['numGirls'])+" | Total: <b>"+String(data['numStudents'])+"</b><br />Schools: "+String(data['numSchools']);
+		
+		marker.bindPopup(popupContent).openPopup();
+	});	
 }

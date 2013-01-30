@@ -24,10 +24,10 @@ $.getJSON('/pointinfo/', function(data) {
 
 var school_layer, district_layer, block_layer, cluster_layer, circle_layer, project_layer;
 var preschool_layer, preschooldist_layer;
-var cluster_cluster = new L.MarkerClusterGroup();
-var school_cluster = new L.MarkerClusterGroup();
-var circle_cluster = new L.MarkerClusterGroup();
-var preschool_cluster = new L.MarkerClusterGroup();
+var cluster_cluster = new L.MarkerClusterGroup({showCoverageOnHover: false});
+var school_cluster = new L.MarkerClusterGroup({showCoverageOnHover: false});
+var circle_cluster = new L.MarkerClusterGroup({showCoverageOnHover: false});
+var preschool_cluster = new L.MarkerClusterGroup({showCoverageOnHover: false});
 var current_layers = new L.LayerGroup();
 // var markerList = []
 map.addLayer(current_layers);
@@ -37,17 +37,29 @@ function initialize () {
 	district_layer = L.geoJson(district, {onEachFeature: onEachFeature});
 	block_layer = L.geoJson(block, {onEachFeature: onEachFeature});
 	cluster_layer = L.geoJson(cluster, {onEachFeature: onEachFeature}).addTo(cluster_cluster);
-	school_layer = L.geoJson(school, {onEachFeature: onEachFeature});
-	school_layer.addTo(school_cluster);
 	circle_layer = L.geoJson(circle, {onEachFeature: onEachFeature}).addTo(circle_cluster);
 	project_layer = L.geoJson(project, {onEachFeature: onEachFeature});
+	preschool_layer = L.geoJson(preschool, {onEachFeature: onEachFeature});
+	preschooldist_layer = L.geoJson(preschooldist, {onEachFeature: onEachFeature});
+	preschool_layer.addTo(preschool_cluster);
+	preschooldist_layer.addTo(preschool_cluster);
+	school_layer = L.geoJson(school, {onEachFeature: onEachFeature});
+	school_layer.addTo(school_cluster);
+
 	current_layers.addLayer(school_cluster);
+	current_layers.addLayer(preschool_cluster);
 
 	overlays = {
+		"Districts": district_layer,
+		"Blocks": block_layer,
+		"Clusters": cluster_cluster,
+		"Circles": circle_cluster,
+		"Projects": project_layer,
+		"Preschools": preschool_cluster,
 		"Schools": school_cluster
 	};
 
-	L.control.layers(null, overlays, {position:'bottomright'}).addTo(map);
+	L.control.layers(null, overlays, {position:'bottomright', collapsed:false}).addTo(map);
 }
 
 
@@ -55,8 +67,6 @@ map.on('zoomend', update_map);
 
 function update_map() {
 	zoom_level = map.getZoom();
-	console.log(zoom_level);
-
 	if (zoom_level == 8) {
 		current_layers.clearLayers();
 		current_layers.addLayer(district_layer);

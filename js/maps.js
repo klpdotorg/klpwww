@@ -24,32 +24,26 @@ $.getJSON('/pointinfo/', function(data) {
 
 var school_layer, district_layer, block_layer, cluster_layer, circle_layer, project_layer;
 var preschool_layer, preschooldist_layer;
+var cluster_cluster = new L.MarkerClusterGroup();
 var school_cluster = new L.MarkerClusterGroup();
 var circle_cluster = new L.MarkerClusterGroup();
 var preschool_cluster = new L.MarkerClusterGroup();
+var current_layers = new L.LayerGroup();
+map.addLayer(current_layers);
 
 function initialize () {
 
-// var district_layer = L.geoJson(district).addTo(map);
-// var block_layer = L.geoJson(block).addTo(map);
-// var circle_layer = L.geoJson(circle).addTo(circle_cluster);
-// map.addLayer(circle_cluster)
-	// var cluster_layer = L.geoJson(cluster).addTo(marker_cluster);
-	// var project_layer = L.geoJson(project).addTo(marker_cluster);
-	// var preschool = L.geoJson(preschool).addTo(marker_cluster);
-	// var preschooldist_layer = L.geoJson(preschooldist).addTo(marker_cluster);
-
+	district_layer = L.geoJson(district);
+	block_layer = L.geoJson(block);
+	cluster_layer = L.geoJson(cluster).addTo(cluster_cluster);
 	school_layer = L.geoJson(school).addTo(school_cluster);
-	map.addLayer(school_cluster);
+	circle_layer = L.geoJson(circle).addTo(circle_cluster);
+	project_layer = L.geoJson(project);
+	current_layers.addLayer(school_cluster);
 
 	overlays = {
-		// "Districts": district_layer,
-		// "Blocks": block_layer,
 		"Schools": school_cluster
 	};
-
-	// map.removeLayer(district_layer);
-	// map.removeLayer(block_layer);
 
 	L.control.layers(null, overlays, {position:'bottomright'}).addTo(map);
 }
@@ -59,25 +53,28 @@ map.on('zoomend', update_map);
 
 function update_map() {
 	zoom_level = map.getZoom();
+	console.log(zoom_level);
 
 	if (zoom_level == 8) {
-		district_layer = L.geoJson(district).addTo(map);
+		current_layers.clearLayers();
+		current_layers.addLayer(district_layer);
 		}
 
 	else if (zoom_level == 9) {
-		block_layer = L.geoJson(block).addTo(map);
+		current_layers.clearLayers();
+		current_layers.addLayer(block_layer);
 
 	}
 
 	else if (zoom_level == 10) {
-		circle_layer = L.geoJson(circle).addTo(circle_cluster);
-		map.addLayer(circle_cluster);
-		map.removeLayer(school_cluster);
-
+		current_layers.clearLayers();
+		current_layers.addLayer(cluster_cluster);
 	}
 
 	else if (zoom_level == 11) {
-
+		current_layers.clearLayers();
+		current_layers.addLayer(circle_cluster);
+		current_layers.addLayer(project_layer);
 	}
 
 		

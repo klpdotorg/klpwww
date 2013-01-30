@@ -1,14 +1,19 @@
 var district, block, cluster, circle, project, school, preschool, preschooldist;
+var school_layer, district_layer, block_layer, cluster_layer, circle_layer, project_layer;
+var preschool_layer, preschooldist_layer;
+var cluster_cluster = new L.MarkerClusterGroup({showCoverageOnHover: false});
+var school_cluster = new L.MarkerClusterGroup({showCoverageOnHover: false});
+var circle_cluster = new L.MarkerClusterGroup({showCoverageOnHover: false});
+var preschool_cluster = new L.MarkerClusterGroup({showCoverageOnHover: false});
+var current_layers = new L.LayerGroup();
 
 var map = L.map('map', {zoomControl: false, attributionControl: false}).setView([12.9719,77.5937], 12);
 var mapquestUrl = 'http://{s}.mqcdn.com/tiles/1.0.0/osm/{z}/{x}/{y}.png',
 subDomains = ['otile1','otile2','otile3','otile4'];
 var mapquest = new L.TileLayer(mapquestUrl, {maxZoom: 18, subdomains: subDomains});
-// mapquestAttrib = "&copy; <a href='http://osm.org/copyright'>OpenStreetMap</a> contributors"
 mapquest.addTo(map);
 
 zoom = new L.Control.Zoom({position:'bottomright'});
-zoom.addTo(map);
 
 $.getJSON('/pointinfo/', function(data) {
 	district = JSON.parse(data['district'][0]);
@@ -23,23 +28,15 @@ $.getJSON('/pointinfo/', function(data) {
 	setup_layers();
 });
 
-var school_layer, district_layer, block_layer, cluster_layer, circle_layer, project_layer;
-var preschool_layer, preschooldist_layer;
-var cluster_cluster = new L.MarkerClusterGroup({showCoverageOnHover: false});
-var school_cluster = new L.MarkerClusterGroup({showCoverageOnHover: false});
-var circle_cluster = new L.MarkerClusterGroup({showCoverageOnHover: false});
-var preschool_cluster = new L.MarkerClusterGroup({showCoverageOnHover: false});
-var current_layers = new L.LayerGroup();
-// var markerList = []
 map.addLayer(current_layers);
 
 function initialize () {
 
-	preschool_layer = L.geoJson(preschool, {onEachFeature: onEachFeature});
-	preschooldist_layer = L.geoJson(preschooldist, {onEachFeature: onEachFeature});
+	preschool_layer = L.geoJson(preschool, {onEachFeature: onEachSchool});
+	preschooldist_layer = L.geoJson(preschooldist, {onEachFeature: onEachSchool});
 	preschool_layer.addTo(preschool_cluster);
 	preschooldist_layer.addTo(preschool_cluster);
-	school_layer = L.geoJson(school, {onEachFeature: onEachFeature});
+	school_layer = L.geoJson(school, {onEachFeature: onEachSchool});
 	school_layer.addTo(school_cluster);
 
 	current_layers.addLayer(school_cluster);
@@ -71,6 +68,9 @@ function setup_layers() {
 		.addAttribution("&copy; <a href='http://osm.org/copyright'>OpenStreetMap</a>")
 		.setPrefix("")
 		.addTo(map);
+
+	zoom.addTo(map);
+
 }
 
 
@@ -112,4 +112,20 @@ function onEachFeature(feature, layer) {
     if (feature.properties) {
         layer.bindPopup(feature.properties.name);
     }
+}
+
+function onEachSchool(feature, layer) {
+	if (feature.properties) {
+		layer.on('click', schoolPopup);
+		// $.getJSON('/info/school/'+feature.properties.id, function (data) {
+		// 	layer.bindPopup(data);
+		// });
+	}
+}
+
+function schoolPopup () {
+	$.getJSON('/info/school/'+this.feature.id, function(data) {
+		console.log(this);
+		this.bindPopup(data).openPopup();
+	});
 }

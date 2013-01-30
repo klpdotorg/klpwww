@@ -117,15 +117,17 @@ function onEachFeature(feature, layer) {
 function onEachSchool(feature, layer) {
 	if (feature.properties) {
 		layer.on('click', schoolPopup);
-		// $.getJSON('/info/school/'+feature.properties.id, function (data) {
-		// 	layer.bindPopup(data);
-		// });
 	}
 }
 
 function schoolPopup () {
-	$.getJSON('/info/school/'+this.feature.id, function(data) {
-		console.log(this);
-		this.bindPopup(data).openPopup();
+	marker = this;
+	$.getJSON('/info/school/'+marker.feature.id, function(data) {
+
+		popupContent = "<b><a href='schoolpage/school/"+marker.feature.id+"' target='_blank'>"+marker.feature.properties.name+"</a></b>"+"<hr> Boys: "+
+		String(data['numBoys'])+" | Girls: "+String(data['numGirls'])+" | Total: <b>"+String(data['numStudents'])+"</b><br />Stories: "+String(data['numStories'])+
+		" &rarr; <i><a href='shareyourstoryschool?type=school?id="+marker.feature.id+"' target='_blank'>Share your story!</a></i>";
+		
+		marker.bindPopup(popupContent).openPopup();
 	});
 }

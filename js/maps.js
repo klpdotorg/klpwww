@@ -1,10 +1,10 @@
 var district, block, cluster, circle, project, school, preschool, preschooldist;
 
-var map = L.map('map', {zoomControl: false}).setView([12.9719,77.5937], 12);
+var map = L.map('map', {zoomControl: false, attributionControl: false}).setView([12.9719,77.5937], 12);
 var mapquestUrl = 'http://{s}.mqcdn.com/tiles/1.0.0/osm/{z}/{x}/{y}.png',
-subDomains = ['otile1','otile2','otile3','otile4'],
-mapquestAttrib = "&copy; <a href='http://osm.org/copyright'>OpenStreetMap</a> contributors"
-var mapquest = new L.TileLayer(mapquestUrl, {maxZoom: 18, attribution: mapquestAttrib, subdomains: subDomains});
+subDomains = ['otile1','otile2','otile3','otile4'];
+var mapquest = new L.TileLayer(mapquestUrl, {maxZoom: 18, subdomains: subDomains});
+// mapquestAttrib = "&copy; <a href='http://osm.org/copyright'>OpenStreetMap</a> contributors"
 mapquest.addTo(map);
 
 zoom = new L.Control.Zoom({position:'bottomright'});
@@ -20,6 +20,7 @@ $.getJSON('/pointinfo/', function(data) {
 	preschool = JSON.parse(data['preschool'][0]);
 	preschooldist = JSON.parse(data['preschooldistrict'][0]);
 	initialize();
+	setup_layers();
 });
 
 var school_layer, district_layer, block_layer, cluster_layer, circle_layer, project_layer;
@@ -34,11 +35,6 @@ map.addLayer(current_layers);
 
 function initialize () {
 
-	district_layer = L.geoJson(district, {onEachFeature: onEachFeature});
-	block_layer = L.geoJson(block, {onEachFeature: onEachFeature});
-	cluster_layer = L.geoJson(cluster, {onEachFeature: onEachFeature}).addTo(cluster_cluster);
-	circle_layer = L.geoJson(circle, {onEachFeature: onEachFeature}).addTo(circle_cluster);
-	project_layer = L.geoJson(project, {onEachFeature: onEachFeature});
 	preschool_layer = L.geoJson(preschool, {onEachFeature: onEachFeature});
 	preschooldist_layer = L.geoJson(preschooldist, {onEachFeature: onEachFeature});
 	preschool_layer.addTo(preschool_cluster);
@@ -48,6 +44,17 @@ function initialize () {
 
 	current_layers.addLayer(school_cluster);
 	current_layers.addLayer(preschool_cluster);
+
+}
+
+function setup_layers() {
+
+	district_layer = L.geoJson(district, {onEachFeature: onEachFeature});
+	block_layer = L.geoJson(block, {onEachFeature: onEachFeature});
+	cluster_layer = L.geoJson(cluster, {onEachFeature: onEachFeature}).addTo(cluster_cluster);
+	circle_layer = L.geoJson(circle, {onEachFeature: onEachFeature}).addTo(circle_cluster);
+	project_layer = L.geoJson(project, {onEachFeature: onEachFeature});
+
 
 	overlays = {
 		"Districts": district_layer,
@@ -60,6 +67,10 @@ function initialize () {
 	};
 
 	L.control.layers(null, overlays, {position:'bottomright', collapsed:false}).addTo(map);
+	L.control.attribution({position: 'bottomleft'})
+		.addAttribution("&copy; <a href='http://osm.org/copyright'>OpenStreetMap</a>")
+		.setPrefix("")
+		.addTo(map);
 }
 
 

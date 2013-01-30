@@ -29,16 +29,18 @@ var school_cluster = new L.MarkerClusterGroup();
 var circle_cluster = new L.MarkerClusterGroup();
 var preschool_cluster = new L.MarkerClusterGroup();
 var current_layers = new L.LayerGroup();
+// var markerList = []
 map.addLayer(current_layers);
 
 function initialize () {
 
-	district_layer = L.geoJson(district);
-	block_layer = L.geoJson(block);
-	cluster_layer = L.geoJson(cluster).addTo(cluster_cluster);
-	school_layer = L.geoJson(school).addTo(school_cluster);
-	circle_layer = L.geoJson(circle).addTo(circle_cluster);
-	project_layer = L.geoJson(project);
+	district_layer = L.geoJson(district, {onEachFeature: onEachFeature});
+	block_layer = L.geoJson(block, {onEachFeature: onEachFeature});
+	cluster_layer = L.geoJson(cluster, {onEachFeature: onEachFeature}).addTo(cluster_cluster);
+	school_layer = L.geoJson(school, {onEachFeature: onEachFeature});
+	school_layer.addTo(school_cluster);
+	circle_layer = L.geoJson(circle, {onEachFeature: onEachFeature}).addTo(circle_cluster);
+	project_layer = L.geoJson(project, {onEachFeature: onEachFeature});
 	current_layers.addLayer(school_cluster);
 
 	overlays = {
@@ -77,5 +79,16 @@ function update_map() {
 		current_layers.addLayer(project_layer);
 	}
 
+	else if (zoom_level == 12) {
+		current_layers.clearLayers();
+		current_layers.addLayer(school_cluster);
+	}
+
 		
+}
+
+function onEachFeature(feature, layer) {
+    if (feature.properties) {
+        layer.bindPopup(feature.properties.name);
+    }
 }

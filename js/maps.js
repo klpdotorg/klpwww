@@ -1,6 +1,6 @@
 var district, block, cluster, circle, project, school, preschool, preschooldist;
 var school_layer, district_layer, block_layer, cluster_layer, circle_layer, project_layer;
-var preschool_layer, preschooldist_layer;
+var preschool_layer, preschooldist_layer, bounds_layer;
 var cluster_cluster = new L.MarkerClusterGroup({showCoverageOnHover: false});
 var school_cluster = new L.MarkerClusterGroup({showCoverageOnHover: false});
 var circle_cluster = new L.MarkerClusterGroup({showCoverageOnHover: false});
@@ -180,12 +180,24 @@ function circlePopup() {
 
 var drawnItems = new L.LayerGroup();
 
-map.on('draw:circle-created', function (e) {
-	drawnItems.addLayer(e.circ);
+map.on('drawing', function(){
+	drawnItems.clearLayers();
+	if (bounds_layer) {
+		map.removeLayer(bounds_layer);
+	};
+	map.removeLayer(current_layers);
 });
 
-map.on('draw:marker-created', function (e) {
-	drawnItems.addLayer(e.marker);
+map.on('draw:circle-created', function (e) {
+	drawnItems.addLayer(e.circ);
+	bbox = e.circ.getBounds().toBBoxString()
+	$.getJSON('/schools?bounds='+bbox, function(data) {
+		boundedSchools = JSON.parse(data);
+		bounds_layer = L.geoJson(boundedSchools, {onEachFeature: onEachSchool});
+		bounds_layer.addTo(map);
+		map.setView(e.circ.getLatLng(), 14, true);
+	});
+
 });
 
 map.addLayer(drawnItems);

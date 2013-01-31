@@ -7,7 +7,7 @@ var circle_cluster = new L.MarkerClusterGroup({showCoverageOnHover: false});
 var preschool_cluster = new L.MarkerClusterGroup({showCoverageOnHover: false});
 var current_layers = new L.LayerGroup();
 
-var map = L.map('map', {zoomControl: false, attributionControl: false}).setView([12.9719,77.5937], 12);
+var map = L.map('map', {zoomControl: false, attributionControl: false, drawControl: true}).setView([12.9719,77.5937], 12);
 var mapquestUrl = 'http://{s}.mqcdn.com/tiles/1.0.0/osm/{z}/{x}/{y}.png',
 subDomains = ['otile1','otile2','otile3','otile4'];
 var mapquest = new L.TileLayer(mapquestUrl, {maxZoom: 18, subdomains: subDomains});
@@ -167,3 +167,15 @@ function circlePopup() {
 		marker.bindPopup(popupContent).openPopup();
 	});	
 }
+
+var drawnItems = new L.LayerGroup();
+
+map.on('draw:circle-created', function (e) {
+	drawnItems.addLayer(e.circ);
+});
+
+map.on('draw:marker-created', function (e) {
+	drawnItems.addLayer(e.marker);
+});
+
+map.addLayer(drawnItems);

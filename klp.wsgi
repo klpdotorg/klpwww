@@ -21,7 +21,7 @@ urls = (
      '/','mainmap',
      '/pointinfo/', 'getPointInfo',
      '/assessment/(.*)/(.*)/(.*)','assessments',
-     '/visualization*','map',
+     '/map*','map',
      '/info/school/(.*)','getSchoolInfo',
      '/info/preschool/(.*)','getSchoolInfo',
      '/shareyourstory(.*)\?*','shareyourstory',

@@ -34,6 +34,7 @@ urls = (
      '/postSYS/(.*)','postSYS',
      '/sysinfo','getSYSInfo',
      '/listFiles/(.*)','listFiles',
+     '/schools', 'schools_bound',
 )
 
 class DbManager:
@@ -204,6 +205,7 @@ statements = {'get_district':"select bcoord.id_bndry,ST_AsText(bcoord.coord),ini
               'get_ang_infra':"select distinct adm.value, aia.perc_score,aia.ai_group from vw_anginfra_agg aia, tb_school s, vw_ang_display_master adm where s.id=aia.sid and adm.key=aia.ai_metric and s.id=%s;",
               'get_lib_infra':"select libstatus,libtype,numbooks,numracks,numtables,numchairs,numcomputers,numups from tb_school s, vw_libinfra li where s.id=li.sid and s.id=%s;",
               'get_apmdm':"select mon,wk,indent,attend from vw_mdm_agg where id=%s;",
+              'get_bounded_schools':"select inst.instid ,ST_AsText(inst.coord),upper(s.name) from vw_inst_coord inst, tb_school s,tb_boundary b where ST_Contains(ST_MakeEnvelope(%s,%s,%s,%s,-1), inst.coord) and s.id=inst.instid and s.bid=b.id and b.type='1' order by s.name;",
 }
 render = web.template.render('templates/', base='base')
 render_plain = web.template.render('templates/')
@@ -216,6 +218,27 @@ class mainmap:
   def GET(self):
     web.header('Content-Type','text/html; charset=utf-8')
     return render.klp()
+
+class schools_bound:
+  def GET(self):
+    bounds = web.input('bounds').bounds.split(',')
+    cursor = DbManager.getMainCon().cursor()
+    for i in range(bounds.__len__()):
+      bounds[i] = bounds[i].strip('"')
+
+    cursor.execute(statements['get_bounded_schools'] %(bounds[0],bounds[1],bounds[2],bounds[3],))
+    result = cursor.fetchall()
+    features = []
+    for row in result:
+      match = re.match(r"POINT\((.*)\s(.*)\)",row[1])
+      coord = [float(match.group(1)), float(match.group(2))]
+      feature = geojson.Feature(id=row[0], geometry=geojson.Point(coord), properties={"name":row[2]})
+      features.append(feature)
+
+    feature_collection = geojson.FeatureCollection(features)
+    DbManager.getMainCon().commit()
+    cursor.close()
+    return jsonpickle.encode(geojson.dumps(feature_collection))
 
 class getPointInfo:
   def GET(self):

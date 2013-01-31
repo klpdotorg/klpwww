@@ -21,7 +21,7 @@ urls = (
      '/','mainmap',
      '/pointinfo/', 'getPointInfo',
      '/assessment/(.*)/(.*)/(.*)','assessments',
-     '/visualization*','visualization',
+     '/visualization*','map',
      '/info/school/(.*)','getSchoolInfo',
      '/info/preschool/(.*)','getSchoolInfo',
      '/shareyourstory(.*)\?*','shareyourstory',
@@ -247,7 +247,7 @@ class getPointInfo:
     return jsonpickle.encode(pointInfo)
 
 
-class visualization:
+class map:
   def GET(self):
     web.header('Content-Type','text/html; charset=utf-8')
     return render.map()

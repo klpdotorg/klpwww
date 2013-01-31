@@ -30,6 +30,22 @@ $.getJSON('/pointinfo/', function(data) {
 
 map.addLayer(current_layers);
 
+var blockIcon = L.icon({
+	iconUrl:'/images/maki/block.png',
+	iconSize: [12, 12],
+	iconAnchor: [16, 80],
+	popupAnchor: [-8, -76]
+
+});
+
+var districtIcon = L.icon({
+	iconUrl:'/images/maki/district.png',
+	iconSize: [24, 24],
+	iconAnchor: [16, 80],
+	popupAnchor: [-3, -76]
+
+});
+
 function initialize () {
 
 	preschool_layer = L.geoJson(preschool, {onEachFeature: onEachSchool});
@@ -46,16 +62,18 @@ function initialize () {
 
 function setup_layers() {
 
-	district_layer = L.geoJson(district, {onEachFeature: onEachFeature});
-	block_layer = L.geoJson(block, {onEachFeature: onEachFeature});
+	district_layer = L.geoJson(district, {pointToLayer: function(feature, latlng){
+		return L.marker(latlng, {icon: districtIcon});}, onEachFeature: onEachFeature});
+	block_layer = L.geoJson(block, {pointToLayer: function(feature, latlng){
+		return L.marker(latlng, {icon: blockIcon});}, onEachFeature: onEachFeature});
 	cluster_layer = L.geoJson(cluster, {onEachFeature: onEachFeature}).addTo(cluster_cluster);
 	circle_layer = L.geoJson(circle, {onEachFeature: onEachCircle}).addTo(circle_cluster);
 	project_layer = L.geoJson(project, {onEachFeature: onEachFeature});
 
 
 	overlays = {
-		"Districts": district_layer,
-		"Blocks": block_layer,
+		"<img src='/images/maki/district.png' height='14px' /> Districts": district_layer,
+		"<img src='/images/maki/block.png' height='10px' /> Blocks": block_layer,
 		"Clusters": cluster_cluster,
 		"Circles": circle_cluster,
 		"Projects": project_layer,

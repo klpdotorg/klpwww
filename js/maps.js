@@ -7,7 +7,7 @@ var circle_cluster = new L.MarkerClusterGroup({showCoverageOnHover: false});
 var preschool_cluster = new L.MarkerClusterGroup({showCoverageOnHover: false});
 var current_layers = new L.LayerGroup();
 
-var map = L.map('map', {zoomControl: false, attributionControl: false, drawControl: true}).setView([12.9719,77.5937], 12);
+var map = L.map('map', {zoomControl: false, attributionControl: false}).setView([12.9719,77.5937], 12);
 var mapquestUrl = 'http://{s}.mqcdn.com/tiles/1.0.0/osm/{z}/{x}/{y}.png',
 subDomains = ['otile1','otile2','otile3','otile4'];
 var mapquest = new L.TileLayer(mapquestUrl, {maxZoom: 18, subdomains: subDomains});
@@ -44,6 +44,14 @@ var districtIcon = L.icon({
 	iconAnchor: [16, 80],
 	popupAnchor: [-3, -76]
 
+});
+
+var drawControl = new L.Control.Draw({
+    position: 'bottomright',
+    polyline: false,
+    marker: false,
+    polygon: false,
+    rectangle: false
 });
 
 function initialize () {
@@ -88,6 +96,8 @@ function setup_layers() {
 		.addTo(map);
 
 	zoom.addTo(map);
+	
+	map.addControl(drawControl);
 
 }
 

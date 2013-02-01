@@ -21,7 +21,17 @@ hr { display: block; height: 1px; border: 0; border-top: 1px solid #000; margin:
 #top_panel a:hover {color: white;}
 
 
-	
+
+
+.stop_drawing {
+    border-radius: 5px 5px 5px 5px;
+    background-color: #ddd;
+    color: white;
+    font-size: 12px;
+    padding: 5px;
+    cursor: pointer;
+}	
+
 #map top_panel{
 	color: white;
 	font-family: "Arial", Sans-serif;

@@ -178,10 +178,37 @@ function circlePopup() {
 	});	
 }
 
+var stopDrawing = L.Control.extend({
+    options: {
+        position: 'bottomright'
+    },
+
+    onAdd: function (map) {
+        var container = L.DomUtil.create('div', 'stop_drawing');
+        var containerUI = L.DomUtil.create('a', 'stop_drawing', container);
+        containerUI.text = "Stop drawing";
+		L.DomEvent
+			.addListener(container, 'click', L.DomEvent.stopPropagation)
+			.addListener(container, 'click', L.DomEvent.preventDefault)
+			.addListener(container, 'click', this.clicked);
+        return container;
+    },
+
+	clicked: function stop() {
+			drawControl.handlers.circle.disable();
+			map.removeControl(stopDrawingControl);
+			map.addControl(drawControl);
+			map.addLayer(current_layers);
+		}
+});
+
 var drawnItems = new L.LayerGroup();
+var stopDrawingControl = new stopDrawing();
 
 map.on('drawing', function(){
 	drawnItems.clearLayers();
+	map.addControl(stopDrawingControl);
+	map.removeControl(drawControl);
 	if (bounds_layer) {
 		map.removeLayer(bounds_layer);
 	};
@@ -189,6 +216,8 @@ map.on('drawing', function(){
 });
 
 map.on('draw:circle-created', function (e) {
+	map.removeControl(stopDrawingControl);
+	map.addControl(drawControl);
 	drawnItems.addLayer(e.circ);
 	bbox = e.circ.getBounds().toBBoxString()
 	$.getJSON('/schools?bounds='+bbox, function(data) {
@@ -201,3 +230,5 @@ map.on('draw:circle-created', function (e) {
 });
 
 map.addLayer(drawnItems);
+
+

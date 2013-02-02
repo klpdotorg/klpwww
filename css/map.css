@@ -29,17 +29,16 @@ hr { display: block; height: 1px; border: 0; border-top: 1px solid #000; margin:
 }	
 
 .leaflet-control-draw a {
-    background-position: 20% 50%;
+    background-position: 20% 50% !important;
     background-repeat: no-repeat;
+    border-radius: 4px !important;
     display: block;
-    border-radius: 4px;
-    display: block;
-    height: 39px;
-    width: 47px;
+    height: 39px !important;
+    width: 47px !important;
 }
 
 .leaflet-control-draw-circle {
-    background-image: url("../images/icons/draw.png");
+    background-image: url("../images/icons/draw.png") !important;
 }
 
 #map top_panel{

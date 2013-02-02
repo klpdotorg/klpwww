@@ -31,23 +31,64 @@ $.getJSON('/pointinfo/', function(data) {
 map.addLayer(current_layers);
 
 var blockIcon = L.icon({
-	iconUrl:'/images/maki/block.png',
-	iconSize: [12, 12],
+	iconUrl:'/images/icons/block.png',
+	iconSize: [20, 30],
 	iconAnchor: [16, 80],
-	popupAnchor: [-8, -76]
+	popupAnchor: [-2, -78]
 
 });
 
 var districtIcon = L.icon({
-	iconUrl:'/images/maki/district.png',
-	iconSize: [24, 24],
+	iconUrl:'/images/icons/district.png',
+	iconSize: [20, 30],
 	iconAnchor: [16, 80],
 	popupAnchor: [-3, -76]
 
 });
 
+var circleIcon = L.icon({
+	iconUrl:'/images/icons/circle.png',
+	iconSize: [20, 30],
+	iconAnchor: [16, 80],
+	popupAnchor: [-3, -76]
+
+});
+
+var clusterIcon = L.icon({
+	iconUrl:'/images/icons/cluster.png',
+	iconSize: [20, 30],
+	iconAnchor: [16, 80],
+	popupAnchor: [-3, -76]
+
+});
+
+var projectIcon = L.icon({
+	iconUrl:'/images/icons/project.png',
+	iconSize: [20, 30],
+	iconAnchor: [16, 80],
+	popupAnchor: [-3, -76]
+
+});
+
+var schoolIcon = L.icon({
+	iconUrl:'/images/icons/school.png',
+	iconSize: [20, 30],
+	iconAnchor: [16, 80],
+	popupAnchor: [-3, -76]
+
+});
+
+var preschoolIcon = L.icon({
+	iconUrl:'/images/icons/preschool.png',
+	iconSize: [20, 30],
+	iconAnchor: [16, 80],
+	popupAnchor: [-3, -76]
+
+});
+
+
 var drawControl = new L.Control.Draw({
-    position: 'bottomright',
+    position: 'bottomleft',
     polyline: false,
     marker: false,
     polygon: false,
@@ -56,11 +97,18 @@ var drawControl = new L.Control.Draw({
 
 function initialize () {
 
-	preschool_layer = L.geoJson(preschool, {onEachFeature: onEachSchool});
-	preschooldist_layer = L.geoJson(preschooldist, {onEachFeature: onEachSchool});
+	preschool_layer = L.geoJson(preschool, {pointToLayer: function(feature, latlng){
+		return L.marker(latlng, {icon: preschoolIcon});}, onEachFeature: onEachSchool});
+
+	preschooldist_layer = L.geoJson(preschooldist, {pointToLayer: function(feature, latlng){
+		return L.marker(latlng, {icon: preschoolIcon});}, onEachFeature: onEachSchool});
 	preschool_layer.addTo(preschool_cluster);
+
 	preschooldist_layer.addTo(preschool_cluster);
-	school_layer = L.geoJson(school, {onEachFeature: onEachSchool});
+
+	school_layer = L.geoJson(school, {pointToLayer: function(feature, latlng){
+		return L.marker(latlng, {icon: schoolIcon});}, onEachFeature: onEachSchool});
+	
 	school_layer.addTo(school_cluster);
 
 	current_layers.addLayer(school_cluster);
@@ -72,21 +120,28 @@ function setup_layers() {
 
 	district_layer = L.geoJson(district, {pointToLayer: function(feature, latlng){
 		return L.marker(latlng, {icon: districtIcon});}, onEachFeature: onEachFeature});
+
 	block_layer = L.geoJson(block, {pointToLayer: function(feature, latlng){
 		return L.marker(latlng, {icon: blockIcon});}, onEachFeature: onEachFeature});
-	cluster_layer = L.geoJson(cluster, {onEachFeature: onEachFeature}).addTo(cluster_cluster);
-	circle_layer = L.geoJson(circle, {onEachFeature: onEachCircle}).addTo(circle_cluster);
-	project_layer = L.geoJson(project, {onEachFeature: onEachFeature});
+	
+	cluster_layer = L.geoJson(cluster, {pointToLayer: function(feature, latlng){
+		return L.marker(latlng, {icon: clusterIcon});}, onEachFeature: onEachFeature});
+	
+	circle_layer = L.geoJson(circle, {pointToLayer: function(feature, latlng){
+		return L.marker(latlng, {icon: circleIcon});}, onEachFeature: onEachCircle});
+	
+	project_layer = L.geoJson(project, {pointToLayer: function(feature, latlng){
+		return L.marker(latlng, {icon: projectIcon});}, onEachFeature: onEachFeature});
 
 
 	overlays = {
-		"<img src='/images/maki/district.png' height='14px' /> Districts": district_layer,
-		"<img src='/images/maki/block.png' height='10px' /> Blocks": block_layer,
-		"Clusters": cluster_cluster,
-		"Circles": circle_cluster,
-		"Projects": project_layer,
-		"Preschools": preschool_cluster,
-		"Schools": school_cluster
+		"<img src='/images/icons/district.png' height='25px' /> Districts": district_layer,
+		"<img src='/images/icons/block.png' height='25px' /> Blocks": block_layer,
+		"<img src='/images/icons/cluster.png' height='25px' /> Clusters": cluster_layer,
+		"<img src='/images/icons/circle.png' height='25px' /> Circles": circle_layer,
+		"<img src='/images/icons/project.png' height='25px' /> Projects": project_layer,
+		"<img src='/images/icons/preschool.png' height='25px' /> Preschools": preschool_cluster,
+		"<img src='/images/icons/school.png' height='25px' /> Schools": school_cluster
 	};
 
 	L.control.layers(null, overlays, {position:'bottomright', collapsed:false}).addTo(map);
@@ -119,12 +174,12 @@ function update_map() {
 
 	else if (zoom_level == 10) {
 		current_layers.clearLayers();
-		current_layers.addLayer(cluster_cluster);
+		current_layers.addLayer(cluster_layer);
 	}
 
 	else if (zoom_level == 11) {
 		current_layers.clearLayers();
-		current_layers.addLayer(circle_cluster);
+		current_layers.addLayer(circle_layer);
 		current_layers.addLayer(project_layer);
 	}
 
@@ -180,13 +235,12 @@ function circlePopup() {
 
 var stopDrawing = L.Control.extend({
     options: {
-        position: 'bottomright'
+        position: 'bottomleft'
     },
 
     onAdd: function (map) {
-        var container = L.DomUtil.create('div', 'stop_drawing');
-        var containerUI = L.DomUtil.create('a', 'stop_drawing', container);
-        containerUI.text = "Stop drawing";
+        var container = L.DomUtil.create('div', 'leaflet-control leaflet-control-draw leaflet-bar');
+        var containerUI = L.DomUtil.create('a', 'stop-drawing leaflet-bar-part leaflet-bar-part-top leaflet-bar-part-bottom', container);
 		L.DomEvent
 			.addListener(container, 'click', L.DomEvent.stopPropagation)
 			.addListener(container, 'click', L.DomEvent.preventDefault)
@@ -222,13 +276,10 @@ map.on('draw:circle-created', function (e) {
 	bbox = e.circ.getBounds().toBBoxString()
 	$.getJSON('/schools?bounds='+bbox, function(data) {
 		boundedSchools = JSON.parse(data);
-		bounds_layer = L.geoJson(boundedSchools, {onEachFeature: onEachSchool});
+		bounds_layer = L.geoJson(boundedSchools, {pointToLayer: function(feature, latlng){
+		return L.marker(latlng, {icon: schoolIcon});}, onEachFeature: onEachSchool});
 		bounds_layer.addTo(map);
 		map.setView(e.circ.getLatLng(), 14, true);
 	});
 
 });
-
-map.addLayer(drawnItems);
-
-

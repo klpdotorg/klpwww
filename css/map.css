@@ -23,14 +23,24 @@ hr { display: block; height: 1px; border: 0; border-top: 1px solid #000; margin:
 
 
 
-.stop_drawing {
-    border-radius: 5px 5px 5px 5px;
-    background-color: #ddd;
-    color: white;
-    font-size: 12px;
-    padding: 5px;
+.stop-drawing {
+    background-image: url("../images/icons/stop.png");
     cursor: pointer;
 }	
+
+.leaflet-control-draw a {
+    background-position: 20% 50%;
+    background-repeat: no-repeat;
+    display: block;
+    border-radius: 4px;
+    display: block;
+    height: 39px;
+    width: 47px;
+}
+
+.leaflet-control-draw-circle {
+    background-image: url("../images/icons/draw.png");
+}
 
 #map top_panel{
 	color: white;

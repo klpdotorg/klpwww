@@ -39,7 +39,7 @@ var blockIcon = L.icon({
 	iconUrl:'/images/icons/block.png',
 	iconSize: [20, 30],
 	iconAnchor: [16, 80],
-	popupAnchor: [-2, -78]
+	popupAnchor: [-6, -78]
 
 });
 
@@ -47,7 +47,7 @@ var districtIcon = L.icon({
 	iconUrl:'/images/icons/district.png',
 	iconSize: [20, 30],
 	iconAnchor: [16, 80],
-	popupAnchor: [-3, -76]
+	popupAnchor: [-6, -78]
 
 });
 
@@ -55,7 +55,7 @@ var circleIcon = L.icon({
 	iconUrl:'/images/icons/circle.png',
 	iconSize: [20, 30],
 	iconAnchor: [16, 80],
-	popupAnchor: [-3, -76]
+	popupAnchor: [-6, -78]
 
 });
 
@@ -63,7 +63,7 @@ var clusterIcon = L.icon({
 	iconUrl:'/images/icons/cluster.png',
 	iconSize: [20, 30],
 	iconAnchor: [16, 80],
-	popupAnchor: [-3, -76]
+	popupAnchor: [-6, -78]
 
 });
 
@@ -71,7 +71,7 @@ var projectIcon = L.icon({
 	iconUrl:'/images/icons/project.png',
 	iconSize: [20, 30],
 	iconAnchor: [16, 80],
-	popupAnchor: [-3, -76]
+	popupAnchor: [-6, -78]
 
 });
 
@@ -79,7 +79,7 @@ var schoolIcon = L.icon({
 	iconUrl:'/images/icons/school.png',
 	iconSize: [20, 30],
 	iconAnchor: [16, 80],
-	popupAnchor: [-3, -76]
+	popupAnchor: [-6, -78]
 
 });
 
@@ -87,7 +87,7 @@ var preschoolIcon = L.icon({
 	iconUrl:'/images/icons/preschool.png',
 	iconSize: [20, 30],
 	iconAnchor: [16, 80],
-	popupAnchor: [-3, -76]
+	popupAnchor: [-6, -78]
 
 });
 
@@ -142,8 +142,8 @@ function setup_layers() {
 	overlays = {
 		"<img src='/images/icons/district.png' height='25px' /> Districts": district_layer,
 		"<img src='/images/icons/block.png' height='25px' /> Blocks": block_layer,
-		"<img src='/images/icons/cluster.png' height='25px' /> Clusters": cluster_layer,
 		"<img src='/images/icons/circle.png' height='25px' /> Circles": circle_layer,
+		"<img src='/images/icons/cluster.png' height='25px' /> Clusters": cluster_layer,
 		"<img src='/images/icons/project.png' height='25px' /> Projects": project_layer,
 		"<img src='/images/icons/preschool.png' height='25px' /> Preschools": preschool_cluster,
 		"<img src='/images/icons/school.png' height='25px' /> Schools": school_cluster
@@ -174,21 +174,17 @@ function update_map() {
 	else if (zoom_level == 9) {
 		current_layers.clearLayers();
 		current_layers.addLayer(block_layer);
+		current_layers.addLayer(circle_layer);
 
 	}
 
 	else if (zoom_level == 10) {
 		current_layers.clearLayers();
 		current_layers.addLayer(cluster_layer);
-	}
-
-	else if (zoom_level == 11) {
-		current_layers.clearLayers();
-		current_layers.addLayer(circle_layer);
 		current_layers.addLayer(project_layer);
 	}
 
-	else if (zoom_level >= 12) {
+	else if (zoom_level >= 11) {
 		current_layers.clearLayers();
 		current_layers.addLayer(school_cluster);
 		current_layers.addLayer(preschool_cluster);

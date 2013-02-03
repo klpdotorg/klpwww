@@ -140,13 +140,13 @@ function setup_layers() {
 
 
 	overlays = {
+		"<img src='/images/icons/school.png' height='25px' /> Schools": school_cluster,
+		"<img src='/images/icons/preschool.png' height='25px' /> Preschools": preschool_cluster,
 		"<img src='/images/icons/district.png' height='25px' /> Districts": district_layer,
 		"<img src='/images/icons/block.png' height='25px' /> Blocks": block_layer,
-		"<img src='/images/icons/circle.png' height='25px' /> Circles": circle_layer,
 		"<img src='/images/icons/cluster.png' height='25px' /> Clusters": cluster_layer,
 		"<img src='/images/icons/project.png' height='25px' /> Projects": project_layer,
-		"<img src='/images/icons/preschool.png' height='25px' /> Preschools": preschool_cluster,
-		"<img src='/images/icons/school.png' height='25px' /> Schools": school_cluster
+		"<img src='/images/icons/circle.png' height='25px' /> Circles": circle_layer
 	};
 
 	L.control.layers(null, overlays, {position:'bottomright', collapsed:false}).addTo(map);

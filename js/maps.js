@@ -9,8 +9,16 @@ var preschool_cluster = new L.MarkerClusterGroup({showCoverageOnHover: false,
 	iconCreateFunction: function(cluster) {
         return new L.DivIcon({ className:'marker-cluster marker-cluster-preschool', style:'style="margin-left: -20px; margin-top: -20px; width: 40px; height: 40px; transform: translate(293px, 363px); z-index: 363;"', html: "<div><span>" + cluster.getChildCount() + "</span></div>" });
     }});
-// var preschool_cluster = new L.MarkerClusterGroup({showCoverageOnHover: false});
 var current_layers = new L.LayerGroup();
+
+function getURLParameter(name) {
+    return decodeURI(
+        (RegExp(name + '=' + '(.+?)(&|$)').exec(location.search)||[,])[1]
+    );
+}
+
+var regionParameter = getURLParameter('region');
+var region = (regionParameter === 'undefined') ? '' : regionParameter;
 
 var map = L.map('map', {zoomControl: false, attributionControl: false}).setView([12.9719,77.5937], 12);
 var mapquestUrl = 'http://{s}.mqcdn.com/tiles/1.0.0/osm/{z}/{x}/{y}.png',
@@ -150,17 +158,24 @@ function setup_layers() {
 	};
 
 	L.control.layers(null, overlays, {position:'bottomright', collapsed:false}).addTo(map);
+
+	zoom.addTo(map);
+	
+
+}
+
 	L.control.attribution({position: 'bottomleft'})
 		.addAttribution("&copy; <a href='http://osm.org/copyright'>OpenStreetMap</a>")
 		.setPrefix("")
 		.addTo(map);
 
-	zoom.addTo(map);
-	
-	map.addControl(drawControl);
+new L.Control.GeoSearch({position: 'bottomleft',
+    provider: new L.GeoSearch.Provider.Google({
+    	region: region
+    }), zoomLevel: 15, country: 'India', searchLabel: 'Search for a neighborhood...'
+}).addTo(map);
 
-}
-
+map.addControl(drawControl);
 
 map.on('zoomend', update_map);
 
@@ -284,3 +299,5 @@ map.on('draw:circle-created', function (e) {
 	});
 
 });
+
+

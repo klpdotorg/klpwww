@@ -161,9 +161,6 @@ function setup_layers() {
 
 	zoom.addTo(map);
 	
-
-}
-
 	L.control.attribution({position: 'bottomleft'})
 		.addAttribution("&copy; <a href='http://osm.org/copyright'>OpenStreetMap</a>")
 		.setPrefix("")
@@ -176,6 +173,9 @@ new L.Control.GeoSearch({position: 'bottomleft',
 }).addTo(map);
 
 map.addControl(drawControl);
+
+}
+
 
 map.on('zoomend', update_map);
 

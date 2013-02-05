@@ -273,7 +273,7 @@ class getPointInfo:
 class map:
   def GET(self):
     web.header('Content-Type','text/html; charset=utf-8')
-    return render.map()
+    return render_plain.map()
 
 
 

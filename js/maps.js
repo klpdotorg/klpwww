@@ -1,4 +1,3 @@
-var map;
 var district, block, cluster, circle, project, school, preschool, preschooldist;
 var school_layer, district_layer, block_layer, cluster_layer, circle_layer, project_layer;
 var preschool_layer, preschooldist_layer, bounds_layer;
@@ -22,16 +21,13 @@ var regionParameter = getURLParameter('region');
 var region = (regionParameter === 'undefined') ? '' : regionParameter;
 var bangalore = L.latLng([12.9719,77.5937]);
 
-map = L.map('map', {zoomControl: false, attributionControl: false});
+var map = L.map('map', {zoomControl: false, attributionControl: false}).setView(bangalore, 12);
 var mapquestUrl = 'http://{s}.mqcdn.com/tiles/1.0.0/osm/{z}/{x}/{y}.png',
 subDomains = ['otile1','otile2','otile3','otile4'];
 var mapquest = new L.TileLayer(mapquestUrl, {maxZoom: 18, subdomains: subDomains});
 mapquest.addTo(map);
 
 zoom = new L.Control.Zoom({position:'bottomright'});
-function locate() {
-map.locate();
-}
 
 $.getJSON('/pointinfo/', function(data) {
 	district = JSON.parse(data['district'][0]);
@@ -42,7 +38,7 @@ $.getJSON('/pointinfo/', function(data) {
 	school = JSON.parse(data['school'][0]);
 	preschool = JSON.parse(data['preschool'][0]);
 	preschooldist = JSON.parse(data['preschooldistrict'][0]);
-	locate();
+	map.locate({setView: true});
 	initialize();
 	setup_layers();
 });
@@ -115,23 +111,18 @@ var drawControl = new L.Control.Draw({
 });
 
 function onLocationFound(e) {
-	console.log('found');
-	map.setView(e.latLng, 15);
-	initialize();
+	map.setView(e.latlng, 15);
 }
 
 function onLocationError(e) {
-	console.log('nah');
-	map.setView(bangalore, 13);
-	initialize();
-
+	map.setView(bangalore, 12);
 }
+
 
 map.on('locationfound', onLocationFound);
 map.on('locationerror', onLocationError);
 
 function initialize () {
-	console.log('initialize');
 	map.locate({setView: true, maxZoom: 16});
 	preschool_layer = L.geoJson(preschool, {pointToLayer: function(feature, latlng){
 		return L.marker(latlng, {icon: preschoolIcon});}, onEachFeature: onEachSchool});

@@ -40,15 +40,6 @@ $.getJSON('/schoolsinfo/', function(data) {
 	
 })
 
-$.getJSON('/pointinfo/', function(data) {
-	district = JSON.parse(data['district'][0]);
-	block = JSON.parse(data['block'][0]);
-	cluster = JSON.parse(data['cluster'][0]);
-	circle = JSON.parse(data['circle'][0]);
-	project = JSON.parse(data['project'][0]);
-	setup_layers();
-});
-
 map.addLayer(current_layers);
 
 var blockIcon = L.icon({
@@ -146,6 +137,16 @@ function initialize () {
 
 	current_layers.addLayer(school_cluster);
 	current_layers.addLayer(preschool_cluster);
+
+	$.getJSON('/pointinfo/', function(data) {
+	district = JSON.parse(data['district'][0]);
+	block = JSON.parse(data['block'][0]);
+	cluster = JSON.parse(data['cluster'][0]);
+	circle = JSON.parse(data['circle'][0]);
+	project = JSON.parse(data['project'][0]);
+	setup_layers();
+});
+
 }
 
 function setup_layers() {

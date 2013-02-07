@@ -9,6 +9,7 @@ var preschool_cluster = new L.MarkerClusterGroup({showCoverageOnHover: false,
 	iconCreateFunction: function(cluster) {
         return new L.DivIcon({ className:'marker-cluster marker-cluster-preschool', style:'style="margin-left: -20px; margin-top: -20px; width: 40px; height: 40px; transform: translate(293px, 363px); z-index: 363;"', html: "<div><span>" + cluster.getChildCount() + "</span></div>" });
     }});
+
 var current_layers = new L.LayerGroup();
 
 function getURLParameter(name) {
@@ -33,19 +34,15 @@ mapquest.addTo(map);
 
 zoom = new L.Control.Zoom({position:'bottomright'});
 
-$.getJSON('/pointinfo/', function(data) {
-	district = JSON.parse(data['district'][0]);
-	block = JSON.parse(data['block'][0]);
-	cluster = JSON.parse(data['cluster'][0]);
-	circle = JSON.parse(data['circle'][0]);
-	project = JSON.parse(data['project'][0]);
+
+$.getJSON('/schoolsinfo/', function(data) {
+
 	school = JSON.parse(data['school'][0]);
 	preschool = JSON.parse(data['preschool'][0]);
 	preschooldist = JSON.parse(data['preschooldistrict'][0]);
-	map.locate({setView: true});
 	initialize();
-	setup_layers();
-});
+	
+})
 
 map.addLayer(current_layers);
 
@@ -144,6 +141,16 @@ function initialize () {
 
 	current_layers.addLayer(school_cluster);
 	current_layers.addLayer(preschool_cluster);
+
+	$.getJSON('/pointinfo/', function(data) {
+	district = JSON.parse(data['district'][0]);
+	block = JSON.parse(data['block'][0]);
+	cluster = JSON.parse(data['cluster'][0]);
+	circle = JSON.parse(data['circle'][0]);
+	project = JSON.parse(data['project'][0]);
+	setup_layers();
+});
+
 }
 
 function setup_layers() {

@@ -20,6 +20,7 @@ from Utility import KLPDB
 urls = (
      '/','mainmap',
      '/pointinfo/', 'getPointInfo',
+     '/schoolsinfo/', 'getSchoolsInfo',
      '/assessment/(.*)/(.*)/(.*)','assessments',
      '/map*','map',
      '/info/school/(.*)','getSchoolInfo',
@@ -242,7 +243,36 @@ class schools_bound:
 
 class getPointInfo:
   def GET(self):
-    pointInfo={"district":[],"block":[],"cluster":[],"project":[],"circle":[],"preschooldistrict":[],"school":[],"preschool":[]}
+    pointInfo={"district":[],"block":[],"cluster":[],"project":[],"circle":[]}
+    try:
+      cursor = DbManager.getMainCon().cursor()
+      for type in pointInfo:
+        features = []
+        cursor.execute(statements['get_'+type])
+        result = cursor.fetchall()
+        for row in result:
+          try:
+            match = re.match(r"POINT\((.*)\s(.*)\)",row[1])
+          except:
+            traceback.print_exc(file=sys.stderr)
+            continue
+          coord = [float(match.group(1)), float(match.group(2))]
+          feature = geojson.Feature(id=row[0], geometry=geojson.Point(coord), properties={"name":row[2]})
+          features.append(feature)
+        feature_collection = geojson.FeatureCollection(features)
+        pointInfo[type].append(geojson.dumps(feature_collection))
+        DbManager.getMainCon().commit()
+      cursor.close()
+    except:
+      traceback.print_exc(file=sys.stderr)
+      cursor.close()
+      DbManager.getMainCon().rollback()
+    web.header('Content-Type', 'application/json')
+    return jsonpickle.encode(pointInfo)
+
+class getSchoolsInfo:
+  def GET(self):
+    pointInfo={"preschooldistrict":[],"school":[],"preschool":[]}
     try:
       cursor = DbManager.getMainCon().cursor()
       for type in pointInfo:

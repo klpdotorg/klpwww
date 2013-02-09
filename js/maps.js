@@ -32,7 +32,7 @@ subDomains = ['otile1','otile2','otile3','otile4'];
 var mapquest = new L.TileLayer(mapquestUrl, {maxZoom: 18, subdomains: subDomains});
 mapquest.addTo(map);
 
-zoom = new L.Control.Zoom({position:'bottomright'});
+zoom = new L.Control.Zoom({position:'topleft'});
 
 
 $.getJSON('/schoolsinfo/', function(data) {
@@ -104,7 +104,7 @@ var preschoolIcon = L.icon({
 
 
 var drawControl = new L.Control.Draw({
-    position: 'bottomleft',
+    position: 'topright',
     polyline: false,
     marker: false,
     polygon: false,
@@ -190,7 +190,7 @@ function setup_layers() {
 		.setPrefix("")
 		.addTo(map);
 
-new L.Control.GeoSearch({position: 'bottomleft',
+new L.Control.GeoSearch({position: 'topright',
     provider: new L.GeoSearch.Provider.Google({
     	region: region
     }), zoomLevel: 15, country: 'India', searchLabel: 'Search for a neighborhood...'
@@ -275,7 +275,7 @@ function circlePopup() {
 
 var stopDrawing = L.Control.extend({
     options: {
-        position: 'bottomleft'
+        position: 'topright'
     },
 
     onAdd: function (map) {

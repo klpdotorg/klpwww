@@ -170,6 +170,7 @@ function setup_layers() {
 	project_layer = L.geoJson(project, {pointToLayer: function(feature, latlng){
 		return L.marker(latlng, {icon: projectIcon});}, onEachFeature: onEachFeature});
 
+	rteCircles();
 
 	overlays = {
 		"<img src='/images/icons/school.png' height='25px' /> Schools": school_cluster,
@@ -178,7 +179,9 @@ function setup_layers() {
 		"<img src='/images/icons/block.png' height='25px' /> Blocks": block_layer,
 		"<img src='/images/icons/cluster.png' height='25px' /> Clusters": cluster_layer,
 		"<img src='/images/icons/project.png' height='25px' /> Projects": project_layer,
-		"<img src='/images/icons/circle.png' height='25px' /> Circles": circle_layer
+		"<img src='/images/icons/circle.png' height='25px' /> Circles": circle_layer,
+		"Schools RTE 2KM": rteSchools,
+		"Preschools RTE 1KM": rtePreschools,
 	};
 
 	L.control.layers(null, overlays, {position:'bottomright', collapsed:false}).addTo(map);
@@ -325,3 +328,15 @@ map.on('draw:circle-created', function (e) {
 });
 
 
+rteSchools  = new L.LayerGroup();
+rtePreschools = new L.LayerGroup();
+
+function rteCircles() {
+	school_cluster.eachLayer(function(layer) {
+		circle = L.circle(layer.getLatLng(), 2000, {stroke: false, fill:true, fillColor: "red", fillOpacity: "0.1"}).addTo(rteSchools);
+	});
+
+	preschool_cluster.eachLayer(function(layer) {
+		circle = L.circle(layer.getLatLng(), 1000, {stroke: false, fill:true, fillColor: "green", fillOpacity: "0.1"}).addTo(rtePreschools);
+	})
+}

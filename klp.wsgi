@@ -207,6 +207,8 @@ statements = {'get_district':"select bcoord.id_bndry,ST_AsText(bcoord.coord),ini
               'get_lib_infra':"select libstatus,libtype,numbooks,numracks,numtables,numchairs,numcomputers,numups from tb_school s, vw_libinfra li where s.id=li.sid and s.id=%s;",
               'get_apmdm':"select mon,wk,indent,attend from vw_mdm_agg where id=%s;",
               'get_bounded_schools':"select inst.instid ,ST_AsText(inst.coord),upper(s.name) from vw_inst_coord inst, tb_school s,tb_boundary b where ST_Contains(ST_MakeEnvelope(%s,%s,%s,%s,-1), inst.coord) and s.id=inst.instid and s.bid=b.id and b.type='1' order by s.name;",
+              'get_bounded_preschools':"select inst.instid ,ST_AsText(inst.coord),upper(s.name) from vw_inst_coord inst, tb_school s,tb_boundary b where ST_Contains(ST_MakeEnvelope(%s,%s,%s,%s,-1), inst.coord) and s.id=inst.instid and s.bid=b.id and b.type='2' order by s.name",
+
 }
 render = web.template.render('templates/', base='base')
 render_plain = web.template.render('templates/')
@@ -227,19 +229,27 @@ class schools_bound:
     for i in range(bounds.__len__()):
       bounds[i] = bounds[i].strip('"')
 
-    cursor.execute(statements['get_bounded_schools'] %(bounds[0],bounds[1],bounds[2],bounds[3],))
-    result = cursor.fetchall()
-    features = []
-    for row in result:
-      match = re.match(r"POINT\((.*)\s(.*)\)",row[1])
-      coord = [float(match.group(1)), float(match.group(2))]
-      feature = geojson.Feature(id=row[0], geometry=geojson.Point(coord), properties={"name":row[2]})
-      features.append(feature)
+    pointInfo={"schools":[],"preschools":[]}
+    count = 0
+    for type in pointInfo:
+      if type != 'count':
+        features = []
+        cursor.execute(statements['get_bounded_'+type] %(bounds[0],bounds[1],bounds[2],bounds[3],))
+        result = cursor.fetchall()
+        count = count + result.__len__()
+        for row in result:
+          match = re.match(r"POINT\((.*)\s(.*)\)",row[1])
+          coord = [float(match.group(1)), float(match.group(2))]
+          feature = geojson.Feature(id=row[0], geometry=geojson.Point(coord), properties={"name":row[2]})
+          features.append(feature)
 
-    feature_collection = geojson.FeatureCollection(features)
-    DbManager.getMainCon().commit()
+        feature_collection = geojson.FeatureCollection(features)
+        pointInfo[type].append(geojson.dumps(feature_collection))
+        DbManager.getMainCon().commit()
     cursor.close()
-    return jsonpickle.encode(geojson.dumps(feature_collection))
+    pointInfo.update({'count': count})
+    web.header('Content-Type', 'application/json')
+    return jsonpickle.encode(pointInfo)
 
 class getPointInfo:
   def GET(self):

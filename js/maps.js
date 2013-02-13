@@ -1,26 +1,26 @@
 var district, block, cluster, circle, project, school, preschool, preschooldist;
 var school_layer, district_layer, block_layer, cluster_layer, circle_layer, project_layer;
-var preschool_layer, preschooldist_layer, bounds_layer;
+var preschool_layer, preschooldist_layer, boundedSchools_layer, boundedPreschools_layer;
 var school_cluster = new L.MarkerClusterGroup({showCoverageOnHover: false, 
 	iconCreateFunction: function(cluster) {
-        return new L.DivIcon({ className:'marker-cluster marker-cluster-school', style:'style="margin-left: -20px; margin-top: -20px; width: 40px; height: 40px; transform: translate(293px, 363px); z-index: 363;"', html: "<div><span>" + cluster.getChildCount() + "</span></div>" });
-    }});
+		return new L.DivIcon({ className:'marker-cluster marker-cluster-school', style:'style="margin-left: -20px; margin-top: -20px; width: 40px; height: 40px; transform: translate(293px, 363px); z-index: 363;"', html: "<div><span>" + cluster.getChildCount() + "</span></div>" });
+	}});
 var preschool_cluster = new L.MarkerClusterGroup({showCoverageOnHover: false, 
 	iconCreateFunction: function(cluster) {
-        return new L.DivIcon({ className:'marker-cluster marker-cluster-preschool', style:'style="margin-left: -20px; margin-top: -20px; width: 40px; height: 40px; transform: translate(293px, 363px); z-index: 363;"', html: "<div><span>" + cluster.getChildCount() + "</span></div>" });
-    }});
+		return new L.DivIcon({ className:'marker-cluster marker-cluster-preschool', style:'style="margin-left: -20px; margin-top: -20px; width: 40px; height: 40px; transform: translate(293px, 363px); z-index: 363;"', html: "<div><span>" + cluster.getChildCount() + "</span></div>" });
+	}});
 
 var current_layers = new L.LayerGroup();
 
 function getURLParameter(name) {
-    return decodeURI(
-        (RegExp(name + '=' + '(.+?)(&|$)').exec(location.search)||[,])[1]
-    );
+	return decodeURI(
+		(RegExp(name + '=' + '(.+?)(&|$)').exec(location.search)||[,])[1]
+		);
 }
 
 var southWest = new L.LatLng(11.57, 73.87),
-    northEast = new L.LatLng(18.45, 78.57),
-    bounds = new L.LatLngBounds(southWest, northEast);
+northEast = new L.LatLng(18.45, 78.57),
+bounds = new L.LatLngBounds(southWest, northEast);
 
 var regionParameter = getURLParameter('region');
 var region = (regionParameter === 'undefined') ? '' : regionParameter;
@@ -104,11 +104,11 @@ var preschoolIcon = L.icon({
 
 
 var drawControl = new L.Control.Draw({
-    position: 'topright',
-    polyline: false,
-    marker: false,
-    polygon: false,
-    rectangle: false
+	position: 'topright',
+	polyline: false,
+	marker: false,
+	polygon: false,
+	rectangle: false
 });
 
 function onLocationFound(e) {
@@ -143,13 +143,13 @@ function initialize () {
 	current_layers.addLayer(preschool_cluster);
 
 	$.getJSON('/pointinfo/', function(data) {
-	district = JSON.parse(data['district'][0]);
-	block = JSON.parse(data['block'][0]);
-	cluster = JSON.parse(data['cluster'][0]);
-	circle = JSON.parse(data['circle'][0]);
-	project = JSON.parse(data['project'][0]);
-	setup_layers();
-});
+		district = JSON.parse(data['district'][0]);
+		block = JSON.parse(data['block'][0]);
+		cluster = JSON.parse(data['cluster'][0]);
+		circle = JSON.parse(data['circle'][0]);
+		project = JSON.parse(data['project'][0]);
+		setup_layers();
+	});
 
 }
 
@@ -189,17 +189,17 @@ function setup_layers() {
 	zoom.addTo(map);
 	
 	L.control.attribution({position: 'bottomleft'})
-		.addAttribution("&copy; <a href='http://osm.org/copyright'>OpenStreetMap</a>")
-		.setPrefix("")
-		.addTo(map);
+	.addAttribution("&copy; <a href='http://osm.org/copyright'>OpenStreetMap</a>")
+	.setPrefix("")
+	.addTo(map);
 
-new L.Control.GeoSearch({position: 'topright',
-    provider: new L.GeoSearch.Provider.Google({
-    	region: region
-    }), zoomLevel: 15, country: 'India', searchLabel: 'Search for a neighborhood...'
-}).addTo(map);
+	new L.Control.GeoSearch({position: 'topright',
+		provider: new L.GeoSearch.Provider.Google({
+			region: region
+		}), zoomLevel: 15, country: 'India', searchLabel: 'Search for a neighborhood...'
+	}).addTo(map);
 
-map.addControl(drawControl);
+	map.addControl(drawControl);
 
 }
 
@@ -211,7 +211,7 @@ function update_map() {
 	if (zoom_level == 8) {
 		current_layers.clearLayers();
 		current_layers.addLayer(district_layer);
-		}
+	}
 
 	else if (zoom_level == 9) {
 		current_layers.clearLayers();
@@ -232,13 +232,13 @@ function update_map() {
 		current_layers.addLayer(preschool_cluster);
 	}
 
-		
+
 }
 
 function onEachFeature(feature, layer) {
-    if (feature.properties) {
-        layer.bindPopup(feature.properties.name);
-    }
+	if (feature.properties) {
+		layer.bindPopup(feature.properties.name);
+	}
 }
 
 function onEachSchool(feature, layer) {
@@ -277,26 +277,26 @@ function circlePopup() {
 }
 
 var stopDrawing = L.Control.extend({
-    options: {
-        position: 'topright'
-    },
+	options: {
+		position: 'topright'
+	},
 
-    onAdd: function (map) {
-        var container = L.DomUtil.create('div', 'leaflet-control leaflet-control-draw leaflet-bar');
-        var containerUI = L.DomUtil.create('a', 'stop-drawing leaflet-bar-part leaflet-bar-part-top leaflet-bar-part-bottom', container);
+	onAdd: function (map) {
+		var container = L.DomUtil.create('div', 'leaflet-control leaflet-control-draw leaflet-bar');
+		var containerUI = L.DomUtil.create('a', 'stop-drawing leaflet-bar-part leaflet-bar-part-top leaflet-bar-part-bottom', container);
 		L.DomEvent
-			.addListener(container, 'click', L.DomEvent.stopPropagation)
-			.addListener(container, 'click', L.DomEvent.preventDefault)
-			.addListener(container, 'click', this.clicked);
-        return container;
-    },
+		.addListener(container, 'click', L.DomEvent.stopPropagation)
+		.addListener(container, 'click', L.DomEvent.preventDefault)
+		.addListener(container, 'click', this.clicked);
+		return container;
+	},
 
 	clicked: function stop() {
-			drawControl.handlers.circle.disable();
-			map.removeControl(stopDrawingControl);
-			map.addControl(drawControl);
-			map.addLayer(current_layers);
-		}
+		drawControl.handlers.circle.disable();
+		map.removeControl(stopDrawingControl);
+		map.addControl(drawControl);
+		map.addLayer(current_layers);
+	}
 });
 
 var drawnItems = new L.LayerGroup();
@@ -306,8 +306,9 @@ map.on('drawing', function(){
 	drawnItems.clearLayers();
 	map.addControl(stopDrawingControl);
 	map.removeControl(drawControl);
-	if (bounds_layer) {
-		map.removeLayer(bounds_layer);
+	if (boundedSchools_layer || boundedPreschools_layer) {
+		map.removeLayer(boundedSchools_layer);
+		map.removeLayer(boundedPreschools_layer);
 	};
 	map.removeLayer(current_layers);
 });
@@ -316,17 +317,17 @@ var alerts = L.Control.extend({
 
 	options: {
 		position: 'topcenter',
-		radius: 0
+		message: ''		
 	},
 	initialize: function (options) {
 		L.Util.setOptions(this, options)
 	},
 
 	onAdd: function (map) {
-        var container = L.DomUtil.create('div', 'alert alert-success');
-        container.innerHTML = "Finding schools in a radius of <strong>"+Math.floor(this.options.radius)+" meters</strong><a class='close' data-dismiss='alert' href='#'>&times;</a>";
-        return container;
-    }
+		var container = L.DomUtil.create('div', 'alert alert-success');
+		container.innerHTML = this.options.message+"<a class='close' data-dismiss='alert' href='#'>&times;</a>";
+		return container;
+	}
 
 });
 
@@ -342,38 +343,54 @@ var selectedSchools = L.Control.extend({
 	},
 
 	onAdd: function (map) {
-        var container = L.DomUtil.create('div', 'btn-group');
-        button = "<p class='btn btn-small btn-success dropdown-toggle' data-toggle='dropdown'>Schools<span class='caret'></span></p><ul class='dropdown-menu schools'>";
-        var entries= "";
-        for (i=0; i<this.options.schools.length; i++) {
-        	entries = entries+"<li><a href='schoolpage/school/"+this.options.schools[i].id+" ' target='_blank'>"+this.options.schools[i].properties['name']+"</a></li>";
-        }
-        entries = entries+"</ul>";
-        container.innerHTML =button+entries;
-        return container;
+		var container = L.DomUtil.create('div', 'btn-group');
+		button = "<p class='btn btn-success dropdown-toggle' data-toggle='dropdown'>Schools<span class='caret'></span></p><ul class='dropdown-menu schools'>";
+		var entries= "";
+		for (i=0; i<this.options.schools.length; i++) {
+			entries = entries+"<li><a href='schoolpage/school/"+this.options.schools[i].id+" ' target='_blank'>"+this.options.schools[i].properties['name']+"</a></li>";
+		}
+		entries = entries+"</ul>";
+		container.innerHTML =button+entries;
+		return container;
 	}
 
 });
 
 map.on('draw:circle-created', function (e) {
-	alerter = new alerts({radius: e.circ.getRadius()});
-	map.addControl(alerter);
 	map.removeControl(stopDrawingControl);
 	map.addControl(drawControl);
 	drawnItems.addLayer(e.circ);
 	bbox = e.circ.getBounds().toBBoxString()
 	$.getJSON('/schools?bounds='+bbox, function(data) {
-		boundedSchools = JSON.parse(data);
-		schoolsList = new selectedSchools({schools: boundedSchools.features});
-		map.addControl(schoolsList);
-		bounds_layer = L.geoJson(boundedSchools, {pointToLayer: function(feature, latlng){
-		return L.marker(latlng, {icon: schoolIcon});}, onEachFeature: onEachSchool});
-		bounds_layer.addTo(map);
-        $('.schools').mouseover(function(){map.dragging.disable(); map.scrollWheelZoom.disable();});
-        $('.schools').mouseout(function(){map.dragging.enable(); map.scrollWheelZoom.enable();});
-		map.setView(e.circ.getLatLng(), 14, true);
+		if (data['count'] == 0) {
+			alerter = new alerts({message:"No schools found in a radius of <strong>"+Math.floor(e.circ.getRadius())+" meters </strong>"});
+			map.addControl(alerter);
+		}
+		else {
+
+			alerter = new alerts({message:"<strong>"+data['count']+"</strong> schools found in a radius of <strong>"+Math.floor(e.circ.getRadius())+" meters </strong>"})
+			map.addControl(alerter);
+			boundedSchools = JSON.parse(data['schools'][0]);
+			boundedPreschools = JSON.parse(data['preschools'][0]);
+			try {
+				map.removeControl(schoolsList);
+			}
+			finally {
+				schoolsList = new selectedSchools({schools: boundedSchools.features});
+				map.addControl(schoolsList);
+				boundedSchools_layer = L.geoJson(boundedSchools, {pointToLayer: function(feature, latlng){
+					return L.marker(latlng, {icon: schoolIcon});}, onEachFeature: onEachSchool});
+				boundedPreschools_layer = L.geoJson(boundedPreschools, {pointToLayer: function(feature, latlng){
+					return L.marker(latlng, {icon: preschoolIcon});}, onEachFeature: onEachSchool});			
+				boundedSchools_layer.addTo(map);
+				boundedPreschools_layer.addTo(map);
+				$('.schools').mouseover(function(){map.dragging.disable(); map.scrollWheelZoom.disable();});
+				$('.schools').mouseout(function(){map.dragging.enable(); map.scrollWheelZoom.enable();});
+				map.setView(e.circ.getLatLng(), 14, true);
+			}
+		}
 	});
-	setTimeout(function (){map.removeControl(alerter)}, 2000);
+	setTimeout(function (){map.removeControl(alerter)}, 3000);
 });
 
 

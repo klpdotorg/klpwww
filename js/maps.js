@@ -309,7 +309,27 @@ map.on('drawing', function(){
 	map.removeLayer(current_layers);
 });
 
+var alerts = L.Control.extend({
+
+	options: {
+		position: 'topcenter',
+		radius: 0
+	},
+	initialize: function (options) {
+		L.Util.setOptions(this, options)
+	},
+
+	onAdd: function (map) {
+        var container = L.DomUtil.create('div', 'alert alert-success');
+        container.innerHTML = "Finding schools in a radius of <strong>"+Math.floor(this.options.radius)+" meters</strong><a class='close' data-dismiss='alert' href='#'>&times;</a>";
+        return container;
+    }
+
+});
+
 map.on('draw:circle-created', function (e) {
+	alerter = new alerts({radius: e.circ.getRadius()});
+	map.addControl(alerter);
 	map.removeControl(stopDrawingControl);
 	map.addControl(drawControl);
 	drawnItems.addLayer(e.circ);
@@ -321,7 +341,8 @@ map.on('draw:circle-created', function (e) {
 		bounds_layer.addTo(map);
 		map.setView(e.circ.getLatLng(), 14, true);
 	});
-
+	setTimeout(function (){map.removeControl(alerter)}, 2000);
 });
 
 
+$('.alert').alert();

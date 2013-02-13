@@ -3,6 +3,14 @@
     height: 100%;
 }
 
+.leaflet-top {
+    margin-top: 70px;
+}
+
+.leaflet-center{
+    width: 350px;
+}
+
 .navbar {
     margin: 0;
 }
@@ -16,14 +24,6 @@ input[type="text"] {
     margin-bottom: 0;
 }
 
-/*#footer {
-    height: 40px;
-    border-top-width: 1px;
-    border-top-style:  outset;
-    background: #ddd;
-    text-align: center;
-}
-*/
 #credits {
     padding-top: 10px;
 }

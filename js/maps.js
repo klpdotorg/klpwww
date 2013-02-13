@@ -346,7 +346,7 @@ var selectedSchools = L.Control.extend({
         button = "<p class='btn btn-small btn-success dropdown-toggle' data-toggle='dropdown'>Schools<span class='caret'></span></p><ul class='dropdown-menu schools'>";
         var entries= "";
         for (i=0; i<this.options.schools.length; i++) {
-        	entries = entries+"<li><a href='schoolpage/school/"+this.options.schools[i].id+"' target='_blank'>"+this.options.schools[i].properties['name']+"</a></li>";
+        	entries = entries+"<li><a href='schoolpage/school/"+this.options.schools[i].id+" ' target='_blank'>"+this.options.schools[i].properties['name']+"</a></li>";
         }
         entries = entries+"</ul>";
         container.innerHTML =button+entries;
@@ -369,6 +369,8 @@ map.on('draw:circle-created', function (e) {
 		bounds_layer = L.geoJson(boundedSchools, {pointToLayer: function(feature, latlng){
 		return L.marker(latlng, {icon: schoolIcon});}, onEachFeature: onEachSchool});
 		bounds_layer.addTo(map);
+        $('.schools').mouseover(function(){map.dragging.disable(); map.scrollWheelZoom.disable();});
+        $('.schools').mouseout(function(){map.dragging.enable(); map.scrollWheelZoom.enable();});
 		map.setView(e.circ.getLatLng(), 14, true);
 	});
 	setTimeout(function (){map.removeControl(alerter)}, 2000);

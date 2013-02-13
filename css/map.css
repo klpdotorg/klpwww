@@ -32,9 +32,9 @@ input[type="text"] {
 }
 
 .dropdown-menu {
-    max-height: 500px;
+    max-height: 400px;
+    overflow: hidden;
     overflow-y: auto;
-    overflow-x: hidden;
 }
 
 #credits {

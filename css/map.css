@@ -23,6 +23,20 @@ input[type="text"] {
     margin-bottom: 0;
 }
 
+.schools li {
+    font-size: 9px;
+}
+
+.schools li > a{
+    line-height: 10px;
+}
+
+.dropdown-menu {
+    max-height: 500px;
+    overflow-y: auto;
+    overflow-x: hidden;
+}
+
 #credits {
     padding-top: 10px;
 }

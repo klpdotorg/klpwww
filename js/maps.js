@@ -330,6 +330,31 @@ var alerts = L.Control.extend({
 
 });
 
+var selectedSchools = L.Control.extend({
+
+	options: {
+		position: 'topleft',
+		schools: []
+	},
+	
+	initialize: function(options) {
+		L.Util.setOptions(this, options)
+	},
+
+	onAdd: function (map) {
+        var container = L.DomUtil.create('div', 'btn-group');
+        button = "<p class='btn btn-small btn-success dropdown-toggle' data-toggle='dropdown'>Schools<span class='caret'></span></p><ul class='dropdown-menu schools'>";
+        var entries= "";
+        for (i=0; i<this.options.schools.length; i++) {
+        	entries = entries+"<li><a href='schoolpage/school/"+this.options.schools[i].id+"' target='_blank'>"+this.options.schools[i].properties['name']+"</a></li>";
+        }
+        entries = entries+"</ul>";
+        container.innerHTML =button+entries;
+        return container;
+	}
+
+});
+
 map.on('draw:circle-created', function (e) {
 	alerter = new alerts({radius: e.circ.getRadius()});
 	map.addControl(alerter);
@@ -339,6 +364,8 @@ map.on('draw:circle-created', function (e) {
 	bbox = e.circ.getBounds().toBBoxString()
 	$.getJSON('/schools?bounds='+bbox, function(data) {
 		boundedSchools = JSON.parse(data);
+		schoolsList = new selectedSchools({schools: boundedSchools.features});
+		map.addControl(schoolsList);
 		bounds_layer = L.geoJson(boundedSchools, {pointToLayer: function(feature, latlng){
 		return L.marker(latlng, {icon: schoolIcon});}, onEachFeature: onEachSchool});
 		bounds_layer.addTo(map);

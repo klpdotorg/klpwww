@@ -297,6 +297,10 @@ var stopDrawing = L.Control.extend({
 		map.removeControl(stopDrawingControl);
 		map.addControl(drawControl);
 		map.addLayer(current_layers);
+		if (schoolsListFlag == 1) {
+			map.removeControl(schoolsList);
+			schoolsListFlag = 0;
+		}
 	}
 });
 
@@ -360,6 +364,8 @@ var selectedSchools = L.Control.extend({
 
 });
 
+var schoolsListFlag = 0;
+
 map.on('draw:circle-created', function (e) {
 	map.removeControl(stopDrawingControl);
 	map.addControl(drawControl);
@@ -376,26 +382,26 @@ map.on('draw:circle-created', function (e) {
 			map.addControl(alerter);
 			boundedSchools = JSON.parse(data['schools'][0]);
 			boundedPreschools = JSON.parse(data['preschools'][0]);
-			try {
-				map.removeControl(schoolsList);
-			}
-			finally {
 
-				schoolsList = new selectedSchools({schools: boundedSchools.features, preschools: boundedPreschools.features});
-				map.addControl(schoolsList);
-				boundedSchools_layer = L.geoJson(boundedSchools, {pointToLayer: function(feature, latlng){
-					return L.marker(latlng, {icon: schoolIcon});}, onEachFeature: onEachSchool});
-				boundedPreschools_layer = L.geoJson(boundedPreschools, {pointToLayer: function(feature, latlng){
-					return L.marker(latlng, {icon: preschoolIcon});}, onEachFeature: onEachSchool});			
-				boundedSchools_layer.addTo(map);
-				boundedPreschools_layer.addTo(map);
-				$('.schools').mouseover(function(){map.dragging.disable(); map.scrollWheelZoom.disable();});
-				$('.schools').mouseout(function(){map.dragging.enable(); map.scrollWheelZoom.enable();});
-				map.setView(e.circ.getLatLng(), 14, true);
+			if (schoolsListFlag == 1) {
+				map.removeControl(schoolsList);
+				schoolsListFlag = 0;
 			}
+			schoolsList = new selectedSchools({schools: boundedSchools.features, preschools: boundedPreschools.features});
+			map.addControl(schoolsList);
+			schoolsListFlag = 1;
+			boundedSchools_layer = L.geoJson(boundedSchools, {pointToLayer: function(feature, latlng){
+				return L.marker(latlng, {icon: schoolIcon});}, onEachFeature: onEachSchool});
+			boundedPreschools_layer = L.geoJson(boundedPreschools, {pointToLayer: function(feature, latlng){
+				return L.marker(latlng, {icon: preschoolIcon});}, onEachFeature: onEachSchool});			
+			boundedSchools_layer.addTo(map);
+			boundedPreschools_layer.addTo(map);
+			$('.schools').mouseover(function(){map.dragging.disable(); map.scrollWheelZoom.disable();});
+			$('.schools').mouseout(function(){map.dragging.enable(); map.scrollWheelZoom.enable();});
+			map.setView(e.circ.getLatLng(), 14, true);
 		}
 	});
-	setTimeout(function (){map.removeControl(alerter)}, 3000);
+	setTimeout(function (){map.removeControl(alerter)}, 10000);
 });
 
 

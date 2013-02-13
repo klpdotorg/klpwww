@@ -1,6 +1,7 @@
 var district, block, cluster, circle, project, school, preschool, preschooldist;
 var school_layer, district_layer, block_layer, cluster_layer, circle_layer, project_layer;
 var preschool_layer, preschooldist_layer, boundedSchools_layer, boundedPreschools_layer;
+var schoolsList;
 var school_cluster = new L.MarkerClusterGroup({showCoverageOnHover: false, 
 	iconCreateFunction: function(cluster) {
 		return new L.DivIcon({ className:'marker-cluster marker-cluster-school', style:'style="margin-left: -20px; margin-top: -20px; width: 40px; height: 40px; transform: translate(293px, 363px); z-index: 363;"', html: "<div><span>" + cluster.getChildCount() + "</span></div>" });
@@ -335,7 +336,8 @@ var selectedSchools = L.Control.extend({
 
 	options: {
 		position: 'topleft',
-		schools: []
+		schools: [],
+		preschools: []
 	},
 	
 	initialize: function(options) {
@@ -345,12 +347,14 @@ var selectedSchools = L.Control.extend({
 	onAdd: function (map) {
 		var container = L.DomUtil.create('div', 'btn-group');
 		button = "<p class='btn btn-success dropdown-toggle' data-toggle='dropdown'>Schools<span class='caret'></span></p><ul class='dropdown-menu schools'>";
-		var entries= "";
+		var schoolsEntries= ""; var preschoolsEntries = "";
 		for (i=0; i<this.options.schools.length; i++) {
-			entries = entries+"<li><a href='schoolpage/school/"+this.options.schools[i].id+" ' target='_blank'>"+this.options.schools[i].properties['name']+"</a></li>";
+			schoolsEntries = schoolsEntries+"<li><a href='schoolpage/school/"+this.options.schools[i].id+" ' target='_blank'>"+this.options.schools[i].properties['name']+"</a></li>";
 		}
-		entries = entries+"</ul>";
-		container.innerHTML =button+entries;
+		for (i=0; i<this.options.preschools.length; i++) {
+			preschoolsEntries = preschoolsEntries+"<li><a href='schoolpage/school/"+this.options.preschools[i].id+" ' target='_blank'>"+this.options.preschools[i].properties['name']+"</a></li>";
+		}
+		container.innerHTML =button+schoolsEntries+"<li class='divider'></li>"+preschoolsEntries+"</ul>";
 		return container;
 	}
 
@@ -376,7 +380,8 @@ map.on('draw:circle-created', function (e) {
 				map.removeControl(schoolsList);
 			}
 			finally {
-				schoolsList = new selectedSchools({schools: boundedSchools.features});
+
+				schoolsList = new selectedSchools({schools: boundedSchools.features, preschools: boundedPreschools.features});
 				map.addControl(schoolsList);
 				boundedSchools_layer = L.geoJson(boundedSchools, {pointToLayer: function(feature, latlng){
 					return L.marker(latlng, {icon: schoolIcon});}, onEachFeature: onEachSchool});

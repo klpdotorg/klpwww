@@ -32,7 +32,7 @@ subDomains = ['otile1','otile2','otile3','otile4'];
 var mapquest = new L.TileLayer(mapquestUrl, {maxZoom: 18, subdomains: subDomains});
 mapquest.addTo(map);
 
-zoom = new L.Control.Zoom({position:'bottomright'});
+zoom = new L.Control.Zoom({position:'topleft'});
 
 
 $.getJSON('/schoolsinfo/', function(data) {
@@ -104,7 +104,7 @@ var preschoolIcon = L.icon({
 
 
 var drawControl = new L.Control.Draw({
-    position: 'bottomleft',
+    position: 'topright',
     polyline: false,
     marker: false,
     polygon: false,
@@ -170,6 +170,7 @@ function setup_layers() {
 	project_layer = L.geoJson(project, {pointToLayer: function(feature, latlng){
 		return L.marker(latlng, {icon: projectIcon});}, onEachFeature: onEachFeature});
 
+	rteCircles();
 
 	overlays = {
 		"<img src='/images/icons/school.png' height='25px' /> Schools": school_cluster,
@@ -178,7 +179,9 @@ function setup_layers() {
 		"<img src='/images/icons/block.png' height='25px' /> Blocks": block_layer,
 		"<img src='/images/icons/cluster.png' height='25px' /> Clusters": cluster_layer,
 		"<img src='/images/icons/project.png' height='25px' /> Projects": project_layer,
-		"<img src='/images/icons/circle.png' height='25px' /> Circles": circle_layer
+		"<img src='/images/icons/circle.png' height='25px' /> Circles": circle_layer,
+		"Schools RTE 2KM": rteSchools,
+		"Preschools RTE 1KM": rtePreschools,
 	};
 
 	L.control.layers(null, overlays, {position:'bottomright', collapsed:false}).addTo(map);
@@ -190,7 +193,7 @@ function setup_layers() {
 		.setPrefix("")
 		.addTo(map);
 
-new L.Control.GeoSearch({position: 'bottomleft',
+new L.Control.GeoSearch({position: 'topright',
     provider: new L.GeoSearch.Provider.Google({
     	region: region
     }), zoomLevel: 15, country: 'India', searchLabel: 'Search for a neighborhood...'
@@ -275,7 +278,7 @@ function circlePopup() {
 
 var stopDrawing = L.Control.extend({
     options: {
-        position: 'bottomleft'
+        position: 'topright'
     },
 
     onAdd: function (map) {
@@ -346,3 +349,15 @@ map.on('draw:circle-created', function (e) {
 
 
 $('.alert').alert();
+rteSchools  = new L.LayerGroup();
+rtePreschools = new L.LayerGroup();
+
+function rteCircles() {
+	school_cluster.eachLayer(function(layer) {
+		circle = L.circle(layer.getLatLng(), 2000, {stroke: false, fill:true, fillColor: "red", fillOpacity: "0.1"}).addTo(rteSchools);
+	});
+
+	preschool_cluster.eachLayer(function(layer) {
+		circle = L.circle(layer.getLatLng(), 1000, {stroke: false, fill:true, fillColor: "green", fillOpacity: "0.1"}).addTo(rtePreschools);
+	})
+}

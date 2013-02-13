@@ -6,10 +6,6 @@ body {
     height: 100%;
 }
 
-.leaflet-top {
-    margin-top: 70px;
-}
-
 .leaflet-center{
     width: 350px;
 }

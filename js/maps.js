@@ -350,7 +350,7 @@ var selectedSchools = L.Control.extend({
 
 	onAdd: function (map) {
 		var container = L.DomUtil.create('div', 'btn-group');
-		button = "<p class='btn btn-success dropdown-toggle' data-toggle='dropdown'>Schools<span class='caret'></span></p><ul class='dropdown-menu schools'>";
+		button = "<p class='btn btn-success dropdown-toggle' data-toggle='dropdown'>Institutions<span class='caret'></span></p><ul class='dropdown-menu schools'>";
 		var schoolsEntries= ""; var preschoolsEntries = "";
 		for (i=0; i<this.options.schools.length; i++) {
 			schoolsEntries = schoolsEntries+"<li><a href='schoolpage/school/"+this.options.schools[i].id+" ' target='_blank'>"+this.options.schools[i].properties['name']+"</a></li>";
@@ -401,7 +401,7 @@ map.on('draw:circle-created', function (e) {
 			map.setView(e.circ.getLatLng(), 14, true);
 		}
 	});
-	setTimeout(function (){map.removeControl(alerter)}, 10000);
+	setTimeout(function (){map.removeControl(alerter)}, 30000);
 });
 
 

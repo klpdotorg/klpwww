@@ -38,5 +38,5 @@ function getSysInfo()
  
 function populateSys(info)
 {
-  document.getElementById("sysinfo").innerHTML = "Share your stories of visits to schools... We are counting <a href=\"/visualization\" target=\"_blank\"> <img src='/images/sys_icon.png'/><span style='color:white;font-weight:bold'> " + info["numstories"] + "</span> shared experiences  <img src='/images/cam_icon.png'/><span style='color:white;font-weight:bold'> " + info["numimages"] + "</span> shared images</a> today!"
+  document.getElementById("sysinfo").innerHTML = "Share your stories of visits to schools... We are counting <a href=\"/visualization\" target=\"_blank\"> <img src='/images/sys_icon.png'/><span style='color:white;font-weight:bold'> " + info["numstories"] + "</span> shared experiences  <img src='/images/cam_icon.png'/><span style='color:white;font-weight:bold'> " + info["numimages"] + "</span> shared images</a> as on today!"
 }

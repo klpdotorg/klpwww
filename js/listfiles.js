@@ -34,40 +34,58 @@ function listFiles(fileList)
     var mlatable = document.getElementById('mla_files');
     var fileNames = fileList["mpnames"].sort();
     var reporttypes = fileList["reptype"];
-    tableHTML = "<div class='div-table'>" + "<div class='div-table-caption'>List of" + " Reports</div>" ;
-    tableHTML = tableHTML + "<div class='div-table-row'><div class='div-table-col'><span style='text-align:center;color:#43AD2F;font-weight:bold'>CONSTITUENCY</span></div>";
+    tableHTML = "<div class='div-table'>" + "<div class='div-table-caption'>List of Reports</div>" ;
+    tableHTML = tableHTML + "<div class='div-table-row'><div class='div-table-col'>"
+			  + "<span style='text-align:center;color:#43AD2F;font-weight:bold'>CONSTITUENCY</span></div>";
+
     for( eachtype in reporttypes) {
-      tableHTML = tableHTML + "<div class='div-table-col'><span style='color:#43AD2F;font-weight:bold'>" + reporttypes[eachtype].toUpperCase() + "</span></div>";
+      tableHTML = tableHTML + "<div class='div-table-col'><span style='color:#43AD2F;font-weight:bold'>" 
+                            + reporttypes[eachtype].toUpperCase() + "</span></div>";
     }
+
     tableHTML = tableHTML + "</div>";
+
     for( each in fileNames) {
           tableHTML = tableHTML + "<div class='div-table-row'>" + "<div class='div-table-col'>" + fileNames[each] + "</div>";
           for( eachtype in reporttypes) {
-            tableHTML = tableHTML + "<div class='div-table-col'>" + "<a target='_blank' href='" + fileList["directory"] + "/" + reporttypes[eachtype] +  fileList["subdir1"] + "/" + fileNames[each] + "'/>" + "Kannada</a>&nbsp;&nbsp;";
-            tableHTML = tableHTML + "<a target='_blank' href='" + fileList["directory"] + "/" + reporttypes[eachtype] + fileList["subdir2"] + "/" + fileNames[each] + "'/>" + "English</a></div>" ;
+            tableHTML = tableHTML + "<div class='div-table-col'>" + "<a target='_blank' href='" 
+                                  + fileList["directory"] + "/" + reporttypes[eachtype] 
+                                  + fileList["subdir1"] + "/" + fileNames[each] + "'/>" + "Kannada</a>&nbsp;&nbsp;";
+            tableHTML = tableHTML + "<a target='_blank' href='" + fileList["directory"] + "/" + reporttypes[eachtype] 
+                                  + fileList["subdir2"] + "/" + fileNames[each] + "'/>" + "English</a></div>" ;
           }
           tableHTML = tableHTML + "</div>";
     }
-    mptable.innerHTML = tableHTML + '</div></div>';
-    tableHTML = "<div class='div-table'>" ;
+
+    
     if (type ==1 ) {
+      mptable.innerHTML = tableHTML + '</div></div>';
+      tableHTML = "<div class='div-table'>" ;
       tableHTML = tableHTML + "<div class='div-table-caption'>List of Reports</div>" ;
+      tableHTML = tableHTML + "<div class='div-table-row'><div class='div-table-col'>"
+                            + "<span style='color:#43AD2F;font-weight:bold'>CONSTITUENCY</span></div>";
+   
+      for( eachtype in reporttypes) {
+        tableHTML = tableHTML + "<div class='div-table-col'><span style='color:#43AD2F;font-weight:bold'>" 
+                            + reporttypes[eachtype].toUpperCase() + "</span></div>";
+      }
+      tableHTML = tableHTML + "</div>";
     }
-    tableHTML = tableHTML + "<div class='div-table-row'><div class='div-table-col'><span style='color:#43AD2F;font-weight:bold'>CONSTITUENCY</span></div>";
-    for( eachtype in reporttypes) {
-      tableHTML = tableHTML + "<div class='div-table-col'><span style='color:#43AD2F;font-weight:bold'>" + reporttypes[eachtype].toUpperCase() + "</span></div>";
-    }
-    tableHTML = tableHTML + "</div>";
     fileNames = fileList["mlanames"].sort();
+
     for( each in fileNames) {
         tableHTML = tableHTML + "<div class='div-table-row'>" + "<div class='div-table-col'>" + fileNames[each] + "</div>";
         for( eachtype in reporttypes) {
-            tableHTML = tableHTML + "<div class='div-table-col'>" + "<a target='_blank' href='" + fileList["directory"] + "/" + reporttypes[eachtype] +  fileList["subdir1"] + "/" + fileNames[each] + "'/>" + "Kannada</a>&nbsp;&nbsp;";
-            tableHTML = tableHTML + "<a target='_blank' href='" + fileList["directory"] + "/" + reporttypes[eachtype] + fileList["subdir2"] + "/" + fileNames[each] + "'/>" + "English</a></div>" ;
+            tableHTML = tableHTML + "<div class='div-table-col'>" + "<a target='_blank' href='" 
+                                  + fileList["directory"] + "/" + reporttypes[eachtype] 
+                                  +  fileList["subdir1"] + "/" + fileNames[each] + "'/>" + "Kannada</a>&nbsp;&nbsp;";
+            tableHTML = tableHTML + "<a target='_blank' href='" + fileList["directory"] + "/" + reporttypes[eachtype] 
+                                  + fileList["subdir2"] + "/" + fileNames[each] + "'/>" + "English</a></div>" ;
         }
         tableHTML = tableHTML + "</div>";
     }
     mlatable.innerHTML = tableHTML + "</div></div>"
+
   } else if (type == 2) {
       document.getElementById('raw_files').style.display = "block";
       document.getElementById('license').style.display = "block";

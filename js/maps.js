@@ -418,3 +418,25 @@ function rteCircles() {
 		circle = L.circle(layer.getLatLng(), 1000, {stroke: false, fill:true, fillColor: "green", fillOpacity: "0.1"}).addTo(rtePreschools);
 	})
 }
+
+
+function fill_dropdown(data,type){
+	var dist=document.getElementById(type);
+	var count=1;
+	document.getElementById(type).length=1;
+	for(var i=0;i<data.length;i++){
+		dist.options[count]=new Option(data[i].name,data[i].id);
+		count=count+1;
+	}
+}
+
+
+function change_focus(parentType,childType){
+
+	var type=document.getElementById(parentType);
+	$.getJSON('/boundaryPoints/'+parentType+'/'+type.value, function(data) {
+	fill_dropdown(data,childType);
+	
+});
+	
+}

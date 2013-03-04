@@ -145,8 +145,10 @@ function enrollment(pid,programme)
   }
   tablecontent=tablecontent+"</table>";
   document.getElementById("numchild").innerHTML=tablecontent;
-
-  document.getElementById("programinfo").innerHTML=programinfo[pid];
+  if(pid in programinfo)
+  {
+    document.getElementById("programinfo").innerHTML=programinfo[pid];
+  }
 }
 
 /*Shows the baseline general and when clicked by mt and gender*/

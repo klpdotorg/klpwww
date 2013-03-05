@@ -145,8 +145,10 @@ function enrollment(pid,programme)
   }
   tablecontent=tablecontent+"</table>";
   document.getElementById("numchild").innerHTML=tablecontent;
-
-  document.getElementById("programinfo").innerHTML=programinfo[pid];
+  if(pid in programinfo)
+  {
+    document.getElementById("programinfo").innerHTML=programinfo[pid];
+  }
 }
 
 /*Shows the baseline general and when clicked by mt and gender*/
@@ -627,10 +629,17 @@ function analytics(programme)
             if(text=="order")
               continue;
             var rowdata=[];
+            var domainindex=0;
             if(domain != '')
+            {
               rowdata.push(domain+"("+text+")");
+              domainindex=info["analytics"][classname][starttime][test][domain]["order"]*info["base"]["classes"][classname]["assesstext"].length;
+            }
             else
+            {
               rowdata.push(text);
+              domainindex=0;
+            }
             for(bcount in info["base"]["analytics"])
             {
               type=info["base"]["analytics"][bcount]["type"];
@@ -639,7 +648,7 @@ function analytics(programme)
               else
                 rowdata.push(0);
             }
-            index=info["analytics"][classname][starttime][test][domain]["order"]*info["base"]["classes"][classname]["assesstext"].length+info["analytics"][classname][starttime][test][domain][text]["order"];
+            index=domainindex+info["analytics"][classname][starttime][test][domain][text]["order"];
             graphdata[index]=rowdata;
           }
         }       

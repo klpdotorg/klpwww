@@ -22,7 +22,7 @@
         
 	float:right;
 	border-top:solid 1px #43AD2F;
-	border-bottom:solid 3px #43AD2F;
+	border-bottom:solid 0px #43AD2F;
   height:208px;
   
 }
@@ -99,8 +99,8 @@
 .slideshow img {
     background: none repeat scroll 0 0 #43AD2F;
     /*border: 1px solid #43AD2F;
-    border-radius: 10px 10px 10px 10px;*/
-    padding: 1px;
+    border-radius: 10px 10px 10px 10px;
+    padding: 1px;*/
 }
 .yui3-slideshow-content {
     position: relative;

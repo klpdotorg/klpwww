@@ -200,8 +200,8 @@ function setup_layers() {
 		}), zoomLevel: 15, country: 'India', searchLabel: 'Search for a neighborhood...'
 	}).addTo(map);
 
-	map.addControl(drawControl);
 	map.addControl(filter);
+	map.addControl(drawControl);
 
 }
 

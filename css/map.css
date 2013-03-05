@@ -48,13 +48,47 @@ hr { display: block; height: 1px; border: 0; border-top: 1px solid #000; margin:
 #top_panel a:visited{color: white;}
 #top_panel a:hover {color: white;}
 
+.modal-body{
+    height: 150px;
+    max-height: 300px;
+}
 
+.modal-body hr {
+    display: block; 
+    height: 1px; 
+    border: 0; 
+    border-top: 1px solid #ddd; 
+    margin: 1em 0; 
+    padding: 0;
+}
 
-
+.select2-container {
+    width: 200px;
+}
 .stop-drawing {
     background-image: url("../images/icons/stop.png");
     cursor: pointer;
 }	
+
+.filter-control {
+    background-image: url("../images/icons/filter.png");
+    background-repeat: no-repeat;
+    background-position: 46% 46%;
+    border: 1px solid #888888;
+    border-radius: 5px 5px 5px 5px;
+    box-shadow: 0 0 8px rgba(0, 0, 0, 0.4);
+}
+
+.filter-control a {
+
+    background-color: rgba(255, 255, 255, 0.5);
+    border-radius: 4px;
+    display: block;
+    height: 39px;
+    width: 47px;
+
+}
+
 
 .leaflet-control-draw a {
     background-position: 20% 50% !important;
@@ -76,27 +110,27 @@ hr { display: block; height: 1px; border: 0; border-top: 1px solid #000; margin:
 }
 
 #map top_panel{
-	color: white;
-	font-family: "Arial", Sans-serif;
-	font-style: normal;
-	font-weight: bold;
-	font-size:  1em;
+    color: white;
+    font-family: "Arial", Sans-serif;
+    font-style: normal;
+    font-weight: bold;
+    font-size:  1em;
 }
 
 .marker-cluster-school  {
     background-color: rgba(31, 160, 156, 0.6);
-    }
+}
 
 .marker-cluster-school div {
     background-color: rgba(31, 160, 156, 0.6);
-    }
+}
 
 .marker-cluster-preschool {
     background-color: rgba(93, 83, 108, 0.6);
-    }
+}
 .marker-cluster-preschool div {
     background-color: rgba(93, 83, 108, 0.6);
-    }
+}
 
 .marker-cluster {
     background-clip: padding-box;
@@ -105,8 +139,8 @@ hr { display: block; height: 1px; border: 0; border-top: 1px solid #000; margin:
     margin-top: -20px !important; 
     width: 40px !important; 
     height: 40px !important;
-    }
-    
+}
+
 .marker-cluster div {
     width: 30px;
     height: 30px;
@@ -116,77 +150,14 @@ hr { display: block; height: 1px; border: 0; border-top: 1px solid #000; margin:
     text-align: center;
     border-radius: 15px;
     font: 12px "Helvetica Neue", Arial, Helvetica, sans-serif;
-    }
+}
 
 .marker-cluster span {
     line-height: 30px;
-    }
+}
 
 ol, ul {
     list-style: none outside none;
-}
-
-#legend {
-    background-image: url("../images/trans_green_tile.png");
-    background-repeat: repeat;
-    font-family: Arial,Helvetica,sans-serif;
-    font-size: 13px;
-    height: 55px;
-    padding-top:10px;
-    padding-left:30%;
-}
-
-#legend ul li {
-    /*background-image: url("../images/trans_green_tile.png");
-    background-repeat: repeat;*/
-    display: inline;
-    float: left;
-    height: 55px;
-    list-style: none outside none;
-}
-#legend img {
-    height: 60%;
-    vertical-align:bottom;
-    padding-left: 5px;
-    padding-right: 5px;
-    border:  none;
-}
-#togglebtn {
-    top:33px;
-    z-index: 15;
-    padding-left: 10px;
-    padding-right: 10px;
-    padding-top: 10px;
-    position: absolute;
-    text-align: right;
-}
-
-#panel {
-    left: 57%;
-    position: absolute;
-    top: 77px;
-    z-index: 15;
-    color: white;
-    padding-left: 10px;
-    padding-right: 10px;
-    padding-top: 10px;
-    background-color: black;
-    opacity: 0.75;
-    height: 65px;
-}
-
-#moreoptions {
-    background-color: black;
-    color: white;
-    height: 170px;
-    opacity: 1;
-    padding-left: 10px;
-    padding-right: 10px;
-    padding-top: 20px;
-    margin-left: -10px;
-    margin-right: -10px;
-    /*margin-top:20px;*/
-    z-index: 99;
 }
 
 #circleinfo {
@@ -218,52 +189,4 @@ ol, ul {
     background-image: url("../images/search.png");
     background-repeat: no-repeat;
     opacity: 1;
-    /*width: 30%;*/
-}
-
-a.button {
-    /* Sliding right image */
-    background: transparent url('../images/button_right.png') no-repeat scroll top right; 
-    display: block;
-    /*float: right;*/
-    height: 32px; /* CHANGE THIS VALUE ACCORDING TO IMAGE HEIGHT */
-    padding-right: 10px; /* CHENGE THIS VALUE ACCORDING TO RIGHT IMAGE WIDTH 20px */
-    /* FONT PROPERTIES */
-    text-decoration: none;
-    color: #000000;
-    font-family: Arial, Helvetica, sans-serif;
-    font-size:12px;
-    font-weight:bold;
-}
-a.button span {
-    /* Background left image */ 
-    background: transparent url('../images/button_left.png') no-repeat; 
-    display: block;
-    line-height: 22px; /* CHANGE THIS VALUE ACCORDING TO BUTTONG HEIGHT */
-    padding: 7px 0 5px 10px; /*18px*/
-} 
-a.button:hover span{
-    text-decoration:underline;
-}
-dl {
-    overflow: hidden;
-    width: 100%;
-    padding: 0;
-    margin: 0;
-}
-dt {
-    float: left;
-    width: 35%;
-    margin: 0;
-    padding-top: 5px;
-}
-dd {
-    float: left;
-    width: 50%;
-    padding-top: 5px;
-    margin: 0;
-}
-
-.putitle {
-  font-color: green;
 }

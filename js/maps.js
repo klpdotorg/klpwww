@@ -1,3 +1,4 @@
+var school, preschool;
 var district, block, cluster, circle, project, school, preschool, preschooldist;
 var school_layer, district_layer, block_layer, cluster_layer, circle_layer, project_layer;
 var preschool_layer, preschooldist_layer, boundedSchools_layer, boundedPreschools_layer;
@@ -35,14 +36,13 @@ mapquest.addTo(map);
 
 zoom = new L.Control.Zoom({position:'topleft'});
 
-
 $.getJSON('/schoolsinfo/', function(data) {
 
 	school = JSON.parse(data['school'][0]);
 	preschool = JSON.parse(data['preschool'][0]);
 	preschooldist = JSON.parse(data['preschooldistrict'][0]);
 	initialize();
-	
+
 })
 
 map.addLayer(current_layers);
@@ -137,7 +137,7 @@ function initialize () {
 
 	school_layer = L.geoJson(school, {pointToLayer: function(feature, latlng){
 		return L.marker(latlng, {icon: schoolIcon});}, onEachFeature: onEachSchool});
-	
+
 	school_layer.addTo(school_cluster);
 
 	current_layers.addLayer(school_cluster);
@@ -161,13 +161,13 @@ function setup_layers() {
 
 	block_layer = L.geoJson(block, {pointToLayer: function(feature, latlng){
 		return L.marker(latlng, {icon: blockIcon});}, onEachFeature: onEachFeature});
-	
+
 	cluster_layer = L.geoJson(cluster, {pointToLayer: function(feature, latlng){
 		return L.marker(latlng, {icon: clusterIcon});}, onEachFeature: onEachFeature});
-	
+
 	circle_layer = L.geoJson(circle, {pointToLayer: function(feature, latlng){
 		return L.marker(latlng, {icon: circleIcon});}, onEachFeature: onEachCircle});
-	
+
 	project_layer = L.geoJson(project, {pointToLayer: function(feature, latlng){
 		return L.marker(latlng, {icon: projectIcon});}, onEachFeature: onEachFeature});
 
@@ -188,7 +188,7 @@ function setup_layers() {
 	L.control.layers(null, overlays, {position:'bottomright', collapsed:false}).addTo(map);
 
 	zoom.addTo(map);
-	
+
 	L.control.attribution({position: 'bottomleft'})
 	.addAttribution("&copy; <a href='http://osm.org/copyright'>OpenStreetMap</a>")
 	.setPrefix("")
@@ -201,6 +201,7 @@ function setup_layers() {
 	}).addTo(map);
 
 	map.addControl(drawControl);
+	map.addControl(filter);
 
 }
 
@@ -257,11 +258,9 @@ function onEachCircle(feature, layer) {
 function schoolPopup () {
 	marker = this;
 	$.getJSON('/info/school/'+marker.feature.id, function(data) {
-
 		popupContent = "<b><a href='schoolpage/school/"+marker.feature.id+"' target='_blank'>"+marker.feature.properties.name+"</a></b>"+"<hr> Boys: "+
 		String(data['numBoys'])+" | Girls: "+String(data['numGirls'])+" | Total: <b>"+String(data['numStudents'])+"</b><br />Stories: "+String(data['numStories'])+
 		" &rarr; <i><a href='shareyourstoryschool?type=school?id="+marker.feature.id+"' target='_blank'>Share your story!</a></i>";
-		
 		marker.bindPopup(popupContent).openPopup();
 	});
 }
@@ -269,10 +268,8 @@ function schoolPopup () {
 function circlePopup() {
 	marker = this;
 	$.getJSON('/info/circle/'+marker.feature.id, function(data) {
-
 		popupContent = "<b>"+marker.feature.properties.name+"</a></b>"+"<hr> Boys: "+
 		String(data['numBoys'])+" | Girls: "+String(data['numGirls'])+" | Total: <b>"+String(data['numStudents'])+"</b><br />Schools: "+String(data['numSchools']);
-		
 		marker.bindPopup(popupContent).openPopup();
 	});	
 }
@@ -343,7 +340,7 @@ var selectedSchools = L.Control.extend({
 		schools: [],
 		preschools: []
 	},
-	
+
 	initialize: function(options) {
 		L.Util.setOptions(this, options)
 	},
@@ -401,7 +398,7 @@ map.on('draw:circle-created', function (e) {
 			map.setView(e.circ.getLatLng(), 14, true);
 		}
 	});
-	setTimeout(function (){map.removeControl(alerter)}, 30000);
+setTimeout(function (){map.removeControl(alerter)}, 30000);
 });
 
 
@@ -435,8 +432,129 @@ function change_focus(parentType,childType){
 
 	var type=document.getElementById(parentType);
 	$.getJSON('/boundaryPoints/'+parentType+'/'+type.value, function(data) {
-	fill_dropdown(data,childType);
-	
-});
-	
+		fill_dropdown(data,childType);
+
+	});
+
 }
+
+var filterMap = L.Control.extend({
+	options: {
+		position: 'topright'
+	},
+
+	onAdd: function (map) {
+		var container = L.DomUtil.create('div', 'leaflet-control filter-control');
+		container.title = "Filter Schools";
+		button = "<a href='#filterModal' role='button' data-toggle='modal'></a>";
+		container.innerHTML = button;
+		return container;
+	},
+
+	clicked: function openFilters() {
+	}
+});
+
+var filter = new filterMap();
+
+
+$("#selection").select2({
+	placeholder: "Select the type of School",
+	allowClear: true,
+});
+
+$("#district").select2({
+	placeholder: "Select a District",
+	allowClear: true,
+	disabled: true
+});
+
+
+$("#block").select2({
+	placeholder: "Select a Block",
+	allowClear: true
+});
+
+$("#cluster").select2({
+	placeholder: "Select a Cluster",
+	allowClear: true
+});
+
+$("#school").select2({
+	placeholder: "Select a School",
+	allowClear: true
+});
+
+$("#preschooldistrict").select2({
+	placeholder: "Select a District",
+	allowClear: true
+});
+
+$("#project").select2({
+	placeholder: "Select a Project",
+	allowClear: true
+});
+
+$("#circle").select2({
+	placeholder: "Select a Circle",
+	allowClear: true
+});
+
+$("#preschool").select2({
+	placeholder: "Select a Preschool",
+	allowClear: true
+});
+
+$("#district, #block, #cluster, #school, #preschooldist, #project, #circle, #preschool").select2("disable");
+
+$("#selection").on("change", function(e) {
+	if (e.val == 'school') {
+		$('#schooldiv').removeClass('hide');
+		$('#preschooldiv').addClass('hide');
+		$('#district').select2('enable');
+	};
+
+	if (e.val == 'preschool') {
+		$('#preschooldiv').removeClass('hide');
+		$('#schooldiv').addClass('hide');
+		$('#preschooldistrict').select2('enable');
+	};
+});
+
+$("#district").on("change", function(e) {$('#block').select2('enable');});
+$("#block").on("change", function(e) {$('#cluster').select2('enable');});
+$("#cluster").on("change", function(e) {$('#school').select2('enable');});
+$("#preschooldistrict").on("change", function(e) {$('#project').select2('enable');});
+$("#project").on("change", function(e) {$('#circle').select2('enable');});
+$("#circle").on("change", function(e) {$('#preschool').select2('enable');});
+
+$("#school").on("change", function(e) {
+	applyFilter(e, school, schoolIcon);
+});
+
+
+function filterSchool(id) {
+	return (function(d) {return (d.id == id);});
+}
+
+$("#preschool").on("change", function(e) {
+	applyFilter(e, preschool, preschoolIcon)
+
+})
+
+function applyFilter(e, array, icon) {
+	filteredSchool = array.features.filter(filterSchool(e.val));
+	coordinates = [filteredSchool[0].geometry.coordinates[1], filteredSchool[0].geometry.coordinates[0]];
+	map.removeLayer(current_layers);
+	map.setView(L.latLng(coordinates), 15);
+	filteredSchoolMarker = L.marker(coordinates, {icon: icon});
+	$.getJSON('/info/school/'+filteredSchool[0].id, function(data) {
+		popupContent = "<b><a href='schoolpage/school/"+filteredSchool[0].id+"' target='_blank'>"+filteredSchool[0].properties.name+"</a></b>"+"<hr> Boys: "+
+		String(data['numBoys'])+" | Girls: "+String(data['numGirls'])+" | Total: <b>"+String(data['numStudents'])+"</b><br />Stories: "+String(data['numStories'])+
+		" &rarr; <i><a href='shareyourstoryschool?type=school?id="+filteredSchool[0].id+"' target='_blank'>Share your story!</a></i>";
+		filteredSchoolMarker.bindPopup(popupContent).openPopup();
+	});
+
+	filteredSchoolMarker.addTo(map);
+	$('#filterModal').modal('hide');	
+};

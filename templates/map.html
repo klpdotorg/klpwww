@@ -1,12 +1,12 @@
 <html>
 <head>
 	<title>The Karnataka Learning Partnership: Map</title>
-	
+
 	<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.0/jquery.min.js"></script>
 	<link rel="stylesheet" type="text/css" href="/js/libs/bootstrap/css/bootstrap.min.css">
 	<link rel="stylesheet" type="text/css" href="/js/libs/bootstrap/css/bootstrap-responsive.min.css">
-	<script type="text/javascript" src="/js/libs/bootstrap/js/bootstrap-dropdown.js"></script>
-	<script type="text/javascript" src="/js/libs/bootstrap/js/bootstrap-alert.js"></script>
+	<script type="text/javascript" src="/js/libs/bootstrap/js/bootstrap.min.js"></script>
+	<script type="text/javascript" src="/js/libs/select/select2.min.js"></script>
 	<link rel="stylesheet" href="js/libs/draw/leaflet.draw.css" />
 	<link rel="stylesheet" href="/js/libs/leaflet/leaflet.css" />
 
@@ -14,7 +14,7 @@
 	<link rel="stylesheet" href="js/libs/search/l.geosearch.css" />
 
 	<link rel="stylesheet" href="/css/map.css" />
-	<link rel="stylesheet" href="/css/grid.css" />
+	<link rel="stylesheet" href="js/libs/select/select2.css" />
 	<script type="text/javascript" src="/js/klp.js"></script>
 	<script type="text/javascript" src="/js/libs/leaflet/leaflet.js"></script>
 
@@ -65,113 +65,125 @@
 		</div>
 	</div>
 
-	<div class="grid_5" id="panel" style="display:block;height:auto;width:auto" align="right">
-    		  
-		 
-      		  
-		  <a class="button" style='float:right;' href="javascript:eToggle('more','moreoptions');" id="toggle1"><span>More...</span></a>
-          	  
-        <div id="moreoptions" style="display: none">
-
-
-	<dl>
- 		<dt>Select Search Type</dt>
- 			<dd><select id="selection" onChange="changeSelection();">
-   			<option value="">Select</option>
-   			<option value="school">Primary School</option>
-   			<option value="preschool">Pre School</option>
- 		</select></dd>
-	</dl>
-
-	<div id="schooldiv">
-	<dl>
- 		<dt>District</dt>
- 			<dd><select id="district" onChange="change_focus('district','block');">
-    			<option value="">Select</option>
-			<option value="414">Bagalkot</option>
-			<option value="8877">Bangalore</option>
-			<option value="433">Bangalore Rural</option>
-			<option value="413">Belgaum</option>
-			<option value="424">Bellary</option>
-			<option value="417">Bidar</option>
-			<option value="415">Bijapur</option>
-			<option value="439">Chamrajnagar</option>
-			<option value="441">Chikballapur</option>
-			<option value="442">Chikkodi</option>
-			<option value="429">Chikmagalur</option>
-			<option value="425">Chitradurga</option>
-			<option value="436">Dakshina Kannada</option>
-			<option value="426">Davangere</option>
-			<option value="421">Dharwad</option>
-			<option value="420">Gadag</option>
-			<option value="416">Gulbarga</option>
-			<option value="435">Hassan</option>
-			<option value="423">Haveri</option>
-			<option value="437">Kodagu</option>
-			<option value="431">Kolar</option>
-			<option value="419">Koppal</option>
-			<option value="443">Madhugiri</option>
-			<option value="434">Mandya</option>
-			<option value="8878">Mysore</option>
-			<option value="418">Raichur</option>
-			<option value="444">Ramnagara</option>
-			<option value="427">Shimoga</option>
-			<option value="430">Tumkur</option>
-			<option value="428">Udupi</option>
-			<option value="422">Uttara Kannada</option>
-			<option value="445">Yadgiri</option>
-
-  		</select></dd>
-  		
-		<dt>Block</dt>
-  			<dd><select id="block" onChange="change_focus('block','cluster');">
-    			<option value="">Select</option>
-  		</select></dd>
-  		
-		<dt>Cluster</dt>
-  			<dd><select style="width:200px" id="cluster" onChange="change_focus('cluster','school');">
-    			<option value="">Select</option>
-  		</select></dd>
-  
-		<dt>School</dt>
-                	<dd><select style="width:200px" id="school">
-    			<option value="">Select</option>
-  		</select></dd>
-	</dl>
-	</div>
-
-	<div id="preschooldiv" style="display: none">
-	<dl>
-  		<dt>District</dt>
-  			<dd><select id="preschooldistrict" onChange="change_focus('preschooldistrict','project');">
-    			<option value="">Select</option>
-			<option value="8773">Bangalore</option>
-  		</select></dd>
-  	
-		<dt>Project</dt>
-  			<dd><select style="width:200px" id="project" onChange="change_focus('project','circle');">
-   			<option value="">Select</option>
-  		</select></dd>
-  
-		<dt>Circle</dt>
-  			<dd><select style="width:200px" id="circle" onChange="change_focus('circle','preschool');">
-   			<option value="">Select</option>
-  		</select></dd>
-  
-		<dt>Pre School</dt>
-  			<dd><select style="width:200px" id="preschool">
-   			<option value="">Select</option>
- 	        </select></dd>
-	</dl>
-	</div>
-  	
-	<a class="button" style='float:right;margin-top:5px;margin-right:420px;' href="javascript:eToggle('less','moreoptions');" id="toggle2"><span>Less...</span></a>
-        <a class="button" style='float:left;margin-top:5px;margin-left:0px;' href="map"><span>Reset Map</span></a>
-
-      	</div>
-    	</div>
-
 	<div id="map"></div>
+
+	<!-- Modal -->
+
+	<div id="filterModal" class="modal hide fade" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+		<div class="modal-header">
+			<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+			<h3 id="myModalLabel">Filter Schools</h3>
+		</div>
+		<div class="modal-body">
+
+			<div class="row-fluid">
+				<select id="selection">
+					<option value=""></option>
+					<option value="school">Primary School</option>
+					<option value="preschool">Preschool</option>
+				</select>
+			</div>
+			<hr>
+
+			<div class="row-fluid hide" id="schooldiv">
+				<div class = "row-fluid">
+					<div class="span6">
+						<select id="district" onChange="change_focus('district','block');">
+							<option value=""></option>
+							<option value="414">Bagalkot</option>
+							<option value="8877">Bangalore</option>
+							<option value="433">Bangalore Rural</option>
+							<option value="413">Belgaum</option>
+							<option value="424">Bellary</option>
+							<option value="417">Bidar</option>
+							<option value="415">Bijapur</option>
+							<option value="439">Chamrajnagar</option>
+							<option value="441">Chikballapur</option>
+							<option value="442">Chikkodi</option>
+							<option value="429">Chikmagalur</option>
+							<option value="425">Chitradurga</option>
+							<option value="436">Dakshina Kannada</option>
+							<option value="426">Davangere</option>
+							<option value="421">Dharwad</option>
+							<option value="420">Gadag</option>
+							<option value="416">Gulbarga</option>
+							<option value="435">Hassan</option>
+							<option value="423">Haveri</option>
+							<option value="437">Kodagu</option>
+							<option value="431">Kolar</option>
+							<option value="419">Koppal</option>
+							<option value="443">Madhugiri</option>
+							<option value="434">Mandya</option>
+							<option value="8878">Mysore</option>
+							<option value="418">Raichur</option>
+							<option value="444">Ramnagara</option>
+							<option value="427">Shimoga</option>
+							<option value="430">Tumkur</option>
+							<option value="428">Udupi</option>
+							<option value="422">Uttara Kannada</option>
+							<option value="445">Yadgiri</option>
+						</select>
+					</div>
+
+					<div class="span6">
+						<select id="block" onChange="change_focus('block','cluster');">
+							<option value=""></option>
+						</select>
+					</div>
+				</div>
+				<hr>
+
+				<div class="row-fluid">
+					<div class="span6">
+						<select style="width:200px" id="cluster" onChange="change_focus('cluster','school');">
+							<option value=""></option>
+						</select>
+					</div>
+
+					<div class="span6">
+						<select style="width:200px" id="school">
+							<option value=""></option>
+						</select>
+					</div>
+				</div>
+			</div>
+
+			<div id="preschooldiv" class="row-fluid hide">
+				<div class="row-fluid">
+					<div class="span6">
+						<select id="preschooldistrict" onChange="change_focus('preschooldistrict','project');">
+							<option value=""></option>
+							<option value="8773">Bangalore</option>
+						</select>
+					</div>
+
+					<div class="span6">
+						<select style="width:200px" id="project" onChange="change_focus('project','circle');">
+							<option value=""></option>
+						</select>
+					</div>
+				</div>
+				<hr>
+				<div class="row-fluid">
+					<div class="span6">
+						<select style="width:200px" id="circle" onChange="change_focus('circle','preschool');">
+							<option value=""></option>
+						</select>
+					</div>
+					<div class="span6">
+						<select style="width:200px" id="preschool">
+							<option value=""></option>
+						</select>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="modal-footer">
+			<button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
+		</div>
+	</div>
+
+	<!-- End of Modal -->
 
 </body>
 <script type="text/javascript" src="js/maps.js"></script>

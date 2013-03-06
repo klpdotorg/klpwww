@@ -408,11 +408,11 @@ rtePreschools = new L.LayerGroup();
 
 function rteCircles() {
 	school_cluster.eachLayer(function(layer) {
-		circle = L.circle(layer.getLatLng(), 2000, {stroke: false, fill:true, fillColor: "red", fillOpacity: "0.1"}).addTo(rteSchools);
+		rte_circle = L.circle(layer.getLatLng(), 2000, {stroke: false, fill:true, fillColor: "red", fillOpacity: "0.1"}).addTo(rteSchools);
 	});
 
 	preschool_cluster.eachLayer(function(layer) {
-		circle = L.circle(layer.getLatLng(), 1000, {stroke: false, fill:true, fillColor: "green", fillOpacity: "0.1"}).addTo(rtePreschools);
+		rte_circle = L.circle(layer.getLatLng(), 1000, {stroke: false, fill:true, fillColor: "green", fillOpacity: "0.1"}).addTo(rtePreschools);
 	})
 }
 
@@ -563,12 +563,17 @@ $("#preschool").on("change", function(e) {
 
 function setFilterView(array, id, zoom) {
 	filteredData = array.features.filter(filterArray(id));
-	coordinates = [filteredData[0].geometry.coordinates[1], filteredData[0].geometry.coordinates[0]];
-	map.setView(L.latLng(coordinates), zoom);
+	if (filteredData[0] == undefined) {
+		console.log("not found");
+	}
+	else  {
+		coordinates = [filteredData[0].geometry.coordinates[1], filteredData[0].geometry.coordinates[0]];
+		map.setView(L.latLng(coordinates), zoom);
+	}
 }
 
 function filterArray(id) {
-	return (function(d) {return (d.id == id);});
+	return (function(d) { return (d.id == id);});
 }
 
 

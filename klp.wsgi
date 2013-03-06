@@ -1403,7 +1403,12 @@ class getBoundaryPoints:
       cursor.execute(statements['get_'+type+'_points'],(id,))
       result = cursor.fetchall()
       for row in result:
-        data={"id":row[0],"name":row[1].capitalize()}
+        if type == 'cluster':
+          parts = row[1].split()
+          name = parts[0].upper()+' '+parts[1].capitalize()
+          data={"id":row[0],"name":name}
+        else:
+          data={"id":row[0],"name":row[1].capitalize()}
         boundaryInfo.append(data)
       cursor.close()
       DbManager.getMainCon().commit()

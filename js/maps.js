@@ -521,29 +521,59 @@ $("#selection").on("change", function(e) {
 	};
 });
 
-$("#district").on("change", function(e) {$('#block').select2('enable');});
-$("#block").on("change", function(e) {$('#cluster').select2('enable');});
-$("#cluster").on("change", function(e) {$('#school').select2('enable');});
-$("#preschooldistrict").on("change", function(e) {$('#project').select2('enable');});
-$("#project").on("change", function(e) {$('#circle').select2('enable');});
-$("#circle").on("change", function(e) {$('#preschool').select2('enable');});
+$("#district").on("change", function(e) {
+	$('#block').select2('enable');
+		setFilterView(district, e.val, 9);
+});
+
+
+$("#block").on("change", function(e) {
+	$('#cluster').select2('enable');
+	setFilterView(block, e.val, 11);
+});
+
+$("#cluster").on("change", function(e) {
+	$('#school').select2('enable');
+	setFilterView(cluster, e.val, 13);
+});
+
+$("#preschooldistrict").on("change", function(e) {
+	$('#project').select2('enable');
+	map.setView(bangalore, 9);
+});
+
+$("#project").on("change", function(e) {
+	$('#circle').select2('enable');
+	setFilterView(project, e.val, 14);
+});
+
+$("#circle").on("change", function(e) {
+	$('#preschool').select2('enable');
+	setFilterView(circle, e.val, 13);
+});
 
 $("#school").on("change", function(e) {
 	applyFilter(e, school, schoolIcon);
 });
-
-
-function filterSchool(id) {
-	return (function(d) {return (d.id == id);});
-}
 
 $("#preschool").on("change", function(e) {
 	applyFilter(e, preschool, preschoolIcon)
 
 })
 
+function setFilterView(array, id, zoom) {
+	filteredData = array.features.filter(filterArray(id));
+	coordinates = [filteredData[0].geometry.coordinates[1], filteredData[0].geometry.coordinates[0]];
+	map.setView(L.latLng(coordinates), zoom);
+}
+
+function filterArray(id) {
+	return (function(d) {return (d.id == id);});
+}
+
+
 function applyFilter(e, array, icon) {
-	filteredSchool = array.features.filter(filterSchool(e.val));
+	filteredSchool = array.features.filter(filterArray(e.val));
 	coordinates = [filteredSchool[0].geometry.coordinates[1], filteredSchool[0].geometry.coordinates[0]];
 	map.removeLayer(current_layers);
 	map.setView(L.latLng(coordinates), 15);

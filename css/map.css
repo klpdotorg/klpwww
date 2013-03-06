@@ -90,18 +90,31 @@ hr { display: block; height: 1px; border: 0; border-top: 1px solid #000; margin:
     display: block;
     height: 39px;
     width: 47px;
-
 }
 
-.leaflet-control-draw a {
-    background-position: 20% 50% !important;
+.filter-control a:hover {
+    background-color: rgba(255, 255, 255, 0);   
+}
+
+.leaflet-control-draw {
+
+    background-color: rgba(255, 255, 255, 0.5);
     background-repeat: no-repeat;
+}
+.leaflet-control-draw a {
+    
+    background-position: 20% 50% !important;
     border-radius: 4px !important;
+    background-color: rgba(255, 255, 255, 0.5);
     display: block;
     height: 39px !important;
     width: 47px !important;
+
 }
 
+.leaflet-control-draw a:hover {
+    background-color: rgba(255, 255, 255, 0);
+}
 .leaflet-control-draw-circle {
     background-image: url("../images/icons/draw.png") !important;
 }

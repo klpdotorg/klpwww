@@ -105,7 +105,7 @@ var preschoolIcon = L.icon({
 
 
 var drawControl = new L.Control.Draw({
-	position: 'topright',
+	position: 'bottomright',
 	polyline: false,
 	marker: false,
 	polygon: false,
@@ -199,7 +199,7 @@ function setup_layers() {
 		}), zoomLevel: 15, country: 'India', searchLabel: 'Search for a neighborhood...'
 	}).addTo(map);
 
-	L.control.layers(null, overlays, {position:'topright', collapsed:false}).addTo(map);
+	L.control.layers(null, overlays, {position:'bottomright', collapsed:false}).addTo(map);
 	map.addControl(filter);
 	map.addControl(drawControl);
 
@@ -276,7 +276,7 @@ function circlePopup() {
 
 var stopDrawing = L.Control.extend({
 	options: {
-		position: 'topright'
+		position: 'bottomright'
 	},
 
 	onAdd: function (map) {
@@ -440,7 +440,7 @@ function change_focus(parentType,childType){
 
 var filterMap = L.Control.extend({
 	options: {
-		position: 'topright'
+		position: 'bottomright'
 	},
 
 	onAdd: function (map) {

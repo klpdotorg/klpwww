@@ -185,7 +185,6 @@ function setup_layers() {
 		"Preschools RTE 1KM": rtePreschools,
 	};
 
-	L.control.layers(null, overlays, {position:'bottomright', collapsed:false}).addTo(map);
 
 	zoom.addTo(map);
 
@@ -200,6 +199,7 @@ function setup_layers() {
 		}), zoomLevel: 15, country: 'India', searchLabel: 'Search for a neighborhood...'
 	}).addTo(map);
 
+	L.control.layers(null, overlays, {position:'topright', collapsed:false}).addTo(map);
 	map.addControl(filter);
 	map.addControl(drawControl);
 
@@ -440,7 +440,7 @@ function change_focus(parentType,childType){
 
 var filterMap = L.Control.extend({
 	options: {
-		position: 'topright'
+		position: 'topcenter'
 	},
 
 	onAdd: function (map) {

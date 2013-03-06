@@ -692,7 +692,7 @@ class baseAssessment:
             self.data["analytics"][classname][starttime][assname][domain]={"order":domain_order}
           if aggtext not in self.data["analytics"][classname][starttime][assname][domain]:
             self.data["analytics"][classname][starttime][assname][domain][aggtext]={"order":aggtext_order,"value":{}}
-          self.data["analytics"][classname][starttime][assname][domain][aggtext]["value"][qtype]={"name":sname,"value":round(float(aggsum/float(self.count[classname][assname]))*100.0,2),"type":qtype.capitalize()}
+          self.data["analytics"][classname][starttime][assname][domain][aggtext]["value"][self.type]={"name":sname,"value":round(float(aggsum/float(self.count[classname][assname]))*100.0,2),"type":qtype.capitalize()}
 
           if classname not in self.data["base"]["classes"]:
             self.data["base"]["classes"][classname]={"Boys":0,"Girls":0}

@@ -242,12 +242,12 @@ begin
 
         for stueval in 
         SELECT id, assid,clname,sex,mt,
-        count(distinct case when mark <= 20 then id else null end) as Rung1, 
-        count(distinct case when mark>20 and mark<=40 then id else null end) as Rung2,
-        count(distinct case when mark>40 and mark<=60 then id else null end) as Rung3,
-        count(distinct case when mark>60 and mark<=80 then id else null end) as Rung4,
-        count(distinct case when mark>80 then id else null end) as Rung5
-        FROM ( SELECT se.stuid,s.id as id, ass.id as assid, cl.name as clname, c.sex as sex, c.mt as mt, avg(se.mark/q.maxmarks*100) as mark 
+        count(distinct case when mark <= 20 then stuid else null end) as Rung1, 
+        count(distinct case when mark>20 and mark<=40 then stuid else null end) as Rung2,
+        count(distinct case when mark>40 and mark<=60 then stuid else null end) as Rung3,
+        count(distinct case when mark>60 and mark<=80 then stuid else null end) as Rung4,
+        count(distinct case when mark>80 then stuid else null end) as Rung5
+        FROM ( SELECT se.stuid as stuid,s.id as id, ass.id as assid, cl.name as clname, c.sex as sex, c.mt as mt, avg(se.mark/q.maxmarks*100) as mark 
                FROM tb_student stu, tb_class cl, tb_student_class sc, tb_child c, tb_school s, tb_student_eval se, tb_assessment ass,tb_question q,tb_programme p,tb_boundary b  
                WHERE cl.sid = s.id AND sc.clid = cl.id AND sc.stuid = stu.id AND stu.cid = c.id AND stu.id = se.stuid AND se.qid=q.id and q.assid = ass.id AND ass.pid=p.id AND sc.ayid=p.ayid AND ass.id = inassessid AND sc.ayid =inayid  AND s.bid=b.id and p.type=b.type
                GROUP BY s.id, ass.id, cl.name, c.sex, c.mt,se.stuid ) as output 
@@ -301,12 +301,12 @@ declare
         andcondition text;
 begin
         andcondition:='SELECT id, assid,clname,sex,mt,
-        count(distinct case when mark < 21 then id else null end) as Rung1, 
-        count(distinct case when mark between 21 and 40 then id else null end) as Rung2,
-        count(distinct case when mark between 41 and 60 then id else null end) as Rung3,
-        count(distinct case when mark between 61 and 80 then id else null end) as Rung4,
-        count(distinct case when mark > 80 then id else null end) as Rung5
-        FROM ( SELECT se.stuid,s.id as id, ass.id as assid, cl.name as clname, c.sex as sex, c.mt as mt, avg(se.mark*100/q.maxmarks) as mark 
+        count(distinct case when mark < 21 then stuid else null end) as Rung1, 
+        count(distinct case when mark between 21 and 40 then stuid else null end) as Rung2,
+        count(distinct case when mark between 41 and 60 then stuid else null end) as Rung3,
+        count(distinct case when mark between 61 and 80 then stuid else null end) as Rung4,
+        count(distinct case when mark > 80 then stuid else null end) as Rung5
+        FROM ( SELECT se.stuid as stuid,s.id as id, ass.id as assid, cl.name as clname, c.sex as sex, c.mt as mt, avg(se.mark*100/q.maxmarks) as mark 
                FROM tb_student stu, tb_class cl, tb_student_class sc, tb_child c, tb_school s, tb_student_eval se, tb_assessment ass,tb_question q,tb_programme p,tb_boundary b  
                WHERE cl.sid = s.id AND sc.clid = cl.id AND sc.stuid = stu.id AND stu.cid = c.id AND stu.id = se.stuid AND se.qid=q.id and q.assid = ass.id AND ass.pid=p.id AND sc.ayid=p.ayid AND ass.id ='||inassessid||' AND sc.ayid ='||inayid||'  AND s.bid=b.id and p.type=b.type
 ';
@@ -772,13 +772,11 @@ select basic_assess_school(102,66);
 select basic_assess_school(102,67);
 select basic_assess_school(102,68);
 select basic_assess_school(102,69);
-select basic_assess_school(102,71);
 select basic_assess_school(102,73);
 select basic_assess_school(102,74);
 select basic_assess_school(102,75);
 select basic_assess_school(102,76);
 select basic_assess_school(102,77);
-select basic_assess_school(102,78);
 
 select basic_assess_school(102,81);
 select basic_assess_school(102,82);
@@ -859,13 +857,11 @@ select basic_assess_school_cohorts(102,66,ARRAY[66,76]);
 select basic_assess_school_cohorts(102,67,ARRAY[67,77]);
 select basic_assess_school_cohorts(102,68,ARRAY[68,73]);
 select basic_assess_school_cohorts(102,69,ARRAY[69,74]);
-select basic_assess_school_cohorts(102,71,ARRAY[71,78]);
 select basic_assess_school_cohorts(102,73,ARRAY[68,73]);
 select basic_assess_school_cohorts(102,74,ARRAY[69,74]);
 select basic_assess_school_cohorts(102,75,ARRAY[65,75]);
 select basic_assess_school_cohorts(102,76,ARRAY[66,76]);
 select basic_assess_school_cohorts(102,77,ARRAY[67,77]);
-select basic_assess_school_cohorts(102,78,ARRAY[71,78]);
 
 select basic_assess_school_cohorts(102,81,ARRAY[81,82,83]);
 select basic_assess_school_cohorts(102,82,ARRAY[81,82,83]);
@@ -901,33 +897,51 @@ select basic_assess_school_cohorts(102,110,ARRAY[108,109,110]);
 
 
 --Preschool basic assessessment
-
+--2009-2010
 select basic_assess_preschool_between(119,23,36,60,'Age between 3-5',cast('2009-04-30' as timestamp));
 select basic_assess_preschool_morethan(119,23,60,'Age >=5',cast('2009-04-30'as timestamp));
 select basic_assess_preschool_between(119,24,36,60,'Age between 3-5',cast('2009-04-30' as timestamp));
 select basic_assess_preschool_morethan(119,24,60,'Age >=5',cast('2009-04-30' as timestamp));
+
+--2010-2011
 select basic_assess_preschool_between(101,56,36,60,'Age between 3-5',cast('2010-04-30' as timestamp));
 select basic_assess_preschool_morethan(101,56,60,'Age >=5',cast('2010-04-30' as timestamp));
 select basic_assess_preschool_between(101,57,36,60,'Age between 3-5',cast('2010-04-30' as timestamp));
 select basic_assess_preschool_morethan(101,57,60,'Age >=5',cast('2010-04-30' as timestamp));
+
+--2011-2012
 select basic_assess_preschool_between(102,70,36,60,'Age between 3-5',cast('2011-04-30' as timestamp));
 select basic_assess_preschool_morethan(102,70,60,'Age >=5',cast('2011-04-30' as timestamp));
 select basic_assess_preschool_between(102,79,36,60,'Age between 3-5',cast('2011-04-30' as timestamp));
 select basic_assess_preschool_morethan(102,79,60,'Age >=5',cast('2011-04-30' as timestamp));
 
+select basic_assess_preschool_between(102,71,36,60,'Age between 3-5',cast('2011-04-30' as timestamp));
+select basic_assess_preschool_morethan(102,71,60,'Age >=5',cast('2011-04-30' as timestamp));
+select basic_assess_preschool_between(102,78,36,60,'Age between 3-5',cast('2011-04-30' as timestamp));
+select basic_assess_preschool_morethan(102,78,60,'Age >=5',cast('2011-04-30' as timestamp));
+
+--2009-2010 cohorts
 select basic_assess_preschool_between_cohorts(119,23,36,60,'Age between 3-5',cast('2009-04-30' as timestamp),ARRAY[23,24]);
 select basic_assess_preschool_morethan_cohorts(119,23,60,'Age >=5',cast('2009-04-30'as timestamp),ARRAY[23,24]);
 select basic_assess_preschool_between_cohorts(119,24,36,60,'Age between 3-5',cast('2009-04-30' as timestamp),ARRAY[23,24]);
 select basic_assess_preschool_morethan_cohorts(119,24,60,'Age >=5',cast('2009-04-30' as timestamp),ARRAY[23,24]);
+
+--2010-2011 cohorts
 select basic_assess_preschool_between_cohorts(101,56,36,60,'Age between 3-5',cast('2010-04-30' as timestamp),ARRAY[56,57]);
 select basic_assess_preschool_morethan_cohorts(101,56,60,'Age >=5',cast('2010-04-30' as timestamp),ARRAY[56,57]);
 select basic_assess_preschool_between_cohorts(101,57,36,60,'Age between 3-5',cast('2010-04-30' as timestamp),ARRAY[56,57]);
 select basic_assess_preschool_morethan_cohorts(101,57,60,'Age >=5',cast('2010-04-30' as timestamp),ARRAY[56,57]);
+
+--2011-2012 cohorts
 select basic_assess_preschool_between_cohorts(102,70,36,60,'Age between 3-5',cast('2011-04-30' as timestamp),ARRAY[70,79]);
 select basic_assess_preschool_morethan_cohorts(102,70,60,'Age >=5',cast('2011-04-30' as timestamp),ARRAY[70,79]);
 select basic_assess_preschool_between_cohorts(102,79,36,60,'Age between 3-5',cast('2011-04-30' as timestamp),ARRAY[70,79]);
 select basic_assess_preschool_morethan_cohorts(102,79,60,'Age >=5',cast('2011-04-30' as timestamp),ARRAY[70,79]);
 
+select basic_assess_preschool_between_cohorts(102,71,36,60,'Age between 3-5',cast('2011-04-30' as timestamp),ARRAY[70,79]);
+select basic_assess_preschool_morethan_cohorts(102,71,60,'Age >=5',cast('2011-04-30' as timestamp),ARRAY[70,79]);
+select basic_assess_preschool_between_cohorts(102,78,36,60,'Age between 3-5',cast('2011-04-30' as timestamp),ARRAY[70,79]);
+select basic_assess_preschool_morethan_cohorts(102,78,60,'Age >=5',cast('2011-04-30' as timestamp),ARRAY[70,79]);
 
 -- 2006 Reading
 select agg_school_reading(1, 90);

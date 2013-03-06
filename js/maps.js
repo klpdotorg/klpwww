@@ -440,7 +440,7 @@ function change_focus(parentType,childType){
 
 var filterMap = L.Control.extend({
 	options: {
-		position: 'topcenter'
+		position: 'topright'
 	},
 
 	onAdd: function (map) {
@@ -564,7 +564,9 @@ $("#preschool").on("change", function(e) {
 function setFilterView(array, id, zoom) {
 	filteredData = array.features.filter(filterArray(id));
 	if (filteredData[0] == undefined) {
-		console.log("not found");
+		$('#filterModal #error').removeClass('hide');
+		setTimeout(function (){$('#filterModal #error').addClass('hide')}, 3000);
+
 	}
 	else  {
 		coordinates = [filteredData[0].geometry.coordinates[1], filteredData[0].geometry.coordinates[0]];
@@ -579,17 +581,24 @@ function filterArray(id) {
 
 function applyFilter(e, array, icon) {
 	filteredSchool = array.features.filter(filterArray(e.val));
-	coordinates = [filteredSchool[0].geometry.coordinates[1], filteredSchool[0].geometry.coordinates[0]];
-	map.removeLayer(current_layers);
-	map.setView(L.latLng(coordinates), 15);
-	filteredSchoolMarker = L.marker(coordinates, {icon: icon});
-	$.getJSON('/info/school/'+filteredSchool[0].id, function(data) {
-		popupContent = "<b><a href='schoolpage/school/"+filteredSchool[0].id+"' target='_blank'>"+filteredSchool[0].properties.name+"</a></b>"+"<hr> Boys: "+
-		String(data['numBoys'])+" | Girls: "+String(data['numGirls'])+" | Total: <b>"+String(data['numStudents'])+"</b><br />Stories: "+String(data['numStories'])+
-		" &rarr; <i><a href='shareyourstoryschool?type=school?id="+filteredSchool[0].id+"' target='_blank'>Share your story!</a></i>";
-		filteredSchoolMarker.bindPopup(popupContent).openPopup();
-	});
+	if (filteredSchool[0] == undefined) {
+		$('#filterModal #error').removeClass('hide');
+		setTimeout(function (){$('#filterModal #error').addClass('hide')}, 3000);
 
-	filteredSchoolMarker.addTo(map);
-	$('#filterModal').modal('hide');	
+	}
+	else {
+		coordinates = [filteredSchool[0].geometry.coordinates[1], filteredSchool[0].geometry.coordinates[0]];
+		map.removeLayer(current_layers);
+		map.setView(L.latLng(coordinates), 15);
+		filteredSchoolMarker = L.marker(coordinates, {icon: icon});
+		$.getJSON('/info/school/'+filteredSchool[0].id, function(data) {
+			popupContent = "<b><a href='schoolpage/school/"+filteredSchool[0].id+"' target='_blank'>"+filteredSchool[0].properties.name+"</a></b>"+"<hr> Boys: "+
+			String(data['numBoys'])+" | Girls: "+String(data['numGirls'])+" | Total: <b>"+String(data['numStudents'])+"</b><br />Stories: "+String(data['numStories'])+
+			" &rarr; <i><a href='shareyourstoryschool?type=school?id="+filteredSchool[0].id+"' target='_blank'>Share your story!</a></i>";
+			filteredSchoolMarker.bindPopup(popupContent).openPopup();
+		});
+
+		filteredSchoolMarker.addTo(map);
+		$('#filterModal').modal('hide');
+	}	
 };

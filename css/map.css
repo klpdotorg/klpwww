@@ -77,6 +77,10 @@ hr { display: block; height: 1px; border: 0; border-top: 1px solid #000; margin:
     border: 1px solid #888888;
     border-radius: 5px 5px 5px 5px;
     box-shadow: 0 0 8px rgba(0, 0, 0, 0.4);
+    margin-right: 10px;
+    /*margin-top: 375px;*/
+    /*width: 105px;*/
+    /*float: left !important;*/
 }
 
 .filter-control a {
@@ -87,15 +91,6 @@ hr { display: block; height: 1px; border: 0; border-top: 1px solid #000; margin:
     height: 39px;
     width: 47px;
 
-}
-
-.leaflet-center {
-
-    /* Hate doing this, but for now yes. */
-    
-    margin-right: 10px; 
-    margin-top: 375px;
-    width: 105px;
 }
 
 .leaflet-control-draw a {

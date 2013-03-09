@@ -28,7 +28,7 @@ var regionParameter = getURLParameter('region');
 var region = (regionParameter === 'undefined') ? '' : regionParameter;
 var bangalore = L.latLng([12.9719,77.5937]);
 
-var map = L.map('map', {zoomControl: false, attributionControl: false, maxBounds: bounds}).setView(bangalore, 12);
+var map = L.map('map', {zoomControl: false, attributionControl: false, maxBounds: bounds}).setView(bangalore, 10);
 var mapquestUrl = 'http://{s}.mqcdn.com/tiles/1.0.0/osm/{z}/{x}/{y}.png',
 subDomains = ['otile1','otile2','otile3','otile4'];
 var mapquest = new L.TileLayer(mapquestUrl, {maxZoom: 18, subdomains: subDomains});
@@ -36,14 +36,26 @@ mapquest.addTo(map);
 
 zoom = new L.Control.Zoom({position:'topleft'});
 
-$.getJSON('/schoolsinfo/', function(data) {
+	$.getJSON('/pointinfo/', function(data) {
+		district = JSON.parse(data['district'][0]);
+		block = JSON.parse(data['block'][0]);
+		cluster = JSON.parse(data['cluster'][0]);
+		circle = JSON.parse(data['circle'][0]);
+		project = JSON.parse(data['project'][0]);
+		// setup_layers();
+		initialize();
+	});
 
-	school = JSON.parse(data['school'][0]);
-	preschool = JSON.parse(data['preschool'][0]);
-	preschooldist = JSON.parse(data['preschooldistrict'][0]);
-	initialize();
 
-})
+// $.getJSON('/schoolsinfo/', function(data) {
+
+// 	school = JSON.parse(data['school'][0]);
+// 	preschool = JSON.parse(data['preschool'][0]);
+// 	preschooldist = JSON.parse(data['preschooldistrict'][0]);
+// 	// initialize();
+// 	setup_layers();
+
+// })
 
 map.addLayer(current_layers);
 
@@ -124,8 +136,7 @@ function onLocationError(e) {
 map.on('locationfound', onLocationFound);
 map.on('locationerror', onLocationError);
 
-function initialize () {
-	map.locate({setView: true, maxZoom: 16});
+function setup_layers () {
 	preschool_layer = L.geoJson(preschool, {pointToLayer: function(feature, latlng){
 		return L.marker(latlng, {icon: preschoolIcon});}, onEachFeature: onEachSchool});
 
@@ -143,19 +154,30 @@ function initialize () {
 	current_layers.addLayer(school_cluster);
 	current_layers.addLayer(preschool_cluster);
 
-	$.getJSON('/pointinfo/', function(data) {
-		district = JSON.parse(data['district'][0]);
-		block = JSON.parse(data['block'][0]);
-		cluster = JSON.parse(data['cluster'][0]);
-		circle = JSON.parse(data['circle'][0]);
-		project = JSON.parse(data['project'][0]);
-		setup_layers();
-	});
+	// $.getJSON('/pointinfo/', function(data) {
+	// 	district = JSON.parse(data['district'][0]);
+	// 	block = JSON.parse(data['block'][0]);
+	// 	cluster = JSON.parse(data['cluster'][0]);
+	// 	circle = JSON.parse(data['circle'][0]);
+	// 	project = JSON.parse(data['project'][0]);
+	// 	setup_layers();
+	// });
 
 }
 
-function setup_layers() {
+$.getJSON('/schoolsinfo/', function(data) {
 
+	school = JSON.parse(data['school'][0]);
+	preschool = JSON.parse(data['preschool'][0]);
+	preschooldist = JSON.parse(data['preschooldistrict'][0]);
+	// initialize();
+	setup_layers();
+
+})
+
+function initialize() {
+
+	map.locate({setView: true, maxZoom: 16});
 	district_layer = L.geoJson(district, {pointToLayer: function(feature, latlng){
 		return L.marker(latlng, {icon: districtIcon});}, onEachFeature: onEachFeature});
 
@@ -170,6 +192,9 @@ function setup_layers() {
 
 	project_layer = L.geoJson(project, {pointToLayer: function(feature, latlng){
 		return L.marker(latlng, {icon: projectIcon});}, onEachFeature: onEachFeature});
+
+	current_layers.addLayer(district_layer);
+	current_layers.addLayer(block_layer);
 
 	rteCircles();
 

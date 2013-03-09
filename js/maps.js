@@ -181,8 +181,8 @@ function setup_layers() {
 		"<img src='/images/icons/cluster.png' height='25px' /> Clusters": cluster_layer,
 		"<img src='/images/icons/project.png' height='25px' /> Projects": project_layer,
 		"<img src='/images/icons/circle.png' height='25px' /> Circles": circle_layer,
-		"Schools RTE 2KM": rteSchools,
-		"Preschools RTE 1KM": rtePreschools,
+		"LPS RTE 1KM": rteLowerPrimary,
+		"HPS RTE 2KM": rteHigherPrimary,
 	};
 
 
@@ -403,18 +403,21 @@ setTimeout(function (){map.removeControl(alerter)}, 30000);
 
 
 $('.alert').alert();
-rteSchools  = new L.LayerGroup();
-rtePreschools = new L.LayerGroup();
+rteLowerPrimary  = new L.LayerGroup();
+rteHigherPrimary = new L.LayerGroup();
 
 function rteCircles() {
 	school_cluster.eachLayer(function(layer) {
-		rte_circle = L.circle(layer.getLatLng(), 2000, {stroke: false, fill:true, fillColor: "red", fillOpacity: "0.1"}).addTo(rteSchools);
-	});
+		if (layer.feature.properties['cat'] == 'Lower Primary') {
+			rte_circle = L.circle(layer.getLatLng(), 1000, {stroke: false, fill:true, fillColor: "green", fillOpacity: "0.1"}).addTo(rteLowerPrimary);
+		}
 
-	preschool_cluster.eachLayer(function(layer) {
-		rte_circle = L.circle(layer.getLatLng(), 1000, {stroke: false, fill:true, fillColor: "green", fillOpacity: "0.1"}).addTo(rtePreschools);
-	})
+		if(layer.feature.properties['cat'] == 'Model Primary' || layer.feature.properties['cat'] == 'Upper Primary') {
+			rte_circle = L.circle(layer.getLatLng(), 2000, {stroke: false, fill:true, fillColor: "#7799f2", fillOpacity: "0.1"}).addTo(rteHigherPrimary);
+		}
+	});
 }
+
 
 
 function fill_dropdown(data,type){

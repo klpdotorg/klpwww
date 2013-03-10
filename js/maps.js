@@ -13,6 +13,8 @@ var preschool_cluster = new L.MarkerClusterGroup({showCoverageOnHover: false,
 	}});
 
 var current_layers = new L.LayerGroup();
+var rteLowerPrimary  = new L.LayerGroup();
+var rteHigherPrimary = new L.LayerGroup();
 
 function getURLParameter(name) {
 	return decodeURI(
@@ -154,6 +156,7 @@ function setup_layers () {
 	current_layers.addLayer(school_cluster);
 	current_layers.addLayer(preschool_cluster);
 
+	rteCircles();
 	// $.getJSON('/pointinfo/', function(data) {
 	// 	district = JSON.parse(data['district'][0]);
 	// 	block = JSON.parse(data['block'][0]);
@@ -196,7 +199,6 @@ function initialize() {
 	current_layers.addLayer(district_layer);
 	current_layers.addLayer(block_layer);
 
-	rteCircles();
 
 	overlays = {
 		"<img src='/images/icons/school.png' height='25px' /> Schools": school_cluster,
@@ -428,8 +430,6 @@ setTimeout(function (){map.removeControl(alerter)}, 30000);
 
 
 $('.alert').alert();
-rteLowerPrimary  = new L.LayerGroup();
-rteHigherPrimary = new L.LayerGroup();
 
 function rteCircles() {
 	school_cluster.eachLayer(function(layer) {

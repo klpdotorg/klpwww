@@ -204,6 +204,14 @@ statements = {'get_district':"select bcoord.id_bndry,ST_AsText(bcoord.coord),ini
               'get_lib_infra':"select libstatus,libtype,numbooks,numracks,numtables,numchairs,numcomputers,numups from tb_school s, vw_libinfra li where s.id=li.sid and s.id=%s;",
               'get_apmdm':"select mon,wk,indent,attend from vw_mdm_agg where id=%s;",
 }
+
+sqlstatements={"selectlevelagg":"select year,class as clas,month, cast(coalesce(sum(\"GREEN\"),0) as text) as \"GREEN\" , cast(coalesce(sum(\"ORANGE\"),0) as text) as \"ORANGE\" , cast(coalesce(sum(\"WHITE\"),0) as text) as \"WHITE\" , cast(coalesce(sum(\"YELLOW\"),0) as text) as \"YELLOW\" , cast(coalesce(sum(\"NONE\"),0) as text) as \"NONE\" , cast(coalesce(sum(\"RED\"),0) as text) as \"RED\" , cast(coalesce(sum(\"BLUE\"),0) as text) as \"BLUE\" from ( select year,class,month, (case when trim(book_level)='GREEN' then child_count else NULL end) as \"GREEN\", (case when trim(book_level)='ORANGE' then child_count else NULL end) as \"ORANGE\", (case when trim(book_level)='WHITE' then child_count else NULL end) as \"WHITE\", (case when trim(book_level)='YELLOW' then child_count else NULL end) as \"YELLOW\", (case when trim(book_level)='NONE' then child_count else NULL end) as \"NONE\", (case when trim(book_level)='RED' then child_count else NULL end) as \"RED\", (case when trim(book_level)='BLUE' then child_count else NULL end) as \"BLUE\" from (select year,class,month,book_level,sum(child_count) as child_count from vw_lib_level_agg where klp_school_id=$schlid group by month,book_level,class,year) as t) as t group by month,class,year",
+        "selectlangagg":"select year,class as clas,month, cast(coalesce(sum(\"URDU\"),0) as text) as \"URDU\" , cast(coalesce(sum(\"KANNADA\"),0) as text) as \"KANNADA\" , cast(coalesce(sum(\"HINDI\"),0) as text) as \"HINDI\" , cast(coalesce(sum(\"ENGLISH\"),0) as text) as \"ENGLISH\" , cast(coalesce(sum(\"E/H\"),0) as text) as \"E/H\" , cast(coalesce(sum(\"E/K\"),0) as text) as \"E/K\" , cast(coalesce(sum(\"TAMIL\"),0) as text) as \"TAMIL\" , cast(coalesce(sum(\"TELUGU\"),0) as text) as \"TELUGU\" from ( select year,class,month, (case when trim(book_lang)='URDU' then child_count else NULL end) as \"URDU\", (case when trim(book_lang)='KANNADA' then child_count else NULL end) as \"KANNADA\", (case when trim(book_lang)='HINDI' then child_count else NULL end) as \"HINDI\", (case when trim(book_lang)='ENGLISH' then child_count else NULL end) as \"ENGLISH\", (case when trim(book_lang)='E/H' then child_count else NULL end) as \"E/H\", (case when trim(book_lang)='E/K' then child_count else NULL end) as \"E/K\", (case when trim(book_lang)='TAMIL' then child_count else NULL end) as \"TAMIL\", (case when trim(book_lang)='TELUGU' then child_count else NULL end) as \"TELUGU\" from (select year,class,month,book_lang,sum(child_count) as child_count from vw_lib_lang_agg where klp_school_id=$schlid group by month,book_lang,class,year) as t) as t group by month,class,year",
+        "selectborrow":"select trans_year,cast(class as text) as clas,getmonth(split_part(issue_date,\'/\',2)) as month,school_name, count(klp_child_id) from vw_lib_borrow where klp_school_id=$schlid group by klp_school_id,month,trans_year,class,school_name",
+        "selectyear":"select distinct year from vw_lib_level_agg where class is not null and klp_school_id=$schlid",
+        "selecttotalstudents":"select trim(sg.name) as clas,count(distinct stu.id) as total,acyear.name as academic_year from tb_student_class stusg, tb_class sg,tb_student stu, tb_academic_year as acyear where stu.id=stusg.stuid and stusg.clid=sg.id and sg.sid=$schlid and stu.status=2 and acyear.id=stusg.ayid and acyear.name in (select distinct year from vw_lib_level_agg)  group by clas,academic_year"
+}
+
 render = web.template.render('templates/', base='base')
 render_plain = web.template.render('templates/')
 
@@ -882,6 +890,7 @@ class SchoolPage:
     #print type + '|' + str(id) + '|' + str(tab)
     try: 
       data.update(CommonSchoolUtil.getSchoolInfo(id))
+      data.update(self.getacyear(id))
       if tab == 'basics':
         data.update(self.getBasicData(id))
         data.update(self.getSYSImages(id))
@@ -898,7 +907,7 @@ class SchoolPage:
       elif tab == 'infrastructure':
         if type=='school':
           data.update(self.getDiseData(id))
-          data.update(self.getLibraryData(id))
+          #data.update(self.getLibraryData(id))
         if type=='preschool':
           data.update(self.getAngInfraData(id))
       elif tab == 'nutrition':
@@ -906,6 +915,10 @@ class SchoolPage:
           data.update(self.getMidDayMealData(id))
           data.update(CommonSchoolUtil.getKlpEnrolment(id))
           data.update(CommonSchoolUtil.getDiseEnrolment(id))
+      elif tab == 'library':
+        # Library chart data
+        data.update(self.getLibraryChartData(id))
+	data.update(self.getLibraryData(id))
       elif tab == 'stories' :
         data.update(self.getSYSData(id))
         data.update(self.getSYSImages(id))
@@ -923,6 +936,51 @@ class SchoolPage:
       DbManager.getMainCon().rollback()
       DbManager.getSysCon().rollback()
 
+  def getacyear(self,klpid):
+    tabledata={}
+    cursor = DbManager.getMainCon().cursor()
+    cursor.execute(statements['get_dise_ptr'],(klpid,))
+    result = cursor.fetchall()
+    for row in result:
+      tabledata['acyear'] = str(row[4])
+      tabledata['dise_books'] = str(row[7])
+    DbManager.getMainCon().commit()
+    cursor.close()
+    return tabledata
+ 
+
+  #library chart function
+  def getLibraryChartData(self,schlid):
+    data={}
+    #db=web.database()
+    db=KLPDB.getWebDbConnection()
+    resultlevel=[['year','clas','month','GREEN','RED','ORANGE','WHITE','BLUE','YELLOW']]
+    resultlang=[['year','clas','month','URDU','KANNADA','HINDI','ENGLISH','E/H','E/K','TAMIL','TELUGU']]
+    resultborrow=[['academic_year','clas','month','school_name','count']]
+    classtotals=[['clas','total','acyear']]
+    clas=[1,2,3,4,5,6,7]
+    year=[]
+    for row in db.query(sqlstatements["selectlevelagg"],{"schlid":schlid}):
+        resultlevel.append([row.year,row.clas,row.month,row.GREEN,row.RED,row.ORANGE,row.WHITE,row.BLUE,row.YELLOW])
+    for row in db.query(sqlstatements["selectlangagg"],{"schlid":schlid}):
+        resultlang.append([row.year,row.clas,row.month,row.KANNADA,row.URDU,row.HINDI,row.ENGLISH,getattr(row,'E/H'),getattr(row,'E/K'),row.TAMIL,row.TELUGU])
+    for row in db.query(sqlstatements["selectborrow"],{"schlid":schlid}):
+        resultborrow.append([row.trans_year,row.clas,row.month,row.school_name,row.count])
+    for row in db.query(sqlstatements["selectyear"],{"schlid":schlid}):
+        year.append(row.year)
+    for row in db.query(sqlstatements["selecttotalstudents"],{"schlid":schlid}):
+        classtotals.append([row.clas,row.total,row.academic_year])
+    #return render.libchart(schlid,resultlevel,resultlang,resultborrow,clas,year,classtotal)
+    data["resultlevel"]=resultlevel
+    data["resultlang"]=resultlang
+    data["resultborrow"]=resultborrow
+    data["clas"]=clas
+    data["year"]=year
+    data["classtotal"]=classtotals
+    #print data
+    return data
+    #End of library funciton
+    
   def getBasicData(self,id):
     data = {}
     cursor = DbManager.getMainCon().cursor()
@@ -1061,10 +1119,10 @@ class SchoolPage:
       tabledata['girls_count'] = str(row[2])
       tabledata['student_count'] = str(int(row[1]) + int(row[2]))
       tabledata['classroom_count'] = str(row[3])
-      tabledata['acyear'] = str(row[4])
+      #tabledata['acyear'] = str(row[4])
       tabledata['lowest_class'] = str(row[5])
       tabledata['highest_class'] = str(row[6])
-      tabledata['dise_books'] = str(row[7])
+      #tabledata['dise_books'] = str(row[7])
     DbManager.getMainCon().commit()
     cursor.execute(statements['get_dise_facility'],(klpid,))
     result = cursor.fetchall()

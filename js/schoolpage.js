@@ -1,6 +1,11 @@
 var info;
 var map;
 var tab;
+var level;
+var lang;
+var borrow;
+var classes;
+var years;
 
 if (!Array.prototype.indexOf)
 {
@@ -77,19 +82,21 @@ function initialise(data)
   document.getElementById("mdm_info").innerHTML = "Loading <img style='vertical-align:middle' src='/images/ajax-loader-bar.gif'/>";
   document.getElementById("infra_info").innerHTML = "Loading <img style='vertical-align:middle' src='/images/ajax-loader-bar.gif'/>";
   document.getElementById("sys_data").innerHTML = "Loading <img style='vertical-align:middle' src='/images/ajax-loader-bar.gif'/>";
+  document.getElementById("library_data").innerHTML="Loading <img style='vertical-align:middle' src='/images/ajax-loader-bar.gif'/>";
+  document.getElementById("levelimage").style.display='none';
   if(info["type"] == 1) {
   	document.getElementById("finances_txt").innerHTML = "Loading <img style='vertical-align:middle' src='/images/ajax-loader-bar.gif'/>";
   	document.getElementById("mdm_info").innerHTML = "Loading <img style='vertical-align:middle' src='/images/ajax-loader-bar.gif'/>";
   }
   tab_str = info["tab"];
-  tab_names = ['basics','demographics','programmes','finances','infrastructure','nutrition','stories'];
+  tab_names = ['basics','demographics','programmes','finances','infrastructure','library','nutrition','stories'];
   tab = 0;
-for(var i=0;i<7;i++) {
+for(var i=0;i<8;i++) {
 if (tab_names[i] == tab_str)
 tab = i;
 }
 document.getElementById("maintab").tabber.tabShow(tab);
-for(var i=0;i<7;i++) {
+for(var i=0;i<8;i++) {
 if (tab != i)
 getSchoolPages(info["id"],info["type"],tab_names[i]);
 }
@@ -123,16 +130,22 @@ dirlink = "dirlink4";
 } else if (tab == 'infrastructure') {
 populateInfra();
 populateRTE();
-populateLibrary();
+//populateLibrary();
 populatePTR();
 dirlink = "dirlink5";
 } else if (tab == 'nutrition') {
 populateMDM();
-dirlink = "dirlink6";
+dirlink = "dirlink7";
 } else if (tab == 'stories') {
 populateSYS();
-dirlink = "dirlink7";
-} else {}
+dirlink = "dirlink8";
+} else if (tab == 'library') { 
+// Added for library charts
+populateLibchart();
+populateLibrary();
+dirlink = "dirlink6";
+}
+else {}
 populateDirLink(dirlink,tab);
 }
 
@@ -146,6 +159,32 @@ link_txt = link_txt + '?tab=' + tab;
 dirlink_txt = dirlink_txt + link_txt + '\'>' + '<span style="color:#43AD2F">' + link_txt + '</span></a><br/><br/>';
 dirlink_txt = dirlink_txt + "Please read KLP's <a href='/text/disclaimer' target='_blank'><span style='color:#43AD2F'> data-related disclaimer </span></a>. If you notice any errors or inaccuracies related to data or any other content found on this page, please click <a href='mailto:dev@klp.org.in?subject=%5BIssue%5D%20KLP%20Website&body=On%20webpage%3A" + link_txt + "'><span style='color:#43AD2F'>here</span></a> to send us an email."
   document.getElementById(dirlink).innerHTML = dirlink_txt;
+}
+
+function populateLibchart(){
+	if(info["resultlevel"].length>2){
+		var temp=[];
+		level=[];
+		document.getElementById("library_data").style.display='none';
+		document.getElementById("library_charts").style.display='block';
+		classes=info['clas'];
+		years=info['year'];
+		level=info['resultlevel'];
+		lang=info['resultlang'];
+		borrow=info['resultborrow'];
+		totals=info['classtotal'];
+//		alert(info['classtotal'][0]+'-'+info['classtotal'][1]);
+		document.getElementById("levelimage").style.display='block';
+                
+		libchartload();		
+	}
+	else {
+		document.getElementById("library_data").innerHTML='No Data Available';
+	}
+	document.getElementById("lib_infra_heading").innerHTML = "Akshara Library Details";
+
+//document.getElementById("library_data").innerHTML=info["hi"];	
+//	alert("hi");
 }
 
 function showMap()
@@ -239,7 +278,6 @@ function populateAddress()
   }
   address=address+'</div>'
   document.getElementById("school_geo").innerHTML= address;
- 
 }
 
 function populateSchoolInfo()
@@ -485,8 +523,8 @@ function populateSYS()
 
 function populateFinances()
 {
+
 	fin_info = "";
-		
 
         if (info["type"]==2) {
            fin_info = "SSA Grants are not applicable to Preschools";
@@ -556,7 +594,7 @@ function populateInfra()
 	{	
   	  document.getElementById("infra_info_heading").innerHTML = "Infrastructure Summary";
   	  document.getElementById("ptr_info_heading").innerHTML = "Academics Summary ( " + info['acyear'] + ')';
-  	  document.getElementById("lib_infra_heading").innerHTML = "Akshara Library Details";
+  	//  document.getElementById("lib_infra_heading").innerHTML = "Akshara Library Details";
   	  document.getElementById("rte_info_heading").innerHTML = "Additional RTE Information";
   	  document.getElementById("srcinfo5").innerHTML = '<br/><br/>Source : KLP Database (2011-12), <a href="http://schoolreportcards.in" target="_blank"><span style="color:#43AD2F">NUEPA-DISE</span></a> (' + info['acyear'] + ')';
 	}
@@ -711,7 +749,7 @@ function populateLibrary()
 
            tabletxt += '</div>';
 	   tabletxt += '<br/><br/>DISE reports Number of Books as : ';
-           tabletxt +=  info.dise_books 
+           tabletxt +=  info['dise_books']
         } else {
            tabletxt = 'Information currently unavailable'
         }

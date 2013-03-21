@@ -1,5 +1,6 @@
 $def with (content)
 <!doctype html>
+<html>
 <head>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
@@ -17,86 +18,83 @@ $def with (content)
       <script type="text/javascript" src="$f"></script>
 
   <script type="text/javascript">
-    var _gaq = _gaq || [];
-    _gaq.push(['_setAccount', 'UA-3982320-11']);
-    _gaq.push(['_trackPageview']);
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-3982320-11']);
+  _gaq.push(['_trackPageview']);
 
-    (function() {
-      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
-      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
-      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
-    })();
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
   </script>
-<script>
-!function(d,s,id){
-  var js,fjs=d.getElementsByTagName(s)[0];
-  if(!d.getElementById(id)){
-    js=d.createElement(s);
-    js.id=id;
-    js.src="//platform.twitter.com/widgets.js";
-    fjs.parentNode.insertBefore(js,fjs);
-  }
-}(document,"script","twitter-wjs");
-</script>
+  <script>
+  !function(d,s,id){
+    var js,fjs=d.getElementsByTagName(s)[0];
+    if(!d.getElementById(id)){
+      js=d.createElement(s);
+      js.id=id;
+      js.src="//platform.twitter.com/widgets.js";
+      fjs.parentNode.insertBefore(js,fjs);
+    }
+  }(document,"script","twitter-wjs");
+  </script>
 </head>
 
 <body $content.btags>
-<div id="topbar" class="container container_12">
-  <div class="grid_12">
-    <div id="header">
-      <div id="navigation">
-        <ul>
-          <li><a href="/">Home</a></li>
-          <li><a href="/visualization">Map</a></li>
-          <li><a href="/text/partners">Partners</a></li>
-          <li><a href="#">Programmes</a>
-            <ul>
-              <li><a href="/text/reading" target="_blank">Reading</a></li>
-              <li><a href="/text/maths" target="_blank">Maths</a></li>
-              <li><a href="/text/library" target="_blank">Library</a></li>
-              <li><a href="/text/preschool" target="_blank">Preschools</a></li>
-            </ul>
-          </li>
-          <li><a href="#">Database&nbsp;&nbsp;</a>
-            <ul>
-              <li><a href="http://status.klp.org.in" target="_blank">Status</a></li>
-              <li><a href="/listFiles/2" target="_blank">Raw data</a></li>
-              <li><a href="https://github.com/klpdotorg" target="_blank">GitHub</a></li>
-              <li><a href="/text/disclaimer" target="_blank">Disclaimer</a></li>
-            </ul>
-          </li>
-          <li><a href="#">Reports&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
-            <ul>
-              <li><a href="/listFiles/1" target="_blank">KLP Reports</a></li>
-              <li><a href="/text/reports" target="_blank">Other Reports</a></li>
-            </ul>
-          </li>
-        <!--div id="textheader"><img src="../images/klp_txt.png"/></div-->
-        </ul>
+  <div id="topbar" class="container container_12">
+    <div class="grid_12">
+      <div id="header">
+        <div id="navigation">
+          <ul>
+            <li><a href="/">Home</a></li>
+            <li><a href="/map">Map</a></li>
+            <li><a href="/text/partners">Partners</a></li>
+            <li><a href="#">Programmes</a>
+              <ul>
+                <li><a href="/text/reading" target="_blank">Reading</a></li>
+                <li><a href="/text/maths" target="_blank">Maths</a></li>
+                <li><a href="/text/library" target="_blank">Library</a></li>
+                <li><a href="/text/preschool" target="_blank">Preschools</a></li>
+              </ul>
+            </li>
+            <li><a href="#">Database&nbsp;&nbsp;</a>
+              <ul>
+                <li><a href="http://status.klp.org.in" target="_blank">Status</a></li>
+                <li><a href="/listFiles/2" target="_blank">Raw data</a></li>
+                <li><a href="https://github.com/klpdotorg" target="_blank">GitHub</a></li>
+                <li><a href="/text/disclaimer" target="_blank">Disclaimer</a></li>
+              </ul>
+            </li>
+            <li><a href="#">Reports&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+              <ul>
+                <li><a href="/listFiles/1" target="_blank">KLP Reports</a></li>
+                <li><a href="/text/reports" target="_blank">Other Reports</a></li>
+              </ul>
+            </li>
+            <!--div id="textheader"><img src="../images/klp_txt.png"/></div-->
+          </ul>
+        </div>
       </div>
     </div>
+  </div><!-- end of top bar -->
+  <div id="content" class="container container_12">
+    $:content
   </div>
-  <div class="clearfix"></div>
-
-  $:content
-
-</div><!-- end of top bar -->
-<div id="bottombar" class="container container_12">
-  <div class="grid_12" style="float:left;">
-    <div id="footer">
-      <div class="grid_2" style="padding-left:20px">
-       <a href="/text/aboutus"><img src="/images/aboutus.png" height="38px"/></a>&nbsp;
-       <a href="/text/disclaimer"><img src="/images/disclaimer.png" height="38px"/></a>
-      </div>
-      <div class="grid_10" style="text-align:right">
-        <a href="mailto:team@klp.org.in"><img src="/images/c_icon.png" height="30px"/></a>
-        <a href="http://www.facebook.com/klpdotorg" target="_blank"><img src="/images/fb_icon.png" height="30px"/></a>
-        <a href="https://twitter.com/share" data-url=document.location.href data-text="Interesting find-" target="_blank"><img src="/images/t_icon.png" height="28px"/></a>
-        <a href="http://blog.klp.org.in/feeds/posts/default" target="_blank"><img src="/images/rf_icon.png" height="30px"/></a>
-        <a href="http://www.youtube.com/user/klpdotorg" target="_blank"><img src="/images/ut_icon.png" height="25px"/></a>
-      </div>
-   </div>
- </div>
+  <div id="bottombar" class="container container_12">
+    <div class="grid_12" style="float:left;">
+      <div id="footer">
+<a href="/text/aboutus"><img src="/images/aboutus.png" height="38px"/></a>&nbsp;
+<a href="/text/disclaimer"><img src="/images/disclaimer.png" height="38px"/></a>
+<div class="grid_10" style="text-align:right">
+  <a href="mailto:team@klp.org.in"><img src="/images/c_icon.png" height="30px"/></a>
+  <a href="http://www.facebook.com/klpdotorg" target="_blank"><img src="/images/fb_icon.png" height="30px"/></a>
+  <a href="https://twitter.com/share" data-url=document.location.href data-text="Interesting find-" target="_blank"><img src="/images/t_icon.png" height="28px"/></a>
+  <a href="http://blog.klp.org.in/feeds/posts/default" target="_blank"><img src="/images/rf_icon.png" height="30px"/></a>
+  <a href="http://www.youtube.com/user/klpdotorg" target="_blank"><img src="/images/ut_icon.png" height="25px"/></a>
+</div>
+</div>
+</div>
 </div>
 </body>
 </html> 

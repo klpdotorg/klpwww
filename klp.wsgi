@@ -5,6 +5,7 @@ import jsonpickle
 import csv
 import re
 import difflib
+import geojson
 import smtplib,email,email.encoders,email.mime.text,email.mime.base,mimetypes
 from web import form
 
@@ -19,8 +20,9 @@ from Utility import KLPDB
 urls = (
      '/','mainmap',
      '/pointinfo/', 'getPointInfo',
+     '/schoolsinfo/', 'getSchoolsInfo',
      '/assessment/(.*)/(.*)/(.*)','assessments',
-     '/visualization*','visualization',
+     '/map*','map',
      '/info/school/(.*)','getSchoolInfo',
      '/info/preschool/(.*)','getSchoolInfo',
      '/shareyourstory(.*)\?*','shareyourstory',
@@ -33,6 +35,7 @@ urls = (
      '/postSYS/(.*)','postSYS',
      '/sysinfo','getSYSInfo',
      '/listFiles/(.*)','listFiles',
+     '/schools', 'schools_bound',
 )
 
 class DbManager:
@@ -122,7 +125,7 @@ statements = {'get_district':"select bcoord.id_bndry,ST_AsText(bcoord.coord),ini
               'get_cluster':"select bcoord.id_bndry,ST_AsText(bcoord.coord),initcap(b.name) from vw_boundary_coord bcoord, tb_boundary b where bcoord.type='Cluster' and b.id=bcoord.id_bndry order by b.name",
               'get_project':"select bcoord.id_bndry,ST_AsText(bcoord.coord),initcap(b.name) from vw_boundary_coord bcoord, tb_boundary b where bcoord.type='Project' and b.id=bcoord.id_bndry order by b.name",
               'get_circle':"select bcoord.id_bndry,ST_AsText(bcoord.coord),initcap(b.name) from vw_boundary_coord bcoord, tb_boundary b where bcoord.type='Circle' and b.id=bcoord.id_bndry order by b.name",
-              'get_school':"select inst.instid ,ST_AsText(inst.coord),upper(s.name) from vw_inst_coord inst, tb_school s,tb_boundary b where s.id=inst.instid and s.bid=b.id and b.type='1' order by s.name",
+              'get_school':"select inst.instid, ST_AsText(inst.coord), upper(s.name), s.cat from vw_inst_coord inst, tb_school s,tb_boundary b where s.id=inst.instid and s.bid=b.id and b.type='1' order by s.name",
               'get_preschool':"select inst.instid ,ST_AsText(inst.coord),upper(s.name) from vw_inst_coord inst, tb_school s,tb_boundary b where s.id=inst.instid and s.bid=b.id and b.type='2' order by s.name",
               'get_district_points':"select distinct b1.id, b1.name from tb_boundary b, tb_boundary b1, tb_boundary b2,tb_bhierarchy hier where b.id=b1.parent and b1.id=b2.parent and b.hid=hier.id and b.type=1 and b.id=%s order by b1.name",
               'get_preschooldistrict_points':"select distinct b1.id, b1.name from tb_boundary b, tb_boundary b1,tb_boundary b2,tb_bhierarchy hier where b2.parent=b1.id and b1.parent = b.id and b.hid = hier.id and b.type=2 and b.id=%s",
@@ -202,6 +205,9 @@ statements = {'get_district':"select bcoord.id_bndry,ST_AsText(bcoord.coord),ini
               'get_ang_infra':"select distinct adm.value, aia.perc_score,aia.ai_group from vw_anginfra_agg aia, tb_school s, vw_ang_display_master adm where s.id=aia.sid and adm.key=aia.ai_metric and s.id=%s;",
               'get_lib_infra':"select libstatus,libtype,numbooks,numracks,numtables,numchairs,numcomputers,numups from tb_school s, vw_libinfra li where s.id=li.sid and s.id=%s;",
               'get_apmdm':"select mon,wk,indent,attend from vw_mdm_agg where id=%s;",
+              'get_bounded_schools':"select inst.instid ,ST_AsText(inst.coord),upper(s.name) from vw_inst_coord inst, tb_school s,tb_boundary b where ST_Contains(ST_MakeEnvelope(%s,%s,%s,%s,-1), inst.coord) and s.id=inst.instid and s.bid=b.id and b.type='1' order by s.name;",
+              'get_bounded_preschools':"select inst.instid ,ST_AsText(inst.coord),upper(s.name) from vw_inst_coord inst, tb_school s,tb_boundary b where ST_Contains(ST_MakeEnvelope(%s,%s,%s,%s,-1), inst.coord) and s.id=inst.instid and s.bid=b.id and b.type='2' order by s.name",
+
 }
 
 sqlstatements={"selectlevelagg":"select year,class as clas,month, cast(coalesce(sum(\"GREEN\"),0) as text) as \"GREEN\" , cast(coalesce(sum(\"ORANGE\"),0) as text) as \"ORANGE\" , cast(coalesce(sum(\"WHITE\"),0) as text) as \"WHITE\" , cast(coalesce(sum(\"YELLOW\"),0) as text) as \"YELLOW\" , cast(coalesce(sum(\"NONE\"),0) as text) as \"NONE\" , cast(coalesce(sum(\"RED\"),0) as text) as \"RED\" , cast(coalesce(sum(\"BLUE\"),0) as text) as \"BLUE\" from ( select year,class,month, (case when trim(book_level)='GREEN' then child_count else NULL end) as \"GREEN\", (case when trim(book_level)='ORANGE' then child_count else NULL end) as \"ORANGE\", (case when trim(book_level)='WHITE' then child_count else NULL end) as \"WHITE\", (case when trim(book_level)='YELLOW' then child_count else NULL end) as \"YELLOW\", (case when trim(book_level)='NONE' then child_count else NULL end) as \"NONE\", (case when trim(book_level)='RED' then child_count else NULL end) as \"RED\", (case when trim(book_level)='BLUE' then child_count else NULL end) as \"BLUE\" from (select year,class,month,book_level,sum(child_count) as child_count from vw_lib_level_agg where klp_school_id=$schlid group by month,book_level,class,year) as t) as t group by month,class,year",
@@ -223,12 +229,42 @@ class mainmap:
     web.header('Content-Type','text/html; charset=utf-8')
     return render.klp()
 
+class schools_bound:
+  def GET(self):
+    bounds = web.input('bounds').bounds.split(',')
+    cursor = DbManager.getMainCon().cursor()
+    for i in range(bounds.__len__()):
+      bounds[i] = bounds[i].strip('"')
+
+    pointInfo={"schools":[],"preschools":[]}
+    count = 0
+    for type in pointInfo:
+      if type != 'count':
+        features = []
+        cursor.execute(statements['get_bounded_'+type] %(bounds[0],bounds[1],bounds[2],bounds[3],))
+        result = cursor.fetchall()
+        count = count + result.__len__()
+        for row in result:
+          match = re.match(r"POINT\((.*)\s(.*)\)",row[1])
+          coord = [float(match.group(1)), float(match.group(2))]
+          feature = geojson.Feature(id=row[0], geometry=geojson.Point(coord), properties={"name":row[2]})
+          features.append(feature)
+
+        feature_collection = geojson.FeatureCollection(features)
+        pointInfo[type].append(geojson.dumps(feature_collection))
+        DbManager.getMainCon().commit()
+    cursor.close()
+    pointInfo.update({'count': count})
+    web.header('Content-Type', 'application/json')
+    return jsonpickle.encode(pointInfo)
+
 class getPointInfo:
   def GET(self):
-    pointInfo={"district":[],"block":[],"cluster":[],"project":[],"circle":[],"preschooldistrict":[],"school":[],"preschool":[]}
+    pointInfo={"district":[],"preschooldistrict":[], "block":[],"cluster":[],"project":[],"circle":[]}
     try:
       cursor = DbManager.getMainCon().cursor()
       for type in pointInfo:
+        features = []
         cursor.execute(statements['get_'+type])
         result = cursor.fetchall()
         for row in result:
@@ -237,10 +273,43 @@ class getPointInfo:
           except:
             traceback.print_exc(file=sys.stderr)
             continue
-          lon = match.group(1)
-          lat = match.group(2)
-          data={"lon":lon,"lat":lat,"name":row[2],"id":row[0]}
-          pointInfo[type].append(data)
+          coord = [float(match.group(1)), float(match.group(2))]
+          feature = geojson.Feature(id=row[0], geometry=geojson.Point(coord), properties={"name":row[2]})
+          features.append(feature)
+        feature_collection = geojson.FeatureCollection(features)
+        pointInfo[type].append(geojson.dumps(feature_collection))
+        DbManager.getMainCon().commit()
+      cursor.close()
+    except:
+      traceback.print_exc(file=sys.stderr)
+      cursor.close()
+      DbManager.getMainCon().rollback()
+    web.header('Content-Type', 'application/json')
+    return jsonpickle.encode(pointInfo)
+
+class getSchoolsInfo:
+  def GET(self):
+    pointInfo={"school":[],"preschool":[]}
+    try:
+      cursor = DbManager.getMainCon().cursor()
+      for type in pointInfo:
+        features = []
+        cursor.execute(statements['get_'+type])
+        result = cursor.fetchall()
+        for row in result:
+          try:
+            match = re.match(r"POINT\((.*)\s(.*)\)",row[1])
+          except:
+            traceback.print_exc(file=sys.stderr)
+            continue
+          coord = [float(match.group(1)), float(match.group(2))]
+          if type == "school":
+            feature = geojson.Feature(id=row[0], geometry=geojson.Point(coord), properties={"name":row[2], "cat":row[3]})
+          else:
+            feature = geojson.Feature(id=row[0], geometry=geojson.Point(coord), properties={"name":row[2]})
+          features.append(feature)
+        feature_collection = geojson.FeatureCollection(features)
+        pointInfo[type].append(geojson.dumps(feature_collection))
         DbManager.getMainCon().commit()
       cursor.close()
     except:
@@ -251,10 +320,10 @@ class getPointInfo:
     return jsonpickle.encode(pointInfo)
 
 
-class visualization:
+class map:
   def GET(self):
     web.header('Content-Type','text/html; charset=utf-8')
-    return render.visualization()
+    return render_plain.map()
 
 
 
@@ -1394,7 +1463,12 @@ class getBoundaryPoints:
       cursor.execute(statements['get_'+type+'_points'],(id,))
       result = cursor.fetchall()
       for row in result:
-        data={"id":row[0],"name":row[1].capitalize()}
+        if type == 'cluster':
+          parts = row[1].split()
+          name = parts[0].upper()+' '+parts[1].capitalize()
+          data={"id":row[0],"name":name}
+        else:
+          data={"id":row[0],"name":row[1].capitalize()}
         boundaryInfo.append(data)
       cursor.close()
       DbManager.getMainCon().commit()

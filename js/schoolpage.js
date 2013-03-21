@@ -186,25 +186,18 @@ function populateLibchart(){
 
 function showMap()
 {
-  var latlng = new google.maps.LatLng(info["lat"],info["lon"]);
-  var myOptions = {
-      zoom: 14,
-      center: latlng,
-      mapTypeId: google.maps.MapTypeId.ROADMAP,
-      disableDoubleClickZoom:false
-  };
 
-  marker_name = "school.png";
-  if(info['type'] == 2)
-  	marker_name = "preschool.png";
+  map = L.map('map', {zoomControl: false, attributionControl: false});
+  var mapquestUrl = 'http://{s}.mqcdn.com/tiles/1.0.0/osm/{z}/{x}/{y}.png',
+  subDomains = ['otile1','otile2','otile3','otile4'];
+  var mapquest = new L.TileLayer(mapquestUrl, {maxZoom: 18, subdomains: subDomains});
+  mapquest.addTo(map);
 
-  map = new google.maps.Map(document.getElementById("map"),myOptions);
-  var marker = new google.maps.Marker({
-        position: latlng,
-        title:info["name"],
-        icon:"/images/"+marker_name
-      });
-  marker.setMap(map);  
+  schoolCoord = L.latLng([info["lat"], info["lon"]]);
+  map.setView(schoolCoord, 14);
+  var marker = L.marker(schoolCoord);
+  marker.bindPopup("<b>"+info["name"]+"</b>").openPopup();
+  marker.addTo(map);
 }
 
 function populateHeader()

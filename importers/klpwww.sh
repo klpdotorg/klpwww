@@ -40,3 +40,5 @@ echo Running inserts for pratham mysore
 psql -U ${OWNER} -d ${DBNAME} -f pratham/db_scripts/load/pratham_assessment.sql
 psql -U ${OWNER} -d ${DBNAME} -f pratham/db_scripts/load/pratham_assessment_agg.sql
 
+echo Utility functions for library on ${DBNAME}
+psql -U ${OWNER} -d ${DBNAME} -f utilityfunct.sql

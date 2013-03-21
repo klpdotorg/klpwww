@@ -391,7 +391,7 @@ function populateEReps()
   const_table = '<div class="div-table">' 
   if ('mla' in info){
     const_table = const_table + '<div>' +
-                '<div class="div-table-row"><div id="div-col-125width" class="div-table-col">MLA Details</div>' + 
+                '<div class="div-table-row"><div id="div-col-125width" class="div-table-col">MLA Constituency</div>' + 
                 '<div class="div-table-col">:' + info['mla'].toUpperCase() + '</div><div>' +
                 '<div class="div-table-row"><div id="div-col-125width" class="div-table-col">MLA Details</div>' + 
                 '<div class="div-table-col">:' + info['mlaname'].toUpperCase() + '</div><div>' +
@@ -707,7 +707,7 @@ function populateMDM()
            tabletxt = "Meal information for Anganwadis is not available";
         } else if (Object.keys(info.ap_mdm).length > 0) {
            document.getElementById("mdm_info_heading").innerHTML = "Mid day meal Summary";
-           document.getElementById("srcinfo6").innerHTML = '<br/><br/>Source : <a href="http://www.akshayapatra.org/" target="_blank"><span style="color:#43AD2F">Akshaya Patra (2012)</span></a>';
+           document.getElementById("srcinfo6").innerHTML = '<br/><br/>Source : <a href="http://www.akshayapatra.org/" target="_blank"><span style="color:#43AD2F">Akshaya Patra (2012)</span></a>, KLP Database (2011-12), <a href="http://schoolreportcards.in" target="_blank"><span style="color:#43AD2F">NUEPA-DISE</span></a> (2011-12)';
 
            tabletxt = "";
            var data = new google.visualization.DataTable();

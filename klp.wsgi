@@ -95,23 +95,22 @@ pidType={"grade":[1,4,5,7,8,13,15,17,18,19,20,23,25],"mark":[2,3,6,9,10,11,12,14
 baseassess = {"1":[1],
               "2":[5,6,7,8],
               "3":[13,14,15,16],
-              "4":[21],
               "5":[23],
               "6":[25],
               "7":[27],
               "8":[30],
               "9":[33],
-              "10":[35],
-              "11":[37],
-              "12":[39],
-              "13":[40],
               "14":[41,43,45,47],
               "15":[49],
-              "16":[51,53],
               "18":[56],
-              "19":[59],
               "23":[65,66,67],
-              "25":[70]
+              "24":[68,69],
+              "25":[70],
+              "26":[71],
+              "28":[81,84],
+              "29":[87,90,93],
+              "30":[96,99],
+              "31":[102,105,108]
               }
 
 types={'district':'district','block':'block','cluster':'cluster','school':'school','preschooldistrict':'district','project':'block','circle':'cluster','preschool':'school'}
@@ -178,9 +177,9 @@ statements = {'get_district':"select bcoord.id_bndry,ST_AsText(bcoord.coord),ini
               'get_progress_district':"select agg.assid,b2.name,agg.studentgroup,agg.domain,agg.domain_order,agg.aggtext,agg.aggtext_order,ass.name,   sum(agg.cohortsval),ass.start from tb_institution_assessment_agg_cohorts agg,tb_assessment ass,tb_boundary b, tb_boundary b1, tb_boundary b2,tb_school s where agg.assid=ass.id and agg.sid=s.id and s.bid=b.id and b.parent=b1.id and b1.parent=b2.id and ass.pid=%s and b2.id=%s group by b2.name,agg.domain,agg.domain_order,agg.aggtext,agg.aggtext_order,ass.name,ass.start,agg.assid,agg.studentgroup",
               'get_progress_block':"select agg.assid,b1.name,agg.studentgroup,agg.domain,agg.domain_order,agg.aggtext,agg.aggtext_order,ass.name,   sum(agg.cohortsval),ass.start from tb_institution_assessment_agg_cohorts agg,tb_assessment ass,tb_boundary b, tb_boundary b1, tb_boundary b2,tb_school s where agg.assid=ass.id and agg.sid=s.id and s.bid=b.id and b.parent=b1.id and b1.parent=b2.id and ass.pid=%s and b1.id=%s group by b1.name,agg.domain,agg.domain_order,agg.aggtext,agg.aggtext_order,ass.name,ass.start,agg.assid,agg.studentgroup",
               'get_progress_cluster':"select agg.assid,b.name,agg.studentgroup,agg.domain,agg.domain_order,agg.aggtext,agg.aggtext_order,ass.name,   sum(agg.cohortsval),ass.start from tb_institution_assessment_agg_cohorts agg,tb_assessment ass,tb_boundary b, tb_boundary b1, tb_boundary b2,tb_school s where agg.assid=ass.id and agg.sid=s.id and s.bid=b.id and b.parent=b1.id and b1.parent=b2.id and ass.pid=%s and b.id=%s group by b.name,agg.domain,agg.domain_order,agg.aggtext,agg.aggtext_order,ass.name,ass.start,agg.assid,agg.studentgroup",
-              'get_assessmentinfo_district':"select b2.name,info.studentgroup,ass.name,sum(info.num) from tb_institution_basic_assessment_info info,tb_assessment ass,tb_boundary b, tb_boundary b1, tb_boundary b2,tb_school s where ass.pid=%s and info.assid=ass.id and info.sid=s.id and s.bid=b.id and b.parent=b1.id and b1.parent=b2.id and b2.id = %s group by b2.name,info.studentgroup,ass.name",
-              'get_assessmentinfo_block':"select b1.name,info.studentgroup,ass.name,sum(info.num) from tb_institution_basic_assessment_info info,tb_assessment ass,tb_boundary b, tb_boundary b1, tb_boundary b2,tb_school s where ass.pid=%s and info.assid=ass.id and info.sid=s.id and s.bid=b.id and b.parent=b1.id and b1.parent=b2.id and b1.id = %s group by b1.name,info.studentgroup,ass.name",
-              'get_assessmentinfo_cluster':"select b.name,info.studentgroup,ass.name,sum(info.num) from tb_institution_basic_assessment_info info,tb_assessment ass,tb_boundary b, tb_boundary b1, tb_boundary b2,tb_school s where ass.pid=%s and info.assid=ass.id and info.sid=s.id and s.bid=b.id and b.parent=b1.id and b1.parent=b2.id and b.id = %s group by b.name,info.studentgroup,ass.name",
+              'get_assessmentinfo_district':"select b2.name,info.studentgroup,ass.name,sum(info.cohortsnum) from tb_institution_basic_assessment_info_cohorts info,tb_assessment ass,tb_boundary b, tb_boundary b1, tb_boundary b2,tb_school s where ass.pid=%s and info.assid=ass.id and info.sid=s.id and s.bid=b.id and b.parent=b1.id and b1.parent=b2.id and b2.id = %s group by b2.name,info.studentgroup,ass.name",
+              'get_assessmentinfo_block':"select b1.name,info.studentgroup,ass.name,sum(info.cohortsnum) from tb_institution_basic_assessment_info_cohorts info,tb_assessment ass,tb_boundary b, tb_boundary b1, tb_boundary b2,tb_school s where ass.pid=%s and info.assid=ass.id and info.sid=s.id and s.bid=b.id and b.parent=b1.id and b1.parent=b2.id and b1.id = %s group by b1.name,info.studentgroup,ass.name",
+              'get_assessmentinfo_cluster':"select b.name,info.studentgroup,ass.name,sum(info.cohortsnum) from tb_institution_basic_assessment_info_cohorts info,tb_assessment ass,tb_boundary b, tb_boundary b1, tb_boundary b2,tb_school s where ass.pid=%s and info.assid=ass.id and info.sid=s.id and s.bid=b.id and b.parent=b1.id and b1.parent=b2.id and b.id = %s group by b.name,info.studentgroup,ass.name",
               'get_school_info':"select b2.name, b1.name, b.name, s.name,b.type,s.cat,s.sex,s.moi,s.mgmt,s.dise_code,s.status from tb_boundary b, tb_boundary b1, tb_boundary b2, tb_school s where s.id = %s and s.bid=b.id and b.parent=b1.id and b1.parent=b2.id",
               'get_school_address_info':"select a.address,a.area,a.pincode,a.landmark,a.instidentification,a.instidentification2, a.bus from tb_address a,tb_school s where s.aid=a.id and s.id=%s",
               'get_sys_info':"select sys.dateofvisit,sys.comments,sys.id,initcap(sys.name),to_char(sys.entered_timestamp, 'yyyy-mm-dd HH24:MI:SS') from tb_sys_data sys where sys.schoolid=%s and sys.verified='Y'",
@@ -355,9 +354,9 @@ class baseAssessment:
         cursor.execute(statements['get_programme_info'],(self.pid,))
         result = cursor.fetchall()
         for row in result:
-          self.data["programme"]["name"]=row[0]
+          self.data["programme"]["name"]=str(row[0])
           self.data["programme"]["year"]=str(row[1]).split("-")[0]
-          self.data["programme"]["partner"]=row[2]
+          self.data["programme"]["partner"]=str(row[2])
         cursor.close()
         DbManager.getMainCon().commit()
       except:
@@ -373,7 +372,7 @@ class baseAssessment:
         cursor.execute(statements[query],(self.pid,self.id,))
         result = cursor.fetchall()
         for row in result:
-          self.data["name"]=row[3].capitalize()
+          self.data["name"]=str(row[3]).capitalize()
           if row[0] not in baseassess[self.pid]:
             if qtype=='school' or qtype=='preschool':
               self.districtid=row[5]
@@ -428,11 +427,11 @@ class baseAssessment:
           if classname not in self.data["baseline"]:
              self.data["baseline"][classname]={}
 
-          domain=row[2]
-          domain_order=row[3]
-          asstext=row[4]
-          asstext_order=row[5]
-          assval=row[6]
+          domain=str(row[2])
+          domain_order=int(row[3])
+          asstext=str(row[4])
+          asstext_order=int(row[5])
+          assval=int(row[6])
           if domain not in self.data["baseline"][classname]:
             self.data["baseline"][classname][domain]={"order":domain_order}
           if asstext not in self.data["baseline"][classname][domain]:
@@ -476,11 +475,11 @@ class baseAssessment:
           if row[2] =="male":
             gender="Boys"
 
-          domain=row[3]
-          domain_order=row[4]
-          asstext=row[5]
-          asstext_order=row[6]
-          assval=row[7]
+          domain=str(row[3])
+          domain_order=int(row[4])
+          asstext=str(row[5])
+          asstext_order=int(row[6])
+          assval=int(row[7])
      
 
           if gender not in self.data["baseline"][classname][domain][asstext]["gender"]:
@@ -553,11 +552,11 @@ class baseAssessment:
             continue
           classname=str(row[1]).strip()
           mt=row[2].capitalize()
-          domain=row[3]
-          domain_order=row[4]
-          asstext=row[5]
-          asstext_order=row[6]
-          assval=row[7]
+          domain=str(row[3])
+          domain_order=int(row[4])
+          asstext=str(row[5])
+          asstext_order=int(row[6])
+          assval=int(row[7])
           if mt not in self.data["baseline"][classname][domain][asstext]["mt"]:
             self.data["baseline"][classname][domain][asstext]["mt"][mt]=float(assval)
           else:
@@ -597,8 +596,8 @@ class baseAssessment:
         result = cursor.fetchall()
         for row in result:
           classname=str(row[1]).strip()
-          assname=row[2]
-          count=row[3]
+          assname=str(row[2])
+          count=int(row[3])
           if classname not in self.count:
             self.count[classname]={}
           self.count[classname][assname]=count
@@ -619,12 +618,12 @@ class baseAssessment:
         result = cursor.fetchall()
         for row in result:
           classname=str(row[2]).strip()
-          domain=row[3]
-          domain_order=row[4]
-          aggtext=row[5]
-          aggtext_order=row[6]
-          assname=row[7]
-          sum=row[8]
+          domain=str(row[3])
+          domain_order=int(row[4])
+          aggtext=str(row[5])
+          aggtext_order=int(row[6])
+          assname=str(row[7])
+          sum=int(row[8])
           starttime=str(row[9])
 
           if classname not in self.data["progress"]:
@@ -681,13 +680,13 @@ class baseAssessment:
         cursor.execute(statements[query],(self.pid,self.id,))
         result = cursor.fetchall()
         for row in result:
-          sname=row[1].capitalize()
+          sname=str(row[1]).capitalize()
           classname=str(row[2]).strip()
-          domain=row[3]
-          domain_order=row[4]
-          aggtext=row[5]
-          aggtext_order=row[6]
-          assname=row[7]
+          domain=str(row[3])
+          domain_order=int(row[4])
+          aggtext=str(row[5])
+          aggtext_order=int(row[6])
+          assname=str(row[7])
           aggsum=float(row[8])
           starttime=str(row[9])
 
@@ -701,7 +700,7 @@ class baseAssessment:
             self.data["analytics"][classname][starttime][assname][domain]={"order":domain_order}
           if aggtext not in self.data["analytics"][classname][starttime][assname][domain]:
             self.data["analytics"][classname][starttime][assname][domain][aggtext]={"order":aggtext_order,"value":{}}
-          self.data["analytics"][classname][starttime][assname][domain][aggtext]["value"][qtype]={"name":sname,"value":round(float(aggsum/float(self.count[classname][assname]))*100.0,2),"type":qtype.capitalize()}
+          self.data["analytics"][classname][starttime][assname][domain][aggtext]["value"][self.type]={"name":sname,"value":round(float(aggsum/float(self.count[classname][assname]))*100.0,2),"type":qtype.capitalize()}
 
           if classname not in self.data["base"]["classes"]:
             self.data["base"]["classes"][classname]={"Boys":0,"Girls":0}
@@ -730,8 +729,8 @@ class baseAssessment:
           bname=""
           for row in result:
             classname=str(row[1]).strip()
-            assname=row[2]
-            classsum=row[3]
+            assname=str(row[2])
+            classsum=int(row[3])
             if classname not in boundarytotal[boundary["id"]]:
               boundarytotal[boundary["id"]][classname]={}
             boundarytotal[boundary["id"]][classname][assname]=classsum
@@ -745,13 +744,13 @@ class baseAssessment:
           result = cursor.fetchall()
           for row in result:
             boundarytype=boundary["type"].capitalize()
-            bname=row[1].capitalize()
+            bname=str(row[1]).capitalize()
             classname=str(row[2]).strip()
-            domain=row[3]
-            domain_order=row[4]
-            aggtext=row[5]
-            aggtext_order=row[6]
-            assname=row[7]
+            domain=str(row[3])
+            domain_order=int(row[4])
+            aggtext=str(row[5])
+            aggtext_order=int(row[6])
+            assname=str(row[7])
             aggsum=float(row[8])
             starttime=str(row[9])
 
@@ -1681,7 +1680,7 @@ class listFiles:
       mpfilenames = []
       mlafilenames = []
       path = ConfigReader.getConfigValue('Reports','klpreports')
-      fileList["reptype"] = ["demographics","finances","infrastructure"]
+      fileList["reptype"] = ["demographics","finances","infrastructure","library"]
       fileList["subdir1"] = "/Kannada"
       fileList["subdir2"] = "/English"
       fileList["directory"] = path

@@ -186,7 +186,9 @@ dist_code character varying(3),
 "09_10g" numeric(3),
 "09_10n" numeric(3),
 "10_11g" numeric(3),
-"10_11n" numeric(3)
+"10_11n" numeric(3),
+"11_12g" numeric(3),
+"11_12n" numeric(3)
 );
 
 CREATE OR REPLACE function agg_mgmt_by_acad_yr() returns void as $$
@@ -194,9 +196,9 @@ declare
 		datarecord RECORD;
 begin
 		for datarecord in
-				select ay.name, g.dist_code, (cast(sum(g.pass_stu_count) AS float)*100/cast(sum(g.tot_stu_count) AS float))::int as govt_pass, (cast(sum(n.pass_stu_count) AS float)*100/cast(sum(n.tot_stu_count) AS float))::int as pvt_pass from tb_academic_year ay, tb_sslc_agg g, tb_sslc_agg n where g.dist_code=n.dist_code and g.is_govt='G' and n.is_govt='N' and n.ayid = ay.id and g.ayid=101 and n.ayid=101 group by g.dist_code,ay.name order by ay.name,g.dist_code
+				select ay.name, g.dist_code, (cast(sum(g.pass_stu_count) AS float)*100/cast(sum(g.tot_stu_count) AS float))::int as govt_pass, (cast(sum(n.pass_stu_count) AS float)*100/cast(sum(n.tot_stu_count) AS float))::int as pvt_pass from tb_academic_year ay, tb_sslc_agg g, tb_sslc_agg n where g.dist_code=n.dist_code and g.is_govt='G' and n.is_govt='N' and n.ayid = ay.id and g.ayid=102 and n.ayid=102 group by g.dist_code,ay.name order by ay.name,g.dist_code
 		loop
-				insert into tb_agg_mgmt_acadyr (dist_code, "10_11g", "10_11n") values (datarecord.dist_code, datarecord.govt_pass, datarecord.pvt_pass);         
+				insert into tb_agg_mgmt_acadyr (dist_code, "11_12g", "11_12n") values (datarecord.dist_code, datarecord.govt_pass, datarecord.pvt_pass);         
 		end loop;
 		for datarecord in
 				select ay.name, g.dist_code, (cast(sum(g.pass_stu_count) AS float)*100/cast(sum(g.tot_stu_count) AS float))::int as govt_pass, (cast(sum(n.pass_stu_count) AS float)*100/cast(sum(n.tot_stu_count) AS float))::int as pvt_pass from tb_academic_year ay, tb_sslc_agg g, tb_sslc_agg n where g.dist_code=n.dist_code and g.is_govt='G' and n.is_govt='N' and n.ayid = ay.id and g.ayid=7 and n.ayid=7 group by g.dist_code,ay.name order by ay.name,g.dist_code
@@ -228,6 +230,11 @@ begin
 		loop
 				update tb_agg_mgmt_acadyr set "09_10g" = datarecord.govt_pass , "09_10n" = datarecord.pvt_pass where dist_code= datarecord.dist_code;         
 		end loop;
+		for datarecord in
+				select ay.name, g.dist_code, (cast(sum(g.pass_stu_count) AS float)*100/cast(sum(g.tot_stu_count) AS float))::int as govt_pass, (cast(sum(n.pass_stu_count) AS float)*100/cast(sum(n.tot_stu_count) AS float))::int as pvt_pass from tb_academic_year ay, tb_sslc_agg g, tb_sslc_agg n where g.dist_code=n.dist_code and g.is_govt='G' and n.is_govt='N' and n.ayid = ay.id and g.ayid=101 and n.ayid=101 group by g.dist_code,ay.name order by ay.name,g.dist_code
+		loop
+				update tb_agg_mgmt_acadyr set "10_11g" = datarecord.govt_pass , "10_11n" = datarecord.pvt_pass where dist_code= datarecord.dist_code;         
+		end loop;
 end;
 $$ language plpgsql;
 
@@ -250,7 +257,9 @@ is_govt character varying(3),
 "09_10g" numeric(3),
 "09_10b" numeric(3),
 "10_11g" numeric(3),
-"10_11b" numeric(3)
+"10_11b" numeric(3),
+"11_12g" numeric(3),
+"11_12b" numeric(3)
 );
 
 CREATE OR REPLACE function agg_gender_by_acad_yr() returns void as $$
@@ -258,9 +267,9 @@ declare
 		datarecord RECORD;
 begin
 		for datarecord in
-				select ay.name, g.dist_code, g.is_govt, (cast(sum(g.pass_stu_count) AS float)*100/cast(sum(g.tot_stu_count) AS float))::int as girl_pass, (cast(sum(b.pass_stu_count) AS float)*100/cast(sum(b.tot_stu_count) AS float))::int as boy_pass from tb_academic_year ay, tb_sslc_agg g, tb_sslc_agg b where g.dist_code=b.dist_code and g.gender_code='G' and b.gender_code='B' and b.ayid = ay.id and g.ayid=101 and b.ayid=101 group by g.dist_code, g.is_govt,ay.name order by ay.name,g.dist_code
+				select ay.name, g.dist_code, g.is_govt, (cast(sum(g.pass_stu_count) AS float)*100/cast(sum(g.tot_stu_count) AS float))::int as girl_pass, (cast(sum(b.pass_stu_count) AS float)*100/cast(sum(b.tot_stu_count) AS float))::int as boy_pass from tb_academic_year ay, tb_sslc_agg g, tb_sslc_agg b where g.dist_code=b.dist_code and g.gender_code='G' and b.gender_code='B' and b.ayid = ay.id and g.ayid=102 and b.ayid=102 group by g.dist_code, g.is_govt,ay.name order by ay.name,g.dist_code
 		loop
-				insert into tb_agg_gender_acadyr (dist_code,is_govt, "10_11g", "10_11b") values (datarecord.dist_code, datarecord.is_govt,datarecord.girl_pass, datarecord.boy_pass);         
+				insert into tb_agg_gender_acadyr (dist_code,is_govt, "11_12g", "11_12b") values (datarecord.dist_code, datarecord.is_govt,datarecord.girl_pass, datarecord.boy_pass);         
 		end loop;
 		for datarecord in
 				select ay.name, g.dist_code, g.is_govt, (cast(sum(g.pass_stu_count) AS float)*100/cast(sum(g.tot_stu_count) AS float))::int as girl_pass, (cast(sum(b.pass_stu_count) AS float)*100/cast(sum(b.tot_stu_count) AS float))::int as boy_pass from tb_academic_year ay, tb_sslc_agg g, tb_sslc_agg b where g.dist_code=b.dist_code and g.gender_code='G' and b.gender_code='B' and b.ayid = ay.id and g.ayid=7 and b.ayid=7 group by g.dist_code, g.is_govt,ay.name order by ay.name,g.dist_code
@@ -292,6 +301,11 @@ begin
 		loop
 				update tb_agg_gender_acadyr set "09_10g" = datarecord.girl_pass , "09_10b" = datarecord.boy_pass where dist_code= datarecord.dist_code and is_govt=datarecord.is_govt;         
 		end loop;
+		for datarecord in
+				select ay.name, g.dist_code, g.is_govt, (cast(sum(g.pass_stu_count) AS float)*100/cast(sum(g.tot_stu_count) AS float))::int as girl_pass, (cast(sum(b.pass_stu_count) AS float)*100/cast(sum(b.tot_stu_count) AS float))::int as boy_pass from tb_academic_year ay, tb_sslc_agg g, tb_sslc_agg b where g.dist_code=b.dist_code and g.gender_code='G' and b.gender_code='B' and b.ayid = ay.id and g.ayid=101 and b.ayid=101 group by g.dist_code, g.is_govt,ay.name order by ay.name,g.dist_code
+		loop
+				update tb_agg_gender_acadyr set "10_11g" = datarecord.girl_pass , "10_11b" = datarecord.boy_pass where dist_code= datarecord.dist_code and is_govt=datarecord.is_govt;         
+		end loop;
 end;
 $$ language plpgsql;
 
@@ -321,7 +335,10 @@ is_govt character varying(3),
 "09_10e" numeric(3),
 "10_11m" numeric(3),
 "10_11k" numeric(3),
-"10_11e" numeric(3)
+"10_11e" numeric(3),
+"11_12m" numeric(3),
+"11_12k" numeric(3),
+"11_12e" numeric(3)
 );
 
 CREATE OR REPLACE function agg_sub_by_acad_yr() returns void as $$
@@ -329,9 +346,9 @@ declare
 		datarecord RECORD;
 begin
 		for datarecord in
-				select ay.name, m.dist_code, m.is_govt, avg(m.sub_avg_marks)::int as math_avg, avg(k.sub_avg_marks)::int as kan_avg, avg(e.sub_avg_marks)::int as eng_avg from tb_academic_year ay, tb_sslc_agg m, tb_sslc_agg k, tb_sslc_agg e where m.dist_code = e.dist_code and e.dist_code = k.dist_code and m.dist_code = k.dist_code and m.ayid = ay.id and m.ayid=101 and k.ayid=ay.id and k.ayid=101 and e.ayid=ay.id and e.ayid=101 and m.sub_code = '81' and e.sub_code in ('14','31','63') and k.sub_code in ('01','33','62')  and m.is_govt=k.is_govt and k.is_govt=e.is_govt and e.is_govt=m.is_govt group by m.dist_code, m.is_govt, ay.name order by ay.name,m.dist_code
+				select ay.name, m.dist_code, m.is_govt, avg(m.sub_avg_marks)::int as math_avg, avg(k.sub_avg_marks)::int as kan_avg, avg(e.sub_avg_marks)::int as eng_avg from tb_academic_year ay, tb_sslc_agg m, tb_sslc_agg k, tb_sslc_agg e where m.dist_code = e.dist_code and e.dist_code = k.dist_code and m.dist_code = k.dist_code and m.ayid = ay.id and m.ayid=102 and k.ayid=ay.id and k.ayid=102 and e.ayid=ay.id and e.ayid=102 and m.sub_code = '81' and e.sub_code in ('14','31','63') and k.sub_code in ('01','33','62')  and m.is_govt=k.is_govt and k.is_govt=e.is_govt and e.is_govt=m.is_govt group by m.dist_code, m.is_govt, ay.name order by ay.name,m.dist_code
 		loop
-				insert into tb_agg_sub_acadyr (dist_code,is_govt, "10_11m", "10_11k","10_11e") values (datarecord.dist_code, datarecord.is_govt,datarecord.math_avg, datarecord.kan_avg, datarecord.eng_avg);         
+				insert into tb_agg_sub_acadyr (dist_code,is_govt, "11_12m", "11_12k","11_12e") values (datarecord.dist_code, datarecord.is_govt,datarecord.math_avg, datarecord.kan_avg, datarecord.eng_avg);         
 		end loop;
 		for datarecord in
 				select ay.name, m.dist_code, m.is_govt, avg(m.sub_avg_marks)::int as math_avg, avg(k.sub_avg_marks)::int as kan_avg, avg(e.sub_avg_marks)::int as eng_avg from tb_academic_year ay, tb_sslc_agg m, tb_sslc_agg k, tb_sslc_agg e where m.dist_code = e.dist_code and e.dist_code = k.dist_code and m.dist_code = k.dist_code and m.ayid = ay.id and m.ayid=7 and k.ayid=7 and e.ayid = 7 and m.sub_code = '81' and e.sub_code in ('14','31','63') and k.sub_code in ('01','33','62')  and m.is_govt=k.is_govt and k.is_govt=e.is_govt and e.is_govt=m.is_govt group by m.dist_code, m.is_govt, ay.name order by ay.name,m.dist_code
@@ -363,6 +380,11 @@ begin
 		loop
 				update tb_agg_sub_acadyr set "09_10m" = datarecord.math_avg , "09_10k" = datarecord.kan_avg, "09_10e" = datarecord.eng_avg where dist_code= datarecord.dist_code and is_govt=datarecord.is_govt;         
 		end loop;
+		for datarecord in
+				select ay.name, m.dist_code, m.is_govt, avg(m.sub_avg_marks)::int as math_avg, avg(k.sub_avg_marks)::int as kan_avg, avg(e.sub_avg_marks)::int as eng_avg from tb_academic_year ay, tb_sslc_agg m, tb_sslc_agg k, tb_sslc_agg e where m.dist_code = e.dist_code and e.dist_code = k.dist_code and m.dist_code = k.dist_code and m.ayid = ay.id and m.ayid=101 and k.ayid=ay.id and k.ayid=101 and e.ayid=ay.id and e.ayid=101 and m.sub_code = '81' and e.sub_code in ('14','31','63') and k.sub_code in ('01','33','62')  and m.is_govt=k.is_govt and k.is_govt=e.is_govt and e.is_govt=m.is_govt group by m.dist_code, m.is_govt, ay.name order by ay.name,m.dist_code
+		loop
+				update tb_agg_sub_acadyr set "10_11m" = datarecord.math_avg , "10_11k" = datarecord.kan_avg, "10_11e" = datarecord.eng_avg where dist_code= datarecord.dist_code and is_govt=datarecord.is_govt;         
+		end loop;
 end;
 $$ language plpgsql;
 
@@ -392,7 +414,10 @@ moi character varying(3),
 "09_10e" numeric(3),
 "10_11m" numeric(3),
 "10_11k" numeric(3),
-"10_11e" numeric(3)
+"10_11e" numeric(3),
+"11_12m" numeric(3),
+"11_12k" numeric(3),
+"11_12e" numeric(3)
 );
 
 CREATE OR REPLACE function agg_moi_by_acad_yr() returns void as $$
@@ -400,9 +425,9 @@ declare
 		datarecord RECORD;
 begin
 		for datarecord in
-				select ay.name, m.dist_code, case when m.medium in ('e','E') then 'E' when m.medium in ('K','EK') then 'K' when m.medium = 'U' then 'U' else 'O' end as moi, avg(m.sub_avg_marks)::int as math_avg, avg(k.sub_avg_marks)::int as kan_avg, avg(e.sub_avg_marks)::int as eng_avg from tb_academic_year ay, tb_sslc_agg m, tb_sslc_agg k, tb_sslc_agg e where m.dist_code = e.dist_code and e.dist_code = k.dist_code and m.dist_code = k.dist_code and m.ayid = ay.id and m.ayid=101 and k.ayid=ay.id and k.ayid=101 and e.ayid=ay.id and e.ayid=101 and m.sub_code = '81' and e.sub_code in ('14','31','63') and k.sub_code in ('01','33','62')  and m.medium=k.medium and k.medium=e.medium and e.medium=m.medium group by m.dist_code, moi, ay.name order by ay.name,m.dist_code
+				select ay.name, m.dist_code, case when m.medium in ('e','E') then 'E' when m.medium in ('K','EK') then 'K' when m.medium = 'U' then 'U' else 'O' end as moi, avg(m.sub_avg_marks)::int as math_avg, avg(k.sub_avg_marks)::int as kan_avg, avg(e.sub_avg_marks)::int as eng_avg from tb_academic_year ay, tb_sslc_agg m, tb_sslc_agg k, tb_sslc_agg e where m.dist_code = e.dist_code and e.dist_code = k.dist_code and m.dist_code = k.dist_code and m.ayid = ay.id and m.ayid=102 and k.ayid=ay.id and k.ayid=102 and e.ayid=ay.id and e.ayid=102 and m.sub_code = '81' and e.sub_code in ('14','31','63') and k.sub_code in ('01','33','62')  and m.medium=k.medium and k.medium=e.medium and e.medium=m.medium group by m.dist_code, moi, ay.name order by ay.name,m.dist_code
 		loop
-				insert into tb_agg_moi_acadyr (dist_code,moi, "10_11m", "10_11k","10_11e") values (datarecord.dist_code, datarecord.moi,datarecord.math_avg, datarecord.kan_avg, datarecord.eng_avg);         
+				insert into tb_agg_moi_acadyr (dist_code,moi, "11_12m", "11_12k","11_12e") values (datarecord.dist_code, datarecord.moi,datarecord.math_avg, datarecord.kan_avg, datarecord.eng_avg);         
 		end loop;
 		for datarecord in
 				select ay.name, m.dist_code, case when m.medium in ('e','E') then 'E' when m.medium in ('K','EK') then 'K' when m.medium = 'U' then 'U' else 'O' end as moi, avg(m.sub_avg_marks)::int as math_avg, avg(k.sub_avg_marks)::int as kan_avg, avg(e.sub_avg_marks)::int as eng_avg from tb_academic_year ay, tb_sslc_agg m, tb_sslc_agg k, tb_sslc_agg e where m.dist_code = e.dist_code and e.dist_code = k.dist_code and m.dist_code = k.dist_code and m.ayid = ay.id and m.ayid=7 and k.ayid=7 and e.ayid = 7 and m.sub_code = '81' and e.sub_code in ('14','31','63') and k.sub_code in ('01','33','62')  and m.medium=k.medium and k.medium=e.medium and e.medium=m.medium group by m.dist_code, moi, ay.name order by ay.name,m.dist_code
@@ -433,6 +458,11 @@ begin
 				select ay.name, m.dist_code, case when m.medium in ('e','E') then 'E' when m.medium in ('K','EK') then 'K' when m.medium = 'U' then 'U' else 'O' end as moi, avg(m.sub_avg_marks)::int as math_avg, avg(k.sub_avg_marks)::int as kan_avg, avg(e.sub_avg_marks)::int as eng_avg from tb_academic_year ay, tb_sslc_agg m, tb_sslc_agg k, tb_sslc_agg e where m.dist_code = e.dist_code and e.dist_code = k.dist_code and m.dist_code = k.dist_code and m.ayid = ay.id and m.ayid=119 and k.ayid=119 and e.ayid = 119 and m.sub_code = '81' and e.sub_code in ('14','31','63') and k.sub_code in ('01','33','62')  and m.medium=k.medium and k.medium=e.medium and e.medium=m.medium group by m.dist_code, moi, ay.name order by ay.name,m.dist_code
 		loop
 				update tb_agg_moi_acadyr set "09_10m" = datarecord.math_avg , "09_10k" = datarecord.kan_avg, "09_10e" = datarecord.eng_avg where dist_code= datarecord.dist_code and moi=datarecord.moi;         
+		end loop;
+		for datarecord in
+				select ay.name, m.dist_code, case when m.medium in ('e','E') then 'E' when m.medium in ('K','EK') then 'K' when m.medium = 'U' then 'U' else 'O' end as moi, avg(m.sub_avg_marks)::int as math_avg, avg(k.sub_avg_marks)::int as kan_avg, avg(e.sub_avg_marks)::int as eng_avg from tb_academic_year ay, tb_sslc_agg m, tb_sslc_agg k, tb_sslc_agg e where m.dist_code = e.dist_code and e.dist_code = k.dist_code and m.dist_code = k.dist_code and m.ayid = ay.id and m.ayid=101 and k.ayid=ay.id and k.ayid=101 and e.ayid=ay.id and e.ayid=101 and m.sub_code = '81' and e.sub_code in ('14','31','63') and k.sub_code in ('01','33','62')  and m.medium=k.medium and k.medium=e.medium and e.medium=m.medium group by m.dist_code, moi, ay.name order by ay.name,m.dist_code
+		loop
+				update tb_agg_moi_acadyr set "10_11m" = datarecord.math_avg , "10_11k" = datarecord.kan_avg, "10_11e" = datarecord.eng_avg where dist_code= datarecord.dist_code and moi=datarecord.moi;         
 		end loop;
 end;
 $$ language plpgsql;

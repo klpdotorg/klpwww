@@ -98,23 +98,22 @@ pidType={"grade":[1,4,5,7,8,13,15,17,18,19,20,23,25],"mark":[2,3,6,9,10,11,12,14
 baseassess = {"1":[1],
               "2":[5,6,7,8],
               "3":[13,14,15,16],
-              "4":[21],
               "5":[23],
               "6":[25],
               "7":[27],
               "8":[30],
               "9":[33],
-              "10":[35],
-              "11":[37],
-              "12":[39],
-              "13":[40],
               "14":[41,43,45,47],
               "15":[49],
-              "16":[51,53],
               "18":[56],
-              "19":[59],
               "23":[65,66,67],
-              "25":[70]
+              "24":[68,69],
+              "25":[70],
+              "26":[71],
+              "28":[81,84],
+              "29":[87,90,93],
+              "30":[96,99],
+              "31":[102,105,108]
               }
 
 types={'district':'district','block':'block','cluster':'cluster','school':'school','preschooldistrict':'district','project':'block','circle':'cluster','preschool':'school'}
@@ -181,9 +180,9 @@ statements = {'get_district':"select bcoord.id_bndry,ST_AsText(bcoord.coord),ini
               'get_progress_district':"select agg.assid,b2.name,agg.studentgroup,agg.domain,agg.domain_order,agg.aggtext,agg.aggtext_order,ass.name,   sum(agg.cohortsval),ass.start from tb_institution_assessment_agg_cohorts agg,tb_assessment ass,tb_boundary b, tb_boundary b1, tb_boundary b2,tb_school s where agg.assid=ass.id and agg.sid=s.id and s.bid=b.id and b.parent=b1.id and b1.parent=b2.id and ass.pid=%s and b2.id=%s group by b2.name,agg.domain,agg.domain_order,agg.aggtext,agg.aggtext_order,ass.name,ass.start,agg.assid,agg.studentgroup",
               'get_progress_block':"select agg.assid,b1.name,agg.studentgroup,agg.domain,agg.domain_order,agg.aggtext,agg.aggtext_order,ass.name,   sum(agg.cohortsval),ass.start from tb_institution_assessment_agg_cohorts agg,tb_assessment ass,tb_boundary b, tb_boundary b1, tb_boundary b2,tb_school s where agg.assid=ass.id and agg.sid=s.id and s.bid=b.id and b.parent=b1.id and b1.parent=b2.id and ass.pid=%s and b1.id=%s group by b1.name,agg.domain,agg.domain_order,agg.aggtext,agg.aggtext_order,ass.name,ass.start,agg.assid,agg.studentgroup",
               'get_progress_cluster':"select agg.assid,b.name,agg.studentgroup,agg.domain,agg.domain_order,agg.aggtext,agg.aggtext_order,ass.name,   sum(agg.cohortsval),ass.start from tb_institution_assessment_agg_cohorts agg,tb_assessment ass,tb_boundary b, tb_boundary b1, tb_boundary b2,tb_school s where agg.assid=ass.id and agg.sid=s.id and s.bid=b.id and b.parent=b1.id and b1.parent=b2.id and ass.pid=%s and b.id=%s group by b.name,agg.domain,agg.domain_order,agg.aggtext,agg.aggtext_order,ass.name,ass.start,agg.assid,agg.studentgroup",
-              'get_assessmentinfo_district':"select b2.name,info.studentgroup,ass.name,sum(info.num) from tb_institution_basic_assessment_info info,tb_assessment ass,tb_boundary b, tb_boundary b1, tb_boundary b2,tb_school s where ass.pid=%s and info.assid=ass.id and info.sid=s.id and s.bid=b.id and b.parent=b1.id and b1.parent=b2.id and b2.id = %s group by b2.name,info.studentgroup,ass.name",
-              'get_assessmentinfo_block':"select b1.name,info.studentgroup,ass.name,sum(info.num) from tb_institution_basic_assessment_info info,tb_assessment ass,tb_boundary b, tb_boundary b1, tb_boundary b2,tb_school s where ass.pid=%s and info.assid=ass.id and info.sid=s.id and s.bid=b.id and b.parent=b1.id and b1.parent=b2.id and b1.id = %s group by b1.name,info.studentgroup,ass.name",
-              'get_assessmentinfo_cluster':"select b.name,info.studentgroup,ass.name,sum(info.num) from tb_institution_basic_assessment_info info,tb_assessment ass,tb_boundary b, tb_boundary b1, tb_boundary b2,tb_school s where ass.pid=%s and info.assid=ass.id and info.sid=s.id and s.bid=b.id and b.parent=b1.id and b1.parent=b2.id and b.id = %s group by b.name,info.studentgroup,ass.name",
+              'get_assessmentinfo_district':"select b2.name,info.studentgroup,ass.name,sum(info.cohortsnum) from tb_institution_basic_assessment_info_cohorts info,tb_assessment ass,tb_boundary b, tb_boundary b1, tb_boundary b2,tb_school s where ass.pid=%s and info.assid=ass.id and info.sid=s.id and s.bid=b.id and b.parent=b1.id and b1.parent=b2.id and b2.id = %s group by b2.name,info.studentgroup,ass.name",
+              'get_assessmentinfo_block':"select b1.name,info.studentgroup,ass.name,sum(info.cohortsnum) from tb_institution_basic_assessment_info_cohorts info,tb_assessment ass,tb_boundary b, tb_boundary b1, tb_boundary b2,tb_school s where ass.pid=%s and info.assid=ass.id and info.sid=s.id and s.bid=b.id and b.parent=b1.id and b1.parent=b2.id and b1.id = %s group by b1.name,info.studentgroup,ass.name",
+              'get_assessmentinfo_cluster':"select b.name,info.studentgroup,ass.name,sum(info.cohortsnum) from tb_institution_basic_assessment_info_cohorts info,tb_assessment ass,tb_boundary b, tb_boundary b1, tb_boundary b2,tb_school s where ass.pid=%s and info.assid=ass.id and info.sid=s.id and s.bid=b.id and b.parent=b1.id and b1.parent=b2.id and b.id = %s group by b.name,info.studentgroup,ass.name",
               'get_school_info':"select b2.name, b1.name, b.name, s.name,b.type,s.cat,s.sex,s.moi,s.mgmt,s.dise_code,s.status from tb_boundary b, tb_boundary b1, tb_boundary b2, tb_school s where s.id = %s and s.bid=b.id and b.parent=b1.id and b1.parent=b2.id",
               'get_school_address_info':"select a.address,a.area,a.pincode,a.landmark,a.instidentification,a.instidentification2, a.bus from tb_address a,tb_school s where s.aid=a.id and s.id=%s",
               'get_sys_info':"select sys.dateofvisit,sys.comments,sys.id,initcap(sys.name),to_char(sys.entered_timestamp, 'yyyy-mm-dd HH24:MI:SS') from tb_sys_data sys where sys.schoolid=%s and sys.verified='Y'",
@@ -210,6 +209,14 @@ statements = {'get_district':"select bcoord.id_bndry,ST_AsText(bcoord.coord),ini
               'get_bounded_preschools':"select inst.instid ,ST_AsText(inst.coord),upper(s.name) from vw_inst_coord inst, tb_school s,tb_boundary b where ST_Contains(ST_MakeEnvelope(%s,%s,%s,%s,-1), inst.coord) and s.id=inst.instid and s.bid=b.id and b.type='2' order by s.name",
 
 }
+
+sqlstatements={"selectlevelagg":"select year,class as clas,month, cast(coalesce(sum(\"GREEN\"),0) as text) as \"GREEN\" , cast(coalesce(sum(\"ORANGE\"),0) as text) as \"ORANGE\" , cast(coalesce(sum(\"WHITE\"),0) as text) as \"WHITE\" , cast(coalesce(sum(\"YELLOW\"),0) as text) as \"YELLOW\" , cast(coalesce(sum(\"NONE\"),0) as text) as \"NONE\" , cast(coalesce(sum(\"RED\"),0) as text) as \"RED\" , cast(coalesce(sum(\"BLUE\"),0) as text) as \"BLUE\" from ( select year,class,month, (case when trim(book_level)='GREEN' then child_count else NULL end) as \"GREEN\", (case when trim(book_level)='ORANGE' then child_count else NULL end) as \"ORANGE\", (case when trim(book_level)='WHITE' then child_count else NULL end) as \"WHITE\", (case when trim(book_level)='YELLOW' then child_count else NULL end) as \"YELLOW\", (case when trim(book_level)='NONE' then child_count else NULL end) as \"NONE\", (case when trim(book_level)='RED' then child_count else NULL end) as \"RED\", (case when trim(book_level)='BLUE' then child_count else NULL end) as \"BLUE\" from (select year,class,month,book_level,sum(child_count) as child_count from vw_lib_level_agg where klp_school_id=$schlid group by month,book_level,class,year) as t) as t group by month,class,year",
+        "selectlangagg":"select year,class as clas,month, cast(coalesce(sum(\"URDU\"),0) as text) as \"URDU\" , cast(coalesce(sum(\"KANNADA\"),0) as text) as \"KANNADA\" , cast(coalesce(sum(\"HINDI\"),0) as text) as \"HINDI\" , cast(coalesce(sum(\"ENGLISH\"),0) as text) as \"ENGLISH\" , cast(coalesce(sum(\"E/H\"),0) as text) as \"E/H\" , cast(coalesce(sum(\"E/K\"),0) as text) as \"E/K\" , cast(coalesce(sum(\"TAMIL\"),0) as text) as \"TAMIL\" , cast(coalesce(sum(\"TELUGU\"),0) as text) as \"TELUGU\" from ( select year,class,month, (case when trim(book_lang)='URDU' then child_count else NULL end) as \"URDU\", (case when trim(book_lang)='KANNADA' then child_count else NULL end) as \"KANNADA\", (case when trim(book_lang)='HINDI' then child_count else NULL end) as \"HINDI\", (case when trim(book_lang)='ENGLISH' then child_count else NULL end) as \"ENGLISH\", (case when trim(book_lang)='E/H' then child_count else NULL end) as \"E/H\", (case when trim(book_lang)='E/K' then child_count else NULL end) as \"E/K\", (case when trim(book_lang)='TAMIL' then child_count else NULL end) as \"TAMIL\", (case when trim(book_lang)='TELUGU' then child_count else NULL end) as \"TELUGU\" from (select year,class,month,book_lang,sum(child_count) as child_count from vw_lib_lang_agg where klp_school_id=$schlid group by month,book_lang,class,year) as t) as t group by month,class,year",
+        "selectborrow":"select trans_year,cast(class as text) as clas,getmonth(split_part(issue_date,\'/\',2)) as month,school_name, count(klp_child_id) from vw_lib_borrow where klp_school_id=$schlid group by klp_school_id,month,trans_year,class,school_name",
+        "selectyear":"select distinct year from vw_lib_level_agg where class is not null and klp_school_id=$schlid",
+        "selecttotalstudents":"select trim(sg.name) as clas,count(distinct stu.id) as total,acyear.name as academic_year from tb_student_class stusg, tb_class sg,tb_student stu, tb_academic_year as acyear where stu.id=stusg.stuid and stusg.clid=sg.id and sg.sid=$schlid and stu.status=2 and acyear.id=stusg.ayid and acyear.name in (select distinct year from vw_lib_level_agg)  group by clas,academic_year"
+}
+
 render = web.template.render('templates/', base='base')
 render_plain = web.template.render('templates/')
 
@@ -416,9 +423,9 @@ class baseAssessment:
         cursor.execute(statements['get_programme_info'],(self.pid,))
         result = cursor.fetchall()
         for row in result:
-          self.data["programme"]["name"]=row[0]
+          self.data["programme"]["name"]=str(row[0])
           self.data["programme"]["year"]=str(row[1]).split("-")[0]
-          self.data["programme"]["partner"]=row[2]
+          self.data["programme"]["partner"]=str(row[2])
         cursor.close()
         DbManager.getMainCon().commit()
       except:
@@ -434,7 +441,7 @@ class baseAssessment:
         cursor.execute(statements[query],(self.pid,self.id,))
         result = cursor.fetchall()
         for row in result:
-          self.data["name"]=row[3].capitalize()
+          self.data["name"]=str(row[3]).capitalize()
           if row[0] not in baseassess[self.pid]:
             if qtype=='school' or qtype=='preschool':
               self.districtid=row[5]
@@ -489,11 +496,11 @@ class baseAssessment:
           if classname not in self.data["baseline"]:
              self.data["baseline"][classname]={}
 
-          domain=row[2]
-          domain_order=row[3]
-          asstext=row[4]
-          asstext_order=row[5]
-          assval=row[6]
+          domain=str(row[2])
+          domain_order=int(row[3])
+          asstext=str(row[4])
+          asstext_order=int(row[5])
+          assval=int(row[6])
           if domain not in self.data["baseline"][classname]:
             self.data["baseline"][classname][domain]={"order":domain_order}
           if asstext not in self.data["baseline"][classname][domain]:
@@ -537,11 +544,11 @@ class baseAssessment:
           if row[2] =="male":
             gender="Boys"
 
-          domain=row[3]
-          domain_order=row[4]
-          asstext=row[5]
-          asstext_order=row[6]
-          assval=row[7]
+          domain=str(row[3])
+          domain_order=int(row[4])
+          asstext=str(row[5])
+          asstext_order=int(row[6])
+          assval=int(row[7])
      
 
           if gender not in self.data["baseline"][classname][domain][asstext]["gender"]:
@@ -614,11 +621,11 @@ class baseAssessment:
             continue
           classname=str(row[1]).strip()
           mt=row[2].capitalize()
-          domain=row[3]
-          domain_order=row[4]
-          asstext=row[5]
-          asstext_order=row[6]
-          assval=row[7]
+          domain=str(row[3])
+          domain_order=int(row[4])
+          asstext=str(row[5])
+          asstext_order=int(row[6])
+          assval=int(row[7])
           if mt not in self.data["baseline"][classname][domain][asstext]["mt"]:
             self.data["baseline"][classname][domain][asstext]["mt"][mt]=float(assval)
           else:
@@ -658,8 +665,8 @@ class baseAssessment:
         result = cursor.fetchall()
         for row in result:
           classname=str(row[1]).strip()
-          assname=row[2]
-          count=row[3]
+          assname=str(row[2])
+          count=int(row[3])
           if classname not in self.count:
             self.count[classname]={}
           self.count[classname][assname]=count
@@ -680,12 +687,12 @@ class baseAssessment:
         result = cursor.fetchall()
         for row in result:
           classname=str(row[2]).strip()
-          domain=row[3]
-          domain_order=row[4]
-          aggtext=row[5]
-          aggtext_order=row[6]
-          assname=row[7]
-          sum=row[8]
+          domain=str(row[3])
+          domain_order=int(row[4])
+          aggtext=str(row[5])
+          aggtext_order=int(row[6])
+          assname=str(row[7])
+          sum=int(row[8])
           starttime=str(row[9])
 
           if classname not in self.data["progress"]:
@@ -742,13 +749,13 @@ class baseAssessment:
         cursor.execute(statements[query],(self.pid,self.id,))
         result = cursor.fetchall()
         for row in result:
-          sname=row[1].capitalize()
+          sname=str(row[1]).capitalize()
           classname=str(row[2]).strip()
-          domain=row[3]
-          domain_order=row[4]
-          aggtext=row[5]
-          aggtext_order=row[6]
-          assname=row[7]
+          domain=str(row[3])
+          domain_order=int(row[4])
+          aggtext=str(row[5])
+          aggtext_order=int(row[6])
+          assname=str(row[7])
           aggsum=float(row[8])
           starttime=str(row[9])
 
@@ -762,7 +769,7 @@ class baseAssessment:
             self.data["analytics"][classname][starttime][assname][domain]={"order":domain_order}
           if aggtext not in self.data["analytics"][classname][starttime][assname][domain]:
             self.data["analytics"][classname][starttime][assname][domain][aggtext]={"order":aggtext_order,"value":{}}
-          self.data["analytics"][classname][starttime][assname][domain][aggtext]["value"][qtype]={"name":sname,"value":round(float(aggsum/float(self.count[classname][assname]))*100.0,2),"type":qtype.capitalize()}
+          self.data["analytics"][classname][starttime][assname][domain][aggtext]["value"][self.type]={"name":sname,"value":round(float(aggsum/float(self.count[classname][assname]))*100.0,2),"type":qtype.capitalize()}
 
           if classname not in self.data["base"]["classes"]:
             self.data["base"]["classes"][classname]={"Boys":0,"Girls":0}
@@ -791,8 +798,8 @@ class baseAssessment:
           bname=""
           for row in result:
             classname=str(row[1]).strip()
-            assname=row[2]
-            classsum=row[3]
+            assname=str(row[2])
+            classsum=int(row[3])
             if classname not in boundarytotal[boundary["id"]]:
               boundarytotal[boundary["id"]][classname]={}
             boundarytotal[boundary["id"]][classname][assname]=classsum
@@ -806,13 +813,13 @@ class baseAssessment:
           result = cursor.fetchall()
           for row in result:
             boundarytype=boundary["type"].capitalize()
-            bname=row[1].capitalize()
+            bname=str(row[1]).capitalize()
             classname=str(row[2]).strip()
-            domain=row[3]
-            domain_order=row[4]
-            aggtext=row[5]
-            aggtext_order=row[6]
-            assname=row[7]
+            domain=str(row[3])
+            domain_order=int(row[4])
+            aggtext=str(row[5])
+            aggtext_order=int(row[6])
+            assname=str(row[7])
             aggsum=float(row[8])
             starttime=str(row[9])
 
@@ -951,6 +958,7 @@ class SchoolPage:
     #print type + '|' + str(id) + '|' + str(tab)
     try: 
       data.update(CommonSchoolUtil.getSchoolInfo(id))
+      data.update(self.getacyear(id))
       if tab == 'basics':
         data.update(self.getBasicData(id))
         data.update(self.getSYSImages(id))
@@ -967,7 +975,7 @@ class SchoolPage:
       elif tab == 'infrastructure':
         if type=='school':
           data.update(self.getDiseData(id))
-          data.update(self.getLibraryData(id))
+          #data.update(self.getLibraryData(id))
         if type=='preschool':
           data.update(self.getAngInfraData(id))
       elif tab == 'nutrition':
@@ -975,6 +983,10 @@ class SchoolPage:
           data.update(self.getMidDayMealData(id))
           data.update(CommonSchoolUtil.getKlpEnrolment(id))
           data.update(CommonSchoolUtil.getDiseEnrolment(id))
+      elif tab == 'library':
+        # Library chart data
+        data.update(self.getLibraryChartData(id))
+	data.update(self.getLibraryData(id))
       elif tab == 'stories' :
         data.update(self.getSYSData(id))
         data.update(self.getSYSImages(id))
@@ -992,6 +1004,51 @@ class SchoolPage:
       DbManager.getMainCon().rollback()
       DbManager.getSysCon().rollback()
 
+  def getacyear(self,klpid):
+    tabledata={}
+    cursor = DbManager.getMainCon().cursor()
+    cursor.execute(statements['get_dise_ptr'],(klpid,))
+    result = cursor.fetchall()
+    for row in result:
+      tabledata['acyear'] = str(row[4])
+      tabledata['dise_books'] = str(row[7])
+    DbManager.getMainCon().commit()
+    cursor.close()
+    return tabledata
+ 
+
+  #library chart function
+  def getLibraryChartData(self,schlid):
+    data={}
+    #db=web.database()
+    db=KLPDB.getWebDbConnection()
+    resultlevel=[['year','clas','month','GREEN','RED','ORANGE','WHITE','BLUE','YELLOW']]
+    resultlang=[['year','clas','month','URDU','KANNADA','HINDI','ENGLISH','E/H','E/K','TAMIL','TELUGU']]
+    resultborrow=[['academic_year','clas','month','school_name','count']]
+    classtotals=[['clas','total','acyear']]
+    clas=[1,2,3,4,5,6,7]
+    year=[]
+    for row in db.query(sqlstatements["selectlevelagg"],{"schlid":schlid}):
+        resultlevel.append([row.year,row.clas,row.month,row.GREEN,row.RED,row.ORANGE,row.WHITE,row.BLUE,row.YELLOW])
+    for row in db.query(sqlstatements["selectlangagg"],{"schlid":schlid}):
+        resultlang.append([row.year,row.clas,row.month,row.KANNADA,row.URDU,row.HINDI,row.ENGLISH,getattr(row,'E/H'),getattr(row,'E/K'),row.TAMIL,row.TELUGU])
+    for row in db.query(sqlstatements["selectborrow"],{"schlid":schlid}):
+        resultborrow.append([row.trans_year,row.clas,row.month,row.school_name,row.count])
+    for row in db.query(sqlstatements["selectyear"],{"schlid":schlid}):
+        year.append(row.year)
+    for row in db.query(sqlstatements["selecttotalstudents"],{"schlid":schlid}):
+        classtotals.append([row.clas,row.total,row.academic_year])
+    #return render.libchart(schlid,resultlevel,resultlang,resultborrow,clas,year,classtotal)
+    data["resultlevel"]=resultlevel
+    data["resultlang"]=resultlang
+    data["resultborrow"]=resultborrow
+    data["clas"]=clas
+    data["year"]=year
+    data["classtotal"]=classtotals
+    #print data
+    return data
+    #End of library funciton
+    
   def getBasicData(self,id):
     data = {}
     cursor = DbManager.getMainCon().cursor()
@@ -1130,10 +1187,10 @@ class SchoolPage:
       tabledata['girls_count'] = str(row[2])
       tabledata['student_count'] = str(int(row[1]) + int(row[2]))
       tabledata['classroom_count'] = str(row[3])
-      tabledata['acyear'] = str(row[4])
+      #tabledata['acyear'] = str(row[4])
       tabledata['lowest_class'] = str(row[5])
       tabledata['highest_class'] = str(row[6])
-      tabledata['dise_books'] = str(row[7])
+      #tabledata['dise_books'] = str(row[7])
     DbManager.getMainCon().commit()
     cursor.execute(statements['get_dise_facility'],(klpid,))
     result = cursor.fetchall()
@@ -1697,7 +1754,7 @@ class listFiles:
       mpfilenames = []
       mlafilenames = []
       path = ConfigReader.getConfigValue('Reports','klpreports')
-      fileList["reptype"] = ["demographics","finances","infrastructure"]
+      fileList["reptype"] = ["demographics","finances","infrastructure","library"]
       fileList["subdir1"] = "/Kannada"
       fileList["subdir2"] = "/English"
       fileList["directory"] = path

@@ -10,8 +10,7 @@ $def with (data)
 	<link type="text/css" rel="stylesheet" href="/css/printschoolpage.css" media="print"/>
 	<link type="text/css" rel="stylesheet" href="/css/tabber.css"/>
 	<script type="text/javascript" src="/js/libs/tabber.js"></script>
-
-	<!-- // <script type="text/javascript" src="http://maps.google.com/maps/api/js?sensor=false"></script> -->
+	<script type="text/javascript" src="/js/libchart.js"></script>
 	<script type="text/javascript" src="/js/schoolpage.js"></script>
 	<script type="text/javascript" src="/js/utils.js"></script>
 
@@ -134,7 +133,7 @@ $def with (data)
 				 <div class='grid_12'><div id='dirlink2'></div></div>
 			  </div>
 
-			  <div class="tabbertab" id="6">
+			  <div class="tabbertab" id="3">
 				<h2>Programmes</h2>
 					<div class="grid_12">
 					  <div class="sub_header"><div id="assmt_info_heading"></div></div>
@@ -144,7 +143,7 @@ $def with (data)
 				 <div class='grid_12'><div id='dirlink3'></div></div>
 			  </div>
 
-			  <div class="tabbertab" id="5">
+			  <div class="tabbertab" id="4">
 				<h2>Finances</h2>
 					<div class="grid_12">
 					  <div class="sub_header"><div id="fin_info_heading"></div></div>
@@ -165,7 +164,7 @@ $def with (data)
 				 <div class='grid_12'><div id='dirlink4'></div></div>
 			  </div>
 
-			  <div class="tabbertab" id="4">
+			  <div class="tabbertab" id="5">
 				<h2>Infrastructure</h2>
 					<div class="grid_8">
 					  <div class="sub_header"><div id="infra_info_heading"></div></div>
@@ -179,15 +178,46 @@ $def with (data)
 					  <div class="sub_header"><div id="rte_info_heading"></div></div>
 					  <div id="rte_info"></div>
 				 </div>
-					<div class="grid_4">
-					  <div class="sub_header"><div id="lib_infra_heading"></div></div>
-					  <div id="lib_infra"></div>
-				 </div>
 				 <div class='grid_12'><div id='srcinfo5'></div></div>
 				 <div class='grid_12'><div id='dirlink5'></div></div>
 			  </div>
+
+			  <div class="tabbertab" id="6">
+                                <h2>Library</h2>
+                                <div id="library_data"></div>
+                                <div id="library_charts" class="grid_11" style="display:none">
+                                                <table width="100%" height="100%">
+                                                <tr><td><br>
+                                                <div id='displays' name='displays' align="center">
+                                                <select id="type" name="type" style="width:175px" onchange="display(this.value,1)">
+                                                        <option value="blevel">Borrow By Level</option>
+                                                        <option value="blang">Borrow By Language</option>
+                                                        <option value="agg">Aggregate</option>
+                                                </select>&nbsp;&nbsp;&nbsp;&nbsp;
+                                                Year  : <select id="acyear" name="acyear" onchange="changedata()" style="width:110px"></select>&nbsp;&nbsp;&nbsp;&nbsp;
+                                                Class : <select id="clas" name="clas" onchange="changedata()" style="width:110px">
+                                                        <option value="0">All</option>
+                                                </select>
+                                                </div><br>
+                                                </td></tr><tr><td><div id="aggchart" name="aggchart">
+                                                <center><div id='students'></div>
+                                                <div id="chart_div" style="width: 100%; height: 400px; display: block;"></div><br>
+                                                <div id="table_div" style="width: auto; height: 400px; display: none;"></div>
+                                                <input type='button' id='change' name='change' value='Change to Table View' onclick="changechart(this.value)"></center>
+                                                </div></td></tr></table>
+						
+				</div>
+				<div id="levelimage" class="grid_1" style="height:350px;margin-top:100px;" align="bottom"><img src="http://dev.klp.org.in:8013/images/lib_graphic.png" height="300px"></div>
+				<div class="grid_4">
+                                          <div class="sub_header"><div id="lib_infra_heading"></div></div>
+                                          <div id="lib_infra"></div>
+                                </div>
+                                <br>
+				<div class='grid_12'><div id='srcinfolibrary'></div></div>
+				<div class='grid_12'><div id='dirlink6'></div></div>
+                          </div>
 			  
-			  <div class="tabbertab" id="3">
+			  <div class="tabbertab" id="7">
 				<h2>Nutrition</h2>
 					<div class="grid_12">
 					  <div class="sub_header"><div id="mdm_info_heading"></div></div>
@@ -197,10 +227,10 @@ $def with (data)
 					  <div id="mdm_chart"></div>
 				 </div>
 				 <div class='grid_12'><div id='srcinfo6'></div></div>
-				 <div class='grid_12'><div id='dirlink6'></div></div>
+				 <div class='grid_12'><div id='dirlink7'></div></div>
 			  </div>
 
-			  <div class="tabbertab" id="7">
+			  <div class="tabbertab" id="8">
 				<h2>Share your Experience</h2>
 					<div class="grid_6">
 					  <div class="sub_header"><div id="sys_data_heading"></div></div>
@@ -213,7 +243,7 @@ $def with (data)
 					  <div class="sub_header"><div id="sys_comments_heading"></div></div>
 					  <div id="sys_comments"></div>
 					</div>
-				 <div class='grid_12'><div id='dirlink7'></div></div>
+				 <div class='grid_12'><div id='dirlink8'></div></div>
 			  </div>
 
 			<div class="grid_12" id="footer">

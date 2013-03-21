@@ -22,7 +22,7 @@
         
 	float:right;
 	border-top:solid 1px #43AD2F;
-	border-bottom:solid 3px #43AD2F;
+	border-bottom:solid 0px #43AD2F;
   height:208px;
   
 }
@@ -35,6 +35,32 @@
 #blog a:link{color: white;}
 #blog a:visited{color: white;}
 #blog a:hover {color: black;}
+
+#syscontent
+{
+  background:#F89400;
+  background-repeat: repeat;
+  height:30px;
+  text-align:left;
+  position:relative;
+  top:94px;
+  z-index:3;
+}
+
+#sysinfo
+{
+  padding-left: 5px;
+  padding-top : 1px;
+}
+#syscontent img{
+  vertical-align:middle;
+  text-align:middle;
+  height:28px;
+}
+
+#syscontent a:link{color: white;}
+#syscontent a:visited{color:white ;}
+#syscontent a:hover {color: #43AD2C;}
 
 #lowercontent
 {
@@ -73,8 +99,8 @@
 .slideshow img {
     background: none repeat scroll 0 0 #43AD2F;
     /*border: 1px solid #43AD2F;
-    border-radius: 10px 10px 10px 10px;*/
-    padding: 1px;
+    border-radius: 10px 10px 10px 10px;
+    padding: 1px;*/
 }
 .yui3-slideshow-content {
     position: relative;

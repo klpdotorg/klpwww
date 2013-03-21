@@ -1,4 +1,5 @@
 import psycopg2
+import web
 import os,sys
 import traceback
 from ConfigParser import SafeConfigParser
@@ -32,4 +33,12 @@ def getSysConnection():
   passwd = getConfigValue('SysDatabase','syspasswd')
   dsn = "dbname="+db+" user="+username+" host='localhost' password="+passwd
   connection = psycopg2.connect(dsn)
+  return connection
+
+def getWebDbConnection():
+  dbname = getConfigValue('Database','dbname')
+  username = getConfigValue('Database','user')
+  passwd = getConfigValue('Database','passwd')
+  dbtype='postgres'
+  connection = web.database(dbn=dbtype,user=username,pw=passwd,db=dbname)
   return connection

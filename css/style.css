@@ -403,3 +403,26 @@ ul.bottomnav  li:hover  {
 
 /* End of Footer Style */
 
+/* Overriding google vis table style */
+
+.google-visualization-table-table{
+	background:none !important;
+
+}
+
+.header-row-libchart {
+   border-top: 1px solid black;
+   border-bottom: 1px solid black;
+   border-left: 0px solid black;
+   border-right: 0px solid black;
+   font-size: 15px;
+   color: #E35804;
+}
+
+.background-libchart {
+   background-color: transparent;
+}
+
+.center-text-libchart {
+   text-align: center;
+}

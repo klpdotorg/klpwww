@@ -67,7 +67,7 @@ CREATE OR REPLACE function agg_institution(int) returns void as $$
 declare
         schs RECORD;
 begin
-        for schs in SELECT s.id as id, s.name as name, s.bid as bid, c.sex as sex, c.mt as mt, count(stu.id) AS count
+        for schs in SELECT s.id as id, s.name as name, s.bid as bid, c.sex as sex, c.mt as mt, count(distinct stu.id) AS count
                  FROM tb_student stu, tb_class cl, tb_student_class sc, tb_child c, tb_school s
                  WHERE cl.sid = s.id AND sc.clid = cl.id AND sc.stuid = stu.id AND sc.status=1 AND stu.cid = c.id AND sc.ayid = $1
                  GROUP BY s.id, s.name, s.bid, c.sex, c.mt 
@@ -100,7 +100,7 @@ begin
         query:='SELECT s.id as id,ass.id as assid,cl.name as clname,c.sex as sex, c.mt as mt, count(distinct stu.id) AS count FROM tb_student_eval se,tb_question q,tb_assessment ass,tb_student stu, tb_class cl, tb_student_class sc, tb_child c, tb_school s,tb_programme p,tb_boundary b WHERE se.stuid=stu.id and se.qid=q.id and q.assid=ass.id and ass.pid=p.id and sc.stuid=stu.id and sc.clid=cl.id AND cl.sid = s.id AND stu.cid = c.id AND sc.ayid ='|| $1||' and ass.id='||$2||' and sc.ayid=p.ayid and s.bid=b.id and p.type=b.type and (se.grade is not null or se.mark is not null)';
         FOR i in array_lower(inallassid,1)..array_upper(inallassid,1)
         loop
-          query:= query||' and se.stuid in (select se.stuid from tb_student_eval se,tb_question q where se.qid=q.id and q.assid = '||inallassid[i]||')';
+          query:= query||' and se.stuid in (select se.stuid from tb_student_eval se,tb_question q where se.qid=q.id and (se.grade is not null or se.mark is not null) and q.assid = '||inallassid[i]||')';
         end loop;
         query=query||'GROUP BY s.id, ass.id,cl.id,c.sex,c.mt'; 
         for schs in execute query
@@ -133,10 +133,10 @@ declare
         schs RECORD;
         query text;
 begin
-        query:='SELECT s.id as id,ass.id as assid,c.sex as sex, c.mt as mt, count(distinct stu.id) AS count FROM tb_student_eval se,tb_question q,tb_assessment ass,tb_student stu, tb_class cl, tb_student_class sc, tb_child c, tb_school s,tb_programme p,tb_boundary b WHERE se.stuid=stu.id and se.qid=q.id and q.assid=ass.id and ass.pid=p.id and sc.stuid=stu.id and sc.clid=cl.id AND cl.sid = s.id AND stu.cid = c.id AND sc.ayid = '||inayid||' and ass.id='||inassid||' and sc.ayid=p.ayid and s.bid=b.id and p.type=b.type and (extract(year from age('''||intimestamp||''',c.dob))*12+extract(month from age('''||intimestamp||''',c.dob)))>='||inage;
+        query:='SELECT s.id as id,ass.id as assid,c.sex as sex, c.mt as mt, count(distinct stu.id) AS count FROM tb_student_eval se,tb_question q,tb_assessment ass,tb_student stu, tb_class cl, tb_student_class sc, tb_child c, tb_school s,tb_programme p,tb_boundary b WHERE se.stuid=stu.id and se.qid=q.id and q.assid=ass.id and ass.pid=p.id and sc.stuid=stu.id and sc.clid=cl.id AND cl.sid = s.id AND stu.cid = c.id AND sc.ayid = '||inayid||' and ass.id='||inassid||' and sc.ayid=p.ayid and s.bid=b.id and p.type=b.type and se.grade is not null and (extract(year from age('''||intimestamp||''',c.dob))*12+extract(month from age('''||intimestamp||''',c.dob)))>='||inage;
         FOR i in array_lower(inallassid,1)..array_upper(inallassid,1)
         loop
-          query:= query||' and se.stuid in (select se.stuid from tb_student_eval se,tb_question q where se.qid=q.id and q.assid = '||inallassid[i]||')';
+          query:= query||' and se.stuid in (select se.stuid from tb_student_eval se,tb_question q where se.qid=q.id and se.grade is not null and q.assid = '||inallassid[i]||')';
         end loop;
          
         query:=query||'GROUP BY s.id, ass.id,c.sex,c.mt';
@@ -170,10 +170,10 @@ declare
         schs RECORD;
         query text;
 begin
-        query:='SELECT s.id as id,ass.id as assid,c.sex as sex, c.mt as mt, count(distinct stu.id) AS count FROM tb_student_eval se,tb_question q,tb_assessment ass,tb_student stu, tb_class cl, tb_student_class sc, tb_child c, tb_school s,tb_programme p,tb_boundary b WHERE se.stuid=stu.id and se.qid=q.id and q.assid=ass.id and ass.pid=p.id and sc.stuid=stu.id and sc.clid=cl.id AND cl.sid = s.id AND stu.cid = c.id AND sc.ayid = '||inayid||' and ass.id='||inassid||' and sc.ayid=p.ayid and s.bid=b.id and p.type=b.type and (extract(year from age('''||intimestamp||''',c.dob))*12+extract(month from age('''||intimestamp||''',c.dob)))<'||inupperage||' and (extract(year from age('''||intimestamp||''',c.dob))*12+extract(month from age('''||intimestamp||''',c.dob)))>='||inlowerage;
+        query:='SELECT s.id as id,ass.id as assid,c.sex as sex, c.mt as mt, count(distinct stu.id) AS count FROM tb_student_eval se,tb_question q,tb_assessment ass,tb_student stu, tb_class cl, tb_student_class sc, tb_child c, tb_school s,tb_programme p,tb_boundary b WHERE se.stuid=stu.id and se.qid=q.id and q.assid=ass.id and ass.pid=p.id and sc.stuid=stu.id and sc.clid=cl.id AND cl.sid = s.id AND stu.cid = c.id AND sc.ayid = '||inayid||' and ass.id='||inassid||' and sc.ayid=p.ayid and s.bid=b.id and p.type=b.type and (extract(year from age('''||intimestamp||''',c.dob))*12+extract(month from age('''||intimestamp||''',c.dob)))<'||inupperage||' and se.grade is not null and (extract(year from age('''||intimestamp||''',c.dob))*12+extract(month from age('''||intimestamp||''',c.dob)))>='||inlowerage;
         FOR i in array_lower(inallassid,1)..array_upper(inallassid,1)
         loop
-          query:= query||' and se.stuid in (select se.stuid from tb_student_eval se,tb_question q where se.qid=q.id and q.assid = '||inallassid[i]||')';
+          query:= query||' and se.stuid in (select se.stuid from tb_student_eval se,tb_question q where se.qid=q.id and se.grade is not null and q.assid = '||inallassid[i]||')';
         end loop;
         query:=query||' GROUP BY s.id, ass.id,c.sex,c.mt';
         for schs in execute query
@@ -190,11 +190,11 @@ declare
         stueval RECORD;
 begin
         for stueval in SELECT s.id as id, ass.id as assid, cl.name as clname, c.sex as sex, c.mt as mt, 
-        count(case when se.grade='O' then stu.id else null end) as Ocount,
-        count(case when se.grade='L' then stu.id else null end) as Lcount,
-        count(case when se.grade='W' then stu.id else null end) as Wcount,
-        count(case when se.grade='S' then stu.id else null end) as Scount,
-        count(case when se.grade='P' then stu.id else null end) as Pcount,
+        count(distinct case when se.grade='O' then stu.id else null end) as Ocount,
+        count(distinct case when se.grade='L' then stu.id else null end) as Lcount,
+        count(distinct case when se.grade='W' then stu.id else null end) as Wcount,
+        count(distinct case when se.grade='S' then stu.id else null end) as Scount,
+        count(distinct case when se.grade='P' then stu.id else null end) as Pcount,
         cast(count(distinct stu.id) as float) as cnt
                        FROM tb_student stu, tb_class cl, tb_student_class sc, tb_child c, tb_school s, tb_student_eval se,tb_question q, tb_assessment ass, tb_programme p,tb_boundary b
                        WHERE cl.sid = s.id AND sc.clid = cl.id AND sc.stuid = stu.id AND stu.cid = c.id AND stu.id = se.stuid AND se.qid=q.id and q.assid= ass.id AND ass.pid=p.id AND  sc.ayid=p.ayid AND ass.id = inassessid AND sc.ayid = inayid
@@ -216,10 +216,10 @@ declare
         stueval RECORD;
         andcondition text;
 begin
-        andcondition:='SELECT s.id as id, ass.id as assid, cl.name as clname, c.sex as sex, c.mt as mt, count(case when se.grade=''O'' then stu.id else null end) as Ocount, count(case when se.grade=''L'' then stu.id else null end) as Lcount, count(case when se.grade=''W'' then stu.id else null end) as Wcount, count(case when se.grade=''S'' then stu.id else null end) as Scount, count(case when se.grade=''P'' then stu.id else null end) as Pcount, cast(count(distinct stu.id) as float) as cnt FROM tb_student stu, tb_class cl, tb_student_class sc, tb_child c, tb_school s, tb_student_eval se,tb_question q, tb_assessment ass, tb_programme p,tb_boundary b WHERE cl.sid = s.id AND sc.clid = cl.id AND sc.stuid = stu.id AND stu.cid = c.id AND stu.id = se.stuid AND se.qid=q.id and q.assid= ass.id AND ass.pid=p.id AND  sc.ayid=p.ayid AND ass.id ='||inassessid||' AND sc.ayid = '||inayid||' AND se.grade IS NOT NULL AND s.bid=b.id and p.type=b.type';
+        andcondition:='SELECT s.id as id, ass.id as assid, cl.name as clname, c.sex as sex, c.mt as mt, count(distinct case when se.grade=''O'' then stu.id else null end) as Ocount, count(distinct case when se.grade=''L'' then stu.id else null end) as Lcount, count(distinct case when se.grade=''W'' then stu.id else null end) as Wcount, count(distinct case when se.grade=''S'' then stu.id else null end) as Scount, count(distinct case when se.grade=''P'' then stu.id else null end) as Pcount, cast(count(distinct stu.id) as float) as cnt FROM tb_student stu, tb_class cl, tb_student_class sc, tb_child c, tb_school s, tb_student_eval se,tb_question q, tb_assessment ass, tb_programme p,tb_boundary b WHERE cl.sid = s.id AND sc.clid = cl.id AND sc.stuid = stu.id AND stu.cid = c.id AND stu.id = se.stuid AND se.qid=q.id and q.assid= ass.id AND ass.pid=p.id AND  sc.ayid=p.ayid AND ass.id ='||inassessid||' AND sc.ayid = '||inayid||' AND se.grade IS NOT NULL AND s.bid=b.id and p.type=b.type';
         FOR i in array_lower(inallassid,1)..array_upper(inallassid,1)
         loop
-          andcondition := andcondition||' and se.stuid in (select se.stuid from tb_student_eval se,tb_question q where se.qid=q.id and q.assid = '||inallassid[i]||')';
+          andcondition := andcondition||' and se.stuid in (select se.stuid from tb_student_eval se,tb_question q where se.qid=q.id and se.grade is not null and q.assid = '||inallassid[i]||')';
         end loop;
         andcondition:= andcondition||'GROUP BY s.id, ass.id, cl.name, c.sex, c.mt, se.grade';
         for stueval in execute andcondition
@@ -234,7 +234,6 @@ end;
 $$ language plpgsql;
 
 
-
 DROP FUNCTION agg_school_nng(inassessid int, inayid int);
 CREATE OR REPLACE function agg_school_nng(inassessid int, inayid int) returns void as $$
 declare
@@ -243,12 +242,12 @@ begin
 
         for stueval in 
         SELECT id, assid,clname,sex,mt,
-        count(case when mark < 20 then id else null end) as Rung1, 
-        count(case when mark between 20 and 40 then id else null end) as Rung2,
-        count(case when mark between 40 and 60 then id else null end) as Rung3,
-        count(case when mark between 60 and 80 then id else null end) as Rung4,
-        count(case when mark > 80 then id else null end) as Rung5
-        FROM ( SELECT se.stuid,s.id as id, ass.id as assid, cl.name as clname, c.sex as sex, c.mt as mt, avg(se.mark/q.maxmarks*100) as mark 
+        count(distinct case when mark <= 20 then stuid else null end) as Rung1, 
+        count(distinct case when mark>20 and mark<=40 then stuid else null end) as Rung2,
+        count(distinct case when mark>40 and mark<=60 then stuid else null end) as Rung3,
+        count(distinct case when mark>60 and mark<=80 then stuid else null end) as Rung4,
+        count(distinct case when mark>80 then stuid else null end) as Rung5
+        FROM ( SELECT se.stuid as stuid,s.id as id, ass.id as assid, cl.name as clname, c.sex as sex, c.mt as mt, avg(se.mark/q.maxmarks*100) as mark 
                FROM tb_student stu, tb_class cl, tb_student_class sc, tb_child c, tb_school s, tb_student_eval se, tb_assessment ass,tb_question q,tb_programme p,tb_boundary b  
                WHERE cl.sid = s.id AND sc.clid = cl.id AND sc.stuid = stu.id AND stu.cid = c.id AND stu.id = se.stuid AND se.qid=q.id and q.assid = ass.id AND ass.pid=p.id AND sc.ayid=p.ayid AND ass.id = inassessid AND sc.ayid =inayid  AND s.bid=b.id and p.type=b.type
                GROUP BY s.id, ass.id, cl.name, c.sex, c.mt,se.stuid ) as output 
@@ -265,6 +264,36 @@ end;
 $$ language plpgsql;
 
 
+
+DROP FUNCTION agg_school_nng_grade(inassessid int, inayid int,inmaxmarks int);
+CREATE OR REPLACE function agg_school_nng_grade(inassessid int, inayid int,inmaxmarks int) returns void as $$
+declare
+        stueval RECORD;
+begin
+
+        for stueval in 
+        SELECT id, assid,clname,sex,mt,
+        count(distinct case when mark < 21 then stuid else null end) as Rung1, 
+        count(distinct case when mark between 21 and 40 then stuid else null end) as Rung2,
+        count(distinct case when mark between 41 and 60 then stuid else null end) as Rung3,
+        count(distinct case when mark between 61 and 80 then stuid else null end) as Rung4,
+        count(distinct case when mark > 80 then stuid else null end) as Rung5
+        FROM ( SELECT se.stuid as stuid,s.id as id, ass.id as assid, cl.name as clname, c.sex as sex, c.mt as mt, sum(cast(se.grade as integer))*100/inmaxmarks as mark 
+               FROM tb_student stu, tb_class cl, tb_student_class sc, tb_child c, tb_school s, tb_student_eval se, tb_assessment ass,tb_question q,tb_programme p,tb_boundary b  
+               WHERE cl.sid = s.id AND sc.clid = cl.id AND sc.stuid = stu.id AND stu.cid = c.id AND stu.id = se.stuid AND se.qid=q.id and q.assid = ass.id AND ass.pid=p.id AND sc.ayid=p.ayid AND ass.id = inassessid AND sc.ayid =inayid  AND s.bid=b.id and p.type=b.type and se.grade is not null
+               GROUP BY s.id, ass.id, cl.name, c.sex, c.mt,se.stuid ) as output 
+        GROUP BY id,assid,clname,sex,mt
+        loop
+               insert into tb_institution_assessment_agg values (stueval.id, stueval.assid, stueval.clname, stueval.sex, stueval.mt,'',0,'Rung1',0, stueval.Rung1);
+               insert into tb_institution_assessment_agg values (stueval.id, stueval.assid, stueval.clname, stueval.sex, stueval.mt,'',0,'Rung2',1, stueval.Rung2);
+               insert into tb_institution_assessment_agg values (stueval.id, stueval.assid, stueval.clname, stueval.sex, stueval.mt,'',0,'Rung3',2,stueval.Rung3);
+               insert into tb_institution_assessment_agg values (stueval.id, stueval.assid, stueval.clname, stueval.sex, stueval.mt,'',0,'Rung4',3, stueval.Rung4);
+               insert into tb_institution_assessment_agg values (stueval.id, stueval.assid, stueval.clname, stueval.sex, stueval.mt,'',0,'Rung5',4, stueval.Rung5);
+        end loop;
+
+end;
+$$ language plpgsql;
+
 DROP FUNCTION agg_school_nng_cohorts(inassessid int, inayid int,inallassid int[]);
 CREATE OR REPLACE function agg_school_nng_cohorts(inassessid int, inayid int,inallassid int[]) returns void as $$
 declare
@@ -272,18 +301,53 @@ declare
         andcondition text;
 begin
         andcondition:='SELECT id, assid,clname,sex,mt,
-        count(case when mark < 20 then id else null end) as Rung1, 
-        count(case when mark between 20 and 40 then id else null end) as Rung2,
-        count(case when mark between 40 and 60 then id else null end) as Rung3,
-        count(case when mark between 60 and 80 then id else null end) as Rung4,
-        count(case when mark > 80 then id else null end) as Rung5
-        FROM ( SELECT se.stuid,s.id as id, ass.id as assid, cl.name as clname, c.sex as sex, c.mt as mt, avg(se.mark/q.maxmarks*100) as mark 
+        count(distinct case when mark < 21 then stuid else null end) as Rung1, 
+        count(distinct case when mark between 21 and 40 then stuid else null end) as Rung2,
+        count(distinct case when mark between 41 and 60 then stuid else null end) as Rung3,
+        count(distinct case when mark between 61 and 80 then stuid else null end) as Rung4,
+        count(distinct case when mark > 80 then stuid else null end) as Rung5
+        FROM ( SELECT se.stuid as stuid,s.id as id, ass.id as assid, cl.name as clname, c.sex as sex, c.mt as mt, avg(se.mark*100/q.maxmarks) as mark 
                FROM tb_student stu, tb_class cl, tb_student_class sc, tb_child c, tb_school s, tb_student_eval se, tb_assessment ass,tb_question q,tb_programme p,tb_boundary b  
                WHERE cl.sid = s.id AND sc.clid = cl.id AND sc.stuid = stu.id AND stu.cid = c.id AND stu.id = se.stuid AND se.qid=q.id and q.assid = ass.id AND ass.pid=p.id AND sc.ayid=p.ayid AND ass.id ='||inassessid||' AND sc.ayid ='||inayid||'  AND s.bid=b.id and p.type=b.type
 ';
         FOR i in array_lower(inallassid,1)..array_upper(inallassid,1)
         loop
           andcondition := andcondition||' and se.stuid in (select se.stuid from tb_student_eval se,tb_question q where se.qid=q.id and q.assid = '||inallassid[i]||')';
+        end loop;
+        andcondition:= andcondition||'GROUP BY s.id, ass.id, cl.name, c.sex, c.mt,se.stuid ) as output GROUP BY id,assid,clname,sex,mt';
+        for stueval in execute andcondition
+        loop
+               insert into tb_institution_assessment_agg_cohorts values (stueval.id, stueval.assid, stueval.clname, stueval.sex, stueval.mt,'',0,'Rung1',0, stueval.Rung1);
+               insert into tb_institution_assessment_agg_cohorts values (stueval.id, stueval.assid, stueval.clname, stueval.sex, stueval.mt,'',0,'Rung2',1, stueval.Rung2);
+               insert into tb_institution_assessment_agg_cohorts values (stueval.id, stueval.assid, stueval.clname, stueval.sex, stueval.mt,'',0,'Rung3',2,stueval.Rung3);
+               insert into tb_institution_assessment_agg_cohorts values (stueval.id, stueval.assid, stueval.clname, stueval.sex, stueval.mt,'',0,'Rung4',3, stueval.Rung4);
+               insert into tb_institution_assessment_agg_cohorts values (stueval.id, stueval.assid, stueval.clname, stueval.sex, stueval.mt,'',0,'Rung5',4, stueval.Rung5);
+        end loop;
+
+end;
+$$ language plpgsql;
+
+
+
+DROP FUNCTION agg_school_nng_grade_cohorts(inassessid int, inayid int,inallassid int[],inmaxmarks int);
+CREATE OR REPLACE function agg_school_nng_grade_cohorts(inassessid int, inayid int,inallassid int[],inmaxmarks int) returns void as $$
+declare
+        stueval RECORD;
+        andcondition text;
+begin
+        andcondition:='SELECT id, assid,clname,sex,mt,
+        count(distinct case when mark < 21 then stuid else null end) as Rung1, 
+        count(distinct case when mark between 21 and 40 then stuid else null end) as Rung2,
+        count(distinct case when mark between 41 and 60 then stuid else null end) as Rung3,
+        count(distinct case when mark between 61 and 80 then stuid else null end) as Rung4,
+        count(distinct case when mark > 80 then stuid else null end) as Rung5
+        FROM ( SELECT distinct se.stuid as stuid,s.id as id, ass.id as assid, cl.name as clname, c.sex as sex, c.mt as mt, sum(cast(se.grade as integer))*100/'||inmaxmarks||' as mark 
+               FROM tb_student stu, tb_class cl, tb_student_class sc, tb_child c, tb_school s, tb_student_eval se, tb_assessment ass,tb_question q,tb_programme p,tb_boundary b  
+               WHERE cl.sid = s.id AND sc.clid = cl.id AND sc.stuid = stu.id AND stu.cid = c.id AND stu.id = se.stuid AND se.qid=q.id and q.assid = ass.id AND ass.pid=p.id AND sc.ayid=p.ayid AND ass.id ='||inassessid||' AND sc.ayid ='||inayid||'  AND s.bid=b.id and p.type=b.type and se.grade is not null
+';
+        FOR i in array_lower(inallassid,1)..array_upper(inallassid,1)
+        loop
+          andcondition := andcondition||' and se.stuid in (select distinct se.stuid from tb_student_eval se,tb_question q where se.qid=q.id and se.grade is not null and q.assid = '||inallassid[i]||')';
         end loop;
         andcondition:= andcondition||'GROUP BY s.id, ass.id, cl.name, c.sex, c.mt,se.stuid ) as output GROUP BY id,assid,clname,sex,mt';
         for stueval in execute andcondition
@@ -314,10 +378,10 @@ begin
     rung3 :='50-75%';
     rung4 :='75-100%';
       for stueval in
-        SELECT sid, assid,clname,sex,mt, count(case when percentile<= 25 then stuid else null end) as Rung1,
-        count(case when percentile between 26 and 50 then stuid else null end) as Rung2,
-        count(case when percentile between 51 and 75 then stuid else null end) as Rung3,
-        count(case when percentile between 76 and 100 then stuid else null end) as Rung4
+        SELECT sid, assid,clname,sex,mt, count(distinct case when percentile<= 25 then stuid else null end) as Rung1,
+        count(distinct case when percentile between 26 and 50 then stuid else null end) as Rung2,
+        count(distinct case when percentile between 51 and 75 then stuid else null end) as Rung3,
+        count(distinct case when percentile between 76 and 100 then stuid else null end) as Rung4
         from
         (          select aggregates.stuid as stuid,aggregates.sid as sid,aggregates.assid as assid,aggregates.clname as clname , c.sex as sex,c.mt as mt,  (domainagg*100/inpmarks[domaincount]) as percentile          from
           (            select se.stuid as stuid,
@@ -359,10 +423,10 @@ declare
 begin
   for domaincount in 1..innum
   loop
-  andcondition:='SELECT sid, assid,clname,sex,mt, count(case when percentile<= 25 then stuid else null end) as Rung1, count(case when percentile between 26 and 50 then stuid else null end) as Rung2, count(case when percentile between 51 and 75 then stuid else null end) as Rung3, count(case when percentile between 76 and 100 then stuid else null end) as Rung4 from (          select aggregates.stuid as stuid,aggregates.sid as sid,aggregates.assid as assid,aggregates.clname as clname , c.sex as sex,c.mt as mt,  (domainagg*100/'||inpmarks[domaincount]||') as percentile from (   select se.stuid as stuid, q.assid as assid,sg.name as clname, sg.sid as sid, sum(cast(se.grade as int))  as domainagg from tb_student_eval se,tb_question q,tb_student_class stusg,tb_class sg where se.qid=q.id and q.assid='||inassid||' and q.desc= ANY(string_to_array('''||inqset[domaincount]||''','','')) and se.stuid=stusg.stuid and se.grade is not null and stusg.ayid='||inyear||' and stusg.clid=sg.id and sg.name='''||inclass||'''';
+  andcondition:='SELECT sid, assid,clname,sex,mt, count(distinct case when percentile<= 25 then stuid else null end) as Rung1, count(distinct case when percentile between 26 and 50 then stuid else null end) as Rung2, count(distinct case when percentile between 51 and 75 then stuid else null end) as Rung3, count(distinct case when percentile between 76 and 100 then stuid else null end) as Rung4 from (          select aggregates.stuid as stuid,aggregates.sid as sid,aggregates.assid as assid,aggregates.clname as clname , c.sex as sex,c.mt as mt,  (domainagg*100/'||inpmarks[domaincount]||') as percentile from (   select se.stuid as stuid, q.assid as assid,sg.name as clname, sg.sid as sid, sum(cast(se.grade as int))  as domainagg from tb_student_eval se,tb_question q,tb_student_class stusg,tb_class sg where se.qid=q.id and q.assid='||inassid||' and q.desc= ANY(string_to_array('''||inqset[domaincount]||''','','')) and se.stuid=stusg.stuid and se.grade is not null and stusg.ayid='||inyear||' and stusg.clid=sg.id and sg.name='''||inclass||'''';
   FOR i in array_lower(inallassid,1)..array_upper(inallassid,1)
   loop
-    andcondition := andcondition||' and se.stuid in (select se.stuid from tb_student_eval se,tb_question q where se.qid=q.id and q.assid = '||inallassid[i]||')';
+    andcondition := andcondition||' and se.stuid in (select se.stuid from tb_student_eval se,tb_question q where se.qid=q.id and se.grade is not null and q.assid = '||inallassid[i]||')';
   end loop;
   andcondition:= andcondition||'group by se.stuid,q.assid,sg.id,sg.sid) aggregates, tb_child c,tb_student stu where aggregates.stuid=stu.id and stu.cid=c.id)info group by sid,assid,clname,sex,mt';
     rung1 :='0-25%';
@@ -387,9 +451,8 @@ declare
   stueval RECORD;
 begin
   for domaincount in 1..innum loop
-      raise notice 'domaincount is %',domaincount;
       for stueval in
-        SELECT sid, assid,sex,mt, count(case when domainskillcount =1 then stuid else null end) as stucount
+        SELECT sid, assid,sex,mt, count(distinct case when domainskillcount =1 then stuid else null end) as stucount
         from
         (
           select aggregates.stuid as stuid,aggregates.sid as sid,aggregates.assid as assid,aggregates.clid as clid, 
@@ -413,6 +476,7 @@ begin
               and stusg.clid=sg.id
               and stu.id=se.stuid
               and stu.cid=c.id
+              and se.grade is not null 
               and (extract(year from age(intimestamp,c.dob))*12+extract(month from age(intimestamp,c.dob)))>=inage
             group by se.stuid,q.assid,sg.id,sg.sid,c.sex,c.mt
           ) aggregates
@@ -433,10 +497,10 @@ declare
   andcondition text;
 begin
   for domaincount in 1..innum loop
-  andcondition:='SELECT sid, assid,sex,mt, count(case when domainskillcount =1 then stuid else null end) as stucount from ( select aggregates.stuid as stuid,aggregates.sid as sid,aggregates.assid as assid,aggregates.clid as clid, aggregates.sex as sex,aggregates.mt as mt,  case when domainagg <'||inpmarks[domaincount]||' then 0 else 1 end as domainskillcount from (  select se.stuid as stuid, q.assid as assid, sg.id as clid, sg.sid as sid, c.sex as sex, c.mt as mt, sum(cast(se.grade as int))  as domainagg from tb_student_eval se,tb_question q,tb_student stu,tb_student_class stusg,tb_class sg,tb_child c where se.qid=q.id and q.assid='||inassid||' and q.desc= ANY(string_to_array('''||inqset[domaincount]||''','','')) and se.stuid=stusg.stuid and stusg.ayid='||inyear||' and stusg.clid=sg.id and stu.id=se.stuid and stu.cid=c.id and (extract(year from age('''||intimestamp||''',c.dob))*12+extract(month from age('''||intimestamp||''',c.dob)))>='||inage;
+  andcondition:='SELECT sid, assid,sex,mt, count(distinct case when domainskillcount =1 then stuid else null end) as stucount from ( select aggregates.stuid as stuid,aggregates.sid as sid,aggregates.assid as assid,aggregates.clid as clid, aggregates.sex as sex,aggregates.mt as mt,  case when domainagg <'||inpmarks[domaincount]||' then 0 else 1 end as domainskillcount from (  select se.stuid as stuid, q.assid as assid, sg.id as clid, sg.sid as sid, c.sex as sex, c.mt as mt, sum(cast(se.grade as int))  as domainagg from tb_student_eval se,tb_question q,tb_student stu,tb_student_class stusg,tb_class sg,tb_child c where se.qid=q.id and q.assid='||inassid||' and q.desc= ANY(string_to_array('''||inqset[domaincount]||''','','')) and se.stuid=stusg.stuid and stusg.ayid='||inyear||' and stusg.clid=sg.id and stu.id=se.stuid and stu.cid=c.id and  se.grade is not null and  (extract(year from age('''||intimestamp||''',c.dob))*12+extract(month from age('''||intimestamp||''',c.dob)))>='||inage;
   FOR i in array_lower(inallassid,1)..array_upper(inallassid,1)
   loop
-    andcondition := andcondition||' and se.stuid in (select se.stuid from tb_student_eval se,tb_question q where se.qid=q.id and q.assid = '||inallassid[i]||')';
+    andcondition := andcondition||' and se.stuid in (select se.stuid from tb_student_eval se,tb_question q where se.qid=q.id and se.grade is not null and q.assid = '||inallassid[i]||')';
   end loop;
   andcondition:= andcondition||' group by se.stuid,q.assid,sg.id,sg.sid,c.sex,c.mt) aggregates group by sid,assid,clid,sex,mt,stuid,domainagg)info group by sid, assid,sex,mt';
       for stueval in execute andcondition
@@ -455,7 +519,7 @@ declare
 begin
   for domaincount in 1..innum loop
       for stueval in
-        SELECT sid, assid,sex,mt, count(case when domainskillcount =1 then stuid else null end) as stucount
+        SELECT sid, assid,sex,mt, count(distinct case when domainskillcount =1 then stuid else null end) as stucount
         from
         (
           select aggregates.stuid as stuid,aggregates.sid as sid,aggregates.assid as assid,aggregates.clid as clid, aggregates.sex as sex,aggregates.mt as mt,  case when domainagg <inpmarks[domaincount] then 0 else 1 end as domainskillcount
@@ -478,6 +542,7 @@ begin
               and stusg.clid=sg.id
               and stu.id=se.stuid
               and stu.cid=c.id
+              and se.grade is not null
               and (extract(year from age(intimestamp,c.dob))*12+extract(month from age(intimestamp,c.dob)))<inupperage
               and (extract(year from age(intimestamp,c.dob))*12+extract(month from age(intimestamp,c.dob)))>=inlowerage
             group by se.stuid,q.assid,sg.id,sg.sid,c.sex,c.mt
@@ -499,10 +564,10 @@ declare
   andcondition text;
 begin
   for domaincount in 1..innum loop
-  andcondition:='SELECT sid, assid,sex,mt, count(case when domainskillcount =1 then stuid else null end) as stucount from ( select aggregates.stuid as stuid,aggregates.sid as sid,aggregates.assid as assid,aggregates.clid as clid, aggregates.sex as sex,aggregates.mt as mt,  case when domainagg <'||inpmarks[domaincount]||' then 0 else 1 end as domainskillcount from (  select se.stuid as stuid, q.assid as assid, sg.id as clid, sg.sid as sid, c.sex as sex, c.mt as mt, sum(cast(se.grade as int))  as domainagg from tb_student_eval se,tb_question q,tb_student stu,tb_student_class stusg,tb_class sg,tb_child c where se.qid=q.id and q.assid='||inassid||' and q.desc= ANY(string_to_array('''||inqset[domaincount]||''','','')) and se.stuid=stusg.stuid and stusg.ayid='||inyear||' and stusg.clid=sg.id and stu.id=se.stuid and stu.cid=c.id and (extract(year from age('''||intimestamp||''',c.dob))*12+extract(month from age('''||intimestamp||''',c.dob)))<'||inupperage||' and (extract(year from age('''||intimestamp||''',c.dob))*12+extract(month from age('''||intimestamp||''',c.dob)))>='||inlowerage;
+  andcondition:='SELECT sid, assid,sex,mt, count(distinct case when domainskillcount =1 then stuid else null end) as stucount from ( select aggregates.stuid as stuid,aggregates.sid as sid,aggregates.assid as assid,aggregates.clid as clid, aggregates.sex as sex,aggregates.mt as mt,  case when domainagg <'||inpmarks[domaincount]||' then 0 else 1 end as domainskillcount from (  select se.stuid as stuid, q.assid as assid, sg.id as clid, sg.sid as sid, c.sex as sex, c.mt as mt, sum(cast(se.grade as int))  as domainagg from tb_student_eval se,tb_question q,tb_student stu,tb_student_class stusg,tb_class sg,tb_child c where se.qid=q.id and q.assid='||inassid||' and q.desc= ANY(string_to_array('''||inqset[domaincount]||''','','')) and se.stuid=stusg.stuid and stusg.ayid='||inyear||' and stusg.clid=sg.id and stu.id=se.stuid and stu.cid=c.id and se.grade is not null and (extract(year from age('''||intimestamp||''',c.dob))*12+extract(month from age('''||intimestamp||''',c.dob)))<'||inupperage||' and (extract(year from age('''||intimestamp||''',c.dob))*12+extract(month from age('''||intimestamp||''',c.dob)))>='||inlowerage;
   FOR i in array_lower(inallassid,1)..array_upper(inallassid,1)
   loop
-    andcondition := andcondition||' and se.stuid in (select se.stuid from tb_student_eval se,tb_question q where se.qid=q.id and q.assid = '||inallassid[i]||')';
+    andcondition := andcondition||' and se.stuid in (select se.stuid from tb_student_eval se,tb_question q where se.qid=q.id and se.grade is not null and q.assid = '||inallassid[i]||')';
   end loop;
   andcondition:= andcondition||'group by se.stuid,q.assid,sg.id,sg.sid,c.sex,c.mt) aggregates group by sid,assid,clid,sex,mt,stuid,domainagg)info group by sid,assid,sex,mt ';
     for stueval in execute andcondition
@@ -522,7 +587,7 @@ begin
   for domaincount in 1..innum
     loop
       for stueval in
-        SELECT sid, assid,clname,sex,mt, count(case when domainskillcount =1 then stuid else null end) as stucount
+        SELECT sid, assid,clname,sex,mt, count(distinct case when domainskillcount =1 then stuid else null end) as stucount
         from
         (
           select aggregates.stuid as stuid,aggregates.sid as sid,aggregates.assid as assid,aggregates.clname as clname, c.sex as sex,c.mt as mt,  case when domainagg <inpmarks[domaincount] then 0 else 1 end as domainskillcount
@@ -564,7 +629,7 @@ declare
 begin
   for domaincount in 1..innum
   loop
-    andcondition:='SELECT sid, assid,clname,sex,mt, count(case when domainskillcount =1 then stuid else null end) as stucount from ( select aggregates.stuid as stuid,aggregates.sid as sid,aggregates.assid as assid,aggregates.clname as clname, c.sex as sex,c.mt as mt,  case when domainagg <'||inpmarks[domaincount]||' then 0 else 1 end as domainskillcount from (  select se.stuid as stuid, q.assid as assid, sg.name as clname, sg.sid as sid, sum(cast(se.mark as int))  as domainagg from tb_student_eval se,tb_question q,tb_student_class stusg,tb_class sg where se.qid=q.id and q.assid='||inassid||' and q.desc= ANY(string_to_array('''||inqset[domaincount]||''','','')) and se.stuid=stusg.stuid and stusg.ayid='||inyear||' and stusg.clid=sg.id and sg.name='''||inclass||'''';
+    andcondition:='SELECT sid, assid,clname,sex,mt, count(distinct case when domainskillcount =1 then stuid else null end) as stucount from ( select aggregates.stuid as stuid,aggregates.sid as sid,aggregates.assid as assid,aggregates.clname as clname, c.sex as sex,c.mt as mt,  case when domainagg <'||inpmarks[domaincount]||' then 0 else 1 end as domainskillcount from (  select se.stuid as stuid, q.assid as assid, sg.name as clname, sg.sid as sid, sum(cast(se.mark as int))  as domainagg from tb_student_eval se,tb_question q,tb_student_class stusg,tb_class sg where se.qid=q.id and q.assid='||inassid||' and q.desc= ANY(string_to_array('''||inqset[domaincount]||''','','')) and se.stuid=stusg.stuid and stusg.ayid='||inyear||' and stusg.clid=sg.id and sg.name='''||inclass||'''';
   FOR i in array_lower(inallassid,1)..array_upper(inallassid,1)
   loop
     andcondition := andcondition||' and se.stuid in (select se.stuid from tb_student_eval se,tb_question q where se.qid=q.id and q.assid = '||inallassid[i]||')';
@@ -588,7 +653,7 @@ begin
   for domaincount in 1..innum
     loop
       for stueval in
-        SELECT sid, assid,clname,sex,mt, count(case when domainskillcount =1 then stuid else null end) as stucount
+        SELECT sid, assid,clname,sex,mt, count(distinct case when domainskillcount =1 then stuid else null end) as stucount
         from
         (
           select aggregates.stuid as stuid,aggregates.sid as sid,aggregates.assid as assid,aggregates.clname as clname, c.sex as sex,c.mt as mt,  case when domainagg <inpmarks[domaincount] then 0 else 1 end as domainskillcount
@@ -608,6 +673,7 @@ begin
               and stusg.ayid=inyear
               and stusg.clid=sg.id
               and sg.name=inclass
+              and se.grade is not null
             group by se.stuid,q.assid,sg.id,sg.sid
           ) aggregates, tb_child c,tb_student stu
           where
@@ -630,10 +696,10 @@ declare
 begin
   for domaincount in 1..innum
   loop
-   andcondition:='SELECT sid, assid,clname,sex,mt, count(case when domainskillcount =1 then stuid else null end) as stucount from ( select aggregates.stuid as stuid,aggregates.sid as sid,aggregates.assid as assid,aggregates.clname as clname, c.sex as sex,c.mt as mt,  case when domainagg <'||inpmarks[domaincount]||' then 0 else 1 end as domainskillcount from (  select se.stuid as stuid, q.assid as assid, sg.name as clname, sg.sid as sid, sum(cast(se.grade as int))  as domainagg from tb_student_eval se,tb_question q,tb_student_class stusg,tb_class sg where se.qid=q.id and q.assid='||inassid||' and q.desc= ANY(string_to_array('''||inqset[domaincount]||''','','')) and se.stuid=stusg.stuid and stusg.ayid='||inyear||' and stusg.clid=sg.id and sg.name='''||inclass||'''';
+   andcondition:='SELECT sid, assid,clname,sex,mt, count(distinct case when domainskillcount =1 then stuid else null end) as stucount from ( select aggregates.stuid as stuid,aggregates.sid as sid,aggregates.assid as assid,aggregates.clname as clname, c.sex as sex,c.mt as mt,  case when domainagg <'||inpmarks[domaincount]||' then 0 else 1 end as domainskillcount from (  select se.stuid as stuid, q.assid as assid, sg.name as clname, sg.sid as sid, sum(cast(se.grade as int))  as domainagg from tb_student_eval se,tb_question q,tb_student_class stusg,tb_class sg where se.qid=q.id and q.assid='||inassid||' and q.desc= ANY(string_to_array('''||inqset[domaincount]||''','','')) and se.stuid=stusg.stuid and stusg.ayid='||inyear||' and stusg.clid=sg.id and se.grade is not null and sg.name='''||inclass||'''';
    FOR i in array_lower(inallassid,1)..array_upper(inallassid,1)
    loop
-     andcondition := andcondition||' and se.stuid in (select se.stuid from tb_student_eval se,tb_question q where se.qid=q.id and q.assid = '||inallassid[i]||')';
+     andcondition := andcondition||' and se.stuid in (select se.stuid from tb_student_eval se,tb_question q where se.qid=q.id and se.grade is not null and q.assid = '||inallassid[i]||')';
    end loop;
    andcondition:= andcondition||' group by se.stuid,q.assid,sg.id,sg.sid) aggregates, tb_child c,tb_student stu where aggregates.stuid=stu.id and stu.cid=c.id)info           group by sid,assid,clname,sex,mt';
       for stueval in execute andcondition
@@ -649,6 +715,7 @@ $$ language plpgsql;
 select agg_institution(102);
 
 --Populate all years basic info
+
 select basic_assess_school(90,1);
 select basic_assess_school(90,2);
 select basic_assess_school(90,3);
@@ -705,13 +772,12 @@ select basic_assess_school(102,66);
 select basic_assess_school(102,67);
 select basic_assess_school(102,68);
 select basic_assess_school(102,69);
-select basic_assess_school(102,71);
 select basic_assess_school(102,73);
 select basic_assess_school(102,74);
 select basic_assess_school(102,75);
 select basic_assess_school(102,76);
 select basic_assess_school(102,77);
-select basic_assess_school(102,78);
+
 select basic_assess_school(102,81);
 select basic_assess_school(102,82);
 select basic_assess_school(102,83);
@@ -791,13 +857,12 @@ select basic_assess_school_cohorts(102,66,ARRAY[66,76]);
 select basic_assess_school_cohorts(102,67,ARRAY[67,77]);
 select basic_assess_school_cohorts(102,68,ARRAY[68,73]);
 select basic_assess_school_cohorts(102,69,ARRAY[69,74]);
-select basic_assess_school_cohorts(102,71,ARRAY[71,78]);
 select basic_assess_school_cohorts(102,73,ARRAY[68,73]);
 select basic_assess_school_cohorts(102,74,ARRAY[69,74]);
 select basic_assess_school_cohorts(102,75,ARRAY[65,75]);
 select basic_assess_school_cohorts(102,76,ARRAY[66,76]);
 select basic_assess_school_cohorts(102,77,ARRAY[67,77]);
-select basic_assess_school_cohorts(102,78,ARRAY[71,78]);
+
 select basic_assess_school_cohorts(102,81,ARRAY[81,82,83]);
 select basic_assess_school_cohorts(102,82,ARRAY[81,82,83]);
 select basic_assess_school_cohorts(102,83,ARRAY[81,82,83]);
@@ -832,32 +897,51 @@ select basic_assess_school_cohorts(102,110,ARRAY[108,109,110]);
 
 
 --Preschool basic assessessment
+--2009-2010
 select basic_assess_preschool_between(119,23,36,60,'Age between 3-5',cast('2009-04-30' as timestamp));
 select basic_assess_preschool_morethan(119,23,60,'Age >=5',cast('2009-04-30'as timestamp));
 select basic_assess_preschool_between(119,24,36,60,'Age between 3-5',cast('2009-04-30' as timestamp));
 select basic_assess_preschool_morethan(119,24,60,'Age >=5',cast('2009-04-30' as timestamp));
+
+--2010-2011
 select basic_assess_preschool_between(101,56,36,60,'Age between 3-5',cast('2010-04-30' as timestamp));
 select basic_assess_preschool_morethan(101,56,60,'Age >=5',cast('2010-04-30' as timestamp));
 select basic_assess_preschool_between(101,57,36,60,'Age between 3-5',cast('2010-04-30' as timestamp));
 select basic_assess_preschool_morethan(101,57,60,'Age >=5',cast('2010-04-30' as timestamp));
+
+--2011-2012
 select basic_assess_preschool_between(102,70,36,60,'Age between 3-5',cast('2011-04-30' as timestamp));
 select basic_assess_preschool_morethan(102,70,60,'Age >=5',cast('2011-04-30' as timestamp));
 select basic_assess_preschool_between(102,79,36,60,'Age between 3-5',cast('2011-04-30' as timestamp));
 select basic_assess_preschool_morethan(102,79,60,'Age >=5',cast('2011-04-30' as timestamp));
 
+select basic_assess_preschool_between(102,71,36,60,'Age between 3-5',cast('2011-04-30' as timestamp));
+select basic_assess_preschool_morethan(102,71,60,'Age >=5',cast('2011-04-30' as timestamp));
+select basic_assess_preschool_between(102,78,36,60,'Age between 3-5',cast('2011-04-30' as timestamp));
+select basic_assess_preschool_morethan(102,78,60,'Age >=5',cast('2011-04-30' as timestamp));
+
+--2009-2010 cohorts
 select basic_assess_preschool_between_cohorts(119,23,36,60,'Age between 3-5',cast('2009-04-30' as timestamp),ARRAY[23,24]);
 select basic_assess_preschool_morethan_cohorts(119,23,60,'Age >=5',cast('2009-04-30'as timestamp),ARRAY[23,24]);
 select basic_assess_preschool_between_cohorts(119,24,36,60,'Age between 3-5',cast('2009-04-30' as timestamp),ARRAY[23,24]);
 select basic_assess_preschool_morethan_cohorts(119,24,60,'Age >=5',cast('2009-04-30' as timestamp),ARRAY[23,24]);
+
+--2010-2011 cohorts
 select basic_assess_preschool_between_cohorts(101,56,36,60,'Age between 3-5',cast('2010-04-30' as timestamp),ARRAY[56,57]);
 select basic_assess_preschool_morethan_cohorts(101,56,60,'Age >=5',cast('2010-04-30' as timestamp),ARRAY[56,57]);
 select basic_assess_preschool_between_cohorts(101,57,36,60,'Age between 3-5',cast('2010-04-30' as timestamp),ARRAY[56,57]);
 select basic_assess_preschool_morethan_cohorts(101,57,60,'Age >=5',cast('2010-04-30' as timestamp),ARRAY[56,57]);
+
+--2011-2012 cohorts
 select basic_assess_preschool_between_cohorts(102,70,36,60,'Age between 3-5',cast('2011-04-30' as timestamp),ARRAY[70,79]);
 select basic_assess_preschool_morethan_cohorts(102,70,60,'Age >=5',cast('2011-04-30' as timestamp),ARRAY[70,79]);
 select basic_assess_preschool_between_cohorts(102,79,36,60,'Age between 3-5',cast('2011-04-30' as timestamp),ARRAY[70,79]);
 select basic_assess_preschool_morethan_cohorts(102,79,60,'Age >=5',cast('2011-04-30' as timestamp),ARRAY[70,79]);
 
+select basic_assess_preschool_between_cohorts(102,71,36,60,'Age between 3-5',cast('2011-04-30' as timestamp),ARRAY[70,79]);
+select basic_assess_preschool_morethan_cohorts(102,71,60,'Age >=5',cast('2011-04-30' as timestamp),ARRAY[70,79]);
+select basic_assess_preschool_between_cohorts(102,78,36,60,'Age between 3-5',cast('2011-04-30' as timestamp),ARRAY[70,79]);
+select basic_assess_preschool_morethan_cohorts(102,78,60,'Age >=5',cast('2011-04-30' as timestamp),ARRAY[70,79]);
 
 -- 2006 Reading
 select agg_school_reading(1, 90);
@@ -963,9 +1047,54 @@ select agg_school_nng_cohorts(46,101,ARRAY[45,46]);
 select agg_school_nng_cohorts(47,101,ARRAY[47,48]);
 select agg_school_nng_cohorts(48,101,ARRAY[47,48]);
 
+
+--2011
+select agg_school_nng(68,102);
+select agg_school_nng(69,102);
+select agg_school_nng(73,102);
+select agg_school_nng(74,102);
+
+select agg_school_nng_cohorts(68,102,ARRAY[68,73]);
+select agg_school_nng_cohorts(69,102,ARRAY[69,74]);
+select agg_school_nng_cohorts(73,102,ARRAY[68,73]);
+select agg_school_nng_cohorts(74,102,ARRAY[69,74]);
+
+
+
+--Control Math 2011
+select agg_school_nng_grade(81,102,49);
+select agg_school_nng_grade(82,102,49);
+select agg_school_nng_grade(83,102,49);
+select agg_school_nng_grade(84,102,56);
+select agg_school_nng_grade(85,102,56);
+select agg_school_nng_grade(86,102,56);
+
+select agg_school_nng_grade_cohorts(81,102,ARRAY[81,82,83],49);
+select agg_school_nng_grade_cohorts(82,102,ARRAY[81,82,83],49);
+select agg_school_nng_grade_cohorts(83,102,ARRAY[81,82,83],49);
+select agg_school_nng_grade_cohorts(84,102,ARRAY[84,85,86],56);
+select agg_school_nng_grade_cohorts(85,102,ARRAY[84,85,86],56);
+select agg_school_nng_grade_cohorts(86,102,ARRAY[84,85,86],56);
+
+--Treatment Math 2011
+select agg_school_nng_grade(96,102,49);
+select agg_school_nng_grade(97,102,49);
+select agg_school_nng_grade(98,102,49);
+select agg_school_nng_grade(99,102,56);
+select agg_school_nng_grade(100,102,56);
+select agg_school_nng_grade(101,102,56);
+
+select agg_school_nng_grade_cohorts(96,102,ARRAY[96,97,98],49);
+select agg_school_nng_grade_cohorts(97,102,ARRAY[96,97,98],49);
+select agg_school_nng_grade_cohorts(98,102,ARRAY[96,97,98],49);
+select agg_school_nng_grade_cohorts(99,102,ARRAY[99,100,101],56);
+select agg_school_nng_grade_cohorts(100,102,ARRAY[99,100,101],56);
+select agg_school_nng_grade_cohorts(101,102,ARRAY[99,100,101],56);
+
 --Anganwadi
 -- 2009 Anganwadi
 --Pretest
+
 select agg_school_ang_agebetween(119,36,60,23,ARRAY['Gross Motor','Fine Motor','Socio-Emotional','General Awareness'],ARRAY['6,7,8,9','10,11,12,13,14,15','53,54,55,56','1,2,3,4'],ARRAY[4,6,4,4],4,'Age between 3-5',cast('2009-04-30' as timestamp));
 select agg_school_ang_agemorethan(119,60,23,ARRAY['Language','Intellectual Development','Socio-Emotional','Pre-Academic'],ARRAY['16,17,18,19,20,21,22,23,24,25,26,27,28','29,30,31,32,33','53,54,55,56','34,35,36,37,38,39,40,41,42,43,44,45,46,47,48,49,50,51,52'],ARRAY[13,5,4,19],4,'Age >=5',cast('2009-04-30' as timestamp));
 
@@ -1009,6 +1138,22 @@ select agg_school_ang_agemorethan(102,60,79,ARRAY['Language','Intellectual Devel
 
 select agg_school_ang_agebetween_cohorts(102,36,60,79,ARRAY['Gross Motor','Fine Motor','Socio-Emotional','General Awareness'],ARRAY['6,7,8,9','10,11,12,13,14,15','53,54,55,56','1,2,3,4'],ARRAY[4,6,4,4],4,'Age between 3-5',cast('2010-04-30' as timestamp),ARRAY[70,79]);
 select agg_school_ang_agemorethan_cohorts(102,60,79,ARRAY['Language','Intellectual Development','Socio-Emotional','Pre-Academic'],ARRAY['16,17,18,19,20,21,22,23,24,25,26,27,28','29,30,31,32,33','53,54,55,56','34,35,36,37,38,39,40,41,42,43,44,45,46,47,48,49,50,51,52'],ARRAY[13,5,4,19],4,'Age >=5',cast('2010-04-30' as timestamp),ARRAY[70,79]);
+
+-- 2011 Anganwadi Dharwad
+--Pretest
+select agg_school_ang_agebetween(102,36,60,71,ARRAY['Language','Socio-Emotional','Pre-Academic'],ARRAY['4,5,6','9,10','11'],ARRAY[3,2,1],3,'Age between 3-5',cast('2010-04-30' as timestamp));
+select agg_school_ang_agemorethan(102,60,71,ARRAY['Language','Socio-Emotional','Pre-Academic Reading','Pre-Academic Writing','Pre-Academic Math'],ARRAY['4,5,6,7,8','9,10','11,12,13,14','15,16,17,18,19,20,21,22,23,24','25,26,27,28,29,30'],ARRAY[5,2,4,10,6],5,'Age >=5',cast('2010-04-30' as timestamp));
+
+select agg_school_ang_agebetween_cohorts(102,36,60,71,ARRAY['Language','Socio-Emotional','Pre-Academic'],ARRAY['4,5,6','9,10','11'],ARRAY[3,2,1],3,'Age between 3-5',cast('2010-04-30' as timestamp),ARRAY[71,78]);
+select agg_school_ang_agemorethan_cohorts(102,60,71,ARRAY['Language','Socio-Emotional','Pre-Academic Reading','Pre-Academic Writing','Pre-Academic Math'],ARRAY['4,5,6,7,8','9,10','11,12,13,14','15,16,17,18,19,20,21,22,23,24','25,26,27,28,29,30'],ARRAY[5,2,4,10,6],5,'Age >=5',cast('2010-04-30' as timestamp),ARRAY[71,78]);
+
+--Posttest
+
+select agg_school_ang_agebetween(102,36,60,78,ARRAY['Language','Socio-Emotional','Pre-Academic'],ARRAY['4,5,6','9,10','11'],ARRAY[3,2,1],3,'Age between 3-5',cast('2010-04-30' as timestamp));
+select agg_school_ang_agemorethan(102,60,78,ARRAY['Language','Socio-Emotional','Pre-Academic Reading','Pre-Academic Writing','Pre-Academic Math'],ARRAY['4,5,6,7,8','9,10','11,12,13,14','15,16,17,18,19,20,21,22,23,24','25,26,27,28,29,30'],ARRAY[5,2,4,10,6],5,'Age >=5',cast('2010-04-30' as timestamp));
+
+select agg_school_ang_agebetween_cohorts(102,36,60,78,ARRAY['Language','Socio-Emotional','Pre-Academic'],ARRAY['4,5,6','9,10','11'],ARRAY[3,2,1],3,'Age between 3-5',cast('2010-04-30' as timestamp),ARRAY[71,78]);
+select agg_school_ang_agemorethan_cohorts(102,60,78,ARRAY['Language','Socio-Emotional','Pre-Academic Reading','Pre-Academic Writing','Pre-Academic Math'],ARRAY['4,5,6,7,8','9,10','11,12,13,14','15,16,17,18,19,20,21,22,23,24','25,26,27,28,29,30'],ARRAY[5,2,4,10,6],5,'Age >=5',cast('2010-04-30' as timestamp),ARRAY[71,78]);
 
 --English
 --2009 English
@@ -1074,6 +1219,47 @@ select agg_school_assess_grade_eng_cohorts(102,'1',75,ARRAY['Oral'],ARRAY[0],ARR
 select agg_school_assess_grade_eng_cohorts(102,'2',76,ARRAY['Oral','Reading','Writing'],ARRAY[0,1,2],ARRAY['1a,1b,1c,2a,2b,2c,2d,3a,3b,3c,4a','5a,5b,5c','6a,6b,6c,6d,6e,7a,7b,7c'],ARRAY[11,3,8],3,ARRAY[66,76]);
 select agg_school_assess_grade_eng_cohorts(102,'3',77,ARRAY['Oral','Reading','Writing'],ARRAY[0,1,2],ARRAY['1a,1b,1c,2a,2b,2c,2d,3a,3b,3c,4a,4b,4c,5a,5b,5c,6a','7a,7b,7c,8a,8b,8c','9a,9b,9c,9d,10a,10b,10c'],ARRAY[17,6,7],3,ARRAY[67,77]);
 
+--Control English 2011-2012
+select agg_school_assess_grade_eng(102,'1',87,ARRAY['Oral'],ARRAY[0],ARRAY['1a,1b,1c,2a,2b,2c,2d,3a,3b,3c,4a'],ARRAY[11],1);
+select agg_school_assess_grade_eng(102,'1',88,ARRAY['Oral'],ARRAY[0],ARRAY['1a,1b,1c,2a,2b,2c,2d,3a,3b,3c,4a'],ARRAY[11],1);
+select agg_school_assess_grade_eng(102,'1',89,ARRAY['Oral'],ARRAY[0],ARRAY['1a,1b,1c,2a,2b,2c,2d,3a,3b,3c,4a'],ARRAY[11],1);
+select agg_school_assess_grade_eng(102,'2',90,ARRAY['Oral','Reading','Writing'],ARRAY[0,1,2],ARRAY['1a,1b,1c,2a,2b,2c,2d,3a,3b,3c,4a','5a,5b,5c','6a,6b,6c,6d,6e,7a,7b,7c'],ARRAY[11,3,8],3);
+select agg_school_assess_grade_eng(102,'2',91,ARRAY['Oral','Reading','Writing'],ARRAY[0,1,2],ARRAY['1a,1b,1c,2a,2b,2c,2d,3a,3b,3c,4a','5a,5b,5c','6a,6b,6c,6d,6e,7a,7b,7c'],ARRAY[11,3,8],3);
+select agg_school_assess_grade_eng(102,'2',92,ARRAY['Oral','Reading','Writing'],ARRAY[0,1,2],ARRAY['1a,1b,1c,2a,2b,2c,2d,3a,3b,3c,4a','5a,5b,5c','6a,6b,6c,6d,6e,7a,7b,7c'],ARRAY[11,3,8],3);
+select agg_school_assess_grade_eng(102,'3',93,ARRAY['Oral','Reading','Writing'],ARRAY[0,1,2],ARRAY['1a,1b,1c,2a,2b,2c,2d,3a,3b,3c,4a,4b,4c,5a,5b,5c,6a','7a,7b,7c,8a,8b,8c','9a,9b,9c,9d,10a,10b,10c'],ARRAY[17,6,7],3);
+select agg_school_assess_grade_eng(102,'3',94,ARRAY['Oral','Reading','Writing'],ARRAY[0,1,2],ARRAY['1a,1b,1c,2a,2b,2c,2d,3a,3b,3c,4a,4b,4c,5a,5b,5c,6a','7a,7b,7c,8a,8b,8c','9a,9b,9c,9d,10a,10b,10c'],ARRAY[17,6,7],3);
+select agg_school_assess_grade_eng(102,'3',95,ARRAY['Oral','Reading','Writing'],ARRAY[0,1,2],ARRAY['1a,1b,1c,2a,2b,2c,2d,3a,3b,3c,4a,4b,4c,5a,5b,5c,6a','7a,7b,7c,8a,8b,8c','9a,9b,9c,9d,10a,10b,10c'],ARRAY[17,6,7],3);
+
+select agg_school_assess_grade_eng_cohorts(102,'1',87,ARRAY['Oral'],ARRAY[0],ARRAY['1a,1b,1c,2a,2b,2c,2d,3a,3b,3c,4a'],ARRAY[11],1,ARRAY[87,88,89]);
+select agg_school_assess_grade_eng_cohorts(102,'1',88,ARRAY['Oral'],ARRAY[0],ARRAY['1a,1b,1c,2a,2b,2c,2d,3a,3b,3c,4a'],ARRAY[11],1,ARRAY[87,88,89]);
+select agg_school_assess_grade_eng_cohorts(102,'1',89,ARRAY['Oral'],ARRAY[0],ARRAY['1a,1b,1c,2a,2b,2c,2d,3a,3b,3c,4a'],ARRAY[11],1,ARRAY[87,88,89]);
+select agg_school_assess_grade_eng_cohorts(102,'2',90,ARRAY['Oral','Reading','Writing'],ARRAY[0,1,2],ARRAY['1a,1b,1c,2a,2b,2c,2d,3a,3b,3c,4a','5a,5b,5c','6a,6b,6c,6d,6e,7a,7b,7c'],ARRAY[11,3,8],3,ARRAY[90,91,92]);
+select agg_school_assess_grade_eng_cohorts(102,'2',91,ARRAY['Oral','Reading','Writing'],ARRAY[0,1,2],ARRAY['1a,1b,1c,2a,2b,2c,2d,3a,3b,3c,4a','5a,5b,5c','6a,6b,6c,6d,6e,7a,7b,7c'],ARRAY[11,3,8],3,ARRAY[90,91,92]);
+select agg_school_assess_grade_eng_cohorts(102,'2',92,ARRAY['Oral','Reading','Writing'],ARRAY[0,1,2],ARRAY['1a,1b,1c,2a,2b,2c,2d,3a,3b,3c,4a','5a,5b,5c','6a,6b,6c,6d,6e,7a,7b,7c'],ARRAY[11,3,8],3,ARRAY[90,91,92]);
+select agg_school_assess_grade_eng_cohorts(102,'3',93,ARRAY['Oral','Reading','Writing'],ARRAY[0,1,2],ARRAY['1a,1b,1c,2a,2b,2c,2d,3a,3b,3c,4a,4b,4c,5a,5b,5c,6a','7a,7b,7c,8a,8b,8c','9a,9b,9c,9d,10a,10b,10c'],ARRAY[17,6,7],3,ARRAY[93,94,95]);
+select agg_school_assess_grade_eng_cohorts(102,'3',94,ARRAY['Oral','Reading','Writing'],ARRAY[0,1,2],ARRAY['1a,1b,1c,2a,2b,2c,2d,3a,3b,3c,4a,4b,4c,5a,5b,5c,6a','7a,7b,7c,8a,8b,8c','9a,9b,9c,9d,10a,10b,10c'],ARRAY[17,6,7],3,ARRAY[93,94,95]);
+select agg_school_assess_grade_eng_cohorts(102,'3',95,ARRAY['Oral','Reading','Writing'],ARRAY[0,1,2],ARRAY['1a,1b,1c,2a,2b,2c,2d,3a,3b,3c,4a,4b,4c,5a,5b,5c,6a','7a,7b,7c,8a,8b,8c','9a,9b,9c,9d,10a,10b,10c'],ARRAY[17,6,7],3,ARRAY[93,94,95]);
+
+--Treatment English 2011-2012
+select agg_school_assess_grade_eng(102,'1',102,ARRAY['Oral'],ARRAY[0],ARRAY['1a,1b,1c,2a,2b,2c,2d,3a,3b,3c,4a'],ARRAY[11],1);
+select agg_school_assess_grade_eng(102,'1',103,ARRAY['Oral'],ARRAY[0],ARRAY['1a,1b,1c,2a,2b,2c,2d,3a,3b,3c,4a'],ARRAY[11],1);
+select agg_school_assess_grade_eng(102,'1',104,ARRAY['Oral'],ARRAY[0],ARRAY['1a,1b,1c,2a,2b,2c,2d,3a,3b,3c,4a'],ARRAY[11],1);
+select agg_school_assess_grade_eng(102,'2',105,ARRAY['Oral','Reading','Writing'],ARRAY[0,1,2],ARRAY['1a,1b,1c,2a,2b,2c,2d,3a,3b,3c,4a','5a,5b,5c','6a,6b,6c,6d,6e,7a,7b,7c'],ARRAY[11,3,8],3);
+select agg_school_assess_grade_eng(102,'2',106,ARRAY['Oral','Reading','Writing'],ARRAY[0,1,2],ARRAY['1a,1b,1c,2a,2b,2c,2d,3a,3b,3c,4a','5a,5b,5c','6a,6b,6c,6d,6e,7a,7b,7c'],ARRAY[11,3,8],3);
+select agg_school_assess_grade_eng(102,'2',107,ARRAY['Oral','Reading','Writing'],ARRAY[0,1,2],ARRAY['1a,1b,1c,2a,2b,2c,2d,3a,3b,3c,4a','5a,5b,5c','6a,6b,6c,6d,6e,7a,7b,7c'],ARRAY[11,3,8],3);
+select agg_school_assess_grade_eng(102,'3',108,ARRAY['Oral','Reading','Writing'],ARRAY[0,1,2],ARRAY['1a,1b,1c,2a,2b,2c,2d,3a,3b,3c,4a,4b,4c,5a,5b,5c,6a','7a,7b,7c,8a,8b,8c','9a,9b,9c,9d,10a,10b,10c'],ARRAY[17,6,7],3);
+select agg_school_assess_grade_eng(102,'3',109,ARRAY['Oral','Reading','Writing'],ARRAY[0,1,2],ARRAY['1a,1b,1c,2a,2b,2c,2d,3a,3b,3c,4a,4b,4c,5a,5b,5c,6a','7a,7b,7c,8a,8b,8c','9a,9b,9c,9d,10a,10b,10c'],ARRAY[17,6,7],3);
+select agg_school_assess_grade_eng(102,'3',110,ARRAY['Oral','Reading','Writing'],ARRAY[0,1,2],ARRAY['1a,1b,1c,2a,2b,2c,2d,3a,3b,3c,4a,4b,4c,5a,5b,5c,6a','7a,7b,7c,8a,8b,8c','9a,9b,9c,9d,10a,10b,10c'],ARRAY[17,6,7],3);
+
+select agg_school_assess_grade_eng_cohorts(102,'1',102,ARRAY['Oral'],ARRAY[0],ARRAY['1a,1b,1c,2a,2b,2c,2d,3a,3b,3c,4a'],ARRAY[11],1,ARRAY[102,103,104]);
+select agg_school_assess_grade_eng_cohorts(102,'1',103,ARRAY['Oral'],ARRAY[0],ARRAY['1a,1b,1c,2a,2b,2c,2d,3a,3b,3c,4a'],ARRAY[11],1,ARRAY[102,103,104]);
+select agg_school_assess_grade_eng_cohorts(102,'1',104,ARRAY['Oral'],ARRAY[0],ARRAY['1a,1b,1c,2a,2b,2c,2d,3a,3b,3c,4a'],ARRAY[11],1,ARRAY[102,103,104]);
+select agg_school_assess_grade_eng_cohorts(102,'2',105,ARRAY['Oral','Reading','Writing'],ARRAY[0,1,2],ARRAY['1a,1b,1c,2a,2b,2c,2d,3a,3b,3c,4a','5a,5b,5c','6a,6b,6c,6d,6e,7a,7b,7c'],ARRAY[11,3,8],3,ARRAY[105,106,107]);
+select agg_school_assess_grade_eng_cohorts(102,'2',106,ARRAY['Oral','Reading','Writing'],ARRAY[0,1,2],ARRAY['1a,1b,1c,2a,2b,2c,2d,3a,3b,3c,4a','5a,5b,5c','6a,6b,6c,6d,6e,7a,7b,7c'],ARRAY[11,3,8],3,ARRAY[105,106,107]);
+select agg_school_assess_grade_eng_cohorts(102,'2',107,ARRAY['Oral','Reading','Writing'],ARRAY[0,1,2],ARRAY['1a,1b,1c,2a,2b,2c,2d,3a,3b,3c,4a','5a,5b,5c','6a,6b,6c,6d,6e,7a,7b,7c'],ARRAY[11,3,8],3,ARRAY[105,106,107]);
+select agg_school_assess_grade_eng_cohorts(102,'3',108,ARRAY['Oral','Reading','Writing'],ARRAY[0,1,2],ARRAY['1a,1b,1c,2a,2b,2c,2d,3a,3b,3c,4a,4b,4c,5a,5b,5c,6a','7a,7b,7c,8a,8b,8c','9a,9b,9c,9d,10a,10b,10c'],ARRAY[17,6,7],3,ARRAY[108,109,110]);
+select agg_school_assess_grade_eng_cohorts(102,'3',109,ARRAY['Oral','Reading','Writing'],ARRAY[0,1,2],ARRAY['1a,1b,1c,2a,2b,2c,2d,3a,3b,3c,4a,4b,4c,5a,5b,5c,6a','7a,7b,7c,8a,8b,8c','9a,9b,9c,9d,10a,10b,10c'],ARRAY[17,6,7],3,ARRAY[108,109,110]);
+select agg_school_assess_grade_eng_cohorts(102,'3',110,ARRAY['Oral','Reading','Writing'],ARRAY[0,1,2],ARRAY['1a,1b,1c,2a,2b,2c,2d,3a,3b,3c,4a,4b,4c,5a,5b,5c,6a','7a,7b,7c,8a,8b,8c','9a,9b,9c,9d,10a,10b,10c'],ARRAY[17,6,7],3,ARRAY[108,109,110]);
 
 
 GRANT SELECT ON tb_institution_agg,

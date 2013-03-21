@@ -1,7 +1,7 @@
 $var title: Karnataka Learning Partnership
 $var cssfiles: /css/grid.css /css/style.css /css/list.css /css/home.css
 $var jsfiles: /yui/build/yui/yui-min.js /js/utils.js /js/libs/feedreader.js /js/libs/modernizr-2.0.6.min.js /js/libs/flickrshow-7.2.min.js
-$var btags:
+$var btags:onLoad=getSysInfo();
 <script src="http://platform.twitter.com/widgets.js" type="text/javascript"></script>
 <script>
 YUI({base: 'yui/build/',timeout: 50000}).use('gallery-yui-slideshow', function(Y){
@@ -64,7 +64,10 @@ slideshow1.render();
     </div> 
     </div>
   <div class="clearfix"></div>
-  <div class="grid_12"i id="lowercontent">
+  <div class="grid_12" id="syscontent">
+    <div id="sysinfo"></div>
+  </div>
+  <div class="grid_12" id="lowercontent">
     <a href="http://sslc.klp.org.in" target="_blank" style='float:left'>SSLC Results visualized by Districts <img src="/images/new.png" height="30px"/></a>
     <a href="/schoolpage/school/33311" target="_blank" style='float:left'>DISE, Akshaya Patra and Akshara Library Data now on the school pages <img src="/images/new.png" height="30px"/></a>
   </div>

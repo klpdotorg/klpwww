@@ -253,7 +253,7 @@ class schools_bound:
 
 class getPointInfo:
   def GET(self):
-    pointInfo={"district":[],"block":[],"cluster":[],"project":[],"circle":[]}
+    pointInfo={"district":[],"preschooldistrict":[], "block":[],"cluster":[],"project":[],"circle":[]}
     try:
       cursor = DbManager.getMainCon().cursor()
       for type in pointInfo:
@@ -282,7 +282,7 @@ class getPointInfo:
 
 class getSchoolsInfo:
   def GET(self):
-    pointInfo={"preschooldistrict":[],"school":[],"preschool":[]}
+    pointInfo={"school":[],"preschool":[]}
     try:
       cursor = DbManager.getMainCon().cursor()
       for type in pointInfo:

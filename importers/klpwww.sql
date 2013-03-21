@@ -405,3 +405,21 @@ GRANT SELECT ON tb_school,
                 vw_mdm_agg
 TO web;
 
+
+drop view vw_lib_level_agg;
+create or replace view vw_lib_level_agg as
+SELECT t1.klp_school_id, t1.class, t1.month, t1.year, t1.book_level, t1.child_count
+   FROM dblink('host=localhost dbname=library user=klp password=1q2w3e4r', 'select * from level_agg') t1(klp_school_id integer, class integer, month character varying(10), year character varying(10), book_level character varying(50), child_count integer);
+
+
+drop view vw_lib_lang_agg;
+create or replace view vw_lib_lang_agg as
+SELECT t1.klp_school_id, t1.class, t1.month, t1.year, t1.book_lang, t1.child_count
+   FROM dblink('host=localhost dbname=library user=klp password=1q2w3e4r', 'select * from lang_agg') t1(klp_school_id integer, class integer, month character varying(10), year character varying(10), book_lang character varying(50), child_count integer);
+
+drop view vw_lib_borrow;
+create or replace view vw_lib_borrow as
+SELECT t1.trans_year, t1.class, t1.issue_date, t1.klp_school_id, t1.school_name, t1.klp_child_id
+   FROM dblink('host=localhost dbname=library user=klp password=1q2w3e4r', 'select trans_year,class,issue_date,klp_school_id,school_name,klp_child_id from libentry where flag is not null') t1(trans_year character varying(30), class numeric(3,0), issue_date character varying(20), klp_school_id numeric(7,0), school_name character varying(50), klp_child_id character varying(30));
+
+

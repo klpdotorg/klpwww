@@ -212,7 +212,7 @@ ol, ul {
     opacity: 1;
 }
 
-@media only screen and (max-device-width: 800px), only screen and (device-width: 1024px) and (device-height: 600px), only screen and (width: 1280px) and (orientation: landscape), only screen and (device-width: 800px), only screen and (max-width: 767px) {
+@media only screen and (max-device-width: 800px), only screen and (device-width: 800px), only screen and (max-width: 767px) {
 .navbar{
     display: none;
 }
@@ -244,4 +244,20 @@ body{
 .navbar-inverse .nav .active > a, .navbar-inverse .nav .active > a:hover, .navbar-inverse .nav .active > a:focus {
     background-color: transparent;
     color: #FFFFFF;
+}
+
+
+.navbar-inverse .nav li.dropdown.open > .dropdown-toggle, .navbar-inverse .nav li.dropdown.active > .dropdown-toggle, .navbar-inverse .nav li.dropdown.open.active > .dropdown-toggle {
+    background-color: transparent;
+    color: #FFFFFF;
+    box-shadow: 0 3px 8px rgba(0, 0, 0, 0.125) inset;
+}
+
+.dropdown-menu {
+    background-color: #F89400;
+}
+
+.dropdown-menu li > a:hover, .dropdown-menu li > a:focus, .dropdown-menu-submenu:hover > a {
+    background-color: transparent;
+    background-image: none;
 }

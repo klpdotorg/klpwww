@@ -190,12 +190,12 @@ function initialize() {
 
 	overlays = {
 		"<img src='/images/icons/pdistrict.png' height='25px' /> Preschool Districts": preschooldist_layer,
-		"<img src='/images/icons/project.png' height='25px' /> Projects": project_layer,
-		"<img src='/images/icons/circle.png' height='25px' /> Circles": circle_layer,
+		"<img src='/images/icons/project.png' height='25px' /> Preschool Projects": project_layer,
+		"<img src='/images/icons/circle.png' height='25px' /> Preschool Circles": circle_layer,
 		"<img src='/images/icons/preschool.png' height='25px' /> Preschools": preschool_cluster,
-		"<img src='/images/icons/district.png' height='25px' /> Districts": district_layer,
-		"<img src='/images/icons/block.png' height='25px' /> Blocks": block_layer,
-		"<img src='/images/icons/cluster.png' height='25px' /> Clusters": cluster_layer,
+		"<img src='/images/icons/district.png' height='25px' /> School Districts": district_layer,
+		"<img src='/images/icons/block.png' height='25px' /> School Blocks": block_layer,
+		"<img src='/images/icons/cluster.png' height='25px' /> School Clusters": cluster_layer,
 		"<img src='/images/icons/school.png' height='25px' /> Schools": school_cluster,
 		"LPS RTE 1 KM": rteLowerPrimary,
 		"HPS RTE 3 KM": rteHigherPrimary,

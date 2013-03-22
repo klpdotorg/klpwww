@@ -7,6 +7,7 @@ import re
 import difflib
 import geojson
 import smtplib,email,email.encoders,email.mime.text,email.mime.base,mimetypes
+import memcache
 from web import form
 
 # Needed to find the templates
@@ -222,6 +223,7 @@ render_plain = web.template.render('templates/')
 
 application = web.application(urls,globals()).wsgifunc()
 
+memc = memcache.Client(['127.0.0.1:11211'], debug=1);
 
 class mainmap:
   """Returns the main template"""
@@ -260,26 +262,30 @@ class schools_bound:
 
 class getPointInfo:
   def GET(self):
-    pointInfo={"district":[],"preschooldistrict":[], "block":[],"cluster":[],"project":[],"circle":[]}
     try:
       cursor = DbManager.getMainCon().cursor()
-      for type in pointInfo:
-        features = []
-        cursor.execute(statements['get_'+type])
-        result = cursor.fetchall()
-        for row in result:
-          try:
-            match = re.match(r"POINT\((.*)\s(.*)\)",row[1])
-          except:
-            traceback.print_exc(file=sys.stderr)
-            continue
-          coord = [float(match.group(1)), float(match.group(2))]
-          feature = geojson.Feature(id=row[0], geometry=geojson.Point(coord), properties={"name":row[2]})
-          features.append(feature)
-        feature_collection = geojson.FeatureCollection(features)
-        pointInfo[type].append(geojson.dumps(feature_collection))
-        DbManager.getMainCon().commit()
-      cursor.close()
+      pointInfo = memc.get('boundaryInfo')
+      if not pointInfo:
+        pointInfo={"district":[],"preschooldistrict":[], "block":[],"cluster":[],"project":[],"circle":[]}
+        for type in pointInfo:
+          features = []
+          cursor.execute(statements['get_'+type])
+          result = cursor.fetchall()
+          for row in result:
+            try:
+              match = re.match(r"POINT\((.*)\s(.*)\)",row[1])
+            except:
+              traceback.print_exc(file=sys.stderr)
+              continue
+            coord = [float(match.group(1)), float(match.group(2))]
+            feature = geojson.Feature(id=row[0], geometry=geojson.Point(coord), properties={"name":row[2]})
+            features.append(feature)
+          feature_collection = geojson.FeatureCollection(features)
+          pointInfo[type].append(geojson.dumps(feature_collection))
+          DbManager.getMainCon().commit()
+        memc.set('boundaryInfo',pointInfo, 60*60*24*30)
+        print "setting memcache"
+        cursor.close()
     except:
       traceback.print_exc(file=sys.stderr)
       cursor.close()
@@ -289,29 +295,33 @@ class getPointInfo:
 
 class getSchoolsInfo:
   def GET(self):
-    pointInfo={"school":[],"preschool":[]}
     try:
       cursor = DbManager.getMainCon().cursor()
-      for type in pointInfo:
-        features = []
-        cursor.execute(statements['get_'+type])
-        result = cursor.fetchall()
-        for row in result:
-          try:
-            match = re.match(r"POINT\((.*)\s(.*)\)",row[1])
-          except:
-            traceback.print_exc(file=sys.stderr)
-            continue
-          coord = [float(match.group(1)), float(match.group(2))]
-          if type == "school":
-            feature = geojson.Feature(id=row[0], geometry=geojson.Point(coord), properties={"name":row[2], "cat":row[3]})
-          else:
-            feature = geojson.Feature(id=row[0], geometry=geojson.Point(coord), properties={"name":row[2]})
-          features.append(feature)
-        feature_collection = geojson.FeatureCollection(features)
-        pointInfo[type].append(geojson.dumps(feature_collection))
-        DbManager.getMainCon().commit()
-      cursor.close()
+      pointInfo = memc.get('schoolsInfo')
+      if not pointInfo:
+        pointInfo={"school":[],"preschool":[]}
+        for type in pointInfo:
+          features = []
+          cursor.execute(statements['get_'+type])
+          result = cursor.fetchall()
+          for row in result:
+            try:
+              match = re.match(r"POINT\((.*)\s(.*)\)",row[1])
+            except:
+              traceback.print_exc(file=sys.stderr)
+              continue
+            coord = [float(match.group(1)), float(match.group(2))]
+            if type == "school":
+              feature = geojson.Feature(id=row[0], geometry=geojson.Point(coord), properties={"name":row[2], "cat":row[3]})
+            else:
+              feature = geojson.Feature(id=row[0], geometry=geojson.Point(coord), properties={"name":row[2]})
+            features.append(feature)
+          feature_collection = geojson.FeatureCollection(features)
+          pointInfo[type].append(geojson.dumps(feature_collection))
+          DbManager.getMainCon().commit()
+        memc.set('schoolsInfo',pointInfo, 60*60*24*30)
+        print "setting memcache"
+        cursor.close()
     except:
       traceback.print_exc(file=sys.stderr)
       cursor.close()

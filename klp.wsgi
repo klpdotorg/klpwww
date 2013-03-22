@@ -297,10 +297,10 @@ class getSchoolsInfo:
   def GET(self):
     try:
       cursor = DbManager.getMainCon().cursor()
-      pointInfo = memc.get('schoolsInfo')
-      if not pointInfo:
-        pointInfo={"school":[],"preschool":[]}
-        for type in pointInfo:
+      schoolsInfo = memc.get('schoolsInfo')
+      if not schoolsInfo:
+        schoolsInfo={"school":[],"preschool":[]}
+        for type in schoolsInfo:
           features = []
           cursor.execute(statements['get_'+type])
           result = cursor.fetchall()
@@ -317,9 +317,9 @@ class getSchoolsInfo:
               feature = geojson.Feature(id=row[0], geometry=geojson.Point(coord), properties={"name":row[2]})
             features.append(feature)
           feature_collection = geojson.FeatureCollection(features)
-          pointInfo[type].append(geojson.dumps(feature_collection))
+          schoolsInfo[type].append(geojson.dumps(feature_collection))
           DbManager.getMainCon().commit()
-        memc.set('schoolsInfo',pointInfo, 60*60*24*30)
+        memc.set('schoolsInfo',schoolsInfo, 60*60*24*30)
         print "setting memcache"
         cursor.close()
     except:
@@ -327,7 +327,7 @@ class getSchoolsInfo:
       cursor.close()
       DbManager.getMainCon().rollback()
     web.header('Content-Type', 'application/json')
-    return jsonpickle.encode(pointInfo)
+    return jsonpickle.encode(schoolsInfo)
 
 
 class map:

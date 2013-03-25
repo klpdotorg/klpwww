@@ -186,25 +186,18 @@ function populateLibchart(){
 
 function showMap()
 {
-  var latlng = new google.maps.LatLng(info["lat"],info["lon"]);
-  var myOptions = {
-      zoom: 14,
-      center: latlng,
-      mapTypeId: google.maps.MapTypeId.ROADMAP,
-      disableDoubleClickZoom:false
-  };
 
-  marker_name = "school.png";
-  if(info['type'] == 2)
-  	marker_name = "preschool.png";
+  map = L.map('map', {zoomControl: false, attributionControl: false});
+  var mapquestUrl = 'http://{s}.mqcdn.com/tiles/1.0.0/osm/{z}/{x}/{y}.png',
+  subDomains = ['otile1','otile2','otile3','otile4'];
+  var mapquest = new L.TileLayer(mapquestUrl, {maxZoom: 18, subdomains: subDomains});
+  mapquest.addTo(map);
 
-  map = new google.maps.Map(document.getElementById("map"),myOptions);
-  var marker = new google.maps.Marker({
-        position: latlng,
-        title:info["name"],
-        icon:"/images/"+marker_name
-      });
-  marker.setMap(map);  
+  schoolCoord = L.latLng([info["lat"], info["lon"]]);
+  map.setView(schoolCoord, 14);
+  var marker = L.marker(schoolCoord);
+  marker.bindPopup("<b>"+info["name"]+"</b>").openPopup();
+  marker.addTo(map);
 }
 
 function populateHeader()
@@ -388,7 +381,7 @@ function populateEReps()
   const_table = '<div class="div-table">' 
   if ('mla' in info){
     const_table = const_table + '<div>' +
-                '<div class="div-table-row"><div id="div-col-125width" class="div-table-col">MLA Details</div>' + 
+                '<div class="div-table-row"><div id="div-col-125width" class="div-table-col">MLA Constituency</div>' + 
                 '<div class="div-table-col">:' + info['mla'].toUpperCase() + '</div><div>' +
                 '<div class="div-table-row"><div id="div-col-125width" class="div-table-col">MLA Details</div>' + 
                 '<div class="div-table-col">:' + info['mlaname'].toUpperCase() + '</div><div>' +
@@ -704,7 +697,7 @@ function populateMDM()
            tabletxt = "Meal information for Anganwadis is not available";
         } else if (Object.keys(info.ap_mdm).length > 0) {
            document.getElementById("mdm_info_heading").innerHTML = "Mid day meal Summary";
-           document.getElementById("srcinfo6").innerHTML = '<br/><br/>Source : <a href="http://www.akshayapatra.org/" target="_blank"><span style="color:#43AD2F">Akshaya Patra (2012)</span></a>';
+           document.getElementById("srcinfo6").innerHTML = '<br/><br/>Source : <a href="http://www.akshayapatra.org/" target="_blank"><span style="color:#43AD2F">Akshaya Patra (2012)</span></a>, <a href="http://schoolreportcards.in" target="_blank"><span style="color:#43AD2F">NUEPA-DISE</span></a>';
 
            tabletxt = "";
            var data = new google.visualization.DataTable();

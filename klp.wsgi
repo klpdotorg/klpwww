@@ -37,6 +37,7 @@ urls = (
      '/sysinfo','getSYSInfo',
      '/listFiles/(.*)','listFiles',
      '/schools', 'schools_bound',
+     '/visualization', 'visualization',
 )
 
 class DbManager:
@@ -261,10 +262,8 @@ class schools_bound:
 
 class getPointInfo:
   def GET(self):
-    # r.delete('pointInfo')
     try:
       cursor = DbManager.getMainCon().cursor()
-      # pointInfo = r.get('pointInfo')
       pointInfo = get_value(redis=r, key='pointInfo') 
       if not pointInfo:
         pointInfo={"district":[],"preschooldistrict":[], "block":[],"cluster":[],"project":[],"circle":[]}
@@ -284,9 +283,7 @@ class getPointInfo:
           feature_collection = geojson.FeatureCollection(features)
           pointInfo[type].append(geojson.dumps(feature_collection))
           DbManager.getMainCon().commit()
-        # r.set('pointInfo', jsonpickle.encode(pointInfo))
         set_value(redis=r, key='pointInfo', value=pointInfo)
-        print "redis load points"
         cursor.close()
     except:
       traceback.print_exc(file=sys.stderr)
@@ -297,11 +294,9 @@ class getPointInfo:
 
 class getSchoolsInfo:
   def GET(self):
-    # r.delete('schoolsInfo')
     try:
       cursor = DbManager.getMainCon().cursor()
       schoolsInfo = get_value(redis=r, key='schoolsInfo') 
-      # r.get('schoolsInfo')
       if not schoolsInfo:
         schoolsInfo={"school":[],"preschool":[]}
         for type in schoolsInfo:
@@ -323,9 +318,7 @@ class getSchoolsInfo:
           feature_collection = geojson.FeatureCollection(features)
           schoolsInfo[type].append(geojson.dumps(feature_collection))
           DbManager.getMainCon().commit()
-        # r.set('schoolsInfo', jsonpickle.encode(schoolsInfo))
         set_value(redis=r, key='schoolsInfo', value=schoolsInfo)
-        print "redis load schools"
         cursor.close()
     except:
       traceback.print_exc(file=sys.stderr)
@@ -349,6 +342,9 @@ class map:
     web.header('Content-Type','text/html; charset=utf-8')
     return render_plain.map()
 
+class visualization:
+  def GET(self):
+    raise web.seeother('/map')
 
 
 class getSYSInfo:

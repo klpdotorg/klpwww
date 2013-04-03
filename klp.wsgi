@@ -290,6 +290,7 @@ class getPointInfo:
       cursor.close()
       DbManager.getMainCon().rollback()
     web.header('Content-Type', 'application/json')
+    web.header('Cache-Control', 'max-age=2592000', 'public')
     return jsonpickle.encode(pointInfo)
 
 class getSchoolsInfo:
@@ -325,6 +326,7 @@ class getSchoolsInfo:
       cursor.close()
       DbManager.getMainCon().rollback()
     web.header('Content-Type', 'application/json')
+    web.header('Cache-Control', 'max-age=2592000', 'public')
     return jsonpickle.encode(schoolsInfo)
 
 def set_value(redis, key, value):

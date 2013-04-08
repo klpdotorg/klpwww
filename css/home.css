@@ -134,3 +134,15 @@
 #general a:link{color: white;}
 #general a:visited{color: white;}
 #general a:hover {color: black;}
+
+#thevideo{
+  padding-left: 3px;
+  padding-top: 10px;
+}
+
+#homecontent {
+  background-color: #FFF;
+  position:relative;
+  top:92px;
+  z-index:1;
+}

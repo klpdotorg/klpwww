@@ -3,23 +3,9 @@ $var cssfiles: /css/grid.css /css/style.css /css/list.css /css/home.css
 $var jsfiles: /yui/build/yui/yui-min.js /js/utils.js /js/libs/feedreader.js /js/libs/modernizr-2.0.6.min.js /js/libs/flickrshow-7.2.min.js
 $var btags:onLoad=getSysInfo();
 <script src="http://platform.twitter.com/widgets.js" type="text/javascript"></script>
-<script>
-YUI({base: 'yui/build/',timeout: 50000}).use('gallery-yui-slideshow', function(Y){
-// Slideshow 1:
-var slideshow1 = new Y.Slideshow({ 
-                srcNode: '#slideshow1',
-                transition: Y.Slideshow.PRESETS.fade,
-                duration: 1,
-                interval: 8,
-                nextButton: '#slideshow1'
-                 });
-slideshow1.render();
-});
-</script>
-
 
 <div id="content" class="container container_12">
-  <div class="grid_12" id="contentfiller">
+  <div class="grid_12" id="homecontent">
   <!--div class="grid_4 push_point_75"-->
     <div class="grid_4">
       <div id="general">Karnataka Learning Partnership is a public space where all citizens can contribute to the cause of ensuring better schools and schooling for our children. Better education will ensure better human development and prosperity for our citizens. <a href="/text/aboutus">Know more ...</a>
@@ -34,33 +20,14 @@ slideshow1.render();
       </script>
       <script src=http://blog.klp.org.in/feeds/posts/default?alt=json-in-script&callback=processReq></script>   
      </div> 
-     <!--div class="flickr">
-        <div id="flickr" style="height:231px;postion:absolute">
-          <p> Loading Photos ... </p>
-        </div>
-        <script>
-          var flickr= new flickrshow('flickr', {
-            autoplay:true,
-            interval:5000,
-            license:null,
-            tags:'children',
-            user:'35026043@N03'
-          });
-        </script>
-       </div-->
       </div>
       <div class="grid_8">
-      <div id="slideshow1" class="slideshow yui3-slideshow-content">
-        <img src="/images/ss/1.jpg" alt="" />
-        <img src="/images/ss/2.jpg" alt="" />
-        <img src="/images/ss/3.jpg" alt="" />
-        <img src="/images/ss/4.jpg" alt="" />
-        <img src="/images/ss/5.jpg" alt="" />
-        <img src="/images/ss/6.jpg" alt="" />
-        <img src="/images/ss/7.jpg" alt="" />
-        <img src="/images/ss/8.jpg" alt="" />
-     </div>
-
+      <img src='/images/sys_top.jpg' width='646px'/>
+      <div onclick="thevid=document.getElementById('thevideo'); thevid.style.display='block'; this.style.display='none'">
+      <img src="/images/sys_video.jpg" style="cursor:pointer;padding-left:3px;padding-top:10px;" /></div>
+      <div id="thevideo" style="display:none">
+      <object width="640" height="360"><param name="movie" value="http://www.youtube.com/v/BQBsAjlBTHw?hl=en_GB&amp;version=3&amp;autoplay=1"></param><param name="allowFullScreen" value="true"></param><param name="allowscriptaccess" value="always"></param><embed src="http://www.youtube.com/v/BQBsAjlBTHw?hl=en_GB&amp;version=3&amp;autoplay=1" type="application/x-shockwave-flash" width="640" height="360" allowscriptaccess="always" allowfullscreen="true"></embed></object>
+      </div>
     </div> 
     </div>
   <div class="clearfix"></div>

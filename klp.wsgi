@@ -36,6 +36,7 @@ urls = (
      '/sysinfo','getSYSInfo',
      '/listFiles/(.*)','listFiles',
      '/schools', 'schools_bound',
+     '/visualization', 'visualization',
 )
 
 class DbManager:
@@ -325,6 +326,9 @@ class map:
     web.header('Content-Type','text/html; charset=utf-8')
     return render_plain.map()
 
+class visualization:
+  def GET(self):
+    raise web.seeother('/map')
 
 
 class getSYSInfo:

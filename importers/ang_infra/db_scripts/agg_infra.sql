@@ -1,13 +1,4 @@
-DROP TABLE IF EXISTS "tb_ang_infra_agg";
-CREATE TABLE "tb_ang_infra_agg" (
-  "sid" integer,
-  "ai_metric" varchar(30),
-  "perc_score" numeric(5),
-  "ai_group" varchar(30)
-);
-
-
-CREATE OR REPLACE function agg_ang_infra() returns void as $$
+CREATE OR REPLACE function agg_ang_infra(ac_year text) returns void as $$
 declare
   ai_metrics text[17];
   ai_group text[17];
@@ -35,13 +26,10 @@ declare
 
       for i in 1..17
         loop
-           for agg_record in select sid, round(100.0 * sum(ans)/ai_max[i]) as perc_total from tb_ai_answers where qid = ANY(string_to_array(ai_question[i],',')::integer[]) group by sid
+           for agg_record in select sid, round(100.0 * sum(ans)/ai_max[i]) as perc_total from tb_ai_answers where qid = ANY(string_to_array(ai_question[i],',')::integer[]) and year=ac_year group by sid
            loop
-               insert into tb_ang_infra_agg values (agg_record.sid, ai_metrics[i],agg_record.perc_total,ai_group[i]);
+               insert into tb_ang_infra_agg values (agg_record.sid, ai_metrics[i],agg_record.perc_total,ai_group[i],ac_year);
            end loop;
         end loop;
 end;
 $$ language plpgsql;
-
-select agg_ang_infra();
-

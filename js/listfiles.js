@@ -112,6 +112,7 @@ function listFiles(fileList)
         newTable = newTable + "<td><a target='_blank' href='" + fileList["directory"] + fileList["subdir"][0] + "/" + fileNames[each] + "'>2008-09</a></td>";
         newTable = newTable + "<td><a target='_blank' href='" + fileList["directory"] + fileList["subdir"][1] + "/" + fileNames[each] + "'>2009-10</a></td>";
         newTable = newTable + "<td><a target='_blank' href='" + fileList["directory"] + fileList["subdir"][2] + "/" + fileNames[each] + "'>2010-11</a></td>";
+        newTable = newTable + "<td><a target='_blank' href='" + fileList["directory"] + fileList["subdir"][3] + "/" + fileNames[each] + "'>2011-12</a></td>";
         newTable = newTable + "</td></tr>";
       }
       newTable = newTable + "</tbody></table>";

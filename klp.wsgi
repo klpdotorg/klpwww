@@ -1802,7 +1802,7 @@ class listFiles:
         traceback.print_exc(file=sys.stderr)
     if int(type) == 4:
       path = ConfigReader.getConfigValue('Reports','igreports')
-      subdir = ["/2008_09","/2009_10","/2010_11"]
+      subdir = ["/2008_09","/2009_10","/2010_11","/2011_12"]
       filenames =[]
       try:
         dirList=os.listdir(os.path.dirname(os.getcwd()) + path + subdir[0])

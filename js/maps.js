@@ -355,7 +355,8 @@ var selectedSchools = L.Control.extend({
 	options: {
 		position: 'topleft',
 		schools: [],
-		preschools: []
+		preschools: [],
+		bounds: ''
 	},
 
 	initialize: function(options) {
@@ -366,13 +367,14 @@ var selectedSchools = L.Control.extend({
 		var container = L.DomUtil.create('div', 'btn-group');
 		button = "<p class='btn btn-success dropdown-toggle' data-toggle='dropdown'>Institutions<span class='caret'></span></p><ul class='dropdown-menu schools'>";
 		var schoolsEntries= ""; var preschoolsEntries = "";
+		var exportLink = "<li><a href='export?bounds="+this.options.bounds+"''><i class='icon-download'></i> <strong>CSV</strong></a></li>";
 		for (i=0; i<this.options.schools.length; i++) {
 			schoolsEntries = schoolsEntries+"<li><a href='schoolpage/school/"+this.options.schools[i].id+" ' target='_blank'>"+this.options.schools[i].properties['name']+"</a></li>";
 		}
 		for (i=0; i<this.options.preschools.length; i++) {
 			preschoolsEntries = preschoolsEntries+"<li><a href='schoolpage/school/"+this.options.preschools[i].id+" ' target='_blank'>"+this.options.preschools[i].properties['name']+"</a></li>";
 		}
-		container.innerHTML =button+schoolsEntries+"<li class='divider'></li>"+preschoolsEntries+"</ul>";
+		container.innerHTML =button+exportLink+schoolsEntries+"<li class='divider'></li>"+preschoolsEntries+"</ul>";
 		return container;
 	}
 
@@ -402,7 +404,7 @@ map.on('draw:circle-created', function (e) {
 				map.removeControl(schoolsList);
 				schoolsListFlag = 0;
 			}
-			schoolsList = new selectedSchools({schools: boundedSchools.features, preschools: boundedPreschools.features});
+			schoolsList = new selectedSchools({schools: boundedSchools.features, preschools: boundedPreschools.features, bounds: bbox});
 			map.addControl(schoolsList);
 			schoolsListFlag = 1;
 			boundedSchools_layer = L.geoJson(boundedSchools, {pointToLayer: function(feature, latlng){

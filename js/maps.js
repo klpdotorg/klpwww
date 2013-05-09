@@ -367,7 +367,7 @@ var selectedSchools = L.Control.extend({
 		var container = L.DomUtil.create('div', 'btn-group');
 		button = "<p class='btn btn-success dropdown-toggle' data-toggle='dropdown'>Institutions<span class='caret'></span></p><ul class='dropdown-menu schools'>";
 		var schoolsEntries= ""; var preschoolsEntries = "";
-		var exportLink = "<li><a href='export?bounds="+this.options.bounds+"''><i class='icon-download'></i> <strong>CSV</strong></a></li>";
+		var exportLink = "<li><a href='export?bounds="+this.options.bounds+"''><i class='icon-download-alt'></i> <strong>CSV</strong></a></li>";
 		for (i=0; i<this.options.schools.length; i++) {
 			schoolsEntries = schoolsEntries+"<li><a href='schoolpage/school/"+this.options.schools[i].id+" ' target='_blank'>"+this.options.schools[i].properties['name']+"</a></li>";
 		}

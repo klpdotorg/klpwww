@@ -23,7 +23,7 @@ urls = (
      '/pointinfo/', 'getPointInfo',
      '/schoolsinfo/', 'getSchoolsInfo',
      '/assessment/(.*)/(.*)/(.*)','assessments',
-     '/map*','map',
+     '/map','map',
      '/info/school/(.*)','getSchoolInfo',
      '/info/preschool/(.*)','getSchoolInfo',
      '/shareyourstory(.*)\?*','shareyourstory',

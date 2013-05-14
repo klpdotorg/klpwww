@@ -139,7 +139,7 @@ map.on('locationerror', onLocationError);
 
 function setup_layers () {
 	preschool_layer = L.geoJson(preschool, {pointToLayer: function(feature, latlng){
-		return L.marker(latlng, {icon: preschoolIcon});}, onEachFeature: onEachSchool});
+		return L.marker(latlng, {icon: preschoolIcon});}, onEachFeature: onEachpreSchool});
 
 	preschool_layer.addTo(preschool_cluster);
 
@@ -266,6 +266,12 @@ function onEachSchool(feature, layer) {
 	}
 }
 
+function onEachpreSchool(feature, layer) {
+	if (feature.properties) {
+		layer.on('click', preschoolPopup);
+	}
+}
+
 function onEachCircle(feature, layer) {
 	if (feature.properties) {
 		layer.on('click', circlePopup);
@@ -276,6 +282,16 @@ function schoolPopup () {
 	marker = this;
 	$.getJSON('/info/school/'+marker.feature.id, function(data) {
 		popupContent = "<b><a href='schoolpage/school/"+marker.feature.id+"' target='_blank'>"+marker.feature.properties.name+"</a></b>"+"<hr> Boys: "+
+		String(data['numBoys'])+" | Girls: "+String(data['numGirls'])+" | Total: <b>"+String(data['numStudents'])+"</b><br />Stories: "+String(data['numStories'])+
+		" &rarr; <i><a href='shareyourstoryschool?type=school?id="+marker.feature.id+"' target='_blank'>Share your story!</a></i>";
+		marker.bindPopup(popupContent).openPopup();
+	});
+}
+
+function preschoolPopup () {
+	marker = this;
+	$.getJSON('/info/school/'+marker.feature.id, function(data) {
+		popupContent = "<b><a href='schoolpage/preschool/"+marker.feature.id+"' target='_blank'>"+marker.feature.properties.name+"</a></b>"+"<hr> Boys: "+
 		String(data['numBoys'])+" | Girls: "+String(data['numGirls'])+" | Total: <b>"+String(data['numStudents'])+"</b><br />Stories: "+String(data['numStories'])+
 		" &rarr; <i><a href='shareyourstoryschool?type=school?id="+marker.feature.id+"' target='_blank'>Share your story!</a></i>";
 		marker.bindPopup(popupContent).openPopup();
@@ -372,7 +388,7 @@ var selectedSchools = L.Control.extend({
 			schoolsEntries = schoolsEntries+"<li><a href='schoolpage/school/"+this.options.schools[i].id+" ' target='_blank'>"+this.options.schools[i].properties['name']+"</a></li>";
 		}
 		for (i=0; i<this.options.preschools.length; i++) {
-			preschoolsEntries = preschoolsEntries+"<li><a href='schoolpage/school/"+this.options.preschools[i].id+" ' target='_blank'>"+this.options.preschools[i].properties['name']+"</a></li>";
+			preschoolsEntries = preschoolsEntries+"<li><a href='schoolpage/preschool/"+this.options.preschools[i].id+" ' target='_blank'>"+this.options.preschools[i].properties['name']+"</a></li>";
 		}
 		container.innerHTML =button+exportLink+schoolsEntries+"<li class='divider'></li>"+preschoolsEntries+"</ul>";
 		return container;

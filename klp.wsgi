@@ -278,7 +278,10 @@ class export_bound:
 
     for row in result:
       row = list(row)
-      row.append('http://klp.org.in/schoolpage/school/'+str(row[0]))
+      if row[8] == 'PreSchool':
+        row.append('http://klp.org.in/schoolpage/preschool/'+str(row[0]))
+      else:
+        row.append('http://klp.org.in/schoolpage/school/'+str(row[0]))
       writer.writerow(row)
     web.header('Content-Type', 'text/csv')
     web.header('Content-disposition', 'attachment; filename=schools.csv')

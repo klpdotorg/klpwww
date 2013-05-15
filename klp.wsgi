@@ -9,7 +9,8 @@ import geojson
 import cStringIO
 import smtplib,email,email.encoders,email.mime.text,email.mime.base,mimetypes
 from web import form
-
+import pickle
+import redis
 # Needed to find the templates
 import sys, os,traceback
 abspath = os.path.dirname(__file__)
@@ -39,7 +40,7 @@ urls = (
      '/schools', 'schools_bound',
      '/visualization', 'visualization',
      '/export', 'export_bound',
-)
+     )
 
 class DbManager:
 
@@ -226,7 +227,7 @@ render = web.template.render('templates/', base='base')
 render_plain = web.template.render('templates/')
 
 application = web.application(urls,globals()).wsgifunc()
-
+r = redis.StrictRedis(host='localhost', port=6379, db=0)
 
 class mainmap:
   """Returns the main template"""
@@ -289,64 +290,81 @@ class export_bound:
 
 class getPointInfo:
   def GET(self):
-    pointInfo={"district":[],"preschooldistrict":[], "block":[],"cluster":[],"project":[],"circle":[]}
     try:
       cursor = DbManager.getMainCon().cursor()
-      for type in pointInfo:
-        features = []
-        cursor.execute(statements['get_'+type])
-        result = cursor.fetchall()
-        for row in result:
-          try:
-            match = re.match(r"POINT\((.*)\s(.*)\)",row[1])
-          except:
-            traceback.print_exc(file=sys.stderr)
-            continue
-          coord = [float(match.group(1)), float(match.group(2))]
-          feature = geojson.Feature(id=row[0], geometry=geojson.Point(coord), properties={"name":row[2]})
-          features.append(feature)
-        feature_collection = geojson.FeatureCollection(features)
-        pointInfo[type].append(geojson.dumps(feature_collection))
-        DbManager.getMainCon().commit()
-      cursor.close()
+      pointInfo = get_value(redis=r, key='pointInfo') 
+      if not pointInfo:
+        pointInfo={"district":[],"preschooldistrict":[], "block":[],"cluster":[],"project":[],"circle":[]}
+        for type in pointInfo:
+          features = []
+          cursor.execute(statements['get_'+type])
+          result = cursor.fetchall()
+          for row in result:
+            try:
+              match = re.match(r"POINT\((.*)\s(.*)\)",row[1])
+            except:
+              traceback.print_exc(file=sys.stderr)
+              continue
+            coord = [float(match.group(1)), float(match.group(2))]
+            feature = geojson.Feature(id=row[0], geometry=geojson.Point(coord), properties={"name":row[2]})
+            features.append(feature)
+          feature_collection = geojson.FeatureCollection(features)
+          pointInfo[type].append(geojson.dumps(feature_collection))
+          DbManager.getMainCon().commit()
+        set_value(redis=r, key='pointInfo', value=pointInfo)
+        cursor.close()
     except:
       traceback.print_exc(file=sys.stderr)
       cursor.close()
       DbManager.getMainCon().rollback()
     web.header('Content-Type', 'application/json')
+    web.header('Cache-Control', 'max-age=2592000', 'public')
     return jsonpickle.encode(pointInfo)
 
 class getSchoolsInfo:
   def GET(self):
-    pointInfo={"school":[],"preschool":[]}
     try:
       cursor = DbManager.getMainCon().cursor()
-      for type in pointInfo:
-        features = []
-        cursor.execute(statements['get_'+type])
-        result = cursor.fetchall()
-        for row in result:
-          try:
-            match = re.match(r"POINT\((.*)\s(.*)\)",row[1])
-          except:
-            traceback.print_exc(file=sys.stderr)
-            continue
-          coord = [float(match.group(1)), float(match.group(2))]
-          if type == "school":
-            feature = geojson.Feature(id=row[0], geometry=geojson.Point(coord), properties={"name":row[2], "cat":row[3]})
-          else:
-            feature = geojson.Feature(id=row[0], geometry=geojson.Point(coord), properties={"name":row[2]})
-          features.append(feature)
-        feature_collection = geojson.FeatureCollection(features)
-        pointInfo[type].append(geojson.dumps(feature_collection))
-        DbManager.getMainCon().commit()
-      cursor.close()
+      schoolsInfo = get_value(redis=r, key='schoolsInfo') 
+      if not schoolsInfo:
+        schoolsInfo={"school":[],"preschool":[]}
+        for type in schoolsInfo:
+          features = []
+          cursor.execute(statements['get_'+type])
+          result = cursor.fetchall()
+          for row in result:
+            try:
+              match = re.match(r"POINT\((.*)\s(.*)\)",row[1])
+            except:
+              traceback.print_exc(file=sys.stderr)
+              continue
+            coord = [float(match.group(1)), float(match.group(2))]
+            if type == "school":
+              feature = geojson.Feature(id=row[0], geometry=geojson.Point(coord), properties={"name":row[2], "cat":row[3]})
+            else:
+              feature = geojson.Feature(id=row[0], geometry=geojson.Point(coord), properties={"name":row[2]})
+            features.append(feature)
+          feature_collection = geojson.FeatureCollection(features)
+          schoolsInfo[type].append(geojson.dumps(feature_collection))
+          DbManager.getMainCon().commit()
+        set_value(redis=r, key='schoolsInfo', value=schoolsInfo)
+        cursor.close()
     except:
       traceback.print_exc(file=sys.stderr)
       cursor.close()
       DbManager.getMainCon().rollback()
     web.header('Content-Type', 'application/json')
-    return jsonpickle.encode(pointInfo)
+    web.header('Cache-Control', 'max-age=2592000', 'public')
+    return jsonpickle.encode(schoolsInfo)
+
+def set_value(redis, key, value):
+    redis.setex(key, 60*60*24*30, pickle.dumps(value))
+
+def get_value(redis, key):
+    pickled_value = redis.get(key)
+    if pickled_value is None:
+        return None
+    return pickle.loads(pickled_value)
 
 
 class map:

@@ -39,7 +39,7 @@ urls = (
      '/listFiles/(.*)','listFiles',
      '/schools', 'schools_bound',
      '/visualization', 'visualization',
-     '/export', 'export_bound',
+     '/export/bound', 'export_bound',
      '/export/filter', 'export_filter',
      )
 

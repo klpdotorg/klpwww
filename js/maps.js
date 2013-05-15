@@ -15,7 +15,7 @@ var preschool_cluster = new L.MarkerClusterGroup({showCoverageOnHover: false,
 var current_layers = new L.LayerGroup();
 var rteLowerPrimary  = new L.LayerGroup();
 var rteHigherPrimary = new L.LayerGroup();
-
+var layerUpdate = 1;
 function getURLParameter(name) {
 	return decodeURI(
 		(RegExp(name + '=' + '(.+?)(&|$)').exec(location.search)||[,])[1]
@@ -222,7 +222,7 @@ function initialize() {
 }
 
 
-map.on('zoomend', update_map);
+map.on('zoomend', function() { if (layerUpdate==1) {update_map();} });
 
 function update_map() {
 	zoom_level = map.getZoom();
@@ -641,3 +641,15 @@ function applyFilter(e, array, icon) {
 		$('#filterModal').modal('hide');
 	}	
 };
+
+map.on('overlayadd', disableLayerUpdate);
+map.on('overlayremove', disableLayerUpdate);
+
+function disableLayerUpdate() {
+	layerUpdate = 0;
+}
+
+$('#reset').on('click', function() {
+	layerUpdate = 1;
+	map.setZoom(10);
+});

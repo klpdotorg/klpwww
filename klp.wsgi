@@ -227,7 +227,7 @@ render = web.template.render('templates/', base='base')
 render_plain = web.template.render('templates/')
 
 application = web.application(urls,globals()).wsgifunc()
-r = redis.Redis(host='localhost', port=6379, db=0)
+r = redis.StrictRedis(host='localhost', port=6379, db=0)
 
 class mainmap:
   """Returns the main template"""

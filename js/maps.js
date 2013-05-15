@@ -383,7 +383,7 @@ var selectedSchools = L.Control.extend({
 		var container = L.DomUtil.create('div', 'btn-group');
 		button = "<p class='btn btn-success dropdown-toggle' data-toggle='dropdown'>Institutions<span class='caret'></span></p><ul class='dropdown-menu schools'>";
 		var schoolsEntries= ""; var preschoolsEntries = "";
-		var exportLink = "<li><a href='export?bounds="+this.options.bounds+"''><i class='icon-download-alt'></i> <strong>CSV</strong></a></li>";
+		var exportLink = "<li><a href='export/bounds?bounds="+this.options.bounds+"''><i class='icon-download-alt'></i> <strong>CSV</strong></a></li>";
 		for (i=0; i<this.options.schools.length; i++) {
 			schoolsEntries = schoolsEntries+"<li><a href='schoolpage/school/"+this.options.schools[i].id+" ' target='_blank'>"+this.options.schools[i].properties['name']+"</a></li>";
 		}
@@ -455,9 +455,18 @@ function rteCircles() {
 }
 
 
-
 function fill_dropdown(data,type){
 	var dist=document.getElementById(type);
+	if(type=='school' || type=='preschool') {
+		$('#export').removeClass('disabled');
+			ids = [];
+			data.forEach(function(element) {ids.push(element.id);})
+			$('#export').attr('href', '/export/filter?type='+type+'&id='+ids.join(','));
+	}
+
+	else {
+		$('#export').addClass('disabled');
+	}
 	var count=1;
 	document.getElementById(type).length=1;
 	for(var i=0;i<data.length;i++){

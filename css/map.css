@@ -265,3 +265,12 @@ body{
 .nav > li > a:hover > [class^="icon-"] {
     background-image: url("../js/libs/bootstrap/img/glyphicons-halflings-white.png");
 }
+
+.alert {
+    width: 300px;
+    text-align: center;
+}
+
+.black {
+    color: black;
+}

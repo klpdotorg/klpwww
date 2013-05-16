@@ -352,14 +352,15 @@ var alerts = L.Control.extend({
 
 	options: {
 		position: 'topcenter',
-		message: ''		
-	},
+		message: '',
+		status: 'alert-success'
+		},
 	initialize: function (options) {
 		L.Util.setOptions(this, options)
 	},
 
 	onAdd: function (map) {
-		var container = L.DomUtil.create('div', 'alert alert-success');
+		var container = L.DomUtil.create('div', 'alert '+this.options.status);
 		container.innerHTML = this.options.message+"<a class='close' data-dismiss='alert' href='#'>&times;</a>";
 		return container;
 	}
@@ -655,6 +656,11 @@ map.on('overlayadd', disableLayerUpdate);
 map.on('overlayremove', disableLayerUpdate);
 
 function disableLayerUpdate() {
+	if (layerUpdate==1) {
+		resetAlert = new alerts({message:"<span class='black'>Click <strong><i class=icon-repeat></i> Reset Map</strong> to reset the state of the map</span>", status:'alert-warning'});
+		map.addControl(resetAlert);
+		setTimeout(function (){map.removeControl(resetAlert);}, 3000);
+	};
 	layerUpdate = 0;
 }
 

@@ -213,7 +213,7 @@ statements = {'get_district':"select bcoord.id_bndry,ST_AsText(bcoord.coord),ini
               'get_bounded_schools':"select inst.instid ,ST_AsText(inst.coord),upper(s.name) from vw_inst_coord inst, tb_school s,tb_boundary b where ST_Contains(ST_MakeEnvelope(%s,%s,%s,%s,-1), inst.coord) and s.id=inst.instid and s.bid=b.id and b.type='1' order by s.name;",
               'get_bounded_preschools':"select inst.instid ,ST_AsText(inst.coord),upper(s.name) from vw_inst_coord inst, tb_school s,tb_boundary b where ST_Contains(ST_MakeEnvelope(%s,%s,%s,%s,-1), inst.coord) and s.id=inst.instid and s.bid=b.id and b.type='2' order by s.name",
               'export_bounded_info': "select inst.instid as klpid, upper(s.name) as name, s.cat as category, s.sex, s.moi, s.mgmt, s.dise_code, s.status, btype.name as type, b2.name as district, b1.name as block, b.name as cluster from  vw_inst_coord inst, tb_school s, tb_boundary b2, tb_boundary b1, tb_boundary b, tb_boundary_type btype  where ST_Contains(ST_MakeEnvelope(%s,%s,%s,%s,-1), inst.coord) and s.id=inst.instid and s.bid=b.id and b.parent=b1.id and b1.parent=b2.id and btype.id=b.type order by s.name;",
-              'get_school': "select inst.instid as klpid, upper(s.name) as name, s.cat as category, s.sex, s.moi, s.mgmt, s.dise_code, s.status, btype.name as type, b2.name as district, b1.name as block, b.name as cluster from  vw_inst_coord inst, tb_school s, tb_boundary b2, tb_boundary b1, tb_boundary b, tb_boundary_type btype  where s.id=%s and s.bid=b.id and b.parent=b1.id and b1.parent=b2.id and btype.id=b.type order by s.name;"
+              'filter_school': "select inst.instid as klpid, upper(s.name) as name, s.cat as category, s.sex, s.moi, s.mgmt, s.dise_code, s.status, btype.name as type, b2.name as district, b1.name as block, b.name as cluster from  vw_inst_coord inst, tb_school s, tb_boundary b2, tb_boundary b1, tb_boundary b, tb_boundary_type btype  where s.id=%s and s.bid=b.id and b.parent=b1.id and b1.parent=b2.id and btype.id=b.type order by s.name;"
 
 
 }
@@ -299,7 +299,7 @@ class export_filter:
     writer = csv.writer(export_list)
     writer.writerow(fieldnames)
     for id in ids:
-      cursor.execute(statements['get_school'] %(id))
+      cursor.execute(statements['filter_school'] %(id))
       result = list(cursor.fetchall()[0])
       result.append('http://klp.org.in/schoolpage/'+list_type+'/'+id)
       writer.writerow(result)

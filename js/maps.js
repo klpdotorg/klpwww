@@ -28,9 +28,9 @@ bounds = new L.LatLngBounds(southWest, northEast);
 
 var regionParameter = getURLParameter('region');
 var region = (regionParameter === 'undefined') ? '' : regionParameter;
-var bangalore = L.latLng([12.9719,77.5937]);
+var koppal = L.latLng([15.378,76.157]);
 
-var map = L.map('map', {zoomControl: false, attributionControl: false, maxBounds: bounds}).setView(bangalore, 10);
+var map = L.map('map', {zoomControl: false, attributionControl: false, maxBounds: bounds}).setView(koppal, 10);
 var mapquestUrl = 'http://{s}.mqcdn.com/tiles/1.0.0/osm/{z}/{x}/{y}.png',
 subDomains = ['otile1','otile2','otile3','otile4'];
 var mapquest = new L.TileLayer(mapquestUrl, {maxZoom: 18, subdomains: subDomains});
@@ -130,7 +130,7 @@ function onLocationFound(e) {
 }
 
 function onLocationError(e) {
-	map.setView(bangalore, 12);
+	map.setView(koppal, 12);
 }
 
 
@@ -588,7 +588,7 @@ $("#cluster").on("change", function(e) {
 
 $("#preschooldistrict").on("change", function(e) {
 	$('#project').select2('enable');
-	map.setView(bangalore, 9);
+	map.setView(koppal, 9);
 });
 
 $("#project").on("change", function(e) {

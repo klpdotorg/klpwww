@@ -130,8 +130,10 @@ statements = {'get_district':"select bcoord.id_bndry,ST_AsText(bcoord.coord),ini
               'get_cluster':"select bcoord.id_bndry,ST_AsText(bcoord.coord),initcap(b.name) from vw_boundary_coord bcoord, tb_boundary b where bcoord.type='Cluster' and b.id=bcoord.id_bndry order by b.name",
               'get_project':"select bcoord.id_bndry,ST_AsText(bcoord.coord),initcap(b.name) from vw_boundary_coord bcoord, tb_boundary b where bcoord.type='Project' and b.id=bcoord.id_bndry order by b.name",
               'get_circle':"select bcoord.id_bndry,ST_AsText(bcoord.coord),initcap(b.name) from vw_boundary_coord bcoord, tb_boundary b where bcoord.type='Circle' and b.id=bcoord.id_bndry order by b.name",
-              'get_school':"select inst.instid, ST_AsText(inst.coord), upper(s.name), s.cat from vw_inst_coord inst, tb_school s,tb_boundary b where s.id=inst.instid or s.bid=502 or s.bid=421 or s.bid=9040 or s.bid=420 or s.bid=496 or s.bid=1179 or s.bid=1181 or s.bid=1150 or s.bid=419 or s.bid=493 or s.bid=419 or s.bid=1149 or s.bid=1151 and b.type='1' order by s.name",
-              'get_preschool':"select inst.instid ,ST_AsText(inst.coord),upper(s.name) from vw_inst_coord inst, tb_school s,tb_boundary b where s.id=inst.instid and s.bid=9042 and b.type='2' order by s.name",
+              # 'get_school':"select inst.instid, ST_AsText(inst.coord), upper(s.name), s.cat from vw_inst_coord inst, tb_school s,tb_boundary b where s.id=inst.instid or s.bid=502 or s.bid=421 or s.bid=9040 or s.bid=420 or s.bid=496 or s.bid=1179 or s.bid=1181 or s.bid=1150 or s.bid=419 or s.bid=493 or s.bid=419 or s.bid=1149 or s.bid=1151 and b.type='1' order by s.name",
+              'get_school':"select inst.instid, ST_AsText(inst.coord), upper(s.name), s.cat from vw_inst_coord inst, tb_school s,tb_boundary c, tb_boundary b, tb_boundary d where s.id=inst.instid and s.bid=c.id and c.parent = b.id and b.parent = d.id and d.id in (419,420,421) and d.type='1' order by s.name",
+              # 'get_preschool':"select inst.instid ,ST_AsText(inst.coord),upper(s.name) from vw_inst_coord inst, tb_school s,tb_boundary b where s.id=inst.instid and s.bid=9042 and b.type='2' order by s.name",
+              'get_preschool':"select inst.instid ,ST_AsText(inst.coord),upper(s.name) from vw_inst_coord inst,tb_school s,tb_boundary c, tb_boundary b, tb_boundary d where s.id=inst.instid and s.bid=c.id and c.parent = b.id and b.parent = d.id and d.id in (419,420,421) and d.type='2' order by s.name",
               'get_district_points':"select distinct b1.id, b1.name from tb_boundary b, tb_boundary b1, tb_boundary b2,tb_bhierarchy hier where b.id=b1.parent and b1.id=b2.parent and b.hid=hier.id and b.type=1 and b.id=%s order by b1.name",
               'get_preschooldistrict_points':"select distinct b1.id, b1.name from tb_boundary b, tb_boundary b1,tb_boundary b2,tb_bhierarchy hier where b2.parent=b1.id and b1.parent = b.id and b.hid = hier.id and b.type=2 and b.id=%s",
               'get_block_points':"select distinct b2.id, b2.name from tb_boundary b, tb_boundary b1, tb_boundary b2,tb_bhierarchy hier where b.id=b1.parent and b1.id=b2.parent  and b.hid = hier.id and b.type=1 and b1.id=%s order by b2.name",
@@ -311,7 +313,8 @@ class getPointInfo:
   def GET(self):
     try:
       cursor = DbManager.getMainCon().cursor()
-      pointInfo = get_value(redis=r, key='pointInfo') 
+      # pointInfo = get_value(redis=r, key='pointInfo')
+      pointInfo = None
       if not pointInfo:
         pointInfo={"district":[],"preschooldistrict":[], "block":[],"cluster":[],"project":[],"circle":[]}
         for type in pointInfo:
@@ -345,7 +348,7 @@ class getSchoolsInfo:
     try:
       cursor = DbManager.getMainCon().cursor()
       # schoolsInfo = get_value(redis=r, key='schoolsInfo') 
-      schoolsInfo = None 
+      schoolsInfo = None
       if not schoolsInfo:
         schoolsInfo={"school":[],"preschool":[]}
         for type in schoolsInfo:

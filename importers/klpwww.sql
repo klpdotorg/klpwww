@@ -241,25 +241,24 @@ select * from dblink('host=localhost dbname=pratham_mysore user=klp password=1q2
          qid integer,
          value character varying(50));
 
-
 DROP VIEW vw_dise_info;
 CREATE OR REPLACE VIEW vw_dise_info as
-select * from dblink('host=localhost dbname=dise_all user=klp password=1q2w3e4r', 'select df.school_code, to_number(df.tot_clrooms,''999''), to_number(df.male_tch,''999'') + to_number(df.female_tch,''999'') - to_number(df.noresp_tch,''999''), 
- to_number(de.class1_total_enr_boys,''999'') + 
- to_number(de. class2_total_enr_boys,''999'') + 
- to_number(de. class3_total_enr_boys,''999'') + 
- to_number(de. class4_total_enr_boys,''999'') + 
- to_number(de. class5_total_enr_boys,''999'') + 
- to_number(de. class6_total_enr_boys,''999'') + 
- to_number(de. class7_total_enr_boys,''999'') + 
- to_number(de. class8_total_enr_boys,''999'') , 
- to_number(de. class1_total_enr_girls,''999'') + 
+select * from dblink('host=localhost dbname=dise_all user=klp password=1q2w3e4r', 'select df.school_code, to_number(df.tot_clrooms,''999''), to_number(df.male_tch,''999'') + to_number(df.female_tch,''999'') - to_number(df.noresp_tch,''999''),
+ to_number(de.class1_total_enr_boys,''999'') +
+ to_number(de. class2_total_enr_boys,''999'') +
+ to_number(de. class3_total_enr_boys,''999'') +
+ to_number(de. class4_total_enr_boys,''999'') +
+ to_number(de. class5_total_enr_boys,''999'') +
+ to_number(de. class6_total_enr_boys,''999'') +
+ to_number(de. class7_total_enr_boys,''999'') +
+ to_number(de. class8_total_enr_boys,''999'') ,
+ to_number(de. class1_total_enr_girls,''999'') +
  to_number(de. class2_total_enr_girls,''999'') +
- to_number(de. class3_total_enr_girls,''999'') + 
- to_number(de. class4_total_enr_girls,''999'') + 
- to_number(de. class5_total_enr_girls,''999'') + 
- to_number(de. class6_total_enr_girls,''999'') + 
- to_number(de. class7_total_enr_girls,''999'') + 
+ to_number(de. class3_total_enr_girls,''999'') +
+ to_number(de. class4_total_enr_girls,''999'') +
+ to_number(de. class5_total_enr_girls,''999'') +
+ to_number(de. class6_total_enr_girls,''999'') +
+ to_number(de. class7_total_enr_girls,''999'') +
  to_number(de. class8_total_enr_girl,''999''),
  to_number(dg.lowest_class,''999''),
  to_number(dg.highest_class,''999''),
@@ -270,7 +269,12 @@ select * from dblink('host=localhost dbname=dise_all user=klp password=1q2w3e4r'
  to_number(dg.tlm_grant_expnd,''99999''),
  to_number(dg.funds_from_students_recd,''999999''),
  to_number(dg.funds_from_students_expnd,''999999''),
- to_number(df.books_in_library,''999999'')
+ to_number(df.books_in_library,''999999''),
+ to_number(df.toilet_common,''999'') + to_number(df.toilet_girls,''999'') + to_number(df.toilet_boys,''999''),
+ to_number(df.library_yn,''999''),
+ to_number(df.ramps,''999''),
+ to_number(df.head_teacher,''999''),
+ case when dg.sch_category=''1'' then ''Lower Primary'' else ''Upper Primary'' end
 from tb_dise_facility df,tb_dise_enrol de,tb_dise_general dg where de.school_code=df.school_code and de.school_code=dg.school_code')
 as t1 (
   dise_code character varying(32),
@@ -287,7 +291,12 @@ as t1 (
   tlm_expnd integer,
   ffs_recd integer,
   ffs_expnd integer,
-  books_in_library integer
+  books_in_library integer,
+  toilet_count integer,
+  has_library integer,
+  has_ramps integer,
+  hm_count integer,
+  category character varying(20)
 );
 
 DROP VIEW vw_dise_facility_agg;        

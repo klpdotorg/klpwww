@@ -20,6 +20,6 @@ $('a.toggles').click(function() {
     }, 0);
     $('#content').toggleClass('span12 span10');
     $('#content').toggleClass('no-sidebar');
-    map.fitBounds(bounds);
-    map.setZoom(11);
+    map.invalidateSize();
+    map.setView(bangalore, 10, true);
 });

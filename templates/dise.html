@@ -5,6 +5,7 @@
   <link rel="stylesheet" type="text/css" href="/js/libs/bootstrap/css/bootstrap.min.css">
   <link rel="stylesheet" href="js/libs/search/l.geosearch.css" />
    <link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.5/leaflet.css" />
+  <link rel="stylesheet" href="js/libs/cluster/MarkerCluster.css" />
   <link rel="stylesheet" type="text/css" href="/css/dise.css">
  <!--[if lte IE 8]>
      <link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.5/leaflet.ie.css" />
@@ -12,6 +13,9 @@
   <script src="http://cdn.leafletjs.com/leaflet-0.5/leaflet.js"></script>
   <script src="js/libs/search/l.control.geosearch.js"></script>
   <script src="js/libs/search/l.geosearch.provider.google.js"></script>
+  <script src="http://d3js.org/d3.v3.min.js" charset="utf-8"></script>
+  <script src="js/libs/cluster/leaflet.markercluster-src.js"></script>
+  
 
 </head>
 <body>
@@ -43,18 +47,17 @@
   <div class="row-fluid">
     <div id="sidebar" class="span2">
       <div class="sidebar-nav">
-        <ul class="nav nav-list">
-
+        <ul class="nav nav-list filters">
           <li class="nav-header">Filter Schools with - </li>
-          <li class="active"><a href="#">Single Teacher</a></li>
-          <li><a href="#">Single Classroom</a></li>
-          <li><a href="#">No Teachers and Classrooms</a></li>
-          <li><a href="#">Enrollment less than 25</a></li>
-          <li><a href="#">Without toilets</a></li>
-          <li><a href="#">Without headmaster</a></li>
-          <li><a href="#">With <abbr title="Pupil Teacher Ratio">PTR</abbr> > 35 at Primary and PTR > 30 at Upper Primary</a></li>
-          <li><a href="#">No library</a></li>
-          <li><a href="#">No Ramps</a></li>
+          <li class="active" id="oneteacher"><a href="#">Single Teacher</a></li>
+          <li id="oneclassroom"><a href="#">Single Classroom</a></li>
+          <li id="noteachernoclassroom"><a href="#">No Teachers and Classrooms</a></li>
+          <li id="lowenrolment"><a href="#">Enrollment less than 25</a></li>
+          <li id="notoilets"><a href="#">Without toilets</a></li>
+          <li id="nohm"><a href="#">Without headmaster</a></li>
+          <li id="ptr"><a href="#">With <abbr title="Pupil Teacher Ratio">PTR</abbr> > 35 at Primary and PTR > 30 at Upper Primary</a></li>
+          <li id="nolibrary"><a href="#">No library</a></li>
+          <li id="noramps"><a href="#">No Ramps</a></li>
         </ul>
       </div><!--/.well -->
     </div><!--/span-->

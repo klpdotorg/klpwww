@@ -11,7 +11,13 @@ var mapquest = new L.TileLayer(mapquestUrl, {maxZoom: 18, subdomains: subDomains
 
 mapquest.addTo(map);
 
+var school_cluster = new L.MarkerClusterGroup({showCoverageOnHover: false, 
+	iconCreateFunction: function(cluster) {
+		return new L.DivIcon({ className:'marker-cluster marker-cluster-school', style:'style="margin-left: -20px; margin-top: -20px; width: 40px; height: 40px; transform: translate(293px, 363px); z-index: 363;"', html: "<div><span>" + cluster.getChildCount() + "</span></div>" });
+	}});
+
 var current_layers = new L.LayerGroup();
+var current_filter = new L.LayerGroup();
 var rteLowerPrimary  = new L.LayerGroup();
 var rteHigherPrimary = new L.LayerGroup();
 
@@ -25,6 +31,7 @@ var regionParameter = getURLParameter('region');
 var region = (regionParameter === 'undefined') ? '' : regionParameter;
 
 map.addLayer(current_layers);
+map.addLayer(current_filter);
 
 $.getJSON('/pointinfo/', function(data) {
 	district = JSON.parse(data['district'][0]);
@@ -83,6 +90,15 @@ var projectIcon = L.icon({
 	popupAnchor: [-6, -78]
 
 });
+
+var schoolIcon = L.icon({
+	iconUrl:'/images/icons/school.png',
+	iconSize: [20, 30],
+	iconAnchor: [16, 80],
+	popupAnchor: [-6, -78]
+
+});
+
 function initialize() {
 	district_layer = L.geoJson(district, {pointToLayer: function(feature, latlng){
 		return L.marker(latlng, {icon: districtIcon});}, onEachFeature: onEachFeature});
@@ -202,4 +218,39 @@ function update_map() {
 		current_layers.addLayer(school_cluster);
 		current_layers.addLayer(preschool_cluster);
 	}
+}
+
+//Filters
+
+filters = d3.selectAll('.filters li').on('click', function(d,i){applyFilter(this);});
+function applyFilter (filter) {
+	identifier = d3.select(filter).attr('id');
+	$.getJSON('/diseinfo/'+identifier, function(data) {
+		school = JSON.parse(data['school'][0]);
+		setupLayer();
+	});
+}
+
+function setupLayer() {
+	school_layer = L.geoJson(school, {pointToLayer: function(feature, latlng){
+	return L.marker(latlng, {icon: schoolIcon});}, onEachFeature: onEachSchool});
+
+	school_layer.addTo(school_cluster);
+	school_cluster.addTo(current_filter);
+}
+
+function onEachSchool(feature, layer) {
+	if (feature.properties) {
+		layer.on('click', schoolPopup);
+	}
+}
+
+function schoolPopup () {
+	marker = this;
+	$.getJSON('/info/school/'+marker.feature.id, function(data) {
+		popupContent = "<b><a href='schoolpage/school/"+marker.feature.id+"' target='_blank'>"+marker.feature.properties.name+"</a></b>"+"<hr> Boys: "+
+		String(data['numBoys'])+" | Girls: "+String(data['numGirls'])+" | Total: <b>"+String(data['numStudents'])+"</b><br />Stories: "+String(data['numStories'])+
+		" &rarr; <i><a href='shareyourstoryschool?type=school?id="+marker.feature.id+"' target='_blank'>Share your story!</a></i>";
+		marker.bindPopup(popupContent).openPopup();
+	});
 }

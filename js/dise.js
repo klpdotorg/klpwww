@@ -204,18 +204,12 @@ function applyFilter (filter) {
 
 function setupLayer() {
 	school_layer = L.geoJson(school, {pointToLayer: function(feature, latlng){
-	return L.marker(latlng, {icon: schoolIcon});}, onEachFeature: onEachFeature});
+	return L.marker(latlng, {icon: schoolIcon});}, onEachFeature: onEachSchool});
 	
 	school_layer.addTo(school_cluster);
 	school_cluster.addTo(current_filter);
 	spin_layer.fire('data:loaded');
 
-}
-
-function onEachSchool(feature, layer) {
-	if (feature.properties) {
-		layer.on('click', schoolPopup);
-	}
 }
 
 function trueFalse (status) {
@@ -226,7 +220,7 @@ function trueFalse (status) {
 	};
 }
 
-function onEachFeature(feature, layer) {
+function onEachSchool(feature, layer) {
 	if (feature.properties) {
 		popupContent = "<b><a href='schoolpage/school/"+feature.id+"' target='_blank'>"+feature.properties.name+
 		"</a></b><hr>DISE: <b>"+String(feature.properties.disecode)+"</b> | Boys: "+String(feature.properties.boys_count)+" | Girls: "+

@@ -3,12 +3,15 @@
   <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.0/jquery.min.js"></script>
   <script type="text/javascript" src="/js/libs/bootstrap/js/bootstrap.min.js"></script>
   <link rel="stylesheet" type="text/css" href="/js/libs/bootstrap/css/bootstrap.min.css">
-  <link rel="stylesheet" type="text/css" href="/css/dise.css">
+  <link rel="stylesheet" href="js/libs/search/l.geosearch.css" />
    <link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.5/leaflet.css" />
+  <link rel="stylesheet" type="text/css" href="/css/dise.css">
  <!--[if lte IE 8]>
      <link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.5/leaflet.ie.css" />
  <![endif]-->
   <script src="http://cdn.leafletjs.com/leaflet-0.5/leaflet.js"></script>
+  <script src="js/libs/search/l.control.geosearch.js"></script>
+  <script src="js/libs/search/l.geosearch.provider.google.js"></script>
 
 </head>
 <body>
@@ -39,7 +42,7 @@
 <div class="container-fluid">
   <div class="row-fluid">
     <div id="sidebar" class="span2">
-      <div class="well sidebar-nav">
+      <div class="sidebar-nav">
         <ul class="nav nav-list">
 
           <li class="nav-header">Filter Schools with - </li>
@@ -58,7 +61,7 @@
 
     <div id="content" class="span10">
       <div id="map"></div>
-      <a href="#" class="toggles"><i class="icon-chevron-left"></i></a>
+      <a href="#" class="toggles">Hide Filters <i class="icon-chevron-left"></i></a>
     </div>
     </div><!--/row-->
 

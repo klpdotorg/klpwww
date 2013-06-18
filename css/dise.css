@@ -12,12 +12,9 @@ body {
     height: 100%;
 }
 
-a.toggles {
-    position:fixed;
-    left:326px;
-    bottom:31px;
+.toggles {
     display:block;
-    padding:10px 20px;
+    padding:5px;
 }
 
 .no-sidebar {

@@ -153,21 +153,9 @@ function initialize() {
 	}).addTo(map);
 
 	L.control.layers(null, overlays, {position:'topright', collapsed:true}).addTo(map);
+	new toggleFilter().addTo(map);
 }
 
-
-
-$('a.toggles').click(function() {
-    $('a.toggles i').toggleClass('icon-chevron-left icon-chevron-right');
-
-    $('#sidebar').animate({
-        width: 'toggle'
-    }, 0);
-    $('#content').toggleClass('span12 span10');
-    $('#content').toggleClass('no-sidebar');
-    map.invalidateSize();
-    map.setView(bangalore, 10, true);
-});
 
 function onEachFeature(feature, layer) {
 	if (feature.properties) {
@@ -254,3 +242,33 @@ function schoolPopup () {
 		marker.bindPopup(popupContent).openPopup();
 	});
 }
+
+// Filter Toggle Control
+
+var toggleFilter = L.Control.extend({
+	options: {
+		position: 'bottomleft'
+	},
+
+	onAdd: function (map) {
+		var container = L.DomUtil.create('div', 'leaflet-control leaflet-bar');
+		button = "<a class='toggles' href=#>Filters <i class='icon-chevron-left'></i></a>";
+		L.DomEvent
+		.addListener(container, 'click', L.DomEvent.stopPropagation)
+		.addListener(container, 'click', L.DomEvent.preventDefault)
+		.addListener(container, 'click', this.clicked);
+		container.innerHTML = button;
+		return container;
+	},
+
+	clicked: function stop() {
+	    $('a.toggles i').toggleClass('icon-chevron-left icon-chevron-right');
+	    $('#sidebar').animate({
+	        width: 'toggle'
+	    }, 0);
+	    $('#content').toggleClass('span12 span10');
+	    $('#content').toggleClass('no-sidebar');
+	    map.invalidateSize();
+	    map.setView(bangalore, 10, true);
+	}
+});

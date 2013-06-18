@@ -5,7 +5,7 @@ bounds = new L.LatLngBounds(southWest, northEast);
 var bangalore = L.latLng([12.9719,77.5937]);
 var district, block, cluster, circle, project, school, preschool, preschooldist;
 
-var map = L.map('map', {attributionControl: false, maxBounds: bounds}).setView(bangalore, 10);
+var map = L.map('map', {attributionControl: false, maxBounds: bounds}).setView(bangalore, 9);
 var mapquestUrl = 'http://{s}.mqcdn.com/tiles/1.0.0/osm/{z}/{x}/{y}.png', subDomains = ['otile1','otile2','otile3','otile4'];
 var mapquest = new L.TileLayer(mapquestUrl, {maxZoom: 18, subdomains: subDomains});
 
@@ -112,28 +112,13 @@ function initialize() {
 	cluster_layer = L.geoJson(cluster, {pointToLayer: function(feature, latlng){
 		return L.marker(latlng, {icon: clusterIcon});}, onEachFeature: onEachFeature});
 
-	circle_layer = L.geoJson(circle, {pointToLayer: function(feature, latlng){
-		return L.marker(latlng, {icon: circleIcon});}, onEachFeature: onEachCircle});
-
-	project_layer = L.geoJson(project, {pointToLayer: function(feature, latlng){
-		return L.marker(latlng, {icon: projectIcon});}, onEachFeature: onEachFeature});
-
 	current_layers.addLayer(district_layer);
 	current_layers.addLayer(block_layer);
-	// current_layers.addLayer(preschooldist_layer);	
-	// current_layers.addLayer(cluster_layer);
-	// current_layers.addLayer(circle_layer);
-	// current_layers.addLayer(project_layer);
-
 
 	overlays = {
-		// "<img src='/images/icons/pdistrict.png' height='25px' /> Preschool Districts": preschooldist_layer,
-		// "<img src='/images/icons/project.png' height='25px' /> Preschool Projects": project_layer,
-		// "<img src='/images/icons/circle.png' height='25px' /> Preschool Circles": circle_layer,
-		// "<img src='/images/icons/preschool.png' height='25px' /> Preschools": preschool_cluster,
-		"<img src='/images/icons/district.png' height='25px' /> School Districts": district_layer,
-		"<img src='/images/icons/block.png' height='25px' /> School Blocks": block_layer,
-		"<img src='/images/icons/cluster.png' height='25px' /> School Clusters": cluster_layer,
+		"<img src='/images/icons/district.png' height='25px' /> Districts": district_layer,
+		"<img src='/images/icons/block.png' height='25px' /> Blocks": block_layer,
+		"<img src='/images/icons/cluster.png' height='25px' /> Clusters": cluster_layer,
 		"<img src='/images/icons/school.png' height='25px' /> Schools": school_cluster,
 		"LPS RTE 1 KM": rteLowerPrimary,
 		"HPS RTE 3 KM": rteHigherPrimary,
@@ -185,26 +170,21 @@ function update_map() {
 	if (zoom_level == 8) {
 		current_layers.clearLayers();
 		current_layers.addLayer(district_layer);
-		current_layers.addLayer(preschooldist_layer);
 	}
 
 	else if (zoom_level == 9) {
 		current_layers.clearLayers();
 		current_layers.addLayer(block_layer);
-		current_layers.addLayer(circle_layer);
-
 	}
 
 	else if (zoom_level == 10) {
 		current_layers.clearLayers();
 		current_layers.addLayer(cluster_layer);
-		current_layers.addLayer(project_layer);
 	}
 
 	else if (zoom_level >= 11) {
 		current_layers.clearLayers();
 		current_layers.addLayer(school_cluster);
-		current_layers.addLayer(preschool_cluster);
 	}
 }
 
@@ -272,6 +252,6 @@ var toggleFilter = L.Control.extend({
 	    $('#content').toggleClass('span12 span10');
 	    $('#content').toggleClass('no-sidebar');
 	    map.invalidateSize();
-	    map.setView(bangalore, 10, true);
+	    // map.setView(bangalore, 10, true);
 	}
 });

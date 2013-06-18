@@ -39,7 +39,7 @@ $.getJSON('/pointinfo/', function(data) {
 	cluster = JSON.parse(data['cluster'][0]);
 	circle = JSON.parse(data['circle'][0]);
 	project = JSON.parse(data['project'][0]);
-	preschooldist = JSON.parse(data['preschooldistrict'][0]);
+	// preschooldist = JSON.parse(data['preschooldistrict'][0]);
 	initialize();
 });
 
@@ -103,8 +103,8 @@ function initialize() {
 	district_layer = L.geoJson(district, {pointToLayer: function(feature, latlng){
 		return L.marker(latlng, {icon: districtIcon});}, onEachFeature: onEachFeature});
 
-	preschooldist_layer = L.geoJson(preschooldist, {pointToLayer: function(feature, latlng){
-	return L.marker(latlng, {icon: preschooldistrictIcon});}, onEachFeature: onEachFeature});
+	// preschooldist_layer = L.geoJson(preschooldist, {pointToLayer: function(feature, latlng){
+	// return L.marker(latlng, {icon: preschooldistrictIcon});}, onEachFeature: onEachFeature});
 
 	block_layer = L.geoJson(block, {pointToLayer: function(feature, latlng){
 		return L.marker(latlng, {icon: blockIcon});}, onEachFeature: onEachFeature});
@@ -119,22 +119,22 @@ function initialize() {
 		return L.marker(latlng, {icon: projectIcon});}, onEachFeature: onEachFeature});
 
 	current_layers.addLayer(district_layer);
-	current_layers.addLayer(preschooldist_layer);	
 	current_layers.addLayer(block_layer);
+	// current_layers.addLayer(preschooldist_layer);	
 	// current_layers.addLayer(cluster_layer);
 	// current_layers.addLayer(circle_layer);
 	// current_layers.addLayer(project_layer);
 
 
 	overlays = {
-		"<img src='/images/icons/pdistrict.png' height='25px' /> Preschool Districts": preschooldist_layer,
-		"<img src='/images/icons/project.png' height='25px' /> Preschool Projects": project_layer,
-		"<img src='/images/icons/circle.png' height='25px' /> Preschool Circles": circle_layer,
+		// "<img src='/images/icons/pdistrict.png' height='25px' /> Preschool Districts": preschooldist_layer,
+		// "<img src='/images/icons/project.png' height='25px' /> Preschool Projects": project_layer,
+		// "<img src='/images/icons/circle.png' height='25px' /> Preschool Circles": circle_layer,
 		// "<img src='/images/icons/preschool.png' height='25px' /> Preschools": preschool_cluster,
 		"<img src='/images/icons/district.png' height='25px' /> School Districts": district_layer,
 		"<img src='/images/icons/block.png' height='25px' /> School Blocks": block_layer,
 		"<img src='/images/icons/cluster.png' height='25px' /> School Clusters": cluster_layer,
-		// "<img src='/images/icons/school.png' height='25px' /> Schools": school_cluster,
+		"<img src='/images/icons/school.png' height='25px' /> Schools": school_cluster,
 		"LPS RTE 1 KM": rteLowerPrimary,
 		"HPS RTE 3 KM": rteHigherPrimary,
 	};
@@ -213,6 +213,8 @@ function update_map() {
 filters = d3.selectAll('.filters li').on('click', function(d,i){applyFilter(this);});
 function applyFilter (filter) {
 	identifier = d3.select(filter).attr('id');
+	d3.selectAll('.filters li').classed('active', false);
+	d3.select(filter).classed('active', true);
 	$.getJSON('/diseinfo/'+identifier, function(data) {
 		school = JSON.parse(data['school'][0]);
 		setupLayer();
@@ -220,6 +222,7 @@ function applyFilter (filter) {
 }
 
 function setupLayer() {
+	current_filter.clearLayers();
 	school_layer = L.geoJson(school, {pointToLayer: function(feature, latlng){
 	return L.marker(latlng, {icon: schoolIcon});}, onEachFeature: onEachSchool});
 
@@ -252,7 +255,7 @@ var toggleFilter = L.Control.extend({
 
 	onAdd: function (map) {
 		var container = L.DomUtil.create('div', 'leaflet-control');
-		button = "<button class='btn toggles'>Filters <i class='icon-chevron-left'></i></button>";
+		button = "<button class='btn btn-small toggles'>Filters <i class='icon-chevron-left'></i></button>";
 		L.DomEvent
 		.addListener(container, 'click', L.DomEvent.stopPropagation)
 		.addListener(container, 'click', L.DomEvent.preventDefault)

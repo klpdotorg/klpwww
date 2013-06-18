@@ -7,7 +7,7 @@ var district, block, cluster, circle, project, school, preschool, preschooldist;
 
 var map = L.map('map', {attributionControl: false, maxBounds: bounds}).setView(bangalore, 9);
 var mapquestUrl = 'http://{s}.mqcdn.com/tiles/1.0.0/osm/{z}/{x}/{y}.png', subDomains = ['otile1','otile2','otile3','otile4'];
-var mapquest = new L.TileLayer(mapquestUrl, {maxZoom: 18, subdomains: subDomains});
+var mapquest = L.tileLayer.grayscale(mapquestUrl, {maxZoom: 18, subdomains: subDomains});
 
 mapquest.addTo(map);
 

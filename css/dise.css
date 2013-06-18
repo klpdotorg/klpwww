@@ -20,3 +20,7 @@ body {
 .no-sidebar {
     margin-left:0 !important;
 }
+
+.leaflet-popup-pane {
+    font-size: 13px;
+}

@@ -39,7 +39,6 @@ $.getJSON('/pointinfo/', function(data) {
 	cluster = JSON.parse(data['cluster'][0]);
 	circle = JSON.parse(data['circle'][0]);
 	project = JSON.parse(data['project'][0]);
-	// preschooldist = JSON.parse(data['preschooldistrict'][0]);
 	initialize();
 });
 
@@ -102,9 +101,6 @@ var schoolIcon = L.icon({
 function initialize() {
 	district_layer = L.geoJson(district, {pointToLayer: function(feature, latlng){
 		return L.marker(latlng, {icon: districtIcon});}, onEachFeature: onEachFeature});
-
-	// preschooldist_layer = L.geoJson(preschooldist, {pointToLayer: function(feature, latlng){
-	// return L.marker(latlng, {icon: preschooldistrictIcon});}, onEachFeature: onEachFeature});
 
 	block_layer = L.geoJson(block, {pointToLayer: function(feature, latlng){
 		return L.marker(latlng, {icon: blockIcon});}, onEachFeature: onEachFeature});
@@ -208,7 +204,7 @@ function applyFilter (filter) {
 
 function setupLayer() {
 	school_layer = L.geoJson(school, {pointToLayer: function(feature, latlng){
-	return L.marker(latlng, {icon: schoolIcon});}, onEachFeature: onEachSchool});
+	return L.marker(latlng, {icon: schoolIcon});}, onEachFeature: onEachFeature});
 	
 	school_layer.addTo(school_cluster);
 	school_cluster.addTo(current_filter);
@@ -219,6 +215,27 @@ function setupLayer() {
 function onEachSchool(feature, layer) {
 	if (feature.properties) {
 		layer.on('click', schoolPopup);
+	}
+}
+
+function trueFalse (status) {
+	if (status == 'yes') {
+		return "<i class='small icon-ok'></i>";
+	} else{
+		return "<i class='small icon-remove'></i>"
+	};
+}
+
+function onEachFeature(feature, layer) {
+	if (feature.properties) {
+		popupContent = "<b><a href='schoolpage/school/"+feature.id+"' target='_blank'>"+feature.properties.name+
+		"</a></b><hr>DISE: <b>1234</b> | Boys: "+String(feature.properties.boys_count)+" | Girls: "+
+		String(feature.properties.girls_count)+"<br> Classes: "+String(feature.properties.class_count)+
+		" | PTR: "+String(feature.properties.ptr)+"<br> Library "+trueFalse(feature.properties.has_library)+
+		" | Toilets "+trueFalse(feature.properties.has_toilet)+" | HM "+trueFalse(feature.properties.has_hm)+
+		" | Ramps "+trueFalse(feature.properties.has_ramps);
+
+		layer.bindPopup(popupContent);
 	}
 }
 

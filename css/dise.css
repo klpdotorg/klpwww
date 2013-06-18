@@ -1,0 +1,22 @@
+body {
+    padding-top: 60px;
+    padding-bottom: 20px;
+}
+
+.sidebar-nav {
+    padding: 9px 0;
+}
+
+#map {
+    width: 100%;
+    height: 100%;
+}
+
+.toggles {
+    /*display:bloc?k;*/
+    /*padding:5px;*/
+}
+
+.no-sidebar {
+    margin-left:0 !important;
+}

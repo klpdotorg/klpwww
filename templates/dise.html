@@ -1,0 +1,78 @@
+<html>
+<head>
+  <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.0/jquery.min.js"></script>
+  <script type="text/javascript" src="/js/libs/bootstrap/js/bootstrap.min.js"></script>
+  <link rel="stylesheet" type="text/css" href="/js/libs/bootstrap/css/bootstrap.min.css">
+  <link rel="stylesheet" href="js/libs/search/l.geosearch.css" />
+   <link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.5/leaflet.css" />
+  <link rel="stylesheet" href="js/libs/cluster/MarkerCluster.css" />
+  <link rel="stylesheet" href="/css/map.css" />
+  <link rel="stylesheet" type="text/css" href="/css/dise.css">
+ <!--[if lte IE 8]>
+     <link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.5/leaflet.ie.css" />
+ <![endif]-->
+  <script src="http://cdn.leafletjs.com/leaflet-0.5/leaflet.js"></script>
+  <script src="js/libs/search/l.control.geosearch.js"></script>
+  <script src="js/libs/leaflet-gray/TileLayer.Grayscale.js"></script>
+  <script type="text/javascript" src="/js/libs/spin/spin.min.js"></script>
+  <script type="text/javascript" src="/js/libs/leaflet-spin/leaflet.spin.js"></script>
+  <script src="js/libs/search/l.geosearch.provider.google.js"></script>
+  <script src="http://d3js.org/d3.v3.min.js" charset="utf-8"></script>
+  <script src="js/libs/cluster/leaflet.markercluster-src.js"></script>
+  
+
+</head>
+<body>
+
+<div class="navbar navbar-fixed-top">
+  <div class="navbar-inner">
+    <div class="container-fluid">
+
+      <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </a>
+      <!-- <a class="brand" href="#">DISE</a> -->
+      <div class="nav-collapse">
+        <ul class="nav">
+
+          <li class="active"><a href="#">Home</a></li>
+          <li><a href="#about">About</a></li>
+          <li><a href="#contact">Contact</a></li>
+        </ul>
+      </div><!--/.nav-collapse -->
+
+    </div>
+  </div>
+</div>
+
+<div class="container-fluid">
+  <div class="row-fluid">
+    <div id="sidebar" class="span2">
+      <div class="sidebar-nav">
+        <ul class="nav nav-list filters">
+          <li class="nav-header">Filter Schools with - </li>
+          <li id="oneteacher"><a href="#">Single Teacher</a></li>
+          <li id="oneclassroom"><a href="#">Single Classroom</a></li>
+          <li id="noteachernoclassroom"><a href="#">No Teachers and Classrooms</a></li>
+          <li id="lowenrolment"><a href="#">Enrollment less than 25</a></li>
+          <li id="notoilets"><a href="#">Without toilets</a></li>
+          <li id="nohm"><a href="#">Without headmaster</a></li>
+          <li id="ptr"><a href="#">With <abbr title="Pupil Teacher Ratio">PTR</abbr> > 35 at Primary and PTR > 30 at Upper Primary</a></li>
+          <li id="nolibrary"><a href="#">No library</a></li>
+          <li id="noramps"><a href="#">No Ramps</a></li>
+        </ul>
+      </div><!--/.well -->
+    </div><!--/span-->
+
+    <div id="content" class="span10">
+      <div id="map"></div>
+      <!-- <a href="#" class="toggles">Hide Filters <i class="icon-chevron-left"></i></a> -->
+    </div>
+    </div><!--/row-->
+
+</div><!--/.fluid-container-->
+  <script type="text/javascript" src="/js/dise.js"></script>
+</body>
+</html>

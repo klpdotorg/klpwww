@@ -23,7 +23,8 @@ urls = (
      '/schoolsinfo/', 'getSchoolsInfo',
      '/diseinfo/(.*)', 'getDiseInfo',
      '/assessment/(.*)/(.*)/(.*)','assessments',
-     '/map*','map',
+     '/map','map',
+     '/dise','dise',
      '/info/school/(.*)','getSchoolInfo',
      '/info/preschool/(.*)','getSchoolInfo',
      '/shareyourstory(.*)\?*','shareyourstory',
@@ -366,6 +367,11 @@ class map:
 class visualization:
   def GET(self):
     raise web.seeother('/map')
+
+class dise:
+  def GET(self):
+    web.header('Content-Type','text/html; charset=utf-8')
+    return render_plain.dise()
 
 
 class getSYSInfo:

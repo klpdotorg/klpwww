@@ -229,7 +229,7 @@ function trueFalse (status) {
 function onEachFeature(feature, layer) {
 	if (feature.properties) {
 		popupContent = "<b><a href='schoolpage/school/"+feature.id+"' target='_blank'>"+feature.properties.name+
-		"</a></b><hr>DISE: <b>1234</b> | Boys: "+String(feature.properties.boys_count)+" | Girls: "+
+		"</a></b><hr>DISE: <b>"+String(feature.properties.disecode)+"</b> | Boys: "+String(feature.properties.boys_count)+" | Girls: "+
 		String(feature.properties.girls_count)+"<br> Classes: "+String(feature.properties.class_count)+
 		" | PTR: "+String(feature.properties.ptr)+"<br> Library "+trueFalse(feature.properties.has_library)+
 		" | Toilets "+trueFalse(feature.properties.has_toilet)+" | HM "+trueFalse(feature.properties.has_hm)+

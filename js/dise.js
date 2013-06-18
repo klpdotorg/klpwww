@@ -251,8 +251,8 @@ var toggleFilter = L.Control.extend({
 	},
 
 	onAdd: function (map) {
-		var container = L.DomUtil.create('div', 'leaflet-control leaflet-bar');
-		button = "<a class='toggles' href=#>Filters <i class='icon-chevron-left'></i></a>";
+		var container = L.DomUtil.create('div', 'leaflet-control');
+		button = "<button class='btn toggles'>Filters <i class='icon-chevron-left'></i></button>";
 		L.DomEvent
 		.addListener(container, 'click', L.DomEvent.stopPropagation)
 		.addListener(container, 'click', L.DomEvent.preventDefault)
@@ -262,7 +262,7 @@ var toggleFilter = L.Control.extend({
 	},
 
 	clicked: function stop() {
-	    $('a.toggles i').toggleClass('icon-chevron-left icon-chevron-right');
+	    $('.toggles i').toggleClass('icon-chevron-left icon-chevron-right');
 	    $('#sidebar').animate({
 	        width: 'toggle'
 	    }, 0);

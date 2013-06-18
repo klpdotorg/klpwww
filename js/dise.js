@@ -188,26 +188,32 @@ function update_map() {
 	}
 }
 
+var spin_layer = L.geoJson(null).addTo(map);
+
 //Filters
 
 filters = d3.selectAll('.filters li').on('click', function(d,i){applyFilter(this);});
 function applyFilter (filter) {
+	current_filter.clearLayers();
 	identifier = d3.select(filter).attr('id');
 	d3.selectAll('.filters li').classed('active', false);
 	d3.select(filter).classed('active', true);
+	spin_layer.fire('data:loading');
 	$.getJSON('/diseinfo/'+identifier, function(data) {
 		school = JSON.parse(data['school'][0]);
 		setupLayer();
 	});
 }
 
+
 function setupLayer() {
-	current_filter.clearLayers();
 	school_layer = L.geoJson(school, {pointToLayer: function(feature, latlng){
 	return L.marker(latlng, {icon: schoolIcon});}, onEachFeature: onEachSchool});
-
+	
 	school_layer.addTo(school_cluster);
 	school_cluster.addTo(current_filter);
+	spin_layer.fire('data:loaded');
+
 }
 
 function onEachSchool(feature, layer) {

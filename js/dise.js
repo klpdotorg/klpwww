@@ -33,12 +33,12 @@ var region = (regionParameter === 'undefined') ? '' : regionParameter;
 map.addLayer(current_layers);
 map.addLayer(current_filter);
 
-$.getJSON('/pointinfo/', function(data) {
+$.getJSON('/disepointinfo/', function(data) {
 	district = JSON.parse(data['district'][0]);
 	block = JSON.parse(data['block'][0]);
 	cluster = JSON.parse(data['cluster'][0]);
-	circle = JSON.parse(data['circle'][0]);
-	project = JSON.parse(data['project'][0]);
+	// circle = JSON.parse(data['circle'][0]);
+	// project = JSON.parse(data['project'][0]);
 	initialize();
 });
 
@@ -140,23 +140,15 @@ function initialize() {
 
 function onEachFeature(feature, layer) {
 	if (feature.properties) {
-		layer.bindPopup(feature.properties.name);
+		if (feature.properties) {
+			popupContent = "<b>"+feature.properties.name+"</b><hr> Boys: "+String(feature.properties.boys_count)+" | Girls: "+
+			String(feature.properties.girls_count)+"<br> No Library: "+String(feature.properties.nolibrary)+
+			" | One Teacher: "+String(feature.properties.oneteacher)+" | One Classroom: "+String(feature.properties.oneclassroom)+
+			" | No Toilets: "+String(feature.properties.notoilet)+" | No HM: "+String(feature.properties.nohm)+
+			" | No Ramps: "+String(feature.properties.noramps);
+			layer.bindPopup(popupContent);
+		}
 	}
-}
-
-function onEachCircle(feature, layer) {
-	if (feature.properties) {
-		layer.on('click', circlePopup);
-	}
-}
-
-function circlePopup() {
-	marker = this;
-	$.getJSON('/info/circle/'+marker.feature.id, function(data) {
-		popupContent = "<b>"+marker.feature.properties.name+"</a></b>"+"<hr> Boys: "+
-		String(data['numBoys'])+" | Girls: "+String(data['numGirls'])+" | Total: <b>"+String(data['numStudents'])+"</b><br />Schools: "+String(data['numSchools']);
-		marker.bindPopup(popupContent).openPopup();
-	});	
 }
 
 map.on('zoomend', update_map);

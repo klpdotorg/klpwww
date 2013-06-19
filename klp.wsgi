@@ -20,6 +20,7 @@ from Utility import KLPDB
 urls = (
      '/','mainmap',
      '/pointinfo/', 'getPointInfo',
+     '/disepointinfo/', 'getDisePointInfo',
      '/schoolsinfo/', 'getSchoolsInfo',
      '/diseinfo/(.*)', 'getDiseInfo',
      '/assessment/(.*)/(.*)/(.*)','assessments',
@@ -219,6 +220,9 @@ statements = {'get_district':"select bcoord.id_bndry,ST_AsText(bcoord.coord),ini
               'get_nolibrary':"select inst.instid, ST_AsText(inst.coord), upper(s.name), s.cat, di.teacher_count, di.classroom_count, di.boys_count, di.girls_count, case when di.has_library=1 then 'yes' else 'no' end as has_library,case when di.has_ramps=1 then 'yes' else 'no' end as has_ramps, case when di.toilet_count > 0 then 'yes' else 'no' end as has_toilet, case when di.hm_count > 0 then 'yes' else 'no' end as has_hm, (di.boys_count + di.girls_count)/di.teacher_count as ptr, di.dise_code from vw_inst_coord inst, vw_dise_info di, tb_school s,tb_boundary b where s.id=inst.instid and s.dise_code = di.dise_code and s.bid=b.id and b.type='1' and di.has_library = 2 and di.teacher_count>0 order by s.name",
               'get_noramps':"select inst.instid, ST_AsText(inst.coord), upper(s.name), s.cat, di.teacher_count, di.classroom_count, di.boys_count, di.girls_count, case when di.has_library=1 then 'yes' else 'no' end as has_library,case when di.has_ramps=1 then 'yes' else 'no' end as has_ramps, case when di.toilet_count > 0 then 'yes' else 'no' end as has_toilet, case when di.hm_count > 0 then 'yes' else 'no' end as has_hm, (di.boys_count + di.girls_count)/di.teacher_count as ptr, di.dise_code from vw_inst_coord inst, vw_dise_info di, tb_school s,tb_boundary b where s.id=inst.instid and s.dise_code = di.dise_code and s.bid=b.id and b.type='1' and di.has_ramps = 2 and di.teacher_count>0 order by s.name",
               'get_ptr':"(select inst.instid, ST_AsText(inst.coord), upper(s.name), s.cat, di.teacher_count, di.classroom_count, di.boys_count, di.girls_count, case when di.has_library=1 then 'yes' else 'no' end as has_library,case when di.has_ramps=1 then 'yes' else 'no' end as has_ramps, case when di.toilet_count > 0 then 'yes' else 'no' end as has_toilet, case when di.hm_count > 0 then 'yes' else 'no' end as has_hm, (di.boys_count + di.girls_count)/di.teacher_count as ptr, di.dise_code from vw_inst_coord inst, vw_dise_info di, tb_school s,tb_boundary b where s.id=inst.instid and s.dise_code = di.dise_code and s.bid=b.id and b.type='1' and (di.boys_count + di.girls_count)/di.teacher_count> 35 and di.teacher_count>0 and di.category = 'Lower Primary' order by s.name) UNION (select inst.instid, ST_AsText(inst.coord), upper(s.name), s.cat, di.teacher_count, di.classroom_count, di.boys_count, di.girls_count, case when di.has_library=1 then 'yes' else 'no' end as has_library,case when di.has_ramps=1 then 'yes' else 'no' end as has_ramps, case when di.toilet_count > 0 then 'yes' else 'no' end as has_toilet, case when di.hm_count > 0 then 'yes' else 'no' end as has_hm, (di.boys_count + di.girls_count)/di.teacher_count as ptr, di.dise_code from vw_inst_coord inst, vw_dise_info di, tb_school s,tb_boundary b where s.id=inst.instid and s.dise_code = di.dise_code and s.bid=b.id and b.type='1' and (di.boys_count + di.girls_count)/di.teacher_count> 30 and di.teacher_count>0 and di.category = 'Upper Primary' order by s.name)",
+              'get_dise_district':"select bcoord.id_bndry,ST_AsText(bcoord.coord),initcap(b.name), count (case when di.teacher_count=1 then di.dise_code end) as oneteacher, count (case when di.classroom_count=1 then di.dise_code end) as oneclassroom, count (case when di.classroom_count<1 and di.teacher_count<1 then di.dise_code end) as noteachernoclassroom, count (case when di.toilet_count<1 then di.dise_code end) as notoilet, count (case when di.has_library = 2 then di.dise_code end) as nolibrary, count (case when di.has_ramps = 2 then di.dise_code end) as noramps, count (case when di.hm_count <1 then di.dise_code end) as nohm, count (case when di.boys_count+di.girls_count<25 then di.dise_code end) as lowenrol, sum (di.boys_count) as boys_count, sum (di.girls_count) as girls_count from vw_boundary_coord bcoord, tb_boundary b, tb_boundary b1, tb_boundary b2, tb_school s, vw_dise_info di where bcoord.type='District' and b.id=bcoord.id_bndry and s.bid = b2.id and b1.id = b2.parent and b.id = b1.parent and s.dise_code=di.dise_code group by bcoord.id_bndry, bcoord.coord, b.name order by b.name",
+              'get_dise_block':"select bcoord.id_bndry,ST_AsText(bcoord.coord),initcap(b.name), count (case when di.teacher_count=1 then di.dise_code end) as oneteacher, count (case when di.classroom_count=1 then di.dise_code end) as oneclassroom, count (case when di.classroom_count<1 and di.teacher_count<1 then di.dise_code end) as noteachernoclassroom, count (case when di.toilet_count<1 then di.dise_code end) as notoilet, count (case when di.has_library = 2 then di.dise_code end) as nolibrary, count (case when di.has_ramps = 2 then di.dise_code end) as noramps, count (case when di.hm_count <1 then di.dise_code end) as nohm, count (case when di.boys_count+di.girls_count<25 then di.dise_code end) as lowenrol, sum (di.boys_count) as boys_count, sum (di.girls_count) as girls_count from vw_boundary_coord bcoord, tb_boundary b, tb_boundary b1, tb_school s, vw_dise_info di where bcoord.type='Block' and b.id=bcoord.id_bndry and s.bid = b1.id and b.id = b1.parent and s.dise_code=di.dise_code group by bcoord.id_bndry, bcoord.coord, b.name order by b.name",
+              'get_dise_cluster':"select bcoord.id_bndry,ST_AsText(bcoord.coord),initcap(b.name), count (case when di.teacher_count=1 then di.dise_code end) as oneteacher, count (case when di.classroom_count=1 then di.dise_code end) as oneclassroom, count (case when di.classroom_count<1 and di.teacher_count<1 then di.dise_code end) as noteachernoclassroom, count (case when di.toilet_count<1 then di.dise_code end) as notoilet, count (case when di.has_library = 2 then di.dise_code end) as nolibrary, count (case when di.has_ramps = 2 then di.dise_code end) as noramps, count (case when di.hm_count <1 then di.dise_code end) as nohm, count (case when di.boys_count+di.girls_count<25 then di.dise_code end) as lowenrol, sum (di.boys_count) as boys_count, sum (di.girls_count) as girls_count from vw_boundary_coord bcoord, tb_boundary b, tb_school s, vw_dise_info di where bcoord.type='Cluster' and b.id=bcoord.id_bndry and s.bid = b.id and s.dise_code=di.dise_code group by bcoord.id_bndry, bcoord.coord, b.name order by b.name",
 }
 
 sqlstatements={"selectlevelagg":"select year,class as clas,month, cast(coalesce(sum(\"GREEN\"),0) as text) as \"GREEN\" , cast(coalesce(sum(\"ORANGE\"),0) as text) as \"ORANGE\" , cast(coalesce(sum(\"WHITE\"),0) as text) as \"WHITE\" , cast(coalesce(sum(\"YELLOW\"),0) as text) as \"YELLOW\" , cast(coalesce(sum(\"NONE\"),0) as text) as \"NONE\" , cast(coalesce(sum(\"RED\"),0) as text) as \"RED\" , cast(coalesce(sum(\"BLUE\"),0) as text) as \"BLUE\" from ( select year,class,month, (case when trim(book_level)='GREEN' then child_count else NULL end) as \"GREEN\", (case when trim(book_level)='ORANGE' then child_count else NULL end) as \"ORANGE\", (case when trim(book_level)='WHITE' then child_count else NULL end) as \"WHITE\", (case when trim(book_level)='YELLOW' then child_count else NULL end) as \"YELLOW\", (case when trim(book_level)='NONE' then child_count else NULL end) as \"NONE\", (case when trim(book_level)='RED' then child_count else NULL end) as \"RED\", (case when trim(book_level)='BLUE' then child_count else NULL end) as \"BLUE\" from (select year,class,month,book_level,sum(child_count) as child_count from vw_lib_level_agg where klp_school_id=$schlid group by month,book_level,class,year) as t) as t group by month,class,year",
@@ -286,6 +290,35 @@ class getPointInfo:
             continue
           coord = [float(match.group(1)), float(match.group(2))]
           feature = geojson.Feature(id=row[0], geometry=geojson.Point(coord), properties={"name":row[2]})
+          features.append(feature)
+        feature_collection = geojson.FeatureCollection(features)
+        pointInfo[type].append(geojson.dumps(feature_collection))
+        DbManager.getMainCon().commit()
+      cursor.close()
+    except:
+      traceback.print_exc(file=sys.stderr)
+      cursor.close()
+      DbManager.getMainCon().rollback()
+    web.header('Content-Type', 'application/json')
+    return jsonpickle.encode(pointInfo)
+
+class getDisePointInfo:
+  def GET(self):
+    pointInfo={"district":[], "block":[],"cluster":[]}
+    try:
+      cursor = DbManager.getMainCon().cursor()
+      for type in pointInfo:
+        features = []
+        cursor.execute(statements['get_dise_'+type])
+        result = cursor.fetchall()
+        for row in result:
+          try:
+            match = re.match(r"POINT\((.*)\s(.*)\)",row[1])
+          except:
+            traceback.print_exc(file=sys.stderr)
+            continue
+          coord = [float(match.group(1)), float(match.group(2))]
+          feature = geojson.Feature(id=row[0], geometry=geojson.Point(coord), properties={"name":row[2],"oneteacher":row[3], "oneclassroom":row[4], "noteachernoclassroom":row[5], "notoilet":row[6], "nolibrary":row[7], "noramps":row[8], "nohm":row[9], "lowenrol":row[10], "boys_count":row[11], "girls_count":row[12]})
           features.append(feature)
         feature_collection = geojson.FeatureCollection(features)
         pointInfo[type].append(geojson.dumps(feature_collection))

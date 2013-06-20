@@ -177,16 +177,18 @@ function update_map() {
 }
 
 var spin_layer = L.geoJson(null).addTo(map);
-
 //Filters
 
 filters = d3.selectAll('.filters li').on('click', function(d,i){applyFilter(this);});
 function applyFilter (filter) {
     current_filter.clearLayers();
+    d3.selectAll('.badge').classed('hide', true);
     identifier = d3.select(filter).attr('id');
     spin_layer.fire('data:loading');
     if (Modernizr.localstorage) {
         if (localStorage[identifier]) {
+            d3.select('#'+identifier+' span').classed('hide', false);
+            d3.select('#'+identifier+' span').text(String(JSON.parse(localStorage[identifier]).features.length));
             setupLayer(JSON.parse(localStorage[identifier]));
         }
         else {
@@ -205,6 +207,8 @@ function fetchData (identifier) {
         jsonData = JSON.parse(data['school'][0]);
         setupLayer(jsonData);
         localStorage[identifier] = JSON.stringify(jsonData);
+        d3.select('#'+identifier+' span').classed('hide', false);
+        d3.select('#'+identifier+' span').text(String(jsonData.features.length));
     });
 }
 

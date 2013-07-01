@@ -74,15 +74,15 @@ def addMissedConsts():
     key_str = difflib.get_close_matches(row.strip(),ac_dict.keys())
     if len(key_str) > 0:
       electedrep = ac_dict[key_str[0]]
-    wf.write('insert into tb_electedrep_master (parent,const_ward_name,const_ward_type,current_elected_rep,elec_comm_code,current_elected_party) values (2,\'' \
-                                              + row.strip() + '\',\'MLA Constituency\',\'' + electedrep[0] + '\',' + electedrep[1] + ',\'' + electedrep[2] + '\');\n')
+    wf.write('insert into tb_electedrep_master (parent,const_ward_name,const_ward_type,current_elected_rep,elec_comm_code,current_elected_party,entry_year) values (2,\'' \
+                                              + row.strip() + '\',\'MLA Constituency\',\'' + electedrep[0] + '\',' + electedrep[1] + ',\'' + electedrep[2] + '\',\'2012\');\n')
   data = pc_corrections.readlines()[0].split(',')
   for row in data:
     key_str = difflib.get_close_matches(row.strip(),pc_dict.keys())
     if len(key_str) > 0:
       electedrep = pc_dict[key_str[0]]
-    wf.write('insert into tb_electedrep_master (parent,const_ward_name,const_ward_type,current_elected_rep,elec_comm_code,current_elected_party) values (2,\'' \
-                                              + row.strip() + '\',\'MP Constituency\',\'' + electedrep[0] + '\',' + electedrep[1] + ',\'' + electedrep[2] + '\');\n')
+    wf.write('insert into tb_electedrep_master (parent,const_ward_name,const_ward_type,current_elected_rep,elec_comm_code,current_elected_party,entry_year) values (2,\'' \
+                                              + row.strip() + '\',\'MP Constituency\',\'' + electedrep[0] + '\',' + electedrep[1] + ',\'' + electedrep[2] + '\',\'2012\');\n')
   ac_corrections.close()
   pc_corrections.close()
 

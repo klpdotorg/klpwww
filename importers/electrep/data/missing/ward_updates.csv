@@ -1,0 +1,93 @@
+SCHOOLID;WARD_ID ;TYPE;DIST;BLK;CLUS;NAME;KLPID;GEO_WARD;STATUS;CORRECT_WARD
+32305;20;1;bangalore;north-3;j c nagar;GUHPS GANGANAGAR;32305;34;found;20
+32313;20;1;bangalore;north-3;j c nagar;GKMPS GANGANAGARA;32313;34;found;20
+30991;34;2;bangalore;sumangali seva ashrama;murphy town;GUDADHAHALLI-1;30991;22;found;22
+30995;34;2;bangalore;sumangali seva ashrama;murphy town;GUDADHAHALLI-2;30995;22;found;22
+;;2;BANGALORE;SUMANGALI SEVA ASHRAMA;MURPHY TOWN;GOVINDAPURA 2;34132;;;23
+;;2;BANGALORE;SUMANGALI SEVA ASHRAMA;MURPHY TOWN;GOVINDAPURA 1;34128;;;23
+32509;29;1;bangalore;north-3;banaswadi;GULPS SAITPALYA;32509;49;found;24
+33154;29;1;bangalore;north-3;kaval byrasandra;GKHPS KARIYANPALYA;33154;49;found;24
+;;2;BANGALORE;SUMANGALI SEVA ASHRAMA;SULTANPALYA;YASIN NAGARA;34119;;;24
+31420;26;2;bangalore;sumangali seva ashrama;dodda banaswadi;BHOVI COLONY;31420;51;found;26
+32213;50;1;bangalore;north-3;frazer town;GKLPS PILLAREDDY NAGAR;32213;27;found;27
+32504;28;1;bangalore;north-3;banaswadi;GKHPS SUBAYANAPALYA;32504;27;found;28
+33155;30;1;bangalore;north-3;kaval byrasandra;GKHPS KG HALLI;33155;31;found;30
+33159;30;1;bangalore;north-3;kaval byrasandra;GULPS KG HALLI;33159;23;found;30
+33161;30;1;bangalore;north-3;kaval byrasandra;GUMPS KG HALLI;33161;31;found;30
+33147;31;1;bangalore;north-3;kaval byrasandra;GUHPS MUSLIM COLONY;33147;48;found;31
+33148;23;1;bangalore;north-3;kaval byrasandra;GUHPS SHAMPURA;33148;22;found;31
+33152;23;1;bangalore;north-3;kaval byrasandra;GKLPS SHAMPURA;33152;32;found;31
+;;2;BANGALORE;SUMANGALI SEVA ASHRAMA;SULTANPALYA;CHAMUNDI NAGAR I;35487;;;33
+;;2;BANGALORE;SUMANGALI SEVA ASHRAMA;SULTANPALYA;CHAMUNDI NAGAR;34116;;;33
+32314;34;1;bangalore;north-3;j c nagar;GKMPS N S LINE METTADAHALLI;32314;46;found;34
+32316;34;1;bangalore;north-3;j c nagar;GTHPS NS LANE;32316;46;found;34
+32157;39;1;bangalore;north-1;chikkabidarakallu;GKMPS NELAGADARANAHALLI;32157;41;found;39
+;;2;BANGALORE;SUMANGALI SEVA ASHRAMA;SULTANPALYA;REHMATH NAGAR;34144;;;43
+30971;47;2;bangalore;sumangali seva ashrama;sultanpalya;MODI ROAD;30971;61;found;47
+32068;47;1;bangalore;north-3;d.j. halli;GUMPS ZIA STREET;32068;61;found;47
+32069;47;1;bangalore;north-3;d.j. halli;GULPS MODI ROAD;32069;61;found;47
+32070;47;1;bangalore;north-3;d.j. halli;GUMPS GUAVA GARDEN;32070;61;found;47
+32071;47;1;bangalore;north-3;d.j. halli;GKMPS DJ HALLI;32071;48;found;47
+32072;48;1;bangalore;north-3;d.j. halli;GTHPS PERIYAR NAGAR;32072;61;found;47
+34043;47;2;bangalore;sumangali seva ashrama;sultanpalya;GUAVA GARDEN AREA;34043;61;found;47
+;;2;BANGALORE;SUMANGALI SEVA ASHRAMA;SULTANPALYA;BANGAR GIRI;34142;;;47
+;;2;BANGALORE;SUMANGALI SEVA ASHRAMA;SULTANPALYA;DADDANAGAR;30363;;;47
+;;2;BANGALORE;SUMANGALI SEVA ASHRAMA;SULTANPALYA;A K COLONY;34120;;;47
+34021;48;2;bangalore;sumangali seva ashrama;dodda banaswadi;PERIYAR NAGAR-I;34021;61;found;48
+32506;49;1;bangalore;north-3;banaswadi;GKHPS RAMASWAMY PALYA;32506;28;found;49
+32207;50;1;bangalore;north-3;frazer town;GKHPS HALEBYAPPANAHALLI;32207;79;found;50
+30765;51;2;bangalore;sumangali seva ashrama;dodda banaswadi;LAKSHMANMURTHI NAGAR;30765;78;found;51
+34024;51;2;bangalore;sumangali seva ashrama;dodda banaswadi;VIJANAPUR-5;34024;56;found;51
+32688;59;1;bangalore;north-3;pottery town;GKHPS  JAI BHARTHA NAGAR;32688;27;found;59
+32690;50;1;bangalore;north-3;pottery town;GKLPS NAGAYANPALYA;32690;59;found;59
+32692;59;1;bangalore;north-3;pottery town;GTHPS JAIBHARATHNAGAR;32692;27;found;59
+32075;60;1;bangalore;north-3;d.j. halli;GUMPS TANNERY ROAD;32075;61;found;60
+32311;62;1;bangalore;north-3;j c nagar;GKHPS MAJOR RAMASWAMY PALYA;32311;63;found;62
+32315;62;1;bangalore;north-3;j c nagar;GTELPS MRS PALYA;32315;63;found;62
+32104;92;1;bangalore;bmp-1;bmpcluster;CPS TASKER TOWN;32104;110;found;63
+32609;92;1;bangalore;north-3;oph road;GUHPS BLACK PALLY;32609;63;found;63
+33143;92;1;bangalore;north-3;vasanthnagar;GTLPS HOSPITAL ROAD;33143;110;found;63
+33145;92;1;bangalore;north-3;vasanthnagar;GUHPS VKO SHIVAJINAGAR;33145;63;found;63
+;;1;BANGALORE;BMP-1;BMPCLUSTER;CPS BROADWAY HAFIZIA;32095;63;;63
+31210;74;2;bangalore;bangalore central;triveni 5th circle;KAMALA NAGAR 3;31210;102;found;74
+31161;68;2;bangalore;bangalore central;triveni 5th circle;J C NAGAR 3;31161;75;found;75
+31165;68;2;bangalore;bangalore central;triveni 5th circle;J C NAGAR2 15MAIN 6TH CROSS;31165;75;found;75
+31171;75;2;bangalore;bangalore central;triveni 5th circle;GELEYARA BALAGA;31171;68;found;75
+30670;81;2;bangalore;sumangali seva ashrama;kodihalli;NELLURPURAM 3;30670;87;found;81
+30675;81;2;bangalore;sumangali seva ashrama;kodihalli;NELLUPURAM2;30675;87;found;81
+31342;81;2;bangalore;sumangali seva ashrama;kodihalli;G M PALYA;31342;87;found;81
+34027;81;2;bangalore;sumangali seva ashrama;kodihalli;NELLURPURAM 1;34027;87;found;81
+30956;86;2;bangalore;sumangali seva ashrama;murphy town;SANJAYA NAGAR 1;30956;85;found;86
+30972;87;2;bangalore;sumangali seva ashrama;kodihalli;DARGAMOHALLA;30972;56;found;87
+;;2;BANGALORE;SUMANGALI SEVA ASHRAMA;MURPHY TOWN;JYOTHINAGAR 1;34124;;;87
+;;2;BANGALORE;SUMANGALI SEVA ASHRAMA;MURPHY TOWN;JYOTHINAGAR;34122;;;87
+30952;88;2;bangalore;sumangali seva ashrama;kodihalli;JEEVANBHIMANAGAR;30952;58;found;88
+32610;91;1;bangalore;north-3;oph road;GTHPS THIMMAIAH ROAD;32610;92;found;91
+32606;92;1;bangalore;north-3;oph road;GKLPS OPH ROAD BLACKPALLI;32606;91;found;92
+32607;92;1;bangalore;north-3;oph road;GTEHPS OPH ROAD;32607;91;found;92
+31138;120;2;bangalore;bangalore central;triveni 5th circle;ASHWATHNAGAR;31138;121;found;94
+34002;96;2;bangalore;bangalore central;kuvempunagar 4th circle;OKLIPURA-III;34002;95;found;96
+31044;104;2;bangalore;bangalore central;kuvempunagar 4th circle;PRASHANTHANAGARA;31044;103;found;104
+33995;105;2;bangalore;bangalore central;kuvempunagar 4th circle;KANTEERAVA COLONY;33995;106;found;105
+;;1;BANGALORE;BMP-1;BMPCLUSTER;CPS AUSTIN TOWN;32094;;;111
+31119;114;2;bangalore;sumangali seva ashrama;koramangala;CARD MANI 1;31119;151;found;114
+31459;113;2;bangalore;bangalore central;triveni 5th circle;KADAPASWAMI MATTA;31459;122;found;122
+31202;123;2;bangalore;bangalore central;kuvempunagar 4th circle;HOSSAHALLI;31202;124;found;123
+31453;144;2;bangalore;bangalore central;kuvempunagar 4th circle;ARUNDHATHINAGAR;31453;96;found;128
+31087;131;2;bangalore;bangalore central;sir m vishweshwariah 1st circle;PANTARA PALYA;31087;160;found;131
+31133;133;2;bangalore;bangalore central;triveni 5th circle;CHOLUR PALYA 6;31133;123;found;133
+34089;134;2;bangalore;bangalore central;netaji2nd circle;ARFATH NAGAR;34089;135;found;134
+34069;135;2;bangalore;bangalore central;netaji2nd circle;AYAPPASEVASANGA;34069;136;found;135
+34100;135;2;bangalore;bangalore central;netaji2nd circle;AYAPPASEVASANGHA I;34100;136;found;135
+34102;135;2;bangalore;bangalore central;netaji2nd circle;BASAVESHWARASEVASANGA2;34102;136;found;135
+34153;135;2;bangalore;bangalore central;netaji2nd circle;MUSLEEM HUTS;34153;136;found;135
+34092;136;2;bangalore;bangalore central;netaji2nd circle;J.J.R.NAGAR;34092;137;found;136
+34101;137;2;bangalore;bangalore central;netaji2nd circle;JAGAJEEVANARAMNAGARA;34101;136;found;136
+31378;138;2;bangalore;bangalore central;kithuru rani channamma 3rd circle;CHELUVADI PALLYA2 CENTER;31378;139;found;138
+31381;138;2;bangalore;bangalore central;kithuru rani channamma 3rd circle;CHALYAVADI PALYA 1;31381;139;found;138
+34105;140;2;bangalore;bangalore central;netravathi;TIMBARYARD SLUM;34105;139;found;138
+31447;140;2;bangalore;bangalore central;netaji2nd circle;VITTAL NAGAR;31447;141;found;140
+33634;154;2;bangalore;sumangali seva ashrama;koramangala;SANYASIKUNTE2;33634;155;found;154
+31488;113;2;bangalore;bangalore central;triveni 5th circle;PRIYADARSHINI;31488;122;found;157
+29610;43;2;bangalore;bangalore north (yelahanka);laggere 4th circle;JAIBHUVANESWARANAGAR2;29610;42;found;43
+30584;19;2;bangalore;bangalore north (yelahanka);kodigenahalli;HEBBAL;30584;21;found;21

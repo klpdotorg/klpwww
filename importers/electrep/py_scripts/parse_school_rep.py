@@ -6,7 +6,7 @@ import os
 import difflib
 import traceback
 
-rootdir = '/home/megha/www/reports/mpmla_nov/'
+rootdir = '../'
 
 mpmlafile=open(rootdir+"db_scripts/load/tb_school_electedrep.sql",'w')
 logfile=open("school_rep_log.txt","a",0)

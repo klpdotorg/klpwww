@@ -1,0 +1,4 @@
+/usr/share/postgresql/8.4/contrib/dblink.sql: No such file or directory
+createlang: language "plpgsql" is already installed in database "libreading"
+psql:libreading.sql:7: NOTICE:  type "sex" does not exist, skipping
+psql:libreading.sql:10: ERROR:  table "tb_assessment" does not exist

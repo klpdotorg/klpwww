@@ -20,9 +20,9 @@ def populateLookups():
   lines = dictfile.readlines()
   for line in lines[2:-2]:
     data = line.split('|')
-    if data[2].strip().strip('\n') == 'Ward':
+    if data[3].strip().strip('\n') == 'Ward':
       wardDict[data[1].strip()] = data[0].strip()
-    elif data[2].strip().strip('\n') == 'MP Constituency':
+    elif data[3].strip().strip('\n') == 'MP Constituency':
       mpDict[data[1].strip()] = data[0].strip()
     else:
       mlaDict[data[1].strip()] = data[0].strip()

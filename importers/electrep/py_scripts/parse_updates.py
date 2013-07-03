@@ -9,7 +9,6 @@ import Utility.KLPDB
 
 rootdir = '../'
 
-mpmlafile=open(rootdir+"db_scripts/load/tb_school_electedrep_missing.sql",'w')
 updatefile=open(rootdir+"db_scripts/load/tb_school_electedrep_part_update.sql",'w')
 logfile=open("school_rep_update_log.txt","a",0)
 
@@ -121,7 +120,8 @@ def geo_compare():
     if row[10].strip() in wardDict_bycode.keys():
       ward_id = wardDict_bycode[row[10].strip()][0] if len(row[10].strip()) != 0 else 'null' 
       updatefile.write('UPDATE tb_school_electedrep set ward_id=' + ward_id + ' where sid=' + str(row[7]).strip() + ';\n')
+
 populateLookups()
-missing_all()
+#missing_all()
 missing_part()
 geo_compare()

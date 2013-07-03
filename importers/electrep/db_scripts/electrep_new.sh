@@ -2,10 +2,10 @@
 
 DBNAME=$(basename $0 .sh)
 OWNER=klp
-
 sudo -u postgres dropdb ${DBNAME}
 sudo -u postgres createdb -O ${OWNER} -E UTF8 ${DBNAME}
-sudo -u postgres psql -d ${DBNAME} -f /usr/share/postgresql/9.1/contrib/dblink.sql
+# Setup dblink
+sudo -u postgres psql -d ${DBNAME} -c "CREATE EXTENSION dblink"
 
 # For the types that will be queried through the dblink to klp_coord
 sudo -u postgres createlang plpgsql ${DBNAME}
@@ -54,8 +54,7 @@ echo Parsing school files and loading School related info
 #original list as defined by akshara team and subsequent missing school lists being processed here
 python ../py_scripts/parse_school_rep.py
 sudo -u postgres psql -d ${DBNAME} -f load/tb_school_electedrep.sql
-python ../py_scripts/parse_school_missing.py
-sudo -u postgres psql -d ${DBNAME} -f load/tb_school_electedrep_missing.sql
+python ../py_scripts/parse_updates.py
 sudo -u postgres psql -d ${DBNAME} -f load/tb_school_electedrep_part_update.sql
 
 echo DONE!

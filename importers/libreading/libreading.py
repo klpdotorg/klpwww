@@ -71,6 +71,9 @@ def get_grade(grade):
     grade_str = 'null' 
     if len(grade) > 0:
         grade_str = grade[:1]
+        if grade.upper().strip() == 'STORY':
+          grade_str = 'P'
+    '''
     if grade_str in ['Z','L','P','W','S']:
         if grade_str == 'Z':
             return 'O'
@@ -82,6 +85,8 @@ def get_grade(grade):
             return grade_str
     else:
         return grade_str
+    '''
+    return grade_str
 
 
 try:

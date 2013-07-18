@@ -1758,7 +1758,7 @@ class listFiles:
       mpfilenames = []
       mlafilenames = []
       path = ConfigReader.getConfigValue('Reports','klpreports')
-      fileList["reptype"] = ["demographics","finances","infrastructure","library"]
+      fileList["reptype"] = ["demographics","finances","infrastructure","library","learning"]
       fileList["subdir1"] = "/Kannada"
       fileList["subdir2"] = "/English"
       fileList["directory"] = path

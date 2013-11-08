@@ -1,3 +1,10 @@
-update tb_middaymeal set mon='June' where mon='JUNE';
-update tb_middaymeal set mon='July' where mon='JULY';
-update tb_middaymeal set mon='August' where mon='AUGUST';
+update tb_middaymeal set mon='Jun' where mon='JUNE';
+update tb_middaymeal set mon='Jul' where mon='JULY';
+update tb_middaymeal set mon='Aug' where mon='AUGUST';
+update tb_middaymeal set mon='Sep' where mon='SEP';
+update tb_middaymeal set mon='Sep' where mon='Sep';
+update tb_middaymeal set mon='Oct' where mon='OCT';
+update tb_middaymeal set mon='Nov' where mon='NOV';
+update tb_middaymeal set mon='Dec' where mon='DEC';
+update tb_middaymeal set mon='Jan' where mon='JAN';
+update tb_middaymeal set mon='Feb' where mon='FEB';

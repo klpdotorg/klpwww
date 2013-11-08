@@ -706,7 +706,7 @@ function populateMDM()
            data.addColumn('number', 'Attendance');
            data.addColumn('number', 'DISE-enrollment');
            data.addColumn('number', 'KLP-enrollment');
-           var months = ['January','February','March','April','May','June','July','August','September','October','November','December'] 
+           var months = ['Jun','Jul','Aug','Sep','Oct','Nov','Dec','Jan','Feb','Mar','Apr','May'] 
            for (var each in months ){
               if(months[each] in info["ap_mdm"]) {
                 mon = months[each];
@@ -716,7 +716,7 @@ function populateMDM()
               }
 	   }
            var chart = new google.visualization.LineChart(document.getElementById('mdm_chart'));
-           chart.draw(data, {width: 800, height: 500, title:  'Food Indent vs. Attendance Tracking', backgroundColor: 'transparent', pieSliceText:'label', pointSize:5, colors: ['green','E35804','F49406','white'],vAxis:{title:'Number of Children'},hAxis:{slantedText:true, slantedTextAngle:45}});
+           chart.draw(data, {width: 1050, height: 600, title:  'Food Indent vs. Attendance Tracking', backgroundColor: 'transparent', pieSliceText:'label', pointSize:3, colors: ['green','E35804','F49406','white'],vAxis:{title:'Number of Children'},hAxis:{slantedText:true, slantedTextAngle:60}});
 
         } else {
            tabletxt = 'Information currently unavailable'

@@ -16,7 +16,7 @@ sdist
 develop-eggs
 .installed.cfg
 lib64
-config
+klpconfig-sample.ini
 logs
 yui
 web

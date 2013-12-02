@@ -39,6 +39,30 @@ urls = (
      '/visualization', 'visualization',
 )
 
+class ConfigReader:
+
+  @staticmethod
+  def getConfigValue(section,key):
+    from ConfigParser import SafeConfigParser
+    try:
+      config = SafeConfigParser()
+      config_fp = open(os.path.join(os.getcwd(),'config/klpconfig.ini'),'r')
+      config.readfp(config_fp)
+      value = config.get(section,key)
+      config_fp.close()
+      return value 
+    except:
+      print "Unexpected error:", sys.exc_info()
+      print "Exception in user code:"
+      print '-'*60
+      traceback.print_exc(file=sys.stdout)
+      print '-'*60
+
+env = ConfigReader.getConfigValue('Environment','env')
+if env=='production':
+  import newrelic.agent
+  newrelic.agent.initialize('newrelic.ini')
+
 class DbManager:
 
   con = None
@@ -1512,25 +1536,6 @@ class insertSYS:
       traceback.print_exc(file=sys.stderr)
       syscursor.close()
       DbManager.getSysCon().rollback()
-
-class ConfigReader:
-
-  @staticmethod
-  def getConfigValue(section,key):
-    from ConfigParser import SafeConfigParser
-    try:
-      config = SafeConfigParser()
-      config_fp = open(os.path.join(os.getcwd(),'config/klpconfig.ini'),'r')
-      config.readfp(config_fp)
-      value = config.get(section,key)
-      config_fp.close()
-      return value 
-    except:
-      print "Unexpected error:", sys.exc_info()
-      print "Exception in user code:"
-      print '-'*60
-      traceback.print_exc(file=sys.stdout)
-      print '-'*60
 
 class postSYS:
  

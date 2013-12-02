@@ -1,7 +1,7 @@
 import os
 
 import newrelic.agent
-newrelic.agent.initialize('newrelic.ini', os.environ['KLPWWW_ENV'])
+newrelic.agent.initialize('config/newrelic.ini', os.environ['KLPWWW_ENV'])
 
 import web
 import psycopg2

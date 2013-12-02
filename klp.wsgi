@@ -59,7 +59,7 @@ class ConfigReader:
       print '-'*60
 
 env = ConfigReader.getConfigValue('Environment','env')
-if env=='production':
+if env=='production' or 'staging':
   import newrelic.agent
   newrelic.agent.initialize('newrelic.ini')
 

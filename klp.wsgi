@@ -1,3 +1,8 @@
+import os
+
+import newrelic.agent
+newrelic.agent.initialize('newrelic.ini', os.environ['KLPWWW_ENV'])
+
 import web
 import psycopg2
 import decimal
@@ -10,7 +15,7 @@ import smtplib,email,email.encoders,email.mime.text,email.mime.base,mimetypes
 from web import form
 
 # Needed to find the templates
-import sys, os,traceback
+import sys, traceback
 abspath = os.path.dirname(__file__)
 sys.path.append(abspath)
 os.chdir(abspath)
@@ -58,10 +63,6 @@ class ConfigReader:
       traceback.print_exc(file=sys.stdout)
       print '-'*60
 
-env = ConfigReader.getConfigValue('Environment','env')
-if env=='production' or 'staging':
-  import newrelic.agent
-  newrelic.agent.initialize('newrelic.ini')
 
 class DbManager:
 

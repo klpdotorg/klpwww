@@ -3,3 +3,4 @@ libapache2-mod-wsgi
 python-webpy
 python-jsonpickle
 geojson http://pypi.python.org/pypi/geojson/1.0
+newrelic

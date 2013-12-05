@@ -1,9 +1,7 @@
+import web, newrelic.agent
+newrelic.agent.initialize('config/newrelic.ini', web.wsgi.os.environ['KLPWWW_ENV'])
+
 import os
-
-import newrelic.agent
-newrelic.agent.initialize('config/newrelic.ini', os.environ['KLPWWW_ENV'])
-
-import web
 import psycopg2
 import decimal
 import jsonpickle

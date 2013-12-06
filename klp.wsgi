@@ -1,4 +1,9 @@
 import web, newrelic.agent
+import sys, traceback
+abspath = os.path.dirname(__file__)
+sys.path.append(abspath)
+os.chdir(abspath)
+
 newrelic.agent.initialize('config/newrelic.ini', web.wsgi.os.environ['KLPWWW_ENV'])
 
 import os
@@ -12,11 +17,7 @@ import geojson
 import smtplib,email,email.encoders,email.mime.text,email.mime.base,mimetypes
 from web import form
 
-# Needed to find the templates
-import sys, traceback
-abspath = os.path.dirname(__file__)
-sys.path.append(abspath)
-os.chdir(abspath)
+# Needed to find the  templates
 
 from Utility import KLPDB
 

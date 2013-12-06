@@ -1,4 +1,4 @@
-import web, newrelic.agent
+import os, web, newrelic.agent
 import sys, traceback
 abspath = os.path.dirname(__file__)
 sys.path.append(abspath)
@@ -6,7 +6,6 @@ os.chdir(abspath)
 
 newrelic.agent.initialize('config/newrelic.ini', web.wsgi.os.environ['KLPWWW_ENV'])
 
-import os
 import psycopg2
 import decimal
 import jsonpickle

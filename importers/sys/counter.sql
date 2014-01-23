@@ -1,1 +1,0 @@
-ALTER SEQUENCE tb_sys_data_id_seq restart with 3317;

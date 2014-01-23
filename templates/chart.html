@@ -1,0 +1,119 @@
+$def with (data)
+<html> 
+ <head> 
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"> 
+    <title>Assessments</title> 
+    <link type="text/css" rel="stylesheet" href="/css/style.css"/>
+    <link type="text/css" rel="stylesheet" href="/css/list.css"/>
+    <link type="text/css" rel="stylesheet" href="/css/grid.css"/>
+    <link type="text/css" rel="stylesheet" href="/css/charts.css"/>
+    <link type="text/css" rel="stylesheet" href="/css/tabber.css"/>
+    <script type="text/javascript" src="https://www.google.com/jsapi"></script>
+    <script type="text/javascript">
+
+/* Optional: Temporarily hide the "tabber" class so it does not "flash"
+   on the page as plain HTML. After tabber runs, the class is changed
+   to "tabberlive" and it will appear.
+*/
+document.write('<style type="text/css">.tabber{display:none;}<\/style>');
+
+var tabberOptions = {
+
+  /* Optional: instead of letting tabber run during the onload event,
+     we'll start it up manually. This can be useful because the onload
+     even runs after all the images have finished loading, and we can
+     run tabber at the bottom of our page to start it up faster. See the
+     bottom of this page for more info. Note: this variable must be set
+     BEFORE you include tabber.js.
+  */
+  'manualStartup':true,
+
+  /* Optional: code to run after each tabber object has initialized */
+
+  'onLoad': function(argsObj) {
+    /* Display an alert only after tab2 */
+    if (argsObj.tabber.id == 'tab2') {
+      alert('Finished loading tab2!');
+    }
+  },
+
+  /* Optional: code to run when the user clicks a tab. If this
+     function returns boolean false then the tab will not be changed
+     (the click is canceled). If you do not return a value or return
+     something that is not boolean false, */
+
+  'onClick': function(argsObj) {
+
+    var t = argsObj.tabber; /* Tabber object */
+    var id = t.id; /* ID of the main tabber DIV */
+    var i = argsObj.index; /* Which tab was clicked (0 is the first tab) */
+    var e = argsObj.event; /* Event object */
+
+    if (id == 'tab2') {
+      return confirm('Swtich to '+t.tabs[i].headingText+'?\nEvent type: '+e.type);
+    }
+  },
+
+  /* Optional: set an ID for each tab navigation link */
+  'addLinkId': true
+
+};
+
+</script>
+
+
+    
+    <script type="text/javascript" src="/js/libs/tabber.js"></script> 
+    <script type="text/javascript" src="/js/charts.js"></script> 
+<script type="text/javascript">
+
+ var _gaq = _gaq || [];
+ _gaq.push(['_setAccount', 'UA-3982320-11']);
+ _gaq.push(['_trackPageview']);
+
+ (function() {
+   var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+   ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+   var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+ })();
+
+</script>
+ </head> 
+ <body onload="initialise($data)" id="top"> 
+   <div class="container container_12">
+    <div id="school" class="grid_12">
+      <h2 id="tabview-heading">Assessments</h1>
+      <div id="maintab" class="tabber">
+        <div id="enrollment" class="tabbertab" >
+          <h2>Enrollment</h2>
+          <div id="enrollment" style="height:500px" class="grid_12">
+            <div id="program-school_name"></div>
+            <div id="numchild"></div>
+            <div id="programinfo"></div>
+          </div>
+        </div>
+        <div id="baseline" class="tabbertab" title="BaseLine Data">
+          <h2>BaseLine Data</h2>
+          <div id="baselinedata" style="height:2000px">
+            <br>
+            <br>
+            <div id="baseline-general" class="grid_12">
+              <div class="grid_1 suffix_11"><p><b>General</b></p></div>
+              <div id="general-content"></div>
+            </div> 
+            <br>
+          </div>
+          <div id="fade" class="black_overlay" style="display:none;"></div>
+        </div>
+        <div id="progress" class="tabbertab" title="Progress Data">
+          <h2>Progress Data</h2>
+          <div id="progress">
+            <div id="progress-info"></div>
+            <div id="progress-content"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+ </body> 
+</html> 

@@ -1,0 +1,93 @@
+$def with (content)
+<!doctype html>
+
+<script type="text/javascript">
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-3982320-11']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+  </script>
+  <header class="main-header">
+    <div class="header-content">
+      <a href="index.html" class="header_mobile_logo"></a>
+      <a class="mobile_icon" onclick="toggle_mobile_nav();"></a>
+      <nav class="top-nav" role="navigation">
+        <ul id="navigation">
+          <li class="home">
+            <a href="/" title=""><h1>Karnataka Learning Partnership</h1></a>
+          </li>
+          <li class="school_map">
+            <a href="/map" title="">School Map</a>
+          </li>
+          <li class="programmes">
+            <a href="#" title="">Programmes</a>
+            <ul>
+              <li><a href="/text/reading" title=""><span></span>Reading</a></li>
+              <li><a href="/text/maths" title=""><span></span>Math</a></li>
+              <li><a href="/text/library" title=""><span></span>Library</a></li>
+              <li><a href="/text/preschool" title=""><span></span>Pre-School</a></li>
+            </ul>
+          </li>
+          <li class="volunteer"><a href="volunteer.html" title="">Volunteer</a></li>
+          <li class="database">
+            <a href="status_1.html" title="">Database</a>
+            <ul>
+              <li><a href="status_1.html" title=""><span></span>Status 1</a></li>
+              <li><a href="status_2.html" title=""><span></span>Status 2</a></li>
+              <li><a href="status_3.html" title=""><span></span>Status 3</a></li>
+              <li><a href="#" title=""><span></span>Raw Data</a></li>
+              <li><a href="#" title=""><span></span>Github</a></li>
+            </ul>
+          </li>
+          <li class="reports"><a href="#" title="">Reports</a></li>
+          <li class="about">
+            <a href="/text/aboutus" title="">About</a>
+            <ul>
+              <li><a href="/text/aboutus" title=""><span></span>About</a></li>
+              <li><a href="/text/partners" title=""><span></span>Partners</a></li>
+              <li><a href="/text/disclaimer" title=""><span></span>Disclaimer</a></li>
+            </ul>
+          </li>
+        </ul>
+      </nav>
+      <div class="clr"></div>
+    </div>
+  </header>
+
+
+  $if content.cssfiles:
+    $for f in content.cssfiles.split():
+      <link rel="stylesheet" href="$f" type="text/css" media="screen" charset="utf-8"/>
+
+  $if content.jsfiles:
+    $for f in content.jsfiles.split():
+      <script type="text/javascript" src="$f"></script>
+
+  
+  <body $content.btags>
+    $:content
+  </body>
+  <footer class="main-footer">
+    <div class="footer-wrapper">
+      <nav class="nav">
+        <ul>
+          <li><a href="" title="">About</a></li>
+          <li><a href="" title="">Press</a></li>
+          <li><a href="" title="">Contact</a></li>
+          <li class="hidden-phone hidden-tablet"><a href="" title="">School Map</a></li>
+          <li class="hidden-phone hidden-tablet"><a href="" title="">Programmes</a></li>
+          <li class="hidden-phone hidden-tablet"><a href="" title="">Databases</a></li>
+          <li class="hidden-phone hidden-tablet"><a href="" title="">Reports</a></li>
+          <div class="clr"></div>
+        </ul>
+      </nav>
+      <div class="copyright">Copyright 2013. All Rights Reserved.</div>
+    </div>
+  </footer>
+
+</html> 

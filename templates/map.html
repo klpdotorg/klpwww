@@ -1,0 +1,227 @@
+<!doctype html>
+
+<head>
+	<title>Map</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0,maximum-scale=1.0; user-scalable=0;"/>
+	<meta name="description" content="" />
+	<link rel="stylesheet" href="js/utils/draw/leaflet.draw.css" />
+	<link rel="stylesheet" href="/js/utils/leaflet/leaflet.css" />
+	<link rel="stylesheet" type="text/css" href="/js/utils/bootstrap/css/bootstrap.min.css">
+	<link rel="stylesheet" type="text/css" href="/js/utils/bootstrap/css/bootstrap-responsive.min.css">
+	<link rel="stylesheet" href="js/utils/cluster/MarkerCluster.css" />
+	<link rel="stylesheet" href="js/utils/search/l.geosearch.css" />
+	<link rel="stylesheet" href="/css/utils/map.css" />
+	<link rel="stylesheet" href="js/utils/select/select2.css" />
+	<link rel="stylesheet" type="text/css" href="css/style.css" media="all" /> 
+	
+	<script type="text/javascript" src="/js/jquery.stickOnScroll.js"></script>
+	<script type="text/javascript" src="js/jquery-1.9.1.min.js"></script>
+	<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.0/jquery.min.js"></script>
+	<script type="text/javascript" src="js/main.js"></script>
+	<script type="text/javascript" src="/js/utils/bootstrap/js/bootstrap.min.js"></script>
+	<script type="text/javascript" src="/js/utils/select/select2.min.js"></script>	
+	<script type="text/javascript" src="/js/utils/klp.js"></script>
+	<script type="text/javascript" src="/js/utils/leaflet/leaflet.js"></script>
+	<script type="text/javascript" src="/js/utils/draw/leaflet.draw.js"></script>
+	<script src="js/utils/search/l.control.geosearch.js"></script>
+	<script src="js/utils/search/l.geosearch.provider.google.js"></script>
+	<script src="js/utils/cluster/leaflet.markercluster-src.js"></script>
+	<script type="text/javascript" src="js/utils/maps.js"></script>
+	<script type="text/javascript" src="/js/jquery.stickOnScroll.js"></script>
+</head>
+
+<body>
+ <header class="main-header">
+    <div class="header-content">
+      <a href="index.html" class="header_mobile_logo"></a>
+      <a class="mobile_icon" onclick="toggle_mobile_nav();"></a>
+      <nav class="top-nav" role="navigation">
+        <ul id="navigation">
+          <li class="home">
+            <a href="/" title=""><h1>Karnataka Learning Partnership</h1></a>
+          </li>
+          <li class="school_map">
+            <a href="/map" title="">School Map</a>
+          </li>
+          <li class="programmes">
+            <a href="#" title="">Programmes</a>
+            <ul>
+              <li><a href="/text/reading" title=""><span></span>Reading</a></li>
+              <li><a href="/text/maths" title=""><span></span>Math</a></li>
+              <li><a href="/text/library" title=""><span></span>Library</a></li>
+              <li><a href="/text/preschool" title=""><span></span>Pre-School</a></li>
+            </ul>
+          </li>
+          <li class="volunteer"><a href="volunteer.html" title="">Volunteer</a></li>
+          <li class="database">
+            <a href="status_1.html" title="">Database</a>
+            <ul>
+              <li><a href="status_1.html" title=""><span></span>Status 1</a></li>
+              <li><a href="status_2.html" title=""><span></span>Status 2</a></li>
+              <li><a href="status_3.html" title=""><span></span>Status 3</a></li>
+              <li><a href="#" title=""><span></span>Raw Data</a></li>
+              <li><a href="#" title=""><span></span>Github</a></li>
+            </ul>
+          </li>
+          <li class="reports"><a href="#" title="">Reports</a></li>
+          <li class="about">
+            <a href="/text/aboutus" title="">About</a>
+            <ul>
+              <li><a href="/text/aboutus" title=""><span></span>About</a></li>
+              <li><a href="/text/partners" title=""><span></span>Partners</a></li>
+              <li><a href="/text/disclaimer" title=""><span></span>Disclaimer</a></li>
+            </ul>
+          </li>
+        </ul>
+      </nav>
+      <div class="clr"></div>
+    </div>
+  </header>
+
+
+
+	<div id="map"></div>
+
+	<!-- Modal -->
+
+	<div id="filterModal" class="modal hide fade" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+		<div class="modal-header">
+			<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+			<h3 id="myModalLabel">Filter Schools</h3>
+		</div>
+		<div class="modal-body">
+
+			<div class="row-fluid">
+				<select id="selection">
+					<option value=""></option>
+					<option value="school">Primary School</option>
+					<option value="preschool">Preschool</option>
+				</select>
+			</div>
+			<hr>
+
+			<div class="row-fluid hide" id="schooldiv">
+				<div class = "row-fluid">
+					<div class="span6">
+						<select id="district" onChange="change_focus('district','block');">
+							<option value=""></option>
+							<option value="414">Bagalkot</option>
+							<option value="8877">Bangalore</option>
+							<option value="433">Bangalore Rural</option>
+							<option value="413">Belgaum</option>
+							<option value="424">Bellary</option>
+							<option value="417">Bidar</option>
+							<option value="415">Bijapur</option>
+							<option value="439">Chamrajnagar</option>
+							<option value="441">Chikballapur</option>
+							<option value="442">Chikkodi</option>
+							<option value="429">Chikmagalur</option>
+							<option value="425">Chitradurga</option>
+							<option value="436">Dakshina Kannada</option>
+							<option value="426">Davangere</option>
+							<option value="421">Dharwad</option>
+							<option value="420">Gadag</option>
+							<option value="416">Gulbarga</option>
+							<option value="435">Hassan</option>
+							<option value="423">Haveri</option>
+							<option value="437">Kodagu</option>
+							<option value="431">Kolar</option>
+							<option value="419">Koppal</option>
+							<option value="443">Madhugiri</option>
+							<option value="434">Mandya</option>
+							<option value="8878">Mysore</option>
+							<option value="418">Raichur</option>
+							<option value="444">Ramnagara</option>
+							<option value="427">Shimoga</option>
+							<option value="430">Tumkur</option>
+							<option value="428">Udupi</option>
+							<option value="422">Uttara Kannada</option>
+							<option value="445">Yadgiri</option>
+						</select>
+					</div>
+
+					<div class="span6">
+						<select id="block" onChange="change_focus('block','cluster');">
+							<option value=""></option>
+						</select>
+					</div>
+				</div>
+				<hr>
+
+				<div class="row-fluid">
+					<div class="span6">
+						<select style="width:200px" id="cluster" onChange="change_focus('cluster','school');">
+							<option value=""></option>
+						</select>
+					</div>
+
+					<div class="span6">
+						<select style="width:200px" id="school">
+							<option value=""></option>
+						</select>
+					</div>
+				</div>
+			</div>
+
+			<div id="preschooldiv" class="row-fluid hide">
+				<div class="row-fluid">
+					<div class="span6">
+						<select id="preschooldistrict" onChange="change_focus('preschooldistrict','project');">
+							<option value=""></option>
+							<option value="8773">Bangalore</option>
+						</select>
+					</div>
+
+					<div class="span6">
+						<select style="width:200px" id="project" onChange="change_focus('project','circle');">
+							<option value=""></option>
+						</select>
+					</div>
+				</div>
+				<hr>
+				<div class="row-fluid">
+					<div class="span6">
+						<select style="width:200px" id="circle" onChange="change_focus('circle','preschool');">
+							<option value=""></option>
+						</select>
+					</div>
+					<div class="span6">
+						<select style="width:200px" id="preschool">
+							<option value=""></option>
+						</select>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="modal-footer">
+			<div class="row-fluid">
+				<div class="span4">
+					<span id="error" class="hide label label-important">Sorry, that location is not available!</span>
+				</div>
+				<div class="span7">
+					<button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
+				</div>
+		</div>
+	</div>
+
+  </body>
+  <footer class="main-footer">
+    <div class="footer-wrapper">
+      <nav class="nav">
+        <ul>
+          <li><a href="" title="">About</a></li>
+          <li><a href="" title="">Press</a></li>
+          <li><a href="" title="">Contact</a></li>
+          <li class="hidden-phone hidden-tablet"><a href="" title="">School Map</a></li>
+          <li class="hidden-phone hidden-tablet"><a href="" title="">Programmes</a></li>
+          <li class="hidden-phone hidden-tablet"><a href="" title="">Databases</a></li>
+          <li class="hidden-phone hidden-tablet"><a href="" title="">Reports</a></li>
+          <div class="clr"></div>
+        </ul>
+      </nav>
+      <div class="copyright">Copyright 2013. All Rights Reserved.</div>
+    </div>
+  </footer>
+
+</html> 

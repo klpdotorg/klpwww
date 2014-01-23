@@ -1,0 +1,281 @@
+$def with (data)
+
+<!DOCTYPE HTML>
+<html lang="en">
+<head>
+	<title>School Information</title>
+	<link type="text/css" rel="stylesheet" href="/css/schoolpage.css"/>
+	<link type="text/css" rel="stylesheet" href="/css/grid.css"/>
+	<link type="text/css" rel="stylesheet" href="/css/style.css"/>
+	<link type="text/css" rel="stylesheet" href="/css/printschoolpage.css" media="print"/>
+	<link type="text/css" rel="stylesheet" href="/css/tabber.css"/>
+	<script type="text/javascript" src="/js/libs/tabber.js"></script>
+	<script type="text/javascript" src="/js/libchart.js"></script>
+	<script type="text/javascript" src="/js/schoolpage.js"></script>
+	<script type="text/javascript" src="/js/utils.js"></script>
+
+	<link rel="stylesheet" type="text/css" href="/css/libs/bos.css"/>
+	<script type="text/javascript" src="/js/libs/bos.js"></script>
+	<link rel="stylesheet" type="text/css" href="/js/libs/leaflet/leaflet.css" />
+	<script type="text/javascript" src="/js/libs/leaflet/leaflet.js"></script>
+	<script type="text/javascript" src="https://www.google.com/jsapi"></script>
+
+	<script src="http://platform.twitter.com/widgets.js" type="text/javascript"></script>
+	<link rel="stylesheet" href="/yui/build/gallery/build/gallery-lightbox/assets/skins/sam/gallery-lightbox-skin.css" type="text/css"/>
+	<script type="text/javascript" src="/yui/build/yui/yui-min.js"></script>
+	<script type="text/javascript" src="/yui/build/gallery/build/gallery-lightbox/gallery-lightbox-min.js"></script>
+
+    <!-- TABBER JS -->
+	<script type="text/javascript">
+	document.write('<style type="text/css">.tabber{display:none;}<\/style>');
+	var tabberOptions = {
+	  'manualStartup':true,
+	  'onLoad': function(argsObj) {
+		if (argsObj.tabber.id == '3') {
+		  alert('Finished loading tab 3!');
+		}
+	  },
+	  'onClick': function(argsObj) {
+		var t = argsObj.tabber; /* Tabber object */
+		var id = t.id; /* ID of the main tabber DIV */
+		var i = argsObj.index; /* Which tab was clicked (0 is the first tab) */
+		var e = argsObj.event; /* Event object */
+		if (id == 'tab2') {
+		  return confirm('Swtich to '+t.tabs[i].headingText+'?\nEvent type: '+e.type);
+		}
+	  },
+	  'addLinkId': true
+	};
+	</script>
+
+	<!-- LIGHTBOX - YUI script-->
+	<script type="text/javascript">
+	  // Load the Visualization API and the piechart package.
+	 google.load('visualization', '1', {'packages':['table','corechart']});
+
+	  YUI().use('gallery-lightbox', 'node-deprecated', function(Y) {
+		Y.Lightbox.init();
+	  });
+	</script>
+
+	<!-- TWITTER script-->
+	<script>
+	 !function(d,s,id){
+	  var js,fjs=d.getElementsByTagName(s)[0];
+	  if(!d.getElementById(id)){
+	   js=d.createElement(s);
+	   js.id=id;
+	   js.src="//platform.twitter.com/widgets.js";
+	   fjs.parentNode.insertBefore(js,fjs);
+	  }
+	 }(document,"script","twitter-wjs");
+   </script>
+
+   <!-- FACEBOOK script-->
+   <script>
+   (function(d, s, id) {
+	 var js, fjs = d.getElementsByTagName(s)[0];
+	 if (d.getElementById(id)) return;
+	 js = d.createElement(s); js.id = id;
+	 js.src = "//connect.facebook.net/en_US/all.js#xfbml=1";
+	 fjs.parentNode.insertBefore(js, fjs);
+   }(document, 'script', 'facebook-jssdk'));
+   </script>
+
+</head>
+<body class="yui3-skin-sam" onLoad="initialise($data)">
+	<div class="container container_12">
+	   <div class="grid_12">
+	      <!--div id="header"></div-->
+	      <div id="school_name"></div>
+              <hr></hr>
+	      <!--div class="sub_header"><div id="school_hier_heading"></div></div-->
+              <div id="school_hier"></div>
+
+            <div class="tabber" id="maintab">
+
+			  <div class="tabbertab" id="1">
+				<h2><a name="basic">Basic Information</a></h2>
+
+				  <div class="grid_6">
+					<div class="sub_header"><div id="school_info_heading"></div></div>
+					<div id="school_info"></div>
+					<div class="sub_header"><div id="address_heading"></div></div>
+					<div id="school_geo"></div>
+					<div class="sub_header"><div id="const_info_heading"></div></div>
+					<div id="school_const"></div>
+					<div id="reportlinks"></div>
+				 </div>
+				 <div class="grid_6">
+					<div id="school_pics"></div>
+					<div id="map"></div>
+				 </div>
+				 <div class='grid_12'><div id='srcinfo1'></div></div>
+				 <div class='grid_12'><div id='dirlink1'></div></div>
+			  </div>
+
+
+			  <div class="tabbertab" id="2">
+				<h2>Demographics</h2>
+					<div class="grid_6">
+					  <div class="sub_header"><div id="student_info_heading"></div></div>
+					  <div id="student_gend"></div>
+					</div>
+					<div class="grid_6">
+					  <div class="sub_header">&nbsp;</div>
+					  <div id="student_mt"></div>
+					</div>
+					<div class="grid_12">
+					  <div class="sub_header"><div id="dise_gender_heading"></div></div>
+					  <div id="student_dise_gend"></div>
+					</div>
+				 <div class='grid_12'><div id='srcinfo2'></div></div>
+				 <div class='grid_12'><div id='dirlink2'></div></div>
+			  </div>
+
+			  <div class="tabbertab" id="3">
+				<h2>Programmes</h2>
+					<div class="grid_12">
+					  <div class="sub_header"><div id="assmt_info_heading"></div></div>
+					  <div id="assessment_info"></div>
+                                       </div>
+				 <div class='grid_12'><div id='srcinfo3'></div></div>
+				 <div class='grid_12'><div id='dirlink3'></div></div>
+			  </div>
+
+			  <div class="tabbertab" id="4">
+				<h2>Finances</h2>
+					<div class="grid_12">
+					  <div class="sub_header"><div id="fin_info_heading"></div></div>
+					  <div id="finances_info"></div>
+					</div>
+					<div class="grid_6">
+					  <div id="finances_txt"></div>
+					  <div id="finance_tb"></div>
+				        </div>
+					<div class="grid_6">
+					  <div id="finance_chart"></div>
+				        </div>
+					<div class="grid_12">
+					  <div class="sub_header"><div id="fin_dise_heading"></div></div>
+					  <div id="finance_dise_tb"></div>
+					</div>
+				 <div class='grid_12'><div id='srcinfo4'></div></div>
+				 <div class='grid_12'><div id='dirlink4'></div></div>
+			  </div>
+
+			  <div class="tabbertab" id="5">
+				<h2>Infrastructure</h2>
+					<div class="grid_8">
+					  <div class="sub_header"><div id="infra_info_heading"></div></div>
+					  <div id="infra_info"></div>
+				 </div>
+					<div class="grid_4">
+					  <div class="sub_header"><div id="ptr_info_heading"></div></div>
+					  <div id="ptr_info"></div>
+				 </div>
+					<div class="grid_8">
+					  <div class="sub_header"><div id="rte_info_heading"></div></div>
+					  <div id="rte_info"></div>
+				 </div>
+				 <div class='grid_12'><div id='srcinfo5'></div></div>
+				 <div class='grid_12'><div id='dirlink5'></div></div>
+			  </div>
+
+			  <div class="tabbertab" id="6">
+                                <h2>Library</h2>
+                                <div id="library_data"></div>
+                                <div id="library_charts" class="grid_11" style="display:none">
+                                                <table width="100%" height="100%">
+                                                <tr><td><br>
+                                                <div id='displays' name='displays' align="center">
+                                                <select id="type" name="type" style="width:175px" onchange="display(this.value,1)">
+                                                        <option value="blevel">Borrow By Level</option>
+                                                        <option value="blang">Borrow By Language</option>
+                                                        <option value="agg">Aggregate</option>
+                                                </select>&nbsp;&nbsp;&nbsp;&nbsp;
+                                                Year  : <select id="acyear" name="acyear" onchange="changedata()" style="width:110px"></select>&nbsp;&nbsp;&nbsp;&nbsp;
+                                                Class : <select id="clas" name="clas" onchange="changedata()" style="width:110px">
+                                                        <option value="0">All</option>
+                                                </select>
+                                                </div><br>
+                                                </td></tr><tr><td><div id="aggchart" name="aggchart">
+                                                <center><div id='students'></div>
+                                                <div id="chart_div" style="width: 100%; height: 400px; display: block;"></div><br>
+                                                <div id="table_div" style="width: auto; height: 400px; display: none;"></div>
+                                                <input type='button' id='change' name='change' value='Change to Table View' onclick="changechart(this.value)"></center>
+                                                </div></td></tr></table>
+						
+				</div>
+				<div id="levelimage" class="grid_1" style="height:350px;margin-top:100px;" align="bottom"><img src="/images/lib_graphic.png" height="300px"></div>
+				<div class="grid_4">
+                                          <div class="sub_header"><div id="lib_infra_heading"></div></div>
+                                          <div id="lib_infra"></div>
+                                </div>
+                                <br>
+				<div class='grid_12'><div id='srcinfolibrary'></div></div>
+				<div class='grid_12'><div id='dirlink6'></div></div>
+                          </div>
+			  
+			  <div class="tabbertab" id="7">
+				<h2>Nutrition</h2>
+					<div class="grid_12">
+					  <div class="sub_header"><div id="mdm_info_heading"></div></div>
+					  <div id="mdm_info"></div>
+				 </div>
+					<div class="grid_12">
+					  <div id="mdm_chart"></div>
+				 </div>
+				 <div class='grid_12'><div id='srcinfo6'></div></div>
+				 <div class='grid_12'><div id='dirlink7'></div></div>
+			  </div>
+
+			  <div class="tabbertab" id="8">
+				<h2>Share your Experience</h2>
+					<div class="grid_6">
+					  <div class="sub_header"><div id="sys_data_heading"></div></div>
+					  <div id="sys_data"></div>
+					</div>
+					<div class="grid_6">
+					  <div class="sub_header"><div id="school_visits_heading"></div></div>
+					  <div id="sys_info"></div>
+
+					  <div class="sub_header"><div id="sys_comments_heading"></div></div>
+					  <div id="sys_comments"></div>
+					</div>
+				 <div class='grid_12'><div id='dirlink8'></div></div>
+			  </div>
+
+			<div class="grid_12" id="footer">
+			  <div id="fb-root"></div>
+			  <div class="grid_8" style="padding-left:20px">
+				  <div id="printing"><a href="#" onClick="window.print()"><img vertical-align='bottom' src="/images/printer-icon-32.png"/></a></div>
+				  <div class="fb-send"></div>
+				  <div class="fb-like" data-send="false" data-width="450" data-show-faces="false"></div>
+			  </div>
+			  <div class="grid_4" style="text-align:right">
+			      <a href="mailto:team@klp.org.in"><img src="/images/c_icon.png" height="30px"/></a>
+			      <a href="http://www.facebook.com/klpdotorg" target="_blank"><img src="/images/fb_icon.png" height="30px"/></a>
+			      <a href="https://twitter.com/share" data-url=document.location.href data-text="Interesting find-" target="_blank"><img src="/images/t_icon.png" height="28px"/></a>
+			      <a href="http://blog.klp.org.in/feeds/posts/default" target="_blank"><img src="/images/rf_icon.png" height="30px"/></a>
+			      <a href="http://www.youtube.com/user/klpdotorg" target="_blank"><img src="/images/ut_icon.png" height="25px"/></a>
+			  </div>
+			</div><!--End of footer grid 12-->
+
+		</div>
+     </div>
+
+
+<script type="text/javascript">
+
+/* Since we specified manualStartup=true, tabber will not run after
+   the onload event. Instead let's run it now, to prevent any delay
+   while images load.
+*/
+
+tabberAutomatic(tabberOptions);
+
+</script>
+
+</body>
+</html>

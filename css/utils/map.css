@@ -75,12 +75,12 @@ hr { display: block; height: 1px; border: 0; border-top: 1px solid #000; margin:
     width: 200px;
 }
 .stop-drawing {
-    background-image: url("../images/icons/stop.png");
+    background-image: url("/images/icons/stop.png");
     cursor: pointer;
 }	
 
 .filter-control {
-    background-image: url("../images/icons/filter.png");
+    background-image: url("/images/icons/filter.png");
     background-repeat: no-repeat;
     background-position: 46% 46%;
     border: 1px solid #888888;
@@ -125,7 +125,7 @@ hr { display: block; height: 1px; border: 0; border-top: 1px solid #000; margin:
 }
 
 .leaflet-control-draw-circle {
-    background-image: url("../images/icons/draw.png") !important;
+    background-image: url("/images/icons/draw.png") !important;
     opacity: 0.5;
 }
 
@@ -191,7 +191,7 @@ ol, ul {
 }
 
 #circleinfo {
-    background-image: url("../images/trans_green_tile.png");
+    background-image: url("/images/trans_green_tile.png");
     color: black;
     height: 20px;
     opacity: 1;
@@ -216,7 +216,7 @@ ol, ul {
 }
 
 #search-button {
-    background-image: url("../images/search.png");
+    background-image: url("/images/search.png");
     background-repeat: no-repeat;
     opacity: 1;
 }

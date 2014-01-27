@@ -4,20 +4,20 @@ $def with (data)
 <html lang="en">
 <head>
 	<title>School Information</title>
-	<link type="text/css" rel="stylesheet" href="/css/schoolpage.css"/>
-	<link type="text/css" rel="stylesheet" href="/css/grid.css"/>
+	<link type="text/css" rel="stylesheet" href="/css/legacy/schoolpage.css"/>
+	<link type="text/css" rel="stylesheet" href="/css/legacy/grid.css"/>
 	<link type="text/css" rel="stylesheet" href="/css/style.css"/>
-	<link type="text/css" rel="stylesheet" href="/css/printschoolpage.css" media="print"/>
-	<link type="text/css" rel="stylesheet" href="/css/tabber.css"/>
-	<script type="text/javascript" src="/js/libs/tabber.js"></script>
-	<script type="text/javascript" src="/js/libchart.js"></script>
-	<script type="text/javascript" src="/js/schoolpage.js"></script>
-	<script type="text/javascript" src="/js/utils.js"></script>
+	<link type="text/css" rel="stylesheet" href="/css//legacy/printschoolpage.css" media="print"/>
+	<link type="text/css" rel="stylesheet" href="/css/utils/tabber.css"/>
+	<script type="text/javascript" src="/js/utils/tabber.js"></script>
+	<script type="text/javascript" src="/js/legacy/libchart.js"></script>
+	<script type="text/javascript" src="/js/legacy/schoolpage.js"></script>
+	<script type="text/javascript" src="/js/legacy/utils.js"></script>
 
-	<link rel="stylesheet" type="text/css" href="/css/libs/bos.css"/>
-	<script type="text/javascript" src="/js/libs/bos.js"></script>
-	<link rel="stylesheet" type="text/css" href="/js/libs/leaflet/leaflet.css" />
-	<script type="text/javascript" src="/js/libs/leaflet/leaflet.js"></script>
+	<link rel="stylesheet" type="text/css" href="/css/utils/bos.css"/>
+	<script type="text/javascript" src="/js/utils/bos.js"></script>
+	<link rel="stylesheet" type="text/css" href="/js/utils/leaflet/leaflet.css" />
+	<script type="text/javascript" src="/js/utils/leaflet/leaflet.js"></script>
 	<script type="text/javascript" src="https://www.google.com/jsapi"></script>
 
 	<script src="http://platform.twitter.com/widgets.js" type="text/javascript"></script>
@@ -84,6 +84,58 @@ $def with (data)
 
 </head>
 <body class="yui3-skin-sam" onLoad="initialise($data)">
+
+
+ <header class="main-header">
+    <div class="header-content">
+      <a href="index.html" class="header_mobile_logo"></a>
+      <a class="mobile_icon" onclick="toggle_mobile_nav();"></a>
+      <nav class="top-nav" role="navigation">
+        <ul id="navigation">
+          <li class="home">
+            <a href="/" title=""><h1>Karnataka Learning Partnership</h1></a>
+          </li>
+          <li class="school_map">
+            <a href="/map" title="">School Map</a>
+          </li>
+          <li class="programmes">
+            <a href="#" title="">Programmes</a>
+            <ul>
+              <li><a href="/text/reading" title=""><span></span>Reading</a></li>
+              <li><a href="/text/maths" title=""><span></span>Math</a></li>
+              <li><a href="/text/library" title=""><span></span>Library</a></li>
+              <li><a href="/text/preschool" title=""><span></span>Pre-School</a></li>
+            </ul>
+          </li>
+          <li class="volunteer"><a href="volunteer.html" title="">Volunteer</a></li>
+          <li class="database">
+            <a href="status_1.html" title="">Database</a>
+            <ul>
+              <li><a href="status_1.html" title=""><span></span>Status 1</a></li>
+              <li><a href="status_2.html" title=""><span></span>Status 2</a></li>
+              <li><a href="status_3.html" title=""><span></span>Status 3</a></li>
+              <li><a href="#" title=""><span></span>Raw Data</a></li>
+              <li><a href="#" title=""><span></span>Github</a></li>
+            </ul>
+          </li>
+          <li class="reports"><a href="#" title="">Reports</a></li>
+          <li class="about">
+            <a href="/text/aboutus" title="">About</a>
+            <ul>
+              <li><a href="/text/aboutus" title=""><span></span>About</a></li>
+              <li><a href="/text/partners" title=""><span></span>Partners</a></li>
+              <li><a href="/text/disclaimer" title=""><span></span>Disclaimer</a></li>
+            </ul>
+          </li>
+        </ul>
+      </nav>
+      <div class="clr"></div>
+    </div>
+  </header>
+
+
+
+
 	<div class="container container_12">
 	   <div class="grid_12">
 	      <!--div id="header"></div-->
@@ -207,7 +259,7 @@ $def with (data)
                                                 </div></td></tr></table>
 						
 				</div>
-				<div id="levelimage" class="grid_1" style="height:350px;margin-top:100px;" align="bottom"><img src="/images/lib_graphic.png" height="300px"></div>
+				<div id="levelimage" class="grid_1" style="height:350px;margin-top:100px;" align="bottom"><img src="/images/legacy/lib_graphic.png" height="300px"></div>
 				<div class="grid_4">
                                           <div class="sub_header"><div id="lib_infra_heading"></div></div>
                                           <div id="lib_infra"></div>
@@ -246,21 +298,39 @@ $def with (data)
 				 <div class='grid_12'><div id='dirlink8'></div></div>
 			  </div>
 
-			<div class="grid_12" id="footer">
+			<!--div class="grid_12" id="footer">
 			  <div id="fb-root"></div>
 			  <div class="grid_8" style="padding-left:20px">
-				  <div id="printing"><a href="#" onClick="window.print()"><img vertical-align='bottom' src="/images/printer-icon-32.png"/></a></div>
+				  <div id="printing"><a href="#" onClick="window.print()"><img vertical-align='bottom' src="/images/legacy/printer-icon-32.png"/></a></div>
 				  <div class="fb-send"></div>
 				  <div class="fb-like" data-send="false" data-width="450" data-show-faces="false"></div>
 			  </div>
 			  <div class="grid_4" style="text-align:right">
-			      <a href="mailto:team@klp.org.in"><img src="/images/c_icon.png" height="30px"/></a>
-			      <a href="http://www.facebook.com/klpdotorg" target="_blank"><img src="/images/fb_icon.png" height="30px"/></a>
-			      <a href="https://twitter.com/share" data-url=document.location.href data-text="Interesting find-" target="_blank"><img src="/images/t_icon.png" height="28px"/></a>
-			      <a href="http://blog.klp.org.in/feeds/posts/default" target="_blank"><img src="/images/rf_icon.png" height="30px"/></a>
-			      <a href="http://www.youtube.com/user/klpdotorg" target="_blank"><img src="/images/ut_icon.png" height="25px"/></a>
+			      <a href="mailto:team@klp.org.in"><img src="/images/legacy/c_icon.png" height="30px"/></a>
+			      <a href="http://www.facebook.com/klpdotorg" target="_blank"><img src="/images/legacy/fb_icon.png" height="30px"/></a>
+			      <a href="https://twitter.com/share" data-url=document.location.href data-text="Interesting find-" target="_blank"><img src="/images/legacy/t_icon.png" height="28px"/></a>
+			      <a href="http://blog.klp.org.in/feeds/posts/default" target="_blank"><img src="/images/legacy/rf_icon.png" height="30px"/></a>
+			      <a href="http://www.youtube.com/user/klpdotorg" target="_blank"><img src="/images/legacy/ut_icon.png" height="25px"/></a>
 			  </div>
 			</div><!--End of footer grid 12-->
+
+  <!--footer class="main-footer">
+    <div class="footer-wrapper">
+      <nav class="nav">
+        <ul>
+          <li><a href="" title="">About</a></li>
+          <li><a href="" title="">Press</a></li>
+          <li><a href="" title="">Contact</a></li>
+          <li class="hidden-phone hidden-tablet"><a href="" title="">School Map</a></li>
+          <li class="hidden-phone hidden-tablet"><a href="" title="">Programmes</a></li>
+          <li class="hidden-phone hidden-tablet"><a href="" title="">Databases</a></li>
+          <li class="hidden-phone hidden-tablet"><a href="" title="">Reports</a></li>
+          <div class="clr"></div>
+        </ul>
+      </nav>
+      <div class="copyright">Copyright 2013. All Rights Reserved.</div>
+    </div>
+  </footer-->
 
 		</div>
      </div>
@@ -276,6 +346,5 @@ $def with (data)
 tabberAutomatic(tabberOptions);
 
 </script>
-
 </body>
 </html>

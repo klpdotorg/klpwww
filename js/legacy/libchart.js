@@ -212,7 +212,7 @@ function charttable(year,clas){
 function draw_chart(data,type){
 	var chart = new google.visualization.LineChart(document.getElementById('chart_div'));
 	var table = new google.visualization.Table(document.getElementById('table_div'));
-	options['colors']=['Green', 'Red', 'Orange', 'White', 'Blue','Yellow','Gray','black'];
+	options['colors']=['Green', 'Red', 'Orange', '#DDD', 'Blue','Yellow','Gray','black'];
 	if(type==1)
 		chart.draw(data,options);
 	else

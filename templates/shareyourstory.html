@@ -13,14 +13,14 @@ $def with (questions)
 
     <!-- Source file for Rich Text Editor-->
     <script src="http://yui.yahooapis.com/2.9.0/build/editor/editor-min.js"></script>
-    <script type="text/javascript" src="/js/shareyourstory.js"></script>
-    <script type="text/javascript" src="/js/libs/ezcalendar_orange.js"></script>
-    <link type="text/css" rel="stylesheet" href="/css/sys.css"/>
-    <link type="text/css" rel="stylesheet" href="/css/grid.css"/>
+    <script type="text/javascript" src="/js/legacy/shareyourstory.js"></script>
+    <script type="text/javascript" src="/js/utils/ezcalendar_orange.js"></script>
+    <link type="text/css" rel="stylesheet" href="/css/legacy/sys.css"/>
+    <link type="text/css" rel="stylesheet" href="/css/legacy/grid.css"/>
     <link type="text/css" rel="stylesheet" href="/css/style.css"/>
-    <link type="text/css" rel="stylesheet" href="/css/list.css"/>
-    <link type="text/css" rel="stylesheet" href="/css/printsys.css" media="print"/>
-    <link rel="stylesheet" type="text/css" href="/css/libs/ezcalendar_orange.css" />
+    <link type="text/css" rel="stylesheet" href="/css/legacy/list.css"/>
+    <link type="text/css" rel="stylesheet" href="/css/legacy/printsys.css" media="print"/>
+    <link rel="stylesheet" type="text/css" href="/css/utils/ezcalendar_orange.css" />
   <link rel="stylesheet" type="text/css" href="http://yui.yahooapis.com/2.9.0/build/assets/skins/sam/skin.css">
 
 <script type="text/javascript">
@@ -36,6 +36,55 @@ $def with (questions)
 </script>
   </head>
 <body onload="initialise()" class="yui3-skin-sam  yui-skin-sam">
+
+   <header class="main-header">
+    <div class="header-content">
+      <a href="index.html" class="header_mobile_logo"></a>
+      <a class="mobile_icon" onclick="toggle_mobile_nav();"></a>
+      <nav class="top-nav" role="navigation">
+        <ul id="navigation">
+          <li class="home">
+            <a href="/" title=""><h1>Karnataka Learning Partnership</h1></a>
+          </li>
+          <li class="school_map">
+            <a href="/map" title="">School Map</a>
+          </li>
+          <li class="programmes">
+            <a href="#" title="">Programmes</a>
+            <ul>
+              <li><a href="/text/reading" title=""><span></span>Reading</a></li>
+              <li><a href="/text/maths" title=""><span></span>Math</a></li>
+              <li><a href="/text/library" title=""><span></span>Library</a></li>
+              <li><a href="/text/preschool" title=""><span></span>Pre-School</a></li>
+            </ul>
+          </li>
+          <li class="volunteer"><a href="volunteer.html" title="">Volunteer</a></li>
+          <li class="database">
+            <a href="status_1.html" title="">Database</a>
+            <ul>
+              <li><a href="status_1.html" title=""><span></span>Status 1</a></li>
+              <li><a href="status_2.html" title=""><span></span>Status 2</a></li>
+              <li><a href="status_3.html" title=""><span></span>Status 3</a></li>
+              <li><a href="#" title=""><span></span>Raw Data</a></li>
+              <li><a href="#" title=""><span></span>Github</a></li>
+            </ul>
+          </li>
+          <li class="reports"><a href="#" title="">Reports</a></li>
+          <li class="about">
+            <a href="/text/aboutus" title="">About</a>
+            <ul>
+              <li><a href="/text/aboutus" title=""><span></span>About</a></li>
+              <li><a href="/text/partners" title=""><span></span>Partners</a></li>
+              <li><a href="/text/disclaimer" title=""><span></span>Disclaimer</a></li>
+            </ul>
+          </li>
+        </ul>
+      </nav>
+      <div class="clr"></div>
+    </div>
+  </header>
+
+
 <div class="container container_12">
 <div class="grid_12">
   <div class="container container_12">
@@ -58,19 +107,19 @@ $def with (questions)
           <div class='div-table-col' style='width:110px'>Name</div><div class='div-table-col'><input type="text" name="name" id="name"/></div>
         </div>
         <div class='div-table-row'>
-          <div class='div-table-col' style='width:110px'>E-Mail <img src="images/mandatory.gif" height="10" style='vertical-align:top'/></div><div class='div-table-col'><input type="text" name="email" id="email" onchange='verifyEmail(this.value,"btn1");'/></div>
+          <div class='div-table-col' style='width:110px'>E-Mail <img src="images/legacy/mandatory.gif" height="10" style='vertical-align:top'/></div><div class='div-table-col'><input type="text" name="email" id="email" onchange='verifyEmail(this.value,"btn1");'/></div>
         </div>
           <div class='div-table-row'>
             <div class='div-table-col' style='width:110px'>Telephone </div><div class='div-table-col'><input type="text" name="telephone" id="telephone"/></div>
           </div>     
         <div class='div-table-row'>
-          <div class='div-table-col' style='width:110px'>Date of Visit <img src="images/mandatory.gif" height="10" style='vertical-align:top'/></div>
+          <div class='div-table-col' style='width:110px'>Date of Visit <img src="images/legacy/mandatory.gif" height="10" style='vertical-align:top'/></div>
           <div class='div-table-col'><input readonly name="dateofvisit" id="dateofvisit" type="text" size="10" maxlength="10" value="" /> 
-            <a href="javascript: showCalendar('dateofvisit')"><img src="images/calbtn.gif" width="18" height="18" alt="Calendar" style='vertical-align:middle'/></a>
+            <a href="javascript: showCalendar('dateofvisit')"><img src="images/legacy/calbtn.gif" width="18" height="18" alt="Calendar" style='vertical-align:middle'/></a>
           </div>
         </div>
       </div>
-      <div id="note"><img src="images/mandatory.gif" height="10" style='vertical-align:top'/>We require the date of your visit and a valid email address to be able to verify what you have submitted this information and to contact you, if necessary.</div>
+      <div id="note"><img src="images/legacy/mandatory.gif" height="10" style='vertical-align:top'/>We require the date of your visit and a valid email address to be able to verify what you have submitted this information and to contact you, if necessary.</div>
       <div id="photos">
       <label>Upload Photos:-<label>
         <div id="image-inputs">

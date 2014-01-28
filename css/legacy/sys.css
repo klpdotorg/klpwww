@@ -1,0 +1,96 @@
+
+#calendar {
+      float:none;
+      margin-bottom:20px;
+}
+
+.div-table
+{
+  display:table;
+  /*border:1px solid #26b262;*/
+  margin-top:10px;
+  margin-left:5px;
+}
+.div-table-caption{
+  display:table-caption;
+  background:#26b262;
+  color:white;
+  font-weight:bold;
+}
+.div-table-row{i
+  display:table-row;
+  border-bottom: 1px solid #F89400;
+  line-height: 20px;
+}
+.div-table-col{
+  display:table-cell;
+  padding-left: 5px;
+  /*border: 1px solid #26b262;*/
+}
+
+#title
+{
+    background: url("../images/sys.png");
+    font-family: Arial,Helvetica,sans-serif;
+    font-size: 18px;
+    color: black;
+    background-repeat: no-repeat;
+    /*margin-left: 200px;
+    height: 180px;
+    margin-top: 50px;*/
+}
+
+a {
+    color: #26b262;
+    text-decoration: none;
+    font-weight:bold;
+}
+a:visited {
+    color: #333;
+    text-decoration: none;
+}
+a:focus {
+    outline: thin dotted;
+    text-decoration: none;
+}
+a:hover, a:active {
+    outline: 0 none;
+    text-decoration: none;
+}
+
+
+#schoolInfo {
+    /*margin-top: -150px;
+    margin-bottom: 50px;
+    margin-left: 200px;*/
+    margin-left: 15px;
+    margin-right: 50px;
+}
+
+h1 {
+  color: #26b262;
+  font-weight:bold;
+  font-size:14pt;
+}
+
+#note {
+    font-size: 8.5pt;
+    padding-left: 10px;
+    text-align: justify;
+    width: 75%;
+}
+
+#photos {
+  padding-left:10px;
+  padding-top:20px;
+}
+
+#formclose {
+  padding-left:10px;
+  padding-top:20px;
+  padding-bottom:50px;
+}
+
+#formfiller {
+  /*margin-top:200px;*/
+}

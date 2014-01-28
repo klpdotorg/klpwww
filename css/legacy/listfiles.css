@@ -1,0 +1,55 @@
+#filetype {
+  margin-top:10px;
+  margin-left:5px;
+}
+
+.div-table
+{
+  display:table; 
+  /*border:1px solid #43AD2F;*/
+  margin-top:10px;
+  margin-left:5px;
+}
+.div-table-caption{
+  display:table-caption; 
+  background:#43AD2F;
+  color:white;
+  font-weight:bold;
+}
+.div-table-row{display:table-row;}
+.div-table-col{
+  display:table-cell; 
+  padding-left: 5px; 
+  padding-right: 5px; 
+  border-right: 1px solid #43AD2F;
+}
+#disclaimer {
+  font-size:8pt;
+  padding-left:10px;
+  padding-top:5px;
+  color:#666;
+  width:55%;
+  text-align:justify;
+}
+#license {
+  font-size:8pt;
+  padding-left:10px;
+  padding-top:5px;
+  color:#666;
+  width:55%;
+  text-align:justify;
+}
+body
+    {
+      background-image: url("../images/parchment-tile.png");
+      font-size: 13px;
+      line-height: 1.231;
+      margin: 0;
+      min-width: 960px;
+    }
+
+#filter { margin-left:10px;margin-top:10px; }
+table { border: solid 1px #43AD2F; margin-left:10px; }
+table tr { margin: 2px; padding: 2px; border-bottom: solid 1px #43AD2F; }
+table th { margin: 2px; padding: 2px; /*border: solid 1px #43AD2F;*/ text-transform:uppercase; color:#43AD2F }
+table td { margin: 2px; padding: 2px; /*border: solid 1px #43AD2F*/ }

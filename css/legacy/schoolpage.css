@@ -1,6 +1,6 @@
 #school_name {
   font-family: Arial,Helvetica,sans-serif;
-  /*color:#43AD2F;*/
+  /*color:#26b262;*/
   font-size: 20px;
   font-weight: bold;
   margin-top: 10px;
@@ -54,7 +54,7 @@
 .sub_header {
   font-family: "Helvetica", Sans-serif;
   font-size: 15px;
-  color:#E35804;
+  color:#000;
   font-weight:bold;
   display:block;
   margin-left:5px;
@@ -109,7 +109,7 @@ img{
 }
 
 img.album{
-  border: 2px solid #43AD2F;
+  border: 2px solid #26b262;
   width:100%;
   margin-left:16px;
 }
@@ -117,7 +117,7 @@ img.album{
 #map {
   width:100%;
   height:150px;
-	border:2px solid #43AD2F;
+	border:2px solid #26b262;
   margin-left:15px;
   margin-top:10px;
   z-index:15;
@@ -143,7 +143,7 @@ img.album{
     margin-top: 10px;
 }
 .div-table-caption {
-    /*background: none repeat scroll 0 0 #43AD2F;
+    /*background: none repeat scroll 0 0 #26b262;
     color: white;*/
     display: table-caption;
     font-weight: bold;

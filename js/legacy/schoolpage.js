@@ -334,7 +334,7 @@ function populateDemographics()
   //var chart1 = new BarsOfStuff(document.getElementById('student_gend'));
   //chart1.draw(data, {width:600, height: 400, title:"Gender Profile"});
   var chart1 = new google.visualization.PieChart(document.getElementById('student_gend'));
-  chart1.draw(data, {width: 550, height: 260, title:  'Gender Profile', backgroundColor: 'transparent', pieSliceText:'label', colors: ['D78103','F49406','E35804','F7AA33','FBBC59']});
+  chart1.draw(data, {width: 550, height: 260, title:  'Gender Profile', backgroundColor: 'transparent', pieSliceText:'label', colors: ['25b3b6','26b262','3892e3','7676bc','4183c4']});
   if(info.boys_count) { 
     var data = new google.visualization.DataTable();
     data.addColumn('string', "Gender");
@@ -345,7 +345,7 @@ function populateDemographics()
     ]);
   
     var chart5 = new google.visualization.PieChart(document.getElementById('student_dise_gend'));
-    chart5.draw(data, {width: 550, height: 260, title:  'DISE: Gender Profile', backgroundColor: 'transparent', pieSliceText:'label', colors: ['D78103','F49406','E35804','F7AA33','FBBC59']});
+    chart5.draw(data, {width: 550, height: 260, title:  'DISE: Gender Profile', backgroundColor: 'transparent', pieSliceText:'label', colors: ['25b3b6','26b262','3892e3','7676bc','4183c4']});
   }
 
   var data = new google.visualization.DataTable();
@@ -357,7 +357,7 @@ function populateDemographics()
   //var table = new google.visualization.Table(document.getElementById('mtsch_tb'));
   //table.draw(data,{width: 400});
   var chart2 = new google.visualization.PieChart(document.getElementById('student_mt'));
-  chart2.draw(data, {width: 550, height: 260, title:  'Mother Tongue Profile', backgroundColor: 'transparent', pieSliceText:'label', colors: ['D78103','F49406','E35804','F7AA33','FBBC59']});
+  chart2.draw(data, {width: 550, height: 260, title:  'Mother Tongue Profile', backgroundColor: 'transparent', pieSliceText:'label', colors: ['25b3b6','26b262','3892e3','7676bc','4183c4']});
 
 }
 
@@ -558,7 +558,7 @@ function populateFinances()
           //var chartview = new google.visualization.DataView(data);
           //chartview.setColumns([0,1]);
           var chart4 = new google.visualization.PieChart(document.getElementById('finance_chart'));
-          chart4.draw(data, {width: 500, height: 250, title: 'Grant summary',backgroundColor: 'transparent', pieSliceText:'label', colors: ['D78103','F49406','E35804','F7AA33','FBBC59']});
+          chart4.draw(data, {width: 500, height: 250, title: 'Grant summary',backgroundColor: 'transparent', pieSliceText:'label', colors: ['25b3b6','26b262','3892e3','7676bc','4183c4']});
           //chart4.draw(chartview, {width: 500, height: 250, title: 'Grant summary',backgroundColor: 'transparent', pieSliceText:'label', colors: ['D78103','F49406','E35804','F7AA33','FBBC59']});
 	   document.getElementById("finance_tb").innerHTML = table_txt;
 	   document.getElementById("finance_dise_tb").innerHTML = dise_table_txt;
@@ -716,7 +716,7 @@ function populateMDM()
               }
 	   }
            var chart = new google.visualization.LineChart(document.getElementById('mdm_chart'));
-           chart.draw(data, {width: 1050, height: 600, title:  'Food Indent vs. Attendance Tracking', backgroundColor: 'transparent', pieSliceText:'label', pointSize:3, colors: ['green','E35804','F49406','white'],vAxis:{title:'Number of Children'},hAxis:{slantedText:true, slantedTextAngle:60}});
+           chart.draw(data, {width: 1050, height: 600, title:  'Food Indent vs. Attendance Tracking', backgroundColor: 'transparent', pieSliceText:'label', pointSize:3, colors: ['green','E35804','F49406','grey'],vAxis:{title:'Number of Children'},hAxis:{slantedText:true, slantedTextAngle:60}});
 
         } else {
            tabletxt = 'Information currently unavailable'

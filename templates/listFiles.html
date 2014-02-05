@@ -3,11 +3,67 @@ $def with (data)
   <head> 
   <meta charset="utf-8" /> 
     <link type="text/css" rel="stylesheet" href="/css/legacy/listfiles.css"/>
+    <link type="text/css" rel="stylesheet" href="/css/style.css"/>
     <script type="text/javascript" src="/js/legacy/listfiles.js"></script>
+    <script type="text/javascript" src="/js/jquery-1.9.1.min.js"></script> 
+    <script type="text/javascript" src="/js/main.js"></script>
+    <script type="text/javascript" src="/js/jquery.stickOnScroll.js"></script>
 
   </head>
   <body onload="listFiles($data)" class="yui3-skin-sam  yui-skin-sam">
-    <div id="container">
+    
+  <header class="main-header">
+    <div class="header-content">
+      <a href="index.html" class="header_mobile_logo"></a>
+      <a class="mobile_icon" onclick="toggle_mobile_nav();"></a>
+      <nav class="top-nav" role="navigation">
+        <ul id="navigation">
+          <li class="home">
+            <a href="/" title=""><h1>Karnataka Learning Partnership</h1></a>
+          </li>
+          <li class="school_map">
+            <a href="/map" title="">School Map</a>
+          </li>
+          <li class="programmes">
+            <a href="#" title="">Programmes</a>
+            <ul>
+              <li><a href="/text/reading" title=""><span></span>Reading</a></li>
+              <li><a href="/text/maths" title=""><span></span>Math</a></li>
+              <li><a href="/text/library" title=""><span></span>Library</a></li>
+              <li><a href="/text/preschool" title=""><span></span>Pre-School</a></li>
+            </ul>
+          </li>
+          <li class="volunteer"><a href="/text/volunteer" title="">Volunteer</a></li>
+          <li class="database">
+            <a href="#" title="">Database</a>
+            <ul>
+              <li><a href="http://status.klp.org.in" target="_blank" title=""><span></span>Status</a></li>
+              <li><a href="/listFiles/2" target="_blank" title=""><span></span>Raw Data</a></li>
+              <li><a href="http://github.com/klpdotorg" target="_blank" title=""><span></span>Github</a></li>
+            </ul>
+          </li>
+          <li class="reports">
+            <a href="#" title="">Reports</a>
+            <ul>
+              <li><a href="http://reports.klp.org.in" target="_blank" title=""><span></span>KLP Reports</a></li>
+              <li><a href="http://sslc.klp.org.in" target="_blank" title=""><span></span>SSLC</a></li>
+              <li><a href="/text/reports" title=""><span></span>Other Reports</a></li>
+            </ul>
+          </li>
+          <li class="about">
+            <a href="/text/aboutus" title="">About</a>
+            <ul>
+              <li><a href="/text/aboutus" title=""><span></span>About</a></li>
+              <li><a href="/text/partners" title=""><span></span>Partners</a></li>
+              <li><a href="/text/disclaimer" title=""><span></span>Disclaimer</a></li>
+            </ul>
+          </li>
+        </ul>
+      </nav>
+      <div class="clr"></div>
+    </div>
+  </header>
+  <div class="container">
       <div id="selections" style="display:none">
         &nbsp;&nbsp;Select the type of Report from options below: <br/>
         &nbsp;&nbsp;Constituency-wise Reports from <a href="/text/reports" target="_blank">India Governs</a> is accessible <a href="/listFiles/4">here</a><br/>

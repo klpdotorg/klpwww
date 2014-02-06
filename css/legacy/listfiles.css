@@ -6,13 +6,12 @@
 .div-table
 {
   display:table; 
-  /*border:1px solid #43AD2F;*/
   margin-top:10px;
   margin-left:5px;
 }
 .div-table-caption{
   display:table-caption; 
-  background:#43AD2F;
+  background:#25b3b6;
   color:white;
   font-weight:bold;
 }
@@ -21,7 +20,7 @@
   display:table-cell; 
   padding-left: 5px; 
   padding-right: 5px; 
-  border-right: 1px solid #43AD2F;
+  border-right: 1px solid #25b3b6;
 }
 #disclaimer {
   font-size:8pt;
@@ -48,7 +47,7 @@ body
     }
 
 #filter { margin-left:10px;margin-top:10px; }
-table { border: solid 1px #43AD2F; margin-left:10px; }
-table tr { margin: 2px; padding: 2px; border-bottom: solid 1px #43AD2F; }
-table th { margin: 2px; padding: 2px; /*border: solid 1px #43AD2F;*/ text-transform:uppercase; color:#43AD2F }
-table td { margin: 2px; padding: 2px; /*border: solid 1px #43AD2F*/ }
+table { border: solid 1px #25b3b6; margin-left:10px; }
+table tr { margin: 2px; padding: 2px; border-bottom: solid 1px #25b3b6; }
+table th { margin: 2px; padding: 2px; /*border: solid 1px #25b3b6;*/ text-transform:uppercase; color:#25b3b6 }
+table td { margin: 2px; padding: 2px; /*border: solid 1px #25b3b6*/ }

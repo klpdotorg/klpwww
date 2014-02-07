@@ -14,7 +14,7 @@ $def with (content)
   </script>
   <header class="main-header">
     <div class="header-content">
-      <a href="index.html" class="header_mobile_logo"></a>
+      <a href="/" class="header_mobile_logo"></a>
       <a class="mobile_icon" onclick="toggle_mobile_nav();"></a>
       <nav class="top-nav" role="navigation">
         <ul id="navigation">
@@ -25,7 +25,7 @@ $def with (content)
             <a href="/map" title="">School Map</a>
           </li>
           <li class="programmes">
-            <a href="#" title="">Programmes</a>
+            <a href="/text/reading" title="">Programmes</a>
             <ul>
               <li><a href="/text/reading" title=""><span></span>Reading</a></li>
               <li><a href="/text/maths" title=""><span></span>Math</a></li>
@@ -73,7 +73,9 @@ $def with (content)
     $for f in content.jsfiles.split():
       <script type="text/javascript" src="$f"></script>
 
-  
+  $if content.title:
+    <title>$content.title</title>
+
   <body $content.btags>
     $:content
   </body>
@@ -83,10 +85,10 @@ $def with (content)
         <ul>
           <li><a href="/text/aboutus" title="">About</a></li>
           <li><a href="mailto:team@klp.org.in" title="">Contact</a></li>
-          <li><a href="http://www.facebook.com/klpdotorg" target="_blank">Facebook</a></li>
-          <li><a href="https://twitter.com/share" data-url=document.location.href data-text="Interesting find-" target="_blank">Twitter</a></li>  
-          <li><a href="http://blog.klp.org.in/feeds/posts/default" target="_blank">RSS Feed</a></li>
-          <li><a href="http://www.youtube.com/user/klpdotorg" target="_blank">You Tube</a></li>
+          <li class="hidden-phone hidden-tablet"><a href="http://www.facebook.com/klpdotorg" target="_blank">Facebook</a></li>
+          <li class="hidden-phone hidden-tablet"><a href="https://twitter.com/klpdotorg" target="_blank">Twitter</a></li>  
+          <li class="hidden-phone hidden-tablet"><a href="http://blog.klp.org.in/feeds/posts/default" target="_blank">RSS Feed</a></li>
+          <li class="hidden-phone hidden-tablet"><a href="http://www.youtube.com/user/klpdotorg" target="_blank">You Tube</a></li>
           <li class="hidden-phone hidden-tablet"><a href="/map" title="">School Map</a></li>
           <!--li class="hidden-phone hidden-tablet"><a href="" title="">Programmes</a></li>
           <li class="hidden-phone hidden-tablet"><a href="" title="">Databases</a></li>

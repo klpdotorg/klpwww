@@ -206,8 +206,8 @@ statements = {'get_district':"select bcoord.id_bndry,ST_AsText(bcoord.coord),ini
               'get_ang_infra':"select distinct adm.value, aia.perc_score,aia.ai_group from vw_anginfra_agg aia, tb_school s, vw_ang_display_master adm where s.id=aia.sid and adm.key=aia.ai_metric and s.id=%s;",
               'get_lib_infra':"select libstatus,libtype,numbooks,numracks,numtables,numchairs,numcomputers,numups from tb_school s, vw_libinfra li where s.id=li.sid and s.id=%s;",
               'get_apmdm':"select mon,wk,indent,attend from vw_mdm_agg where id=%s;",
-              'get_bounded_schools':"select inst.instid ,ST_AsText(inst.coord),upper(s.name) from vw_inst_coord inst, tb_school s,tb_boundary b where ST_Contains(ST_MakeEnvelope(%s,%s,%s,%s,-1), inst.coord) and s.id=inst.instid and s.bid=b.id and b.type='1' order by s.name;",
-              'get_bounded_preschools':"select inst.instid ,ST_AsText(inst.coord),upper(s.name) from vw_inst_coord inst, tb_school s,tb_boundary b where ST_Contains(ST_MakeEnvelope(%s,%s,%s,%s,-1), inst.coord) and s.id=inst.instid and s.bid=b.id and b.type='2' order by s.name",
+              'get_bounded_schools':"select inst.instid ,ST_AsText(inst.coord),upper(s.name) from vw_inst_coord inst, tb_school s,tb_boundary b where ST_Contains(ST_MakeEnvelope(%s,%s,%s,%s,4326), inst.coord) and s.id=inst.instid and s.bid=b.id and b.type='1' order by s.name;",
+              'get_bounded_preschools':"select inst.instid ,ST_AsText(inst.coord),upper(s.name) from vw_inst_coord inst, tb_school s,tb_boundary b where ST_Contains(ST_MakeEnvelope(%s,%s,%s,%s,4326), inst.coord) and s.id=inst.instid and s.bid=b.id and b.type='2' order by s.name",
 
 }
 

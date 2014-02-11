@@ -1,5 +1,24 @@
 $def with (content)
 <!doctype html>
+<html lang="en">
+<head>      <!-- META -->
+  <title>KLP</title>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0"/>
+  <meta name="description" content="" />
+
+  <!--[if lt IE 9]>
+  <script src="js/html5shiv.js"></script>
+  <![endif]-->
+
+  <!--[if IE 6]>
+  <script src="js/DD_belatedPNG_0.0.8a-min.js"></script>
+  <script>
+    DD_belatedPNG.fix('.nav, a ,img, .png24');
+  </script>
+  <![endif]-->
+  
+</head>
 
 <script type="text/javascript">
   var _gaq = _gaq || [];
@@ -12,6 +31,11 @@ $def with (content)
     var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
   })();
   </script>
+ 
+
+<body>
+
+  
   <header class="main-header">
     <div class="header-content">
       <a href="/" class="header_mobile_logo"></a>
@@ -35,7 +59,7 @@ $def with (content)
           </li>
           <li class="volunteer"><a href="/text/volunteer" title="">Volunteer</a></li>
           <li class="database">
-            <a href="#" title="">Database</a>
+            <a href="http://status.klp.org.in" title="">Database</a>
             <ul>
               <li><a href="http://status.klp.org.in" target="_blank" title=""><span></span>Status</a></li>
               <li><a href="/listFiles/2" target="_blank" title=""><span></span>Raw Data</a></li>
@@ -43,7 +67,7 @@ $def with (content)
             </ul>
           </li>
           <li class="reports">
-            <a href="#" title="">Reports</a>
+            <a href="/text/reports" title="">Reports</a>
             <ul>
               <li><a href="http://reports.klp.org.in" target="_blank" title=""><span></span>KLP Reports</a></li>
               <li><a href="http://sslc.klp.org.in" target="_blank" title=""><span></span>SSLC</a></li>
@@ -64,7 +88,6 @@ $def with (content)
     </div>
   </header>
 
-
   $if content.cssfiles:
     $for f in content.cssfiles.split():
       <link rel="stylesheet" href="$f" type="text/css" media="screen" charset="utf-8"/>
@@ -78,7 +101,8 @@ $def with (content)
 
   <body $content.btags>
     $:content
-  </body>
+  </body>    
+
   <footer class="main-footer">
     <div class="footer-wrapper">
       <nav class="nav">
@@ -100,4 +124,5 @@ $def with (content)
     </div>
   </footer>
 
-</html> 
+</body>
+</html>

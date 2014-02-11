@@ -1,7 +1,8 @@
 $var title: Karnataka Learning Partnership
-$var cssfiles: /css/style.css
-$var jsfiles: /js/jquery-1.9.1.min.js /js/main.js /js/jquery.stickOnScroll.js /js/utils/feedreader.js /js/utils/utility.js /yui/build/yui/yui-min.js
+$var cssfiles: /css/style.css /js/lib/iCheck/skins/minimal/minimal.css
+$var jsfiles: /js/jquery-1.9.1.min.js /js/libs.combined.js /js/lib/iCheck/jquery.icheck.min.js /js/main.js /js/utils/feedreader.js /js/utils/utility.js /yui/build/yui/yui-min.js
 $var btags:onLoad=getSysInfo();
+
 <head>
 	<!-- META -->
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
@@ -12,14 +13,14 @@ $var btags:onLoad=getSysInfo();
 
 	<header class="home-header" role="banner">
 		<div class="mobile_header">
-			<a href="index.html" class="header_mobile_logo"></a>
+			<a href="/" class="header_mobile_logo"></a>
 			<a class="mobile_icon" onclick="toggle_mobile_nav();"></a>
 		</div>
 		<div class="blackboard_wrapper">
-			<div class="content">
-				<h1>Karnataka Learning Partnership</h1>
-				<!--div class="headline_text">Come Engage With Us And Help Us Make Our Schools Better For Our Children.</div-->
-				<div class="headline_text_mobile"><img src="/images/home_headline_text_mobile@2x.png" alt="Come Engage With Us And Help Us Make Our Schools Better For Our Children." /></div>
+			<div class="content png24">
+				<h1 class="disable-text-select png24">Karnataka Learning Partnership</h1>
+				<div class="headline-text disable-text-select png24">Come Engage With Us And Help Us Make Our Schools Better For Our Children.</div>
+				<div class="headline-text-mobile"><img src="images/home_headline_text_mobile@2x.png" alt="Come Engage With Us And Help Us Make Our Schools Better For Our Children." /></div>
 				<div class="info">
 					<p>The Karnataka Learning Partnership is a public platform where all the stakeholders involved in primary education can participate and contribute to the cause of ensuring better schools and education for all children in Karnataka.</p>
 					<p><a href="/text/aboutus">Read more</a></p>

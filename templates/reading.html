@@ -1,6 +1,6 @@
 $var title: Reading Programme
-$var cssfiles: /css/style.css
-$var jsfiles: /js/jquery-1.9.1.min.js /js/main.js /js/jquery.stickOnScroll.js
+$var cssfiles: /css/style.css /js/lib/iCheck/skins/minimal/minimal.css
+$var jsfiles: /js/jquery-1.9.1.min.js /js/libs.combined.js /js/lib/iCheck/jquery.icheck.min.js /js/main.js /js/programmes.js
 $var btags:
 
 <head>
@@ -41,7 +41,7 @@ $var btags:
 					<li><a href="#section_overview" title="">Overview</a></li>
 					<li><a href="#section_methodology" title="">Methodology</a></li>
 					<li><a href="#section_assessment" title="">Assessments and Evaluation</a></li>
-					<!--li><a href="#section_programme_reports" title="">Programme Reports</a></li-->
+					<li><a href="#section_programme_reports" title="">Programme Reports</a></li>
 				</ul>
 			</nav>
 		</div>
@@ -71,12 +71,13 @@ $var btags:
 			<div class="page-section-heading">
 				<div class="container">
 					<div class="heading"><h2>Methodology</h2></div>
+					<ul class="fix"></ul>
 					<ul class="decimal hidden-phone hidden-tablet">
-						<li><a href="#tlm" title="">Teaching Learning Material</a></li>
-						<li><a href="#story_card" title="">Reading the Story Card</a></li>
-						<li><a href="#using_chart" title="">Using the Kagunitha Chart</a></li>
-						<li><a href="#role_play" title="">Role-play</a></li>
-						<li><a href="#methodology_reason" title="">Reason for Success</a></li>
+						<li><a href="#subsection_teaching_learning_material" title="">Teaching Learning Material</a></li>
+						<li><a href="#subsection_reading_the_story_card" title="">Reading the Story Card</a></li>
+						<li><a href="#subsection_using_the_kagunitha_chart" title="">Using the Kagunitha Chart</a></li>
+						<li><a href="#subsection_role_play" title="">Role-play</a></li>
+						<li><a href="#subsection_reason_for_success" title="">Reason for Sucess</a></li>
 					</ul>
 				</div>
 			</div>
@@ -89,7 +90,7 @@ $var btags:
 					The technique is neither complex nor does it involve expensive teaching material. A set of reading cards designed with careful content is all that is required. A fortnightly assessment monitors the child's progress or lack of it. The teaching materials include sets of story cards with illustration, alphabet charts and a set of alphabet cards.
 				</p>
 
-				<h3 id="tlm">Teaching Learning Material</h3>
+				<h3 id="subsection_teaching_learning_material">Teaching Learning Material</h3>
 				<p>
 					A set of 45 simple stories printed on separate sheets, of a slightly higher degree of difficulty than the simple paragraphs. Each story has illustrations. Each child gets one story card a day. The teacher has the same story card in a bigger form factor.
 				</p>
@@ -100,7 +101,7 @@ $var btags:
 					Lots of sentence cards (about 20-30 sentence cards/20 children class) or papers with 3 line simple sentences without "gunithakshara" and "otthakshara".
 				</p>
 
-				<h3 id="story_card">Reading the Story Card</h3>
+				<h3 id="subsection_reading_the_story_card">Reading the Story Card</h3>
 				<img src="/images/programmes_reading.jpg" alt="Reading programme" class="img_fl bordered" />
 				<p>
 					The teacher begins by showing the illustrations on the card to the children to trigger their imagination. The writing in the card is covered using another sheet of paper. Children begin by guessing the story, interpreting the illustration in his/her own way. Four or five of them are given a chance to tell their stories but the teacher makes no comment on their version. Then the teacher volunteers to narrate the story using words printed in the story card.
@@ -112,7 +113,7 @@ $var btags:
 					A new story is picked up every day rather than waiting for everyone to 'master' the previous story.
 				</p>
 
-				<h3 id="using_chart">Using the Kagunitha Chart</h3>
+				<h3 id="subsection_using_the_kagunitha_chart">Using the Kagunitha Chart</h3>
 				<p>
 					The teacher asks the children to listen carefully as she recites the sequence of sounds derived from consonants and then asks children to try the corresponding sequence with other consonants. The children are also asked to read vertically and horizontally from the Kagunitha chart.<br/>
 					The teacher selects some simple words from the story. A word is said and the children are asked to identify the alphabets in the Kagunitha chart. Eight to ten words are selected each day.
@@ -122,14 +123,14 @@ $var btags:
 					The children who do not know consonants are given a few (any) alphabet cards to take home so that they can learn to associate the sound with the shape. Within a few days they know how to use the Kagunitha chart.
 				</p>
 
-				<h3 id="role_play">Role-play</h3>
+				<h3 id="subsection_role_play">Role-play</h3>
 				<p>
 					Children are asked to act out the story choosing characters of their liking. This kindles the creative quotient and makes the entire 'learning to read' activity fun and interesting.<br/>
 					The class is often composed of children of different age groups and learning levels. There is a possibility of some of them not coping well for being irregular to the sessions or fear of being verbal in a big group might stop them. These children are grouped together and the teachers plan additional activities with them after the scheduled daily classes if found feasible and useful.<br/>
 					The steps detailed above essentially form a broad framework. The methodology is flexible in nature. Teachers are given the freedom to modify the steps involved to suit their need.
 				</p>
 
-				<h3 id="methodology_reason">Reason for Success</h3>
+				<h3 id="subsection_reason_for_success">Reason for Success</h3>
 				<p>
 					Individual Opportunity for each child to read.<br/>
 					Heterogeneous (mix of all reading levels) class facilitates peer group learning.<br/>
@@ -152,11 +153,11 @@ $var btags:
 					All the children are assessed using a standardized baseline test at the start of the programme and based on their reading competency they are divided into 5 levels:
 				</p>
 				<ul class="levels">
-					<li class="red"><span>Zero level</span> where the child can barely identify 25% of the alphabet</li>
-					<li class="orange"><span>Letter level</span> where the child identify most of the alphabet</li>
-					<li class="yellow"><span>Word level</span> where the child can identify words</li>
-					<li class="light_green"><span>Sentence level</span> where the child can read sentences</li>
-					<li class="dark_green"><span>Paragraph level</span> where the child can read the entire paragraph</li>
+					<li class="red png24"><span>Zero level</span> where the child can barely identify 25% of the alphabet</li>
+					<li class="orange png24"><span>Letter level</span> where the child identify most of the alphabet</li>
+					<li class="yellow png24"><span>Word level</span> where the child can identify words</li>
+					<li class="light_green png24"><span>Sentence level</span> where the child can read sentences</li>
+					<li class="dark_green png24"><span>Paragraph level</span> where the child can read the entire paragraph</li>
 				</ul>
 				<p>
 					All the children at zero level, letter level and word level are then put through the Programme. They are then regularly assessed through the 45 day programme and their progress is recorded. They are assessed on the 15th day, the 30th day and the 45th day of the programme.<br/>
@@ -165,7 +166,7 @@ $var btags:
 			</div>
 		</section>
 
-		<!--section id="section_programme_reports">
+		<section id="section_programme_reports">
 			<div class="page-section-heading">
 				<div class="container centered">
 					<div class="heading"><h2>Programme Reports</h2></div>
@@ -178,7 +179,7 @@ $var btags:
 					<a href="" title="" class="external">Pupil Teacher Ratio and the Accelerated Reading Programme in Karnataka's government schools.pdf</a>
 				</p>
 			</div>
-		</section-->
+		</section>
 
 		<section>
 			<div class="page-section-heading">
@@ -195,7 +196,4 @@ $var btags:
 			</div>
 		</section>
 
-
 	</div>
-
-

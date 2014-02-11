@@ -1988,10 +1988,10 @@ a.external {
     background: #ec6608; }
   .home-section.recent-activities .col_schools_around_you h2:after {
     background-color: #ec6608 !important;
-    background-image: url("../images/volunteer_stories.jpg"); }
+    background-image: url("../images/schools_around_you.jpg"); }
     @media only screen and (-webkit-min-device-pixel-ratio: 2), only screen and (-moz-min-device-pixel-ratio: 2), only screen and (-o-min-device-pixel-ratio: 2 / 1), only screen and (min-device-pixel-ratio: 2), only screen and (min-resolution: 192dpi), only screen and (min-resolution: 2dppx) {
       .home-section.recent-activities .col_schools_around_you h2:after {
-        background-image: url("../images/volunteer_stories@2x.jpg");
+        background-image: url("../images/schools_around_you@2x.jpg");
         -webkit-background-size: 192px 192px;
         -moz-background-size: 192px 192px;
         -o-background-size: 192px 192px;
@@ -2002,10 +2002,10 @@ a.external {
     background: #3892e3; }
   .home-section.recent-activities .col_volunteer_stories h2:after {
     background-color: #3892e3 !important;
-    background-image: url("../images/updates.jpg"); }
+    background-image: url("../images/volunteer_stories.jpg"); }
     @media only screen and (-webkit-min-device-pixel-ratio: 2), only screen and (-moz-min-device-pixel-ratio: 2), only screen and (-o-min-device-pixel-ratio: 2 / 1), only screen and (min-device-pixel-ratio: 2), only screen and (min-resolution: 192dpi), only screen and (min-resolution: 2dppx) {
       .home-section.recent-activities .col_volunteer_stories h2:after {
-        background-image: url("../images/updates@2x.jpg");
+        background-image: url("../images/volunteer_stories@2x.jpg");
         -webkit-background-size: 192px 192px;
         -moz-background-size: 192px 192px;
         -o-background-size: 192px 192px;
@@ -2016,10 +2016,10 @@ a.external {
     background: #26b262; }
   .home-section.recent-activities .col_updates h2:after {
     background-color: #26b262 !important;
-    background-image: url("../images/schools_around_you.jpg"); }
+    background-image: url("../images/updates.jpg"); }
     @media only screen and (-webkit-min-device-pixel-ratio: 2), only screen and (-moz-min-device-pixel-ratio: 2), only screen and (-o-min-device-pixel-ratio: 2 / 1), only screen and (min-device-pixel-ratio: 2), only screen and (min-resolution: 192dpi), only screen and (min-resolution: 2dppx) {
       .home-section.recent-activities .col_updates h2:after {
-        background-image: url("../images/schools_around_you@2x.jpg");
+        background-image: url("../images/updates@2x.jpg");
         -webkit-background-size: 192px 192px;
         -moz-background-size: 192px 192px;
         -o-background-size: 192px 192px;

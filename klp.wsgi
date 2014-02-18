@@ -221,8 +221,11 @@ sqlstatements={"selectlevelagg":"select year,class as clas,month, cast(coalesce(
 render = web.template.render('templates/', base='base')
 render_plain = web.template.render('templates/')
 
-application = web.application(urls,globals()).wsgifunc()
+import newrelic.agent
+newrelic.agent.initialize('config/newrelic.ini')
 
+application = web.application(urls,globals()).wsgifunc()
+application = newrelic.agent.WSGIApplicationWrapper(application)
 
 class mainmap:
   """Returns the main template"""

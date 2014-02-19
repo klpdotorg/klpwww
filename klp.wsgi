@@ -222,7 +222,7 @@ render = web.template.render('templates/', base='base')
 render_plain = web.template.render('templates/')
 
 import newrelic.agent
-newrelic.agent.initialize('config/newrelic.ini')
+newrelic.agent.initialize(abspath + '/config/newrelic.ini')
 
 application = web.application(urls,globals()).wsgifunc()
 application = newrelic.agent.WSGIApplicationWrapper(application)

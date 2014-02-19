@@ -221,11 +221,11 @@ sqlstatements={"selectlevelagg":"select year,class as clas,month, cast(coalesce(
 render = web.template.render('templates/', base='base')
 render_plain = web.template.render('templates/')
 
-import newrelic.agent
-newrelic.agent.initialize(abspath + '/config/newrelic.ini')
+#import newrelic.agent
+#newrelic.agent.initialize(abspath + '/config/newrelic.ini')
 
 application = web.application(urls,globals()).wsgifunc()
-application = newrelic.agent.WSGIApplicationWrapper(application)
+#application = newrelic.agent.WSGIApplicationWrapper(application)
 
 class mainmap:
   """Returns the main template"""
@@ -1652,7 +1652,7 @@ class postSYS:
       qdata={}
       qarray=[]
       qiddict = self.getQuestionDict()
-      for k in form.inputs: 
+      for k in form.inputs:  
         if not(k.id.startswith('file')) and k.value != '' and k.value != None:
           if k.id in ('schoolid','name','email','telephone','dateofvisit','comments'):
             data[k.id] = k.value.strip('\n\r\t')
@@ -1670,25 +1670,25 @@ class postSYS:
         data['verified'] = 'N'
       else:
         data['verified'] = 'Y'
-
-      fields = ', '.join(data.keys())
-      values = ', '.join(['%%(%s)s' % x for x in data])
-      query=query+"("+fields+") values("+values+")"
-      #print >> sys.stderr, str(query)
-      #print >> sys.stderr, "Questions:-"+str(qdata)
-      #return query+" Data:"+str(data)
-      syscursor.execute("BEGIN")
-      syscursor.execute("LOCK TABLE tb_sys_data IN ROW EXCLUSIVE MODE");
-      syscursor.execute(query,data)
-      syscursor.execute("select currval('tb_sys_data_id_seq')")
-      result = syscursor.fetchall()
-      syscursor.execute("COMMIT")
-      for row in result:
-        sysid=row[0]
-      for q in qdata.keys():
-        syscursor.execute(qansquery,{'sysid':sysid,'qid':q,'answer':qdata[q]})
-      syscursor.close()    
-      DbManager.getSysCon().commit()
+      if data['schoolid'] != '' and data['schoolid'] != None:
+        fields = ', '.join(data.keys())
+        values = ', '.join(['%%(%s)s' % x for x in data])
+        query=query+"("+fields+") values("+values+")"
+        #print >> sys.stderr, str(query)
+        #print >> sys.stderr, "Questions:-"+str(qdata)
+        #return query+" Data:"+str(data)
+        syscursor.execute("BEGIN")
+        syscursor.execute("LOCK TABLE tb_sys_data IN ROW EXCLUSIVE MODE");
+        syscursor.execute(query,data)
+        syscursor.execute("select currval('tb_sys_data_id_seq')")
+        result = syscursor.fetchall()
+        syscursor.execute("COMMIT")
+        for row in result:
+          sysid=row[0]
+        for q in qdata.keys():
+          syscursor.execute(qansquery,{'sysid':sysid,'qid':q,'answer':qdata[q]})
+        syscursor.close()    
+        DbManager.getSysCon().commit()
     except:
       print >> sys.stderr, str(query)
       print >> sys.stderr, "Questions:-"+str(qdata)

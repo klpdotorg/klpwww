@@ -88,6 +88,8 @@ function listFiles(fileList)
 
   } else if (type == 2) {
       document.getElementById('raw_files').style.display = "block";
+      document.getElementById('top_menu').style.display = "block";
+
       document.getElementById('license').style.display = "block";
       var rawfiletable = document.getElementById('raw_files');
       var fileNames = fileList["rawfiles"].sort();

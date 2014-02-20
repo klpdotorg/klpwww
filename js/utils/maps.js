@@ -3,11 +3,11 @@ var district, block, cluster, circle, project, school, preschool, preschooldist;
 var school_layer, district_layer, block_layer, cluster_layer, circle_layer, project_layer;
 var preschool_layer, preschooldist_layer, boundedSchools_layer, boundedPreschools_layer;
 var schoolsList;
-var school_cluster = new L.MarkerClusterGroup({showCoverageOnHover: false, 
+var school_cluster = new L.MarkerClusterGroup({chunkedLoading: true, showCoverageOnHover: false, 
 	iconCreateFunction: function(cluster) {
 		return new L.DivIcon({ className:'marker-cluster marker-cluster-school', style:'style="margin-left: -20px; margin-top: -20px; width: 40px; height: 40px; transform: translate(293px, 363px); z-index: 363;"', html: "<div><span>" + cluster.getChildCount() + "</span></div>" });
 	}});
-var preschool_cluster = new L.MarkerClusterGroup({showCoverageOnHover: false, 
+var preschool_cluster = new L.MarkerClusterGroup({chunkedLoading: true, removeOutsideVisibleBounds: true, showCoverageOnHover: false, 
 	iconCreateFunction: function(cluster) {
 		return new L.DivIcon({ className:'marker-cluster marker-cluster-preschool', style:'style="margin-left: -20px; margin-top: -20px; width: 40px; height: 40px; transform: translate(293px, 363px); z-index: 363;"', html: "<div><span>" + cluster.getChildCount() + "</span></div>" });
 	}});
@@ -150,7 +150,6 @@ function setup_layers () {
 
 	current_layers.addLayer(school_cluster);
 	current_layers.addLayer(preschool_cluster);
-
 	rteCircles();
 }
 
@@ -215,7 +214,7 @@ function initialize() {
 		}), zoomLevel: 15, country: 'India', searchLabel: 'Search for a neighborhood...'
 	}).addTo(map);
 
-	L.control.layers(null, overlays, {position:'topright', collapsed:false}).addTo(map);
+	L.control.layers(null, overlays, {position:'topright', collapsed:true}).addTo(map);
 	map.addControl(filter);
 	map.addControl(drawControl);
 

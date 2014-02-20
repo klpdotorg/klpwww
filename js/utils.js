@@ -1,7 +1,7 @@
 var newwindow;
 function popwindow(url)
 {
-  newwindow=window.open(url,'Downloads','height=620,width=800,scrollbars=1');
+  newwindow=window.open(url,'Downloads','height=450,width=900,scrollbars=1');
   if (window.focus) {newwindow.focus()}
 }
 

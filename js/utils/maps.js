@@ -15,7 +15,7 @@ var preschool_cluster = new L.MarkerClusterGroup({chunkedLoading: true, removeOu
 var current_layers = new L.LayerGroup();
 var rteLowerPrimary  = new L.LayerGroup();
 var rteHigherPrimary = new L.LayerGroup();
-
+var layerUpdate = 1;
 function getURLParameter(name) {
 	return decodeURI(
 		(RegExp(name + '=' + '(.+?)(&|$)').exec(location.search)||[,])[1]
@@ -139,7 +139,7 @@ map.on('locationerror', onLocationError);
 
 function setup_layers () {
 	preschool_layer = L.geoJson(preschool, {pointToLayer: function(feature, latlng){
-		return L.marker(latlng, {icon: preschoolIcon});}, onEachFeature: onEachSchool});
+		return L.marker(latlng, {icon: preschoolIcon});}, onEachFeature: onEachpreSchool});
 
 	preschool_layer.addTo(preschool_cluster);
 
@@ -221,7 +221,7 @@ function initialize() {
 }
 
 
-map.on('zoomend', update_map);
+map.on('zoomend', function() { if (layerUpdate==1) {update_map();} });
 
 function update_map() {
 	zoom_level = map.getZoom();
@@ -265,6 +265,12 @@ function onEachSchool(feature, layer) {
 	}
 }
 
+function onEachpreSchool(feature, layer) {
+	if (feature.properties) {
+		layer.on('click', preschoolPopup);
+	}
+}
+
 function onEachCircle(feature, layer) {
 	if (feature.properties) {
 		layer.on('click', circlePopup);
@@ -275,6 +281,16 @@ function schoolPopup () {
 	marker = this;
 	$.getJSON('/info/school/'+marker.feature.id, function(data) {
 		popupContent = "<b><a href='schoolpage/school/"+marker.feature.id+"' target='_blank'>"+marker.feature.properties.name+"</a></b>"+"<hr> Boys: "+
+		String(data['numBoys'])+" | Girls: "+String(data['numGirls'])+" | Total: <b>"+String(data['numStudents'])+"</b><br />Stories: "+String(data['numStories'])+
+		" &rarr; <i><a href='shareyourstoryschool?type=school?id="+marker.feature.id+"' target='_blank'>Share your story!</a></i>";
+		marker.bindPopup(popupContent).openPopup();
+	});
+}
+
+function preschoolPopup () {
+	marker = this;
+	$.getJSON('/info/school/'+marker.feature.id, function(data) {
+		popupContent = "<b><a href='schoolpage/preschool/"+marker.feature.id+"' target='_blank'>"+marker.feature.properties.name+"</a></b>"+"<hr> Boys: "+
 		String(data['numBoys'])+" | Girls: "+String(data['numGirls'])+" | Total: <b>"+String(data['numStudents'])+"</b><br />Stories: "+String(data['numStories'])+
 		" &rarr; <i><a href='shareyourstoryschool?type=school?id="+marker.feature.id+"' target='_blank'>Share your story!</a></i>";
 		marker.bindPopup(popupContent).openPopup();
@@ -335,14 +351,15 @@ var alerts = L.Control.extend({
 
 	options: {
 		position: 'topcenter',
-		message: ''		
-	},
+		message: '',
+		status: 'alert-success'
+		},
 	initialize: function (options) {
 		L.Util.setOptions(this, options)
 	},
 
 	onAdd: function (map) {
-		var container = L.DomUtil.create('div', 'alert alert-success');
+		var container = L.DomUtil.create('div', 'alert '+this.options.status);
 		container.innerHTML = this.options.message+"<a class='close' data-dismiss='alert' href='#'>&times;</a>";
 		return container;
 	}
@@ -354,7 +371,8 @@ var selectedSchools = L.Control.extend({
 	options: {
 		position: 'topleft',
 		schools: [],
-		preschools: []
+		preschools: [],
+		bounds: ''
 	},
 
 	initialize: function(options) {
@@ -365,13 +383,14 @@ var selectedSchools = L.Control.extend({
 		var container = L.DomUtil.create('div', 'btn-group');
 		button = "<p class='btn btn-success dropdown-toggle' data-toggle='dropdown'>Institutions<span class='caret'></span></p><ul class='dropdown-menu schools'>";
 		var schoolsEntries= ""; var preschoolsEntries = "";
+		var exportLink = "<li><a href='export/bounds?bounds="+this.options.bounds+"''><i class='icon-download-alt'></i> <strong>CSV</strong></a></li>";
 		for (i=0; i<this.options.schools.length; i++) {
 			schoolsEntries = schoolsEntries+"<li><a href='schoolpage/school/"+this.options.schools[i].id+" ' target='_blank'>"+this.options.schools[i].properties['name']+"</a></li>";
 		}
 		for (i=0; i<this.options.preschools.length; i++) {
-			preschoolsEntries = preschoolsEntries+"<li><a href='schoolpage/school/"+this.options.preschools[i].id+" ' target='_blank'>"+this.options.preschools[i].properties['name']+"</a></li>";
+			preschoolsEntries = preschoolsEntries+"<li><a href='schoolpage/preschool/"+this.options.preschools[i].id+" ' target='_blank'>"+this.options.preschools[i].properties['name']+"</a></li>";
 		}
-		container.innerHTML =button+schoolsEntries+"<li class='divider'></li>"+preschoolsEntries+"</ul>";
+		container.innerHTML =button+exportLink+schoolsEntries+"<li class='divider'></li>"+preschoolsEntries+"</ul>";
 		return container;
 	}
 
@@ -401,7 +420,7 @@ map.on('draw:circle-created', function (e) {
 				map.removeControl(schoolsList);
 				schoolsListFlag = 0;
 			}
-			schoolsList = new selectedSchools({schools: boundedSchools.features, preschools: boundedPreschools.features});
+			schoolsList = new selectedSchools({schools: boundedSchools.features, preschools: boundedPreschools.features, bounds: bbox});
 			map.addControl(schoolsList);
 			schoolsListFlag = 1;
 			boundedSchools_layer = L.geoJson(boundedSchools, {pointToLayer: function(feature, latlng){
@@ -436,9 +455,18 @@ function rteCircles() {
 }
 
 
-
 function fill_dropdown(data,type){
 	var dist=document.getElementById(type);
+	if(type=='school' || type=='preschool') {
+		$('#export').removeClass('disabled');
+			ids = [];
+			data.forEach(function(element) {ids.push(element.id);})
+			$('#export').attr('href', '/export/filter?type='+type+'&id='+ids.join(','));
+	}
+
+	else {
+		$('#export').addClass('disabled');
+	}
 	var count=1;
 	document.getElementById(type).length=1;
 	for(var i=0;i<data.length;i++){
@@ -622,3 +650,20 @@ function applyFilter(e, array, icon) {
 		$('#filterModal').modal('hide');
 	}	
 };
+
+map.on('overlayadd', disableLayerUpdate);
+map.on('overlayremove', disableLayerUpdate);
+
+function disableLayerUpdate() {
+	if (layerUpdate==1) {
+		resetAlert = new alerts({message:"<span class='black'>Click <strong><i class=icon-repeat></i> Reset Map</strong> to reset the state of the map</span>", status:'alert-warning'});
+		map.addControl(resetAlert);
+		setTimeout(function (){map.removeControl(resetAlert);}, 3000);
+	};
+	layerUpdate = 0;
+}
+
+$('#reset').on('click', function() {
+	layerUpdate = 1;
+	map.setZoom(10);
+});

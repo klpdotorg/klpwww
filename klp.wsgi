@@ -6,9 +6,11 @@ import csv
 import re
 import difflib
 import geojson
+import cStringIO
 import smtplib,email,email.encoders,email.mime.text,email.mime.base,mimetypes
 from web import form
-
+import pickle
+import redis
 # Needed to find the templates
 import sys, os,traceback
 abspath = os.path.dirname(__file__)
@@ -22,7 +24,7 @@ urls = (
      '/pointinfo/', 'getPointInfo',
      '/schoolsinfo/', 'getSchoolsInfo',
      '/assessment/(.*)/(.*)/(.*)','assessments',
-     '/map*','map',
+     '/map','map',
      '/info/school/(.*)','getSchoolInfo',
      '/info/preschool/(.*)','getSchoolInfo',
      '/shareyourstory(.*)\?*','shareyourstory',
@@ -37,7 +39,9 @@ urls = (
      '/listFiles/(.*)','listFiles',
      '/schools', 'schools_bound',
      '/visualization', 'visualization',
-)
+     '/export/bounds', 'export_bound',
+     '/export/filter', 'export_filter',
+     )
 
 class DbManager:
 
@@ -208,6 +212,8 @@ statements = {'get_district':"select bcoord.id_bndry,ST_AsText(bcoord.coord),ini
               'get_apmdm':"select mon,wk,indent,attend from vw_mdm_agg where id=%s;",
               'get_bounded_schools':"select inst.instid ,ST_AsText(inst.coord),upper(s.name) from vw_inst_coord inst, tb_school s,tb_boundary b where ST_Contains(ST_MakeEnvelope(%s,%s,%s,%s,4326), inst.coord) and s.id=inst.instid and s.bid=b.id and b.type='1' order by s.name;",
               'get_bounded_preschools':"select inst.instid ,ST_AsText(inst.coord),upper(s.name) from vw_inst_coord inst, tb_school s,tb_boundary b where ST_Contains(ST_MakeEnvelope(%s,%s,%s,%s,4326), inst.coord) and s.id=inst.instid and s.bid=b.id and b.type='2' order by s.name",
+              'export_bounded_info': "select inst.instid as klpid, upper(s.name) as name, s.cat as category, s.sex, s.moi, s.mgmt, s.dise_code, s.status, btype.name as type, b2.name as district, b1.name as block, b.name as cluster from  vw_inst_coord inst, tb_school s, tb_boundary b2, tb_boundary b1, tb_boundary b, tb_boundary_type btype  where ST_Contains(ST_MakeEnvelope(%s,%s,%s,%s,4326), inst.coord) and s.id=inst.instid and s.bid=b.id and b.parent=b1.id and b1.parent=b2.id and btype.id=b.type order by s.name;",
+              'filter_school': "select inst.instid as klpid, upper(s.name) as name, s.cat as category, s.sex, s.moi, s.mgmt, s.dise_code, s.status, btype.name as type, b2.name as district, b1.name as block, b.name as cluster from  vw_inst_coord inst, tb_school s, tb_boundary b2, tb_boundary b1, tb_boundary b, tb_boundary_type btype  where s.id=%s and s.bid=b.id and b.parent=b1.id and b1.parent=b2.id and btype.id=b.type order by s.name;"
 
 }
 
@@ -226,6 +232,8 @@ render_plain = web.template.render('templates/')
 
 application = web.application(urls,globals()).wsgifunc()
 #application = newrelic.agent.WSGIApplicationWrapper(application)
+r = redis.Redis(host='localhost', port=6379, db=0)
+fieldnames = ['klpid', 'name','category', 'sex', 'moi', 'mgmt', 'dise_code', 'status',' type', 'district', 'block', 'cluster', 'page']
 
 class mainmap:
   """Returns the main template"""
@@ -262,66 +270,123 @@ class schools_bound:
     web.header('Content-Type', 'application/json')
     return jsonpickle.encode(pointInfo)
 
+class export_bound:
+  def GET(self):
+    bounds = web.input('bounds').bounds.split(',')
+    cursor = DbManager.getMainCon().cursor()
+    export_list = cStringIO.StringIO()
+    for i in range(bounds.__len__()):
+      bounds[i] = bounds[i].strip('"')
+    cursor.execute(statements['export_bounded_info'] %(bounds[0],bounds[1],bounds[2],bounds[3],))
+    result = cursor.fetchall()
+    writer = csv.writer(export_list)
+    writer.writerow(fieldnames)
+
+    for row in result:
+      row = list(row)
+      if row[8] == 'PreSchool':
+        row.append('http://klp.org.in/schoolpage/preschool/'+str(row[0]))
+      else:
+        row.append('http://klp.org.in/schoolpage/school/'+str(row[0]))
+      writer.writerow(row)
+    web.header('Content-Type', 'text/csv')
+    web.header('Content-disposition', 'attachment; filename=schools.csv')
+    return export_list.getvalue()
+
+class export_filter:
+  def GET(self):
+    list_type = web.input('type').type
+    ids = web.input('id').id.split(',')
+    cursor = DbManager.getMainCon().cursor()
+    export_list = cStringIO.StringIO()
+    writer = csv.writer(export_list)
+    writer.writerow(fieldnames)
+    for id in ids:
+      cursor.execute(statements['filter_school'] %(id))
+      result = list(cursor.fetchall()[0])
+      result.append('http://klp.org.in/schoolpage/'+list_type+'/'+id)
+      writer.writerow(result)
+    web.header('Content-Type', 'text/csv')
+    web.header('Content-disposition', 'attachment; filename=schools.csv')
+    return export_list.getvalue()
+
 class getPointInfo:
   def GET(self):
-    pointInfo={"district":[],"preschooldistrict":[], "block":[],"cluster":[],"project":[],"circle":[]}
     try:
       cursor = DbManager.getMainCon().cursor()
-      for type in pointInfo:
-        features = []
-        cursor.execute(statements['get_'+type])
-        result = cursor.fetchall()
-        for row in result:
-          try:
-            match = re.match(r"POINT\((.*)\s(.*)\)",row[1])
-          except:
-            traceback.print_exc(file=sys.stderr)
-            continue
-          coord = [float(match.group(1)), float(match.group(2))]
-          feature = geojson.Feature(id=row[0], geometry=geojson.Point(coord), properties={"name":row[2]})
-          features.append(feature)
-        feature_collection = geojson.FeatureCollection(features)
-        pointInfo[type].append(geojson.dumps(feature_collection))
-        DbManager.getMainCon().commit()
-      cursor.close()
+      pointInfo = get_value(redis=r, key='pointInfo') 
+      if not pointInfo:
+        pointInfo={"district":[],"preschooldistrict":[], "block":[],"cluster":[],"project":[],"circle":[]}
+        for type in pointInfo:
+          features = []
+          cursor.execute(statements['get_'+type])
+          result = cursor.fetchall()
+          for row in result:
+            try:
+              match = re.match(r"POINT\((.*)\s(.*)\)",row[1])
+            except:
+              traceback.print_exc(file=sys.stderr)
+              continue
+            coord = [float(match.group(1)), float(match.group(2))]
+            feature = geojson.Feature(id=row[0], geometry=geojson.Point(coord), properties={"name":row[2]})
+            features.append(feature)
+          feature_collection = geojson.FeatureCollection(features)
+          pointInfo[type].append(geojson.dumps(feature_collection))
+          DbManager.getMainCon().commit()
+        set_value(redis=r, key='pointInfo', value=pointInfo)
+        cursor.close()
     except:
       traceback.print_exc(file=sys.stderr)
       cursor.close()
       DbManager.getMainCon().rollback()
     web.header('Content-Type', 'application/json')
+    web.header('Cache-Control', 'max-age=2592000', 'public')
     return jsonpickle.encode(pointInfo)
 
 class getSchoolsInfo:
   def GET(self):
-    pointInfo={"school":[],"preschool":[]}
     try:
       cursor = DbManager.getMainCon().cursor()
-      for type in pointInfo:
-        features = []
-        cursor.execute(statements['get_'+type])
-        result = cursor.fetchall()
-        for row in result:
-          try:
-            match = re.match(r"POINT\((.*)\s(.*)\)",row[1])
-          except:
-            traceback.print_exc(file=sys.stderr)
-            continue
-          coord = [float(match.group(1)), float(match.group(2))]
-          if type == "school":
-            feature = geojson.Feature(id=row[0], geometry=geojson.Point(coord), properties={"name":row[2], "cat":row[3]})
-          else:
-            feature = geojson.Feature(id=row[0], geometry=geojson.Point(coord), properties={"name":row[2]})
-          features.append(feature)
-        feature_collection = geojson.FeatureCollection(features)
-        pointInfo[type].append(geojson.dumps(feature_collection))
-        DbManager.getMainCon().commit()
-      cursor.close()
+      schoolsInfo = get_value(redis=r, key='schoolsInfo') 
+      if not schoolsInfo:
+        schoolsInfo={"school":[],"preschool":[]}
+        for type in schoolsInfo:
+          features = []
+          cursor.execute(statements['get_'+type])
+          result = cursor.fetchall()
+          for row in result:
+            try:
+              match = re.match(r"POINT\((.*)\s(.*)\)",row[1])
+            except:
+              traceback.print_exc(file=sys.stderr)
+              continue
+            coord = [float(match.group(1)), float(match.group(2))]
+            if type == "school":
+              feature = geojson.Feature(id=row[0], geometry=geojson.Point(coord), properties={"name":row[2], "cat":row[3]})
+            else:
+              feature = geojson.Feature(id=row[0], geometry=geojson.Point(coord), properties={"name":row[2]})
+            features.append(feature)
+          feature_collection = geojson.FeatureCollection(features)
+          schoolsInfo[type].append(geojson.dumps(feature_collection))
+          DbManager.getMainCon().commit()
+        set_value(redis=r, key='schoolsInfo', value=schoolsInfo)
+        cursor.close()
     except:
       traceback.print_exc(file=sys.stderr)
       cursor.close()
       DbManager.getMainCon().rollback()
     web.header('Content-Type', 'application/json')
-    return jsonpickle.encode(pointInfo)
+    web.header('Cache-Control', 'max-age=2592000', 'public')
+    return jsonpickle.encode(schoolsInfo)
+
+def set_value(redis, key, value):
+    redis.setex(key, 60*60*24*30, pickle.dumps(value))
+
+def get_value(redis, key):
+    pickled_value = redis.get(key)
+    if pickled_value is None:
+        return None
+    return pickle.loads(pickled_value)
 
 
 class map:

@@ -465,7 +465,7 @@ function populateSYS()
   document.getElementById("sys_comments_heading").innerHTML = "Visitors' Comments";
   systable = '<div class="div-table">' +
              '<div class="div-table-row">No. of Visits:' + info["syscount"] + '</div>';
-  systable = systable+ 'If you have visited this school, please' + '<div class="div-table-row"><b><a href=\"javascript:void(0);\" onclick=window.open("../../shareyourstory'+type+'?type='+type+'?id='+info["id"]+'","_blank") style="color:#43AD2F">share your experience </a></b>here.</div>';
+  systable = systable+ 'If you have visited this school, please' + '<div class="div-table-row"><b><a href=\"javascript:void(0);\" onclick=window.open("/shareyourstory/'+type+'/'+info["id"]+","_blank") style="color:#43AD2F">share your experience </a></b>here.</div>';
             if( info["syscount"]>0)
             {
               systable = systable+'<div class="div-table-row">Dates of Visit</div><div class="div-table-row"><b>';

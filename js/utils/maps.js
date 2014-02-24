@@ -282,7 +282,7 @@ function schoolPopup () {
 	$.getJSON('/info/school/'+marker.feature.id, function(data) {
 		popupContent = "<b><a href='schoolpage/school/"+marker.feature.id+"' target='_blank'>"+marker.feature.properties.name+"</a></b>"+"<hr> Boys: "+
 		String(data['numBoys'])+" | Girls: "+String(data['numGirls'])+" | Total: <b>"+String(data['numStudents'])+"</b><br />Stories: "+String(data['numStories'])+
-		" &rarr; <i><a href='shareyourstoryschool?type=school?id="+marker.feature.id+"' target='_blank'>Share your story!</a></i>";
+		" &rarr; <i><a href='shareyourstory/school/"+marker.feature.id+"' target='_blank'>Share your story!</a></i>";
 		marker.bindPopup(popupContent).openPopup();
 	});
 }
@@ -292,7 +292,7 @@ function preschoolPopup () {
 	$.getJSON('/info/school/'+marker.feature.id, function(data) {
 		popupContent = "<b><a href='schoolpage/preschool/"+marker.feature.id+"' target='_blank'>"+marker.feature.properties.name+"</a></b>"+"<hr> Boys: "+
 		String(data['numBoys'])+" | Girls: "+String(data['numGirls'])+" | Total: <b>"+String(data['numStudents'])+"</b><br />Stories: "+String(data['numStories'])+
-		" &rarr; <i><a href='shareyourstoryschool?type=school?id="+marker.feature.id+"' target='_blank'>Share your story!</a></i>";
+		" &rarr; <i><a href='shareyourstory/preschool/"+marker.feature.id+"' target='_blank'>Share your story!</a></i>";
 		marker.bindPopup(popupContent).openPopup();
 	});
 }

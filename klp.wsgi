@@ -27,7 +27,7 @@ urls = (
      '/map','map',
      '/info/school/(.*)','getSchoolInfo',
      '/info/preschool/(.*)','getSchoolInfo',
-     '/shareyourstory(.*)\?*','shareyourstory',
+     '/shareyourstory/(.*)/(.*)\?*','shareyourstory',
      '/schoolpage/(.*)/(.*)\?*','SchoolPage',
      '/info/(.*)/(.*)','getBoundaryInfo',
      '/boundaryPoints/(.*)/(.*)','getBoundaryPoints',
@@ -1407,22 +1407,26 @@ class SchoolPage:
 
 
 class shareyourstory:
-  def GET(self,type):
+  def GET(self,type,id):
+    data = {}
     questions=[]
     try:
       syscursor = DbManager.getSysCon().cursor()
       syscursor.execute(statements['get_sys_'+type+'_questions'])
+      schoolinfo = {"schoolid":str(id),"type":str(type)}
       result = syscursor.fetchall()
       for row in result:
         questions.append({"id":row[0],"text":row[2],"field":row[3],"type":row[4],"options":row[5]})
       syscursor.close()
       DbManager.getSysCon().commit()
+      data["schoolinfo"] = schoolinfo
+      data["questions"] = questions
     except:
       syscursor.close()
       DbManager.getSysCon().rollback()
       traceback.print_exc(file=sys.stderr)
     web.header('Content-Type','text/html; charset=utf-8')
-    return render_plain.shareyourstory(questions)
+    return render_plain.shareyourstory(data)
 
 class text:
   def GET(self, name):

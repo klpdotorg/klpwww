@@ -33,14 +33,12 @@ function textCounter(field,cntfield,maxlimit) {
 }
 
 
-function initialise()
+function initialise(schoolinfo)
 {
-   var query= window.location.search.substring(1);
-   var variables = query.split("?");
-   type=variables[0].split("=")[1];
-   schoolid=variables[1].split("=")[1];
+   type=schoolinfo['type'];
+   schoolid=schoolinfo['schoolid'];
    document.schoolform.action ="/postSYS/"+type
-   getSchoolInfo();
+   getSchoolInfo(schoolid);
    document.getElementById("schoolid").value = schoolid;
    //initialiseEditor()
 }
@@ -116,7 +114,7 @@ function initialiseEditor()
 function initializeDate()
 {
   YUI({
-    base: 'yui/build/',
+    base: '/yui/build/',
     modules: {
         'gallery-aui-skin-base': {
             fullpath: '/gallery/build/gallery-aui-skin-base/css/gallery-aui-skin-base-min.css',
@@ -154,9 +152,9 @@ function handleCal1Select(type,args,obj) {
   txtDate1.value = day + "-" + month + "-" + year;
 }
 
-function getSchoolInfo()
+function getSchoolInfo(schoolid)
 {
-  YUI({base: 'yui/build/',
+  YUI({base: '/yui/build/',
     timeout: 10000}).use("io-base","json-parse",
       function(Y, result) {
         if (!result.success) {
@@ -179,7 +177,7 @@ function getSchoolInfo()
             } 
           }
         };
-        url = "schoolInfo/"+schoolid;
+        url = "/schoolInfo/"+schoolid;
         var request = Y.io(url, callback);
        });
 }

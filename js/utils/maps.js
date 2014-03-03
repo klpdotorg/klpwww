@@ -135,7 +135,7 @@ function onLocationError(e) {
 
 
 map.on('locationfound', onLocationFound);
-map.on('locationerror', onLocationError);
+// map.on('locationerror', onLocationError);
 
 function setup_layers () {
 	preschool_layer = L.geoJson(preschool, {pointToLayer: function(feature, latlng){
@@ -221,7 +221,9 @@ function initialize() {
 }
 
 
-map.on('zoomend', function() { if (layerUpdate==1) {update_map();} });
+map.on('zoomend', function() { 
+	update_map();
+});
 
 function update_map() {
 	zoom_level = map.getZoom();
@@ -651,19 +653,23 @@ function applyFilter(e, array, icon) {
 	}	
 };
 
-map.on('overlayadd', disableLayerUpdate);
-map.on('overlayremove', disableLayerUpdate);
+// map.on('overlayadd', disableLayerUpdate);
+// map.on('overlayremove', disableLayerUpdate);
 
-function disableLayerUpdate() {
-	if (layerUpdate==1) {
-		resetAlert = new alerts({message:"<span class='black'>Click <strong><i class=icon-repeat></i> Reset Map</strong> to reset the state of the map</span>", status:'alert-warning'});
-		map.addControl(resetAlert);
-		setTimeout(function (){map.removeControl(resetAlert);}, 3000);
-	};
-	layerUpdate = 0;
-}
+// function disableLayerUpdate() {
+// 	if (layerUpdate==1) {
+// 		layerUpdate = 0;
+// 		// resetAlert = new alerts({message:"<span class='black'>Click <strong><i class=icon-repeat></i> Reset Map</strong> to reset the state of the map</span>", status:'alert-warning'});
+// 		// map.addControl(resetAlert);
+// 		// setTimeout(function (){map.removeControl(resetAlert);}, 3000);
+// 	};
+// }
 
-$('#reset').on('click', function() {
+$('.reset').on('click', function() {
 	layerUpdate = 1;
 	map.setZoom(10);
+	if (map.hasLayer(filteredSchoolMarker)) {
+		map.removeLayer(filteredSchoolMarker);
+		map.addLayer(current_layers);
+	}
 });

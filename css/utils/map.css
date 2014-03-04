@@ -272,3 +272,8 @@ body{
 .black {
     color: black;
 }
+
+.main-header .header-content {
+    width: 1096px;
+    margin: 0 auto;
+}

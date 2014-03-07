@@ -227,11 +227,12 @@ sqlstatements={"selectlevelagg":"select year,class as clas,month, cast(coalesce(
 render = web.template.render('templates/', base='base')
 render_plain = web.template.render('templates/')
 
-#import newrelic.agent
-#newrelic.agent.initialize(abspath + '/config/newrelic.ini')
+import newrelic.agent
+newrelic.agent.initialize(abspath + '/config/newrelic.ini')
 
 application = web.application(urls,globals()).wsgifunc()
-#application = newrelic.agent.WSGIApplicationWrapper(application)
+application = newrelic.agent.WSGIApplicationWrapper(application)
+
 r = redis.Redis(host='localhost', port=6379, db=0)
 fieldnames = ['klpid', 'name','category', 'sex', 'moi', 'mgmt', 'dise_code', 'status',' type', 'district', 'block', 'cluster', 'page']
 

@@ -2531,6 +2531,8 @@ a.external {
         background-image: url("../images/thumb_library_programme.jpg"); }
       .page-programmes .programme-type .thumb.preschool a {
         background-image: url("../images/thumb_preschool_programme.jpg"); }
+      .page-programmes .programme-type .thumb.sikshana a {
+        background-image: url("../images/thumb_sikshana_programme.jpg"); }
     .page-programmes .programme-type .details {
       padding-left: 40px;
       padding-bottom: 50px;
@@ -2584,6 +2586,8 @@ a.external {
       background-image: url("../images/bg_header_library_programme.jpg"); }
     .page-programme-details .programmes-header.preschool_programme {
       background-image: url("../images/bg_header_preschool_programme.jpg"); }
+    .page-programme-details .programmes-header.sikshana_programme {
+      background-image: url("../images/bg_header_sikshana_programme.jpg"); }
     .page-programme-details .programmes-header .content {
       width: 960px;
       margin: 0 auto;

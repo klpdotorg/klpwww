@@ -363,9 +363,9 @@ class getSchoolsInfo:
               continue
             coord = [float(match.group(1)), float(match.group(2))]
             if type == "school":
-              feature = geojson.Feature(id=row[0], geometry=geojson.Point(coord), properties={"name":row[2], "cat":row[3]})
+              feature = geojson.Feature(id=row[0], geometry=geojson.Point(coord), properties={"name":row[2], "cat":row[3], "stype":"school"})
             else:
-              feature = geojson.Feature(id=row[0], geometry=geojson.Point(coord), properties={"name":row[2]})
+              feature = geojson.Feature(id=row[0], geometry=geojson.Point(coord), properties={"name":row[2], , "stype":"preschool"})
             features.append(feature)
           feature_collection = geojson.FeatureCollection(features)
           schoolsInfo[type].append(geojson.dumps(feature_collection))

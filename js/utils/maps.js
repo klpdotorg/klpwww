@@ -642,7 +642,6 @@ function applyFilter(e, array, icon) {
 		map.setView(L.latLng(coordinates), 15);
 		filteredSchoolMarker = L.marker(coordinates, {icon: icon});
 		$.getJSON('/info/school/'+filteredSchool[0].id, function(data) {
-			alert(data['school'])
 			popupContent = "<b><a href='schoolpage/school/"+filteredSchool[0].id+"' target='_blank'>"+filteredSchool[0].properties.name+"</a></b>"+"<hr> Boys: "+
 			String(data['numBoys'])+" | Girls: "+String(data['numGirls'])+" | Total: <b>"+String(data['numStudents'])+"</b><br />Stories: "+String(data['numStories'])+
 			" &rarr; <i><a href='shareyourstory/" + filteredSchool[0].properties.stype + "/"+filteredSchool[0].id+"' target='_blank'>Share your story!</a></i>";
